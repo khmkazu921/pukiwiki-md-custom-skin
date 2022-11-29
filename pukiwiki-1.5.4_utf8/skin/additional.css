@@ -1,0 +1,432 @@
+@charset "UTF-8";
+
+/**************************************
+       PukiWiki Additional CSS
+***************************************/
+
+/**************  BASE *****************/
+
+body{
+  color: #666;
+  margin: 0;
+  font-size:100%;
+  font-family: -apple-system, BlinkMacSystemFont, 'Helvetica Neue', 'Segoe UI', 'Hiragino Kaku Gothic ProN', 'Yu Gothic', sans-serif;
+  font-weight: normal;
+}
+
+a:link{
+  background-color: transparent;
+  color: #1A237E ;
+}
+a:active{
+  background-color: transparent;
+  color: #1565C0;
+}
+a:visited {
+  background-color: transparent;
+  color: #4A148C;
+}
+a:hover {
+  color: #58F;
+}
+
+h1,h2,h3,h4,h5,h6{
+  border: none;
+  padding: 0;
+  margin-bottom: 0.5rem;
+  font-family:inherit;
+  background-color:transparent;
+  color: #333;
+}
+
+p {
+  margin-bottom: 0.5rem;
+}
+
+dl.list1 {
+  margin: 1rem 0 ;
+  padding: 0;
+}
+
+dt {
+  margin: 0;
+  margin-bottom: 0.5rem;
+  font-weight:bold;
+}
+
+dd {
+  margin-left: 1rem;
+  margin-bottom: 0.5rem;
+}
+
+pre {
+  margin: 1rem 0;
+  margin-bottom: 1rem;
+  border: none;
+  padding: 1rem;
+  white-space: pre-wrap;
+  word-wrap: break-word;
+  overflow: auto;
+  color: #333;
+  background: #EEE;
+}
+
+ul,ol {
+  margin-top: 0.5rem;
+  margin-bottom: 1rem;
+  margin-left: 0px !important;
+  padding-left: 16px;
+}
+
+a.note_super{
+  font-size: 0.75rem;
+  vertical-align: top;
+}
+
+div.jumpmenu {
+  visibility:hidden;
+}
+
+hr {
+ border:none;
+ border-top: dotted 1px #CCCCCC;
+ height: 1px
+}
+
+hr.note_hr {
+  visibility:hidden;
+}
+
+/* aname.inc.php */
+.anchor_super {
+  visibility:hidden;
+}
+
+/* hr.inc.php */
+hr.short_line {
+  width: 100%;
+  height: 1px;
+  margin-top: 0;
+  margin-bottom: 1rem;
+  background-color: #afafaf;
+  border: none;
+}
+
+/* image.inc.php ref.inc.php */
+div.img_margin {
+  margin:0;
+}
+
+/***************** LAYOUT ******************/
+
+/***** HEADER *****/
+
+header {
+  display: flex;
+  position: sticky;
+  top: 0;
+  width: 100%;
+  height: 4rem;
+  background: #666;
+  box-shadow: 0 3px 0.3125rem rgba(0,0,0,.4);
+  z-index: 999;
+}
+
+#logo {
+  position: absolute;
+  top: -0.8rem;
+  left: 2rem;;
+  width: 6rem;
+}
+
+header h1.title {
+  position: absolute;
+/*  top: 1.2rem; */
+  height: 100%;
+  left: 9rem;
+  right: 16rem;
+  margin: 0;
+  padding: 0;
+/*  line-height: 180%; */
+  font-size: 1.5rem;
+  color: #FFF;
+  overflow: hidden;
+  white-space: nowrap;
+  display: flex;
+}
+
+@media only screen and (max-width: 768px) {
+  header h1.title {
+    right: 4rem;
+  }
+}
+
+header h1 div{
+  margin: auto 0rem;
+}
+
+header h1.title a {
+  color: #FFF;
+}
+
+div#navigator  {
+  text-align: left;
+  top   : 1.5rem;
+  right : 1.5rem;
+  padding: 0rem 0rem 0.5rem 0rem;
+}
+
+#searchBox form {
+  position: absolute;
+  top: 1.25rem;
+  right: 3rem;
+  height: 25px;
+}
+
+#searchBox form label { display: none;}
+#searchBox input[name="word"]{ font-size: 0.8em; width: 96% !important;}
+#searchBox input[type="submit"]{ display: none;}
+
+@media only screen and (max-width: 768px) {
+  #searchBox form { display: none;}
+}
+
+
+/***** READ MODE CONTAINER *****/
+
+#readMode {
+  width: 100%;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: row;
+}
+
+@media only screen and (max-width: 768px) {
+  #readMode {
+    min-width: 16rem;
+    display: block;
+  }
+}
+
+/* NAVIGATION */
+
+#menuButton {
+  display: flex;
+  margin-left:  auto;
+  padding-right: 1.5rem; 
+  height: 100%;
+  z-index: 999;
+}
+
+#menuButton a {
+  display: flex;
+  margin: auto 0;
+  font-size: 2rem;
+  color: white;
+}
+
+#menuList {
+  width: 9rem;
+  padding: 2rem;
+  font-size: 0.8rem;
+  z-index: 99;
+  background-color: #EEE;
+}
+
+@media only screen and (max-width: 768px) {
+  #menuList {
+    position: absolute;
+    top: 4rem;
+    width: 84%;
+    padding: 3rem 8%;
+    font-size: 0.8rem;
+    background-color: #DDD;
+    opacity: 0.96;
+  }
+}
+
+#menuList h2 { font-size: 1rem;}
+#menuList h5 { font-size: 1rem;}
+#menuList ul { margin-bottom: 0.5rem;}
+#menuList li { margin-bottom: 0.25rem;}
+
+/* MAIN CONTENT */
+
+article {
+  width: 100%;
+  padding: 3rem;
+}
+
+@media only screen and (max-width: 768px) {
+  article {
+    width: 84%;
+    padding: 2rem 8%;
+  }
+}
+
+#main {
+  width: 100%;
+}
+
+#main div {
+  line-height: 140%;
+}
+
+#main h3{
+  padding-bottom: 0.5rem;
+  border-bottom: 1px dotted gray;
+}
+
+#main h2{
+  padding-bottom: 0.2rem;
+  border-bottom: 5px double #BABABA;
+}
+
+#main li,
+#main p {
+  margin-top: 0rem;
+  font-size: 0.9rem;
+  line-height: 150%;
+  text-align: justify;
+}
+
+#main img {
+  max-width: 100%;
+  height: auto;
+}
+
+#main iframe {
+	display: block;
+}
+
+#main textarea,
+#main input {
+  max-width: 90% !important;
+}
+
+/* note attach lastmodified related */
+
+#note {
+  margin-bottom: 1rem !important;
+}
+
+#attach {
+  margin-bottom: 1rem;
+  font-size: 0.75rem;
+}
+
+#lastmodified {
+  font-size:0.75rem;
+  margin-bottom: 1rem;
+}
+
+#related {
+  padding: 0 3rem;
+  font-size:0.75rem;
+  margin-bottom: 1rem;
+}
+
+
+/***** EDIT MODE CONTAINER *****/
+
+#editMode {
+  width: 70%;
+  max-width: 960px;
+  margin: 1.5rem auto;
+}
+
+@media only screen and (max-width: 768px) {
+  #editMode {
+    width: 90%;
+    margin: 1.5rem auto;
+  }
+}
+
+#editMode textarea{
+  display: block;
+  width: 100% !important;
+  line-height: 150%;
+}
+
+#editMode li:first-child {
+  list-style-type: none;
+}
+
+#editMode input[name="preview"]{
+  display: none;
+}
+
+/***** FOOTER *****/
+
+footer {
+  padding: 3rem;
+  background: #EEE;
+}
+
+div#toolbar {
+  margin-bottom: 1rem;
+  text-align:center;
+}
+
+div#signature {
+  font-size:0.75rem;
+  text-align:center;
+}
+
+/***** SHJS *****/
+
+pre.sh_sourceCode {
+  background-color:#f0f0ff !important;
+  border: 1px #66e dashed;
+  overflow:auto;
+  margin:0px;
+  padding:.5em;
+}
+
+table.sh_bound {
+  min-width:40em;
+  margin:0px;
+  margin-right:2em;
+  margin-left:0.5em;
+}
+
+pre.sh_console {
+  background-color:black !important;
+  color:white;
+  border: 0px;
+}
+
+table.sh_linenumber tr td {
+  margin:0px;
+  padding:0px;
+  border:0px;
+  background-color:#f0f0ff;
+}
+
+table.sh_linenumber tr {
+  margin:0px;
+  padding:0px;
+  border:0px;
+}
+
+pre.sh_linenumber {
+  color:grey;
+  text-align:right;
+}
+
+table.sh_linenumber tr td pre {
+  border:0px;
+  margin:0px;
+  padding:.5em;
+}
+
+table.sh_linenumber {
+  background-color:#f0f0ff;
+  border: 1px #66e dashed;
+  margin:0px;
+  margin-right:2em;
+  margin-left:0.5em;
+}
+
+/* EOF */
