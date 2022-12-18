@@ -1,3 +1,8 @@
 * pukiwiki-md-custom-skin
 
 これはPukiwikiをベースに，Markdownが利用できるように変更を行ったソースコードです．
+
+
+参考：
+- [[Pukiwiki 1.5.4も無理やりMarkdown記法とPukiwiki記法に両対応させた][https://oncologynote.com/?baa57eda56]]
+- [[PukiWiki Customize][https://design.kyusan-u.ac.jp/OpenSquareJP/?PukiWiki/Customize]]
