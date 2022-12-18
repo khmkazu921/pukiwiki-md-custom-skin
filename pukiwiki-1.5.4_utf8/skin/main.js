@@ -6,6 +6,9 @@
 // PukiWiki JavaScript client script
 /* eslint-env browser */
 // eslint-disable-next-line no-unused-expressions
+
+
+
 window.addEventListener && window.addEventListener('DOMContentLoaded', function () {
   'use strict'
   /**
@@ -666,7 +669,7 @@ window.addEventListener && window.addEventListener('DOMContentLoaded', function 
     }
   }
   setYourName()
-  autoTicketLink()
+  //autoTicketLink()
   confirmEditFormLeaving()
   showPagePassage()
   convertExternalLinkToCushionPageLink()

@@ -6,10 +6,8 @@ function ShowAndHide(win){
     if( win > breakPoint ){
         $('#menuButton').hide();
         $('#menuList').show();
-        openMenuList();
         $('#menuList').css({'flex-direcrion':'row'});
     } else {
-        closeMenuList();
         $('#menuButton').show();
         $('#menuButton').removeClass('open');
     }
@@ -29,28 +27,20 @@ $(function (){
     });
 });
 
-function toggleMenuList() {
-    if( $("#menuList").width() > 0) {
-        closeMenuList();
-    } else {
-        openMenuList();
-    }
-}
-
-function closeMenuList() {
-    $("#menuList").css({'min-width': '0',
-                        'width': '0',
-                        'padding-left': '0rem',
-                        'padding-right': '0rem'});
-    $("#article").css({'width': 'calc(100% - 4rem)'});
-}
-
-function openMenuList() {
+function openNav() {
     $("#menuList").css({'min-width': '200px',
-                        'width': '200px',
-                        'padding-left': '2rem',
-                        'padding-right': '2rem'});
+                       'width': '200px',
+                       'padding-left': '2rem',
+                       'padding-right': '2rem'});
     $("#article").css({'width': 'calc(100% - 200px - 8rem)'});
+}
+
+function closeNav() {
+    $("#menuList").css({'min-width': '0',
+                       'width': '0',
+                       'padding-left': '0rem',
+                       'padding-right': '0rem'});
+    $("#article").css({'width': 'calc(100% - 4rem)'});
 }
 
 // Smooth Scrool /////////////////////////////////////////////////////////////

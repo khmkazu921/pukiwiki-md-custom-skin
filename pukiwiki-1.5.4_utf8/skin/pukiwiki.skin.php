@@ -26,7 +26,7 @@ $_IMAGE['skin']['favicon_type']  = 'image/png'; // MIME type
 //   1 = Show reload URL
 //   0 = Show topicpath
 if (! defined('SKIN_DEFAULT_DISABLE_TOPICPATH'))
-    define('SKIN_DEFAULT_DISABLE_TOPICPATH', 0); // 1, 0
+    define('SKIN_DEFAULT_DISABLE_TOPICPATH', 1); // 1, 0
 
 // Show / Hide navigation bar UI at your choice
 // NOTE: This is not stop their functionalities!
@@ -65,7 +65,7 @@ header('Content-Type: text/html; charset=' . CONTENT_CHARSET);
 
 ?>
 <!DOCTYPE html>
-<html lang="ja">
+<html lang="<?php echo LANG ?>">
 
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=<?php echo CONTENT_CHARSET ?>" />
@@ -81,6 +81,7 @@ header('Content-Type: text/html; charset=' . CONTENT_CHARSET);
 
         <!-- change skin -->
         <link rel="stylesheet" href="skin/pukiwiki.css" />
+        <link rel="stylesheet" href="skin/github-markdown.css" />        
         <link rel="stylesheet" href="skin/additional.css" />
 
         <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
@@ -88,12 +89,9 @@ header('Content-Type: text/html; charset=' . CONTENT_CHARSET);
         <script src="skin/search2.js" defer></script>
         <script src="skin/script.js"></script>
 
-        <!-- shjs (syntax highlight) -->
-        <!-- 
-             <link rel="stylesheet" type="text/css" href="shjs/css/sh_typical.min.css" />
-             <script type="text/javascript" src="shjs/sh_main.js"></script>
-        -->
-
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.7.0/highlight.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.7.0/languages/tcl.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlightjs-line-numbers.js/2.8.0/highlightjs-line-numbers.min.js"></script>
         <?php echo $head_tag ?>
 
     </head>
@@ -118,98 +116,95 @@ header('Content-Type: text/html; charset=' . CONTENT_CHARSET);
 
         </header>
 
-        <!-- shjs (syntax hilight) -->
-        <body onLoad="sh_highlightDocument('shjs/lang/', '.js');">
+        <!-- shjs (syntax hilight)
+             <body onLoad="sh_highlightDocument('shjs/lang/', '.js');"> -->
 
-            <?php if ($menu !== FALSE) { ?>
+        <?php if ($menu !== FALSE) { ?>
 
-                <div id="readMode">
-                    <div id="menuList"><?php echo convert_html(get_source('MenuBar')) ?></div>
-                    <article>
-                        <div id="navigator">
-                            <?php
-                            if(PKWK_SKIN_SHOW_NAVBAR) { 
-                                function _navigator($key, $value = '', $javascript = ''){
-	                            $lang = & $GLOBALS['_LANG']['skin'];
-	                            $link = & $GLOBALS['_LINK'];
-	                            if (! isset($lang[$key])) { echo 'LANG NOT FOUND'; return FALSE; }
-	                            if (! isset($link[$key])) { echo 'LINK NOT FOUND'; return FALSE; }
-	                            echo '<a href="' . $link[$key] . '" ' . $javascript . '>' .
-		                         (($value === '') ? $lang[$key] : $value) .
-		                         '</a>';
-	                            return TRUE;
-                                }
-                            ?>
-                            <?php if ($is_page) { ?>
-                                [
-                                <?php if ($rw) { ?>
-	                            <?php _navigator('edit') ?> |
-	                            <?php // if ($is_read && $function_freeze) { ?>
-		                    <?php // (! $is_freeze) ? _navigator('freeze') : _navigator('unfreeze') ?> <!--|-->
-	                            <?php // } ?>
-                                <?php } ?>
-                                <?php _navigator('diff') ?>
-                                <?php if ($do_backup) { ?>
-	                            | <?php _navigator('backup') ?>
-                                <?php } ?>
-                                <?php if ($rw && (bool)ini_get('file_uploads')) { ?>
-	                            | <?php _navigator('upload') ?>
-                                <?php } ?>
-                                | <?php // _navigator('reload') ?>
-                                <!--] &nbsp;-->
-                            <?php } ?>
-
-                            <!--[-->
-                            <?php if ($rw) { ?>
-	                        <?php _navigator('new') ?> |
-                            <?php } ?>
-                            <?php _navigator('list') ?>
-                            <?php if (arg_check('list')) { ?>
-	                        | <?php _navigator('filelist') ?>
-                            <?php } ?>
-                            | <?php _navigator('search') ?>
-                            | <?php _navigator('recent') ?>
-                            <!--|--> <?php // _navigator('help')   ?>
-                            <?php if ($enable_login) { ?>
-                                | <?php _navigator('login') ?>
-                            <?php } ?>
-                            <?php if ($enable_logout) { ?>
-                                | <?php _navigator('logout') ?>
-                            <?php } ?>
-                            ]
-            <?php } // PKWK_SKIN_SHOW_NAVBAR ?>
-
+            <div id="readMode">
+                <div id="menuList">
+                    <!-- <button class="openbtn" onclick="closeNav()">&times;</button> -->
+                    <?php echo convert_html(get_source('MenuBar')) ?>
+                </div>
+                <div id="article">
+                    <button class="openbtn" onclick="toggleMenuList()">&#9776;</button>                    
+                    <div id="navigator">
+                        <?php
+                        if(PKWK_SKIN_SHOW_NAVBAR) { 
+                            function _navigator($key, $value = '', $javascript = ''){
+	                        $lang = & $GLOBALS['_LANG']['skin'];
+	                        $link = & $GLOBALS['_LINK'];
+	                        if (! isset($lang[$key])) { echo 'LANG NOT FOUND'; return FALSE; }
+	                        if (! isset($link[$key])) { echo 'LINK NOT FOUND'; return FALSE; }
+	                        echo '<a href="' . $link[$key] . '" ' . $javascript . '>' .
+		                     (($value === '') ? $lang[$key] : $value) .
+		                     '</a>';
+	                        return TRUE;
+                            }
+                        ?>
+                        <div align="right">
+                        <?php if ($is_page) {
+                                  echo "[ ";
+                                  if ($rw) { 
+	                              _navigator('edit'); echo " | ";
+	                              _navigator('new');  echo " | ";
+	                          }
+                                  if ($rw && (bool)ini_get('file_uploads')) {
+	                              _navigator('upload');
+	                              echo " | ";
+                                  }	                          
+                                  _navigator('diff');
+                                  echo " | ";
+                                  if ($do_backup) {
+	                              _navigator('backup');
+	                              //echo " | ";
+                                  }
+                             } ?>
+                        <?php // _navigator('list'); // if (arg_check('list')) { _navigator('filelist'); }?>
+                        <?php // _navigator('search') ?>
+                        <?php // _navigator('recent') ?>
+                        <!--|--> <?php // _navigator('help')   ?>
+                        <?php if ($enable_login) { ?>
+                            | <?php _navigator('login') ?>
+                        <?php } ?>
+                        <?php if ($enable_logout) { ?>
+                            | <?php _navigator('logout') ?>
+                        <?php } ?>
+                        ]
                         </div>
+        <?php } // PKWK_SKIN_SHOW_NAVBAR ?>
 
-                        <div id="main">
-                            <?php
-                            // echo $body
-      	                    // pukiwiki/texthighlight.inc.php
-      	                    require_once("plugin/texthighlight.inc.php");
-      	                    echo texthighlight($body); ?>
-                        </div>
+                    </div>
 
-                        <hr>
+                    <div id="main">
+                        <?php
+                        echo $body
+      	                // pukiwiki/texthighlight.inc.php
+      	                //require_once("plugin/texthighlight.inc.php");
+      	                //echo texthighlight($body); ?>
+                    </div>
 
-                        <?php if ($notes != '') { ?>
-                            <div id="note"><?php echo $notes ?></div>
-                        <?php } ?>
+                    <hr>
 
-                        <?php if ($attaches != '') { ?>
-                            <div id="attach"><?php echo $attaches ?></div>
-                        <?php } ?>
+                    <?php if ($notes != '') { ?>
+                        <div id="note"><?php echo $notes ?></div>
+                    <?php } ?>
 
-                        <?php if ($lastmodified != '') { ?>
-                            <div id="lastmodified">Last-modified: <?php echo $lastmodified ?></div>
-                        <?php } ?>
+                    <?php if ($attaches != '') { ?>
+                        <div id="attach"><?php echo $attaches ?></div>
+                    <?php } ?>
 
-                        <?php if ($related != '') { ?>
-                            <div id="related">Link: <?php echo $related ?></div>
-                        <?php } ?>
+                    <?php if ($lastmodified != '') { ?>
+                        <div id="lastmodified">Last-modified: <?php echo $lastmodified ?></div>
+                    <?php } ?>
 
-                    </article>
+                    <?php if ($related != '') { ?>
+                        <div id="related">Link: <?php echo $related ?></div>
+                    <?php } ?>
 
                 </div>
+
+            </div>
 
   <?php } else { ?>
 
@@ -255,10 +250,10 @@ header('Content-Type: text/html; charset=' . CONTENT_CHARSET);
               if (! isset($link[$key]) ) { echo 'LINK NOT FOUND';  return FALSE; }
               if (! isset($image[$key])) { echo 'IMAGE NOT FOUND'; return FALSE; }
 
-              echo '<a href="' . $link[$key] . '">' .
-                   '<img src="' . IMAGE_DIR . $image[$key] . '" width="' . $x . '" height="' . $y . '" ' .
-                   'alt="' . $lang[$key] . '" title="' . $lang[$key] . '" />' .
-                   '</a>';
+              echo '<a href="' . $link[$key] . '">' . $key . 
+              /* '<img src="' . IMAGE_DIR . $image[$key] . '" width="' . $x . '" height="' . $y . '" ' .
+               * 'alt="' . $lang[$key] . '" title="' . $lang[$key] . '" />' . */
+              '</a>';
               return TRUE;
           }
           ?>
@@ -300,8 +295,8 @@ header('Content-Type: text/html; charset=' . CONTENT_CHARSET);
           <?php echo S_COPYRIGHT ?>.
           Powered by PHP <?php echo PHP_VERSION ?>. HTML convert time: <?php echo elapsedtime() ?> sec.
       </div>
-
+      
   </footer>
 
-        </body>
+    </body>
 </html>
