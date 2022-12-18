@@ -791,169 +791,169 @@ class AttachFiles
 
 
 // NEW 
-function plugin_attach_recursive_readdir($dir, &$realpaths = array()) {
+function recursive_readdir($dir, &$realpaths = array()) {
     $files = scandir($dir);
 
     foreach ($files as $key => $value) {
         $realpath = realpath($dir . DIRECTORY_SEPARATOR . $value);
-        // ignore dot files
-        if ( preg_match('/^([.].*)/',$value) )
-            continue;
         if (!is_dir($realpath)) {
             $realpaths[] = $realpath;
         } else if ($value != "." && $value != "..") {
-            plugin_attach_recursive_readdir($realpath, $realpaths);
+            recursive_readdir($realpath, $realpaths);
+            $realpaths[] = $realpath;
         }
     }
+
     return $realpaths;
 }
 
 
 //-------- action
 function plugin_attach_action()
-            {
-                global $vars, $_attach_messages;
+{
+    global $vars, $_attach_messages;
 
-                // Backward compatible
-                if (isset($vars['openfile'])) {
-	            $vars['file'] = $vars['openfile'];
-	            $vars['pcmd'] = 'open';
-                }
-                if (isset($vars['delfile'])) {
-	            $vars['file'] = $vars['delfile'];
-	            $vars['pcmd'] = 'delete';
-                }
+    // Backward compatible
+    if (isset($vars['openfile'])) {
+	$vars['file'] = $vars['openfile'];
+	$vars['pcmd'] = 'open';
+    }
+    if (isset($vars['delfile'])) {
+	$vars['file'] = $vars['delfile'];
+	$vars['pcmd'] = 'delete';
+    }
 
-                $pcmd  = isset($vars['pcmd'])  ? $vars['pcmd']  : '';
-                $refer = isset($vars['refer']) ? $vars['refer'] : '';
-                $pass  = isset($vars['pass'])  ? $vars['pass']  : NULL;
-                $page  = isset($vars['page'])  ? $vars['page']  : '';
+    $pcmd  = isset($vars['pcmd'])  ? $vars['pcmd']  : '';
+    $refer = isset($vars['refer']) ? $vars['refer'] : '';
+    $pass  = isset($vars['pass'])  ? $vars['pass']  : NULL;
+    $page  = isset($vars['page'])  ? $vars['page']  : '';
 
-                if ($refer === '' && $page !== '') {
-	            $refer = $page;
-                }
-                if ($refer != '' && is_pagename($refer)) {
-	            if(in_array($pcmd, array('info', 'open', 'list'))) {
-	                check_readable($refer);
-	            } else {
-	                check_editable($refer);
-	            }
-                }
+    if ($refer === '' && $page !== '') {
+	$refer = $page;
+    }
+    if ($refer != '' && is_pagename($refer)) {
+	if(in_array($pcmd, array('info', 'open', 'list'))) {
+	    check_readable($refer);
+	} else {
+	    check_editable($refer);
+	}
+    }
 
-                // Dispatch
-                if (isset($_FILES['attach_file'])) {
-	            // Upload
-	            return attach_upload($_FILES['attach_file'], $refer, $pass);
-                } else {
-	            switch ($pcmd) {
-	                case 'delete':	/*FALLTHROUGH*/
-	                case 'freeze':
-	                case 'unfreeze':
-		            if (PKWK_READONLY) die_message('PKWK_READONLY prohibits editing');
-	            }
-	            switch ($pcmd) {
-	                case 'info'     : return attach_info();
-	                case 'delete'   : return attach_delete();
-	                case 'open'     : return attach_open();
-	                case 'list'     : return attach_list();
-	                case 'freeze'   : return attach_freeze(TRUE);
-	                case 'unfreeze' : return attach_freeze(FALSE);
-	                case 'rename'   : return attach_rename();
-	                case 'upload'   : return attach_showform();
-	            }
-	            if ($page == '' || ! is_page($page)) {
-	                return attach_list();
-	            } else {
-	                return attach_showform();
-	            }
-                }
-            }
+    // Dispatch
+    if (isset($_FILES['attach_file'])) {
+	// Upload
+	return attach_upload($_FILES['attach_file'], $refer, $pass);
+    } else {
+	switch ($pcmd) {
+	    case 'delete':	/*FALLTHROUGH*/
+	    case 'freeze':
+	    case 'unfreeze':
+		if (PKWK_READONLY) die_message('PKWK_READONLY prohibits editing');
+	}
+	switch ($pcmd) {
+	    case 'info'     : return attach_info();
+	    case 'delete'   : return attach_delete();
+	    case 'open'     : return attach_open();
+	    case 'list'     : return attach_list();
+	    case 'freeze'   : return attach_freeze(TRUE);
+	    case 'unfreeze' : return attach_freeze(FALSE);
+	    case 'rename'   : return attach_rename();
+	    case 'upload'   : return attach_showform();
+	}
+	if ($page == '' || ! is_page($page)) {
+	    return attach_list();
+	} else {
+	    return attach_showform();
+	}
+    }
+}
 
-            // 一覧取得
-            function attach_list()
-            {
-                global $vars, $_attach_messages;
+// 一覧取得
+function attach_list()
+{
+    global $vars, $_attach_messages;
 
-                $refer = isset($vars['refer']) ? $vars['refer'] : '';
+    $refer = isset($vars['refer']) ? $vars['refer'] : '';
 
-                //var_dump($refer);
-                $obj = new AttachPages($refer);
+    //var_dump($refer);
+    $obj = new AttachPages($refer);
 
-                $msg = $_attach_messages[($refer == '') ? 'msg_listall' : 'msg_listpage'];
-                $body = ($refer == '' || isset($obj->pages[$refer])) ?
-	                $obj->toString($refer, FALSE) :
-	                $_attach_messages['err_noexist'];
+    $msg = $_attach_messages[($refer == '') ? 'msg_listall' : 'msg_listpage'];
+    $body = ($refer == '' || isset($obj->pages[$refer])) ?
+	    $obj->toString($refer, FALSE) :
+	    $_attach_messages['err_noexist'];
 
-                return array('msg'=>$msg, 'body'=>$body);
-            }
+    return array('msg'=>$msg, 'body'=>$body);
+}
 
 
-            // ページコンテナ
-            class AttachPages
-            {
-                var $pages = array();
+// ページコンテナ
+class AttachPages
+{
+    var $pages = array();
 
-                function AttachPages($page = '', $age = NULL)
-                {
-	            $this->__construct($page, $age);
-                }
-                function __construct($page = '', $age = NULL)
-                {
+    function AttachPages($page = '', $age = NULL)
+    {
+	$this->__construct($page, $age);
+    }
+    function __construct($page = '', $age = NULL)
+    {
 
-	            //$dir = opendir(UPLOAD_DIR) or
-	            // die('directory ' . UPLOAD_DIR . ' is not exist or not readable.');
-                    $realpaths = plugin_attach_recursive_readdir(UPLOAD_DIR.$page);
-                    //var_dump($realpaths);
-                    foreach ($realpaths as $key => $realpath) {
-                        $file = substr($realpath, strlen(realpath(UPLOAD_DIR))+1);
-                        $_page = dirname($file);
-	                $_file = basename($file);
-	                $_age  = 0;
-	                if (! isset($this->pages[$_page])) {
-	                    $this->pages[$_page] = new AttachFiles($_page);
-	                }
-	                $this->pages[$_page]->add($_file, $_age);
-                    }
-                    
-	            /* $page_pattern = ($page == '') ? '(?:[0-9A-F]{2})+' : preg_quote(encode($page), '/');
-	               $age_pattern = ($age === NULL) ?
-	               '(?:\.([0-9]+))?' : ($age ?  "\.($age)" : '');
-	               $pattern = "/^({$page_pattern})_((?:[0-9A-F]{2})+){$age_pattern}$/";
+	//$dir = opendir(UPLOAD_DIR) or
+	// die('directory ' . UPLOAD_DIR . ' is not exist or not readable.');
+        $realpaths = recursive_readdir(UPLOAD_DIR.$page);
+        //var_dump($realpaths);
+        foreach ($realpaths as $key => $realpath) {
+            $file = substr($realpath, strlen(realpath(UPLOAD_DIR))+1);
+            //var_dump($file);
+            $_page = dirname($file);
+	    $_file = basename($file);
+	    $_age  = 0;
+	    if (! isset($this->pages[$_page])) {
+	        $this->pages[$_page] = new AttachFiles($_page);
+	    }
+	    $this->pages[$_page]->add($_file, $_age);
+        }
+        
+	/* $page_pattern = ($page == '') ? '(?:[0-9A-F]{2})+' : preg_quote(encode($page), '/');
+	   $age_pattern = ($age === NULL) ?
+	   '(?:\.([0-9]+))?' : ($age ?  "\.($age)" : '');
+	   $pattern = "/^({$page_pattern})_((?:[0-9A-F]{2})+){$age_pattern}$/";
 
-	               $matches = array();
-	               while (($file = readdir($dir)) !== FALSE) {
-	               if (! preg_match($pattern, $file, $matches)) continue;
+	   $matches = array();
+	   while (($file = readdir($dir)) !== FALSE) {
+	   if (! preg_match($pattern, $file, $matches)) continue;
 
-	               $_page = decode($matches[1]);
-	               $_file = decode($matches[2]);
-	               $_age  = isset($matches[3]) ? $matches[3] : 0;
-	               if (! isset($this->pages[$_page])) {
-	               $this->pages[$_page] = new AttachFiles($_page);
-                     *     }
-	               $this->pages[$_page]->add($_file, $_age);
-                     * } */
-                    //closedir($dir);
-                }
-                
-                function toString($page = '', $flat = FALSE)
-                {
-                    if ($page != '') {
-	                if (! isset($this->pages[$page])) {
-	                    return '';
-	                } else {
-	                    return $this->pages[$page]->toString($flat);
-	                }
-                    }
-                    $ret = '';
+	   $_page = decode($matches[1]);
+	   $_file = decode($matches[2]);
+	   $_age  = isset($matches[3]) ? $matches[3] : 0;
+	   if (! isset($this->pages[$_page])) {
+	   $this->pages[$_page] = new AttachFiles($_page);
+         *     }
+	   $this->pages[$_page]->add($_file, $_age);
+         * } */
+        //closedir($dir);
+    }
+    
+    function toString($page = '', $flat = FALSE)
+    {
+        if ($page != '') {
+	    if (! isset($this->pages[$page])) {
+	        return '';
+	    } else {
+	        return $this->pages[$page]->toString($flat);
+	    }
+        }
+        $ret = '';
 
-                    $pages = array_keys($this->pages);
+        $pages = array_keys($this->pages);
 
-                    sort($pages, SORT_STRING);
+        sort($pages, SORT_STRING);
 
-                    foreach ($pages as $page) {
-	                if (check_non_list($page)) continue;
-	                $ret .= '<li>' . $this->pages[$page]->toString($flat) . '</li>' . "\n";
-                    }
-                    return "\n" . '<ul>' . "\n" . $ret . '</ul>' . "\n";
-                }
-            }
+        foreach ($pages as $page) {
+	    if (check_non_list($page)) continue;
+	    $ret .= '<li>' . $this->pages[$page]->toString($flat) . '</li>' . "\n";
+        }
+        return "\n" . '<ul>' . "\n" . $ret . '</ul>' . "\n";
+    }
+}

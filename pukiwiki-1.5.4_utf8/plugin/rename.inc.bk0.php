@@ -221,8 +221,10 @@ function plugin_rename_phase3($pages)
 
     $script = get_base_uri();
     $msg = $input = '';
+    //var_dump($pages);
     $files = plugin_rename_get_files($pages);
-    //echo '<pre>' , var_dump($files);
+    //echo("<br>files<br>");
+    //var_dump($files);
     $exists = array();
     foreach ($files as $_page=>$arr)
 	foreach ($arr as $old=>$new)
@@ -314,12 +316,10 @@ EOD;
 function plugin_rename_recursive_readdir($dir, &$results = array()) {
     $files = scandir($dir);
     foreach ($files as $key => $value) {
-        if ( preg_match('/^([.].*)/',$value) )
-            continue;
         $path = realpath($dir . DIRECTORY_SEPARATOR . $value);
         if (!is_dir($path)) {
             $results[] = $path;
-        } else if ($value != "." && $value != "..") {
+        } else if (preg_match('/^([^.].*)/',$value)) {
             plugin_rename_recursive_readdir($path, $results);
             $results[] = $path;
         }
@@ -330,28 +330,52 @@ function plugin_rename_recursive_readdir($dir, &$results = array()) {
 function plugin_rename_get_files($pages)
 {
     $files = array();
-    $dirs  = array(BACKUP_DIR, DIFF_DIR, DATA_DIR);
-    if (exist_plugin_convert('attach'))  $dirs[] = UPLOAD_DIR;
-    if (exist_plugin_convert('counter')) $dirs[] = COUNTER_DIR;
+//    $dirs  = array(BACKUP_DIR, DIFF_DIR, DATA_DIR);
+    $dirs  = array(DATA_DIR);
+    // if (exist_plugin_convert('attach'))
+    $dirs[] = UPLOAD_DIR;
+//    if (exist_plugin_convert('counter')) $dirs[] = COUNTER_DIR;
     // and more ...
 
     foreach ($dirs as $path) {
         $realpaths = plugin_rename_recursive_readdir($path);
+//        echo '<pre>' , var_dump($realpaths) , '<pre>';
         foreach ($realpaths as $realpath) {
             $file = substr($realpath, strlen(realpath($path))+1);
-            $oldfile = $path . $file;
-            if(is_dir($oldfile)) continue;
 
-            $matches = array();
+          if ($path == UPLOAD_DIR)   echo '<pre>' , var_dump($file);
             foreach ($pages as $from => $to) {
-                $pattern = '/^' . str_replace('/', '\/', $from) . '([.\/][^\/]*)$/';
-	        if (preg_match($pattern, $file, $matches)) {
+//            $dir = opendir( $path . dirname($from) );
+//            if (! $dir) continue;
+
+//            if ($path == UPLOAD_DIR)
+//                $pattern = '/^' . str_replace('/', '\/', $from) . '([.\/].*)$/';
+//            else
+                $pattern = '/^' . str_replace('/', '\/', basename($from)) . '([.\/].*)$/';
+
+//	            if ($file == '.' || $file == '..') continue;
+                $matches = array();
+	            if (preg_match($pattern, $file, $matches)) {
                     $newfile = $to . $matches[1];
-	            $files[$from][$oldfile] = $path.$newfile;
+	                $files[$from][$path.dirname($from).DIRECTORY_SEPARATOR.$file] = $path.$newfile;
                 }
             }
         }
+	/* $dir = opendir($path);
+	   if (! $dir) continue;	// TODO: !== FALSE or die()?
+	   while (($file = readdir($dir)) !== FALSE) {
+	   if ($file == '.' || $file == '..') continue;
+	   foreach ($pages as $from => $to) {
+	   // TODO: preg_quote()?
+	   $pattern = '/^' . str_replace('/', '\/', $from) . '([._].+)$/';
+	   if (preg_match($pattern, $file, $matches)) {
+	   $newfile = $to . $matches[1];
+	   $files[$from][$path . $file] = $path . $newfile;
+	   }
+	   }
+	   } */
     }
+    echo '<pre>' , var_dump($files);
     return $files;
 }
 
@@ -377,9 +401,9 @@ function plugin_rename_proceed($pages, $files, $exists)
     foreach ($files as $page=>$arr) {
 	foreach ($arr as $old=>$new) {
 	    if (isset($exists[$page][$old]) && $exists[$page][$old])
-		unlink($new);
-            if (!file_exists(dirname($new)))
-                mkdir(dirname($new), 0777, true);
+		    unlink($new);
+        if (!file_exists(dirname($new)))
+            mkdir(dirname($new), 0777, true);
 	    rename($old, $new);
 	}
 	// linkデータベースを更新する BugTrack/327 arino
