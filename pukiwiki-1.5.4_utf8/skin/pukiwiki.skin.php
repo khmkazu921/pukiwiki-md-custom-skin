@@ -53,6 +53,11 @@ $rw    = ! PKWK_READONLY;
 
 // MenuBar
 $menu = arg_check('read') && exist_plugin_convert('menu') ? do_plugin_convert('menu') : FALSE;
+// RightBar
+$rightbar = FALSE;
+if (arg_check('read') && exist_plugin_convert('rightbar')) {
+    $rightbar = do_plugin_convert('rightbar');
+}
 
 // ------------------------------------------------------------
 // Output
@@ -112,7 +117,8 @@ header('Content-Type: text/html; charset=' . CONTENT_CHARSET);
                 <?php echo convert_html(get_source('SearchBox')) ?>
             </div>
 
-            <div id="menuButton"><a href="#"><i class="fas fa-bars"></i></a></div>
+            <!-- <div id="menuButton"><a href="#"><i class="fas fa-bars"></i></a></div> -->
+            <button class="topbarMenuButton" onclick="toggleMenuList()">&#9776;</button>
 
         </header>
 
@@ -123,11 +129,11 @@ header('Content-Type: text/html; charset=' . CONTENT_CHARSET);
 
             <div id="readMode">
                 <div id="menuList">
-                    <!-- <button class="openbtn" onclick="closeNav()">&times;</button> -->
                     <?php echo convert_html(get_source('MenuBar')) ?>
                 </div>
+
                 <div id="article">
-                    <button class="openbtn" onclick="toggleMenuList()">&#9776;</button>                    
+                    <button class="menuButton" onclick="toggleMenuList()">&#9776;</button>
                     <div id="navigator">
                         <?php
                         if(PKWK_SKIN_SHOW_NAVBAR) { 
@@ -143,34 +149,34 @@ header('Content-Type: text/html; charset=' . CONTENT_CHARSET);
                             }
                         ?>
                         <div align="right">
-                        <?php if ($is_page) {
-                                  echo "[ ";
-                                  if ($rw) { 
-	                              _navigator('edit'); echo " | ";
-	                              _navigator('new');  echo " | ";
-	                          }
-                                  if ($rw && (bool)ini_get('file_uploads')) {
-	                              _navigator('upload');
-	                              echo " | ";
-                                  }	                          
-                                  _navigator('diff');
-                                  echo " | ";
-                                  if ($do_backup) {
-	                              _navigator('backup');
-	                              //echo " | ";
-                                  }
-                             } ?>
-                        <?php // _navigator('list'); // if (arg_check('list')) { _navigator('filelist'); }?>
-                        <?php // _navigator('search') ?>
-                        <?php // _navigator('recent') ?>
-                        <!--|--> <?php // _navigator('help')   ?>
-                        <?php if ($enable_login) { ?>
-                            | <?php _navigator('login') ?>
-                        <?php } ?>
-                        <?php if ($enable_logout) { ?>
-                            | <?php _navigator('logout') ?>
-                        <?php } ?>
-                        ]
+                            <?php if ($is_page) {
+                                echo "[ ";
+                                if ($rw) { 
+	                            _navigator('edit'); echo " | ";
+	                            _navigator('new');  echo " | ";
+	                        }
+                                if ($rw && (bool)ini_get('file_uploads')) {
+	                            _navigator('upload');
+	                            echo " | ";
+                                }	                          
+                                _navigator('diff');
+                                echo " | ";
+                                if ($do_backup) {
+	                            _navigator('backup');
+	                            //echo " | ";
+                                }
+                            } ?>
+                            <?php // _navigator('list'); // if (arg_check('list')) { _navigator('filelist'); }?>
+                            <?php // _navigator('search') ?>
+                            <?php // _navigator('recent') ?>
+                            <!--|--> <?php // _navigator('help')   ?>
+                            <?php if ($enable_login) { ?>
+                                | <?php _navigator('login') ?>
+                            <?php } ?>
+                            <?php if ($enable_logout) { ?>
+                                | <?php _navigator('logout') ?>
+                            <?php } ?>
+                            ]
                         </div>
         <?php } // PKWK_SKIN_SHOW_NAVBAR ?>
 
@@ -203,6 +209,12 @@ header('Content-Type: text/html; charset=' . CONTENT_CHARSET);
                     <?php } ?>
 
                 </div>
+
+                <?php if ($rightbar) { ?>
+                    <div id="rightbar">
+                        <?php echo $rightbar ?>
+                    </div>
+                <?php } ?>
 
             </div>
 
@@ -251,9 +263,9 @@ header('Content-Type: text/html; charset=' . CONTENT_CHARSET);
               if (! isset($image[$key])) { echo 'IMAGE NOT FOUND'; return FALSE; }
 
               echo '<a href="' . $link[$key] . '">' . $key . 
-              /* '<img src="' . IMAGE_DIR . $image[$key] . '" width="' . $x . '" height="' . $y . '" ' .
-               * 'alt="' . $lang[$key] . '" title="' . $lang[$key] . '" />' . */
-              '</a>';
+                   /* '<img src="' . IMAGE_DIR . $image[$key] . '" width="' . $x . '" height="' . $y . '" ' .
+                    * 'alt="' . $lang[$key] . '" title="' . $lang[$key] . '" />' . */
+                   '</a>';
               return TRUE;
           }
           ?>

@@ -88,7 +88,7 @@ function toggleShowSwitch() {
 }
 
 $(function (){
-    hljs.initHighlightingOnLoad();
+    hljs.highlightAll();
 
     var blocks = document.querySelectorAll('pre code.hljs');
     var _selectIndex = 0;
@@ -100,7 +100,8 @@ $(function (){
         block.insertAdjacentHTML("beforebegin",`${html_switch}`)
         _selectIndex++;        
     });
-    hljs.initLineNumbersOnLoad();    
+    hljs.initLineNumbersOnLoad();
+    
     toggleShowSwitch();
     
     $(window).resize(function(){
@@ -111,8 +112,72 @@ $(function (){
     // $('pre:has(code)').addClass('hljs-ln-outer-code');
     
     $(function(){
+
         $('code.hljs:has(table)').addClass('hljs-ln-outer-code');
     });
 
 });
 
+
+
+
+
+
+// <!doctype html>
+// <html lang="en">
+// <head>
+//   <meta charset="utf-8">
+//   <title>toggleClass demo</title>
+//   <style>
+//   p {
+//     cursor: pointer;
+//   }
+  
+//   .code {
+//       max-height: 50px;
+//       overflow: hidden;
+//   }
+//   .highlight {
+//       max-height: 100px;
+//    }
+//   </style>
+//   <script src="https://code.jquery.com/jquery-3.5.0.js"></script>
+// </head>
+// <body>
+ 
+// <p class="blue">Click to toggle</p>
+// <p class="blue highlight">highlight</p>
+// <p class="blue">on these</p>
+// <p class="blue">paragraphs</p>
+//  <pre class="code">
+//  asdf<br>
+//   asdf<br>
+//    asdf<br>
+//     asdf<br>
+//      asdf<br>
+//       asdf<br>
+//        asdf<br>
+//         asdf<br>
+//          asdf<br>
+//           asdf<br>
+//            asdf<br>
+//             asdf<br>
+//              asdf<br>
+//               asdf<br>
+//                asdf<br>
+//                 asdf<br>
+//                  asdf<br>
+//                   asdf<br>
+//                    asdf<br>
+//                     asdf<br>
+//                      asdf<br> asdf<br>
+//                      </pre>
+
+// <script>
+// $( "p" ).click(function() {
+//   $( ".code" ).toggleClass( "highlight" );
+// });
+// </script>
+ 
+// </body>
+// </html>

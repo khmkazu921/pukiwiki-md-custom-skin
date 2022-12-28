@@ -522,8 +522,9 @@ $template
   <input type="hidden" id="_msg_edit_cancel_confirm" value="$h_msg_edit_cancel_confirm" />
   <input type="hidden" id="_msg_edit_unloadbefore_message" value="$h_msg_edit_unloadbefore_message" />
   <div style="float:right;">
-   <input type="submit" name="preview" value="$btn_preview" accesskey="p" />
    <input type="submit" name="write"   value="$_btn_update" accesskey="s" />
+   <input type="submit" name="preview" value="$btn_preview" accesskey="p" />
+   <input type="submit" name="cancel" value="$_btn_cancel" accesskey="c" />
    $add_top
    $add_notimestamp
    $add_notemd
@@ -535,7 +536,6 @@ $template
  <form action="$script" method="post" class="_plugin_edit_cancel" style="margin-top:0;">
   <input type="hidden" name="cmd"    value="edit" />
   <input type="hidden" name="page"   value="$s_page" />
-  <input type="submit" name="cancel" value="$_btn_cancel" accesskey="c" />
  </form>
 </div>
 $simplemde

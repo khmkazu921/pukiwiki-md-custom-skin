@@ -118,7 +118,8 @@ function page_write($page, $postdata, $notimestamp = FALSE)
 	$timestamp_to_keep = get_filetime($page);
     }
     $text_without_author = remove_author_info($postdata);
-    $postdata = add_author_info($text_without_author, $timestamp_to_keep);
+    //$postdata = add_author_info($text_without_author, $timestamp_to_keep);
+    $postdata = $text_without_author;    
     $is_delete = empty($text_without_author);
 
     // Do nothing when it has no changes
@@ -129,11 +130,11 @@ function page_write($page, $postdata, $notimestamp = FALSE)
 	return;
     }
     // Create and write diff
-    //    $diffdata    = do_diff($oldpostdata, $postdata);
-    //    file_write(DIFF_DIR, $page, $diffdata);
+    $diffdata    = do_diff($oldpostdata, $postdata);
+    file_write(DIFF_DIR, $page, $diffdata);
 
     // Create backup
-    //    make_backup($page, $is_delete, $postdata); // Is $postdata null?
+    make_backup($page, $is_delete, $postdata); // Is $postdata null?
 
     // Create wiki text
     file_write(DATA_DIR, $page, $postdata, $notimestamp, $is_delete);
@@ -351,13 +352,10 @@ function file_write($dir, $page, $str, $notimestamp = FALSE, $is_delete = FALSE)
     global $whatsdeleted, $maxshow_deleted;
 
     if (PKWK_READONLY) return; // Do nothing
-    //if ($dir != DATA_DIR && $dir != DIFF_DIR) die('file_write(): Invalid directory');
+    if ($dir != DATA_DIR && $dir != DIFF_DIR) die('file_write(): Invalid directory');
 
-    $symbols = array(" ");
-    $page = str_replace($symbols, "_", strip_bracket($page));
+    $page = strip_bracket($page);
     mkdir( $dir . dirname($page) , 0777, true);
-    
-    /* $page = strip_bracket($page) */
     $file = $dir . $page . '.txt';
     $file_exists = file_exists($file);
     
@@ -1120,12 +1118,16 @@ function prepare_display_materials() {
 function prepare_links_related($page) {
     global $defaultpage;
 
-    $enc_defaultpage = encode($defaultpage);
-    if (file_exists(CACHE_DIR . $enc_defaultpage . '.rel')) return;
-    if (file_exists(CACHE_DIR . $enc_defaultpage . '.ref')) return;
-    $enc_name = encode($page);
-    if (file_exists(CACHE_DIR . $enc_name . '.rel')) return;
-    if (file_exists(CACHE_DIR . $enc_name . '.ref')) return;
+    //$enc_defaultpage = encode($defaultpage);
+    //if (file_exists(CACHE_DIR . $enc_defaultpage . '.rel')) return;
+    //if (file_exists(CACHE_DIR . $enc_defaultpage . '.ref')) return;
+    //$enc_name = encode($page);
+    //if (file_exists(CACHE_DIR . $enc_name . '.rel')) return;
+    //if (file_exists(CACHE_DIR . $enc_name . '.ref')) return;
+    if (file_exists(CACHE_DIR . $defaultpage . '.rel')) return;
+    if (file_exists(CACHE_DIR . $defaultpage . '.ref')) return;
+    if (file_exists(CACHE_DIR . $page . '.rel')) return;
+    if (file_exists(CACHE_DIR . $page . '.ref')) return;
 
     $pattern = '/^((?:[0-9A-F]{2})+)' . '(\.ref|\.rel)' . '$/';
     $dir = CACHE_DIR;

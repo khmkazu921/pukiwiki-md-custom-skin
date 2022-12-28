@@ -68,7 +68,7 @@ function plugin_topicpath_parent_all_links($page)
 function plugin_topicpath_inline()
 {
     global $vars, $defaultpage;
-    $page = isset($vars['page']) ? str_replace(array(" "), "_", $vars['page']) : '';
+    $page = isset($vars['page']) ? $vars['page'] : '';    
     if ($page == '' || $page == $defaultpage) return '';
     $parents = plugin_topicpath_parent_all_links($page);
     $topic_path = array();

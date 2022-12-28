@@ -192,6 +192,21 @@ div#navigator  {
     display: none;
 }
 
+#rightbar {
+    transition: 0.5s; /* 0.5 second transition effect to slide in the sidebar */
+    /* min-width: 12rem; */
+    min-width: 200px;
+    width: 200px;
+    padding: 2rem;
+    /* overflow-x: hidden; /\* Disable horizontal scroll *\/ */
+    overflow: hidden;
+    white-space: nowrap;
+    padding-top: 2rem;
+    padding-bottom: 2rem;    
+    font-size: 0.8rem;
+    z-index: 99;
+    background-color: #EEE;
+}
 
 /***** READ MODE CONTAINER *****/
 
@@ -212,19 +227,44 @@ div#navigator  {
 
 /* NAVIGATION */
 
-#menuButton {
-    display: flex;
-    margin-left:  auto;
-    padding-right: 1.5rem; 
-    height: 100%;
-    z-index: 999;
+/* The button used to open the sidebar */
+.topbarMenuButton {
+  font-size: 30px;
+  /* cursor: pointer; */
+  background-color: #666;
+  color: white;
+  width: 2em;
+  height: 100%;
+  margin-left:  auto;
+  justify-content: center;
+  align-items: center;
+  /* padding-right: 1.5rem; */
+  z-index: 999;   
+  /* padding: 5px 5px; */
+  border: none;
+  display: none;
 }
 
-#menuButton a {
-    display: flex;
+@media only screen and (max-width: 1024px) {
+    .menuButton {
+        display: none;
+    }
+    .topbarMenuButton {
+        display: flex;
+    }
+}
+
+.topbarMenuButton:hover,
+.menuButton:hover {
+  background-color: #ccc;
+}
+
+.menuButton {
     margin: auto 0;
     font-size: 2rem;
-    color: white;
+    color: white;    
+    background-color: #666;
+    border: none;
 }
 
 #menuList {
@@ -272,29 +312,6 @@ div#navigator  {
 /*   font-size: 36px; */
 /*   margin-left: 50px; */
 /* } */
-
-/* The button used to open the sidebar */
-.openbtn {
-  font-size: 30px;
-  cursor: pointer;
-  background-color: #666;
-  color: white;
-  width: 40px;
-  height: 40px;
-  /* padding: 5px 5px; */
-  border: none;
-}
-
-@media only screen and (max-width: 1024px) {
-    .openbtn {
-        display: none;
-    }
-}
-
-.openbtn:hover {
-  background-color: #ccc;
-}
-
 
 #menuList h2 { font-size: 1rem;}
 #menuList h5 { font-size: 1rem;}
@@ -430,6 +447,10 @@ div#signature {
 }
 
 /* CODEMIRROR */
+.CodeMirror-scroll {
+    max-height: 800px;
+}
+
 .cm-s-default span.cm-keyword {
     color: #708;
 }
@@ -437,24 +458,30 @@ div#signature {
     color: #219;
 }
 .cm-s-default .cm-number {
+    font-family: monospace;    
     color: #164;
 }
 .cm-s-default .cm-def {
     color: #00f;
 }
 .cm-s-default .cm-variable-2 {
+    font-family: monospace;    
     color: #05a;
 }
 .cm-s-default .cm-type, .cm-s-default .cm-variable-3 {
+    font-family: monospace;    
     color: #085;
 }
 .cm-s-default .cm-comment {
+    font-family: monospace;
     color: #a50;
 }
 .cm-s-default .cm-string {
+    font-family: monospace;    
     color: #a11;
 }
 .cm-s-default .cm-string-2 {
+    font-family: monospace;
     color: #f50;
 }
 .cm-s-default .cm-meta {
@@ -464,9 +491,11 @@ div#signature {
     color: #555;
 }
 .cm-s-default .cm-builtin {
+    font-family: monospace;    
     color: #30a;
 }
 .cm-s-default .cm-bracket {
+    font-family: monospace;
     color: #997;
 }
 .cm-s-default .cm-tag {
@@ -556,10 +585,6 @@ input:checked + .slider:before {
     overflow: initial;
     white-space: pre;
     font-size: 0.9rem;
-}
-
-#editMode pre.CodeMirror-line .cm-comment {
-    font-family: monospace;
 }
 
 #main pre code {
