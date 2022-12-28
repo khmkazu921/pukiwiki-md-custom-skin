@@ -15,7 +15,7 @@
 //   If you end testing this PukiWiki, set '1'.
 //   If you feel in trouble about this PukiWiki, set '0'.
 if (! defined('PKWK_OPTIMISE'))
-	define('PKWK_OPTIMISE', 0);
+    define('PKWK_OPTIMISE', 0);
 
 /////////////////////////////////////////////////
 // Security settings
@@ -23,18 +23,18 @@ if (! defined('PKWK_OPTIMISE'))
 // PKWK_READONLY - Prohibits editing and maintain via WWW
 //   NOTE: Counter-related functions will work now (counter, attach count, etc)
 if (! defined('PKWK_READONLY'))
-	define('PKWK_READONLY', 0); // 0 or 1
+    define('PKWK_READONLY', 0); // 0 or 1
 
 // PKWK_SAFE_MODE - Prohibits some unsafe(but compatible) functions 
 if (! defined('PKWK_SAFE_MODE'))
-	define('PKWK_SAFE_MODE', 0);
+    define('PKWK_SAFE_MODE', 0);
 
 // PKWK_DISABLE_INLINE_IMAGE_FROM_URI - Disallow using inline-image-tag for URIs
 //   Inline-image-tag for URIs may allow leakage of Wiki readers' information
 //   (in short, 'Web bug') or external malicious CGI (looks like an image's URL)
 //   attack to Wiki readers, but easy way to show images.
 if (! defined('PKWK_DISABLE_INLINE_IMAGE_FROM_URI'))
-	define('PKWK_DISABLE_INLINE_IMAGE_FROM_URI', 0);
+    define('PKWK_DISABLE_INLINE_IMAGE_FROM_URI', 0);
 
 // PKWK_QUERY_STRING_MAX
 //   Max length of GET method, prohibits some worm attack ASAP
@@ -97,13 +97,13 @@ define('IMAGE_DIR', 'image/');
 // Local time setting
 
 switch (LANG) { // or specifiy one
-case 'ja':
+    case 'ja':
 	define('ZONE', 'JST');
 	define('ZONETIME', 9 * 3600); // JST = GMT + 9
 	break;
-default  :
-	define('ZONE', 'GMT');
-	define('ZONETIME', 0);
+    default  :
+	define('ZONE', 'JST');
+	define('ZONETIME', 9 * 3600);
 	break;
 }
 
@@ -119,13 +119,13 @@ $page_title = 'PukiWiki';
 //$script_directory_index = 'index.php';
 
 // Site admin's name (CHANGE THIS)
-$modifier = 'anonymous';
+$modifier = 'furukawa';
 
 // Site admin's Web page (CHANGE THIS)
 $modifierlink = 'http://pukiwiki.example.com/';
 
 // Default page name
-$defaultpage  = 'FrontPage';     // Top / Default page
+$defaultpage  = 'Top';     // Top / Default page
 $whatsnew     = 'RecentChanges'; // Modified page list
 $whatsdeleted = 'RecentDeleted'; // Removeed page list
 $interwiki    = 'InterWikiName'; // Set InterWiki definition here
@@ -157,39 +157,39 @@ define('PKWK_ALLOW_JAVASCRIPT', 1);
 
 /////////////////////////////////////////////////
 // _Disable_ WikiName auto-linking
-$nowikiname = 0;
+$nowikiname = 1;
 
 /////////////////////////////////////////////////
 // AutoLink feature
 // Automatic link to existing pages
 
 // AutoLink minimum length of page name
-$autolink = 1; // Bytes, 0 = OFF (try 8)
+$autolink = 0; // Bytes, 0 = OFF (try 8)
 
 /////////////////////////////////////////////////
 // AutoAlias feature
 // Automatic link from specified word, to specifiled URI, page or InterWiki
 
 // AutoAlias minimum length of alias "from" word
-$autoalias = 1; // Bytes, 0 = OFF (try 8)
+$autoalias = 0; // Bytes, 0 = OFF (try 8)
 
 // Limit loading valid alias pairs
 $autoalias_max_words = 50; // pairs
 
 /////////////////////////////////////////////////
 // Enable Freeze / Unfreeze feature
-$function_freeze = 1;
+$function_freeze = 0;
 
 /////////////////////////////////////////////////
 // Allow to use 'Do not change timestamp' checkbox
 // (0:Disable, 1:For everyone,  2:Only for the administrator)
-$notimeupdate = 1;
+$notimeupdate = 0;
 
 /////////////////////////////////////////////////
 // Admin password for this Wikisite
 
 // Default: always fail
-$adminpass = '{x-php-md5}!';
+$adminpass = '{x-php-md5}08517aa1aed537730bf5ddc55d89d0e8';
 
 // Sample:
 //$adminpass = 'pass'; // Cleartext
@@ -256,17 +256,17 @@ $auth_provider_user_prefix_saml = 'saml:';
 /////////////////////////////////////////////////
 // User definition
 $auth_users = array(
-	// Username => password
-	'foo'	=> 'foo_passwd', // Cleartext
-	'bar'	=> '{x-php-md5}f53ae779077e987718cc285b14dfbe86', // PHP md5() 'bar_passwd'
-	'hoge'	=> '{SMD5}OzJo/boHwM4q5R+g7LCOx2xGMkFKRVEx',      // LDAP SMD5 'hoge_passwd'
+    // Username => password
+    'foo'	=> 'foo_passwd', // Cleartext
+    'bar'	=> '{x-php-md5}f53ae779077e987718cc285b14dfbe86', // PHP md5() 'bar_passwd'
+    'hoge'	=> '{SMD5}OzJo/boHwM4q5R+g7LCOx2xGMkFKRVEx',      // LDAP SMD5 'hoge_passwd'
 );
 
 // Group definition
 $auth_groups = array(
-	// Groupname => group members(users)
-	'valid-user' => '', // Reserved 'valid-user' group contains all authenticated users
-	'groupfoobar'	=> 'foo,bar',
+    // Groupname => group members(users)
+    'valid-user' => '', // Reserved 'valid-user' group contains all authenticated users
+    'groupfoobar'	=> 'foo,bar',
 );
 
 /////////////////////////////////////////////////
@@ -280,10 +280,10 @@ $auth_method_type	= 'pagename';	// By Page name
 $read_auth = 0;
 
 $read_auth_pages = array(
-	// Regex		   Groupname or Username
-	'#PageForAllValidUsers#'	=> 'valid-user',
-	'#HogeHoge#'		=> 'hoge',
-	'#(NETABARE|NetaBare)#'	=> 'foo,bar,hoge',
+    // Regex		   Groupname or Username
+    '#PageForAllValidUsers#'	=> 'valid-user',
+    '#HogeHoge#'		=> 'hoge',
+    '#(NETABARE|NetaBare)#'	=> 'foo,bar,hoge',
 );
 
 /////////////////////////////////////////////////
@@ -291,10 +291,10 @@ $read_auth_pages = array(
 $edit_auth = 0;
 
 $edit_auth_pages = array(
-	// Regex		   Username
-	'#BarDiary#'		=> 'bar',
-	'#HogeHoge#'		=> 'hoge',
-	'#(NETABARE|NetaBare)#'	=> 'foo,bar,hoge',
+    // Regex		   Username
+    '#BarDiary#'		=> 'bar',
+    '#HogeHoge#'		=> 'hoge',
+    '#(NETABARE|NetaBare)#'	=> 'foo,bar,hoge',
 );
 
 /////////////////////////////////////////////////
@@ -306,36 +306,36 @@ $search_auth = 0;
 /////////////////////////////////////////////////
 // AutoTicketLink
 // (0:Create AutoTicketLinkName page automatically, 1:Don't create the page)
-$no_autoticketlinkname = 0;
+$no_autoticketlinkname = 1;
 $ticket_link_sites = array(
-/*
-	array(
-		'key' => 'phpbug',
-		'type' => 'redmine', // type: redmine, jira or git
-		'title' => 'PHP :: Bug #$1',
-		'base_url' => 'https://bugs.php.net/bug.php?id=',
-	),
-	array(
-		'key' => 'asfjira',
-		'type' => 'jira',
-		'title' => 'ASF JIRA [$1]',
-		'base_url' => 'https://issues.apache.org/jira/browse/',
-	),
-	array(
-		'key' => 'pukiwiki-commit',
-		'type' => 'git',
-		'title' => 'PukiWiki revision $1',
-		'base_url' => 'https://ja.osdn.net/projects/pukiwiki/scm/git/pukiwiki/commits/',
-	),
-*/
+    /*
+       array(
+       'key' => 'phpbug',
+       'type' => 'redmine', // type: redmine, jira or git
+       'title' => 'PHP :: Bug #$1',
+       'base_url' => 'https://bugs.php.net/bug.php?id=',
+       ),
+       array(
+       'key' => 'asfjira',
+       'type' => 'jira',
+       'title' => 'ASF JIRA [$1]',
+       'base_url' => 'https://issues.apache.org/jira/browse/',
+       ),
+       array(
+       'key' => 'pukiwiki-commit',
+       'type' => 'git',
+       'title' => 'PukiWiki revision $1',
+       'base_url' => 'https://ja.osdn.net/projects/pukiwiki/scm/git/pukiwiki/commits/',
+       ),
+     */
 );
 // AutoTicketLink - JIRA Default site
 /*
-$ticket_jira_default_site = array(
-	'title' => 'My JIRA - $1',
-	'base_url' => 'https://issues.example.com/jira/browse/',
-);
-//*/
+   $ticket_jira_default_site = array(
+   'title' => 'My JIRA - $1',
+   'base_url' => 'https://issues.example.com/jira/browse/',
+   );
+   //*/
 
 /////////////////////////////////////////////////
 // Show External Link Cushion Page
@@ -343,18 +343,18 @@ $ticket_jira_default_site = array(
 // 1: Enabled
 $external_link_cushion_page = 0;
 $external_link_cushion = array(
-	// Wait N seconds before jumping to an external site
-	'wait_seconds' => 5,
-	// Internal site domain list
-	'internal_domains' => array(
-		'localhost',
-		// '*.example.com',
-	),
-	// Don't show extenal link icons on these domains
-	'silent_external_domains' => array(
-		'pukiwiki.osdn.jp',
-		'pukiwiki.example.com',
-	),
+    // Wait N seconds before jumping to an external site
+    'wait_seconds' => 5,
+    // Internal site domain list
+    'internal_domains' => array(
+	'localhost',
+	// '*.example.com',
+    ),
+    // Don't show extenal link icons on these domains
+    'silent_external_domains' => array(
+	'pukiwiki.osdn.jp',
+	'pukiwiki.example.com',
+    ),
 );
 
 /////////////////////////////////////////////////
@@ -372,8 +372,8 @@ $html_meta_referrer_policy = '';
 /////////////////////////////////////////////////
 // Output custom HTTP response headers
 $http_response_custom_headers = array(
-	// 'Strict-Transport-Security: max-age=86400',
-	// 'X-Content-Type-Options: nosniff',
+    // 'Strict-Transport-Security: max-age=86400',
+    // 'X-Content-Type-Options: nosniff',
 );
 
 /////////////////////////////////////////////////
@@ -394,7 +394,7 @@ $lastmod = 0;
 
 /////////////////////////////////////////////////
 // Date format
-$date_format = 'Y-m-d';
+$date_format = 'd-m-Y';
 
 // Time format
 $time_format = 'H:i:s';
@@ -451,12 +451,12 @@ $proxy_auth_pass = 'password';
 
 // Hosts that proxy server will not be needed
 $no_proxy = array(
-	'localhost',	// localhost
-	'127.0.0.0/8',	// loopback
-//	'10.0.0.0/8'	// private class A
-//	'172.16.0.0/12'	// private class B
-//	'192.168.0.0/16'	// private class C
-//	'no-proxy.com',
+    'localhost',	// localhost
+    '127.0.0.0/8',	// loopback
+    //	'10.0.0.0/8'	// private class A
+    //	'172.16.0.0/12'	// private class B
+    //	'192.168.0.0/16'	// private class C
+    //	'no-proxy.com',
 );
 
 ////////////////////////////////////////////////
@@ -511,8 +511,8 @@ $search_non_list = 1;
 
 // Page redirect rules
 $page_redirect_rules = array(
-	//'#^FromProject($|(/(.+)$))#' => 'ToProject$1',
-	//'#^FromProject($|(/(.+)$))#' => function($matches) { return 'ToProject' . $matches[1]; },
+    //'#^FromProject($|(/(.+)$))#' => 'ToProject$1',
+    //'#^FromProject($|(/(.+)$))#' => function($matches) { return 'ToProject' . $matches[1]; },
 );
 
 /////////////////////////////////////////////////
@@ -520,12 +520,12 @@ $page_redirect_rules = array(
 
 $auto_template_func = 1;
 $auto_template_rules = array(
-	'((.+)\/([^\/]+))' => '\2/template'
+    '((.+)\/([^\/]+))' => '\2/template'
 );
 
 /////////////////////////////////////////////////
 // Automatically add fixed heading anchor
-$fixed_heading_anchor = 1;
+$fixed_heading_anchor = 0;
 
 /////////////////////////////////////////////////
 // Remove the first spaces from Preformatted text
@@ -533,7 +533,7 @@ $preformat_ltrim = 1;
 
 /////////////////////////////////////////////////
 // Convert linebreaks into <br />
-$line_break = 0;
+$line_break = 1;
 
 /////////////////////////////////////////////////
 // Use date-time rules (See rules.ini.php)
@@ -559,98 +559,98 @@ $page_uri_handler = null; // default
 // copy keitai.ini.php to default.ini.php and customize it.
 
 $agents = array(
-// pattern: A regular-expression that matches device(browser)'s name and version
-// profile: A group of browsers
+    // pattern: A regular-expression that matches device(browser)'s name and version
+    // profile: A group of browsers
 
     // Embedded browsers (Rich-clients for PukiWiki)
 
-	// Windows CE (Microsoft(R) Internet Explorer 5.5 for Windows(R) CE)
-	// Sample: "Mozilla/4.0 (compatible; MSIE 5.5; Windows CE; sigmarion3)" (sigmarion, Hand-held PC)
-	array('pattern'=>'#\b(?:MSIE [5-9]).*\b(Windows CE)\b#', 'profile'=>'default'),
+    // Windows CE (Microsoft(R) Internet Explorer 5.5 for Windows(R) CE)
+    // Sample: "Mozilla/4.0 (compatible; MSIE 5.5; Windows CE; sigmarion3)" (sigmarion, Hand-held PC)
+    array('pattern'=>'#\b(?:MSIE [5-9]).*\b(Windows CE)\b#', 'profile'=>'default'),
 
-	// ACCESS "NetFront" / "Compact NetFront" and thier OEM, expects to be "Mozilla/4.0"
-	// Sample: "Mozilla/4.0 (PS2; PlayStation BB Navigator 1.0) NetFront/3.0" (PlayStation BB Navigator, for SONY PlayStation 2)
-	// Sample: "Mozilla/4.0 (PDA; PalmOS/sony/model crdb/Revision:1.1.19) NetFront/3.0" (SONY Clie series)
-	// Sample: "Mozilla/4.0 (PDA; SL-A300/1.0,Embedix/Qtopia/1.1.0) NetFront/3.0" (SHARP Zaurus)
-	array('pattern'=>'#^(?:Mozilla/4).*\b(NetFront)/([0-9\.]+)#',	'profile'=>'default'),
+    // ACCESS "NetFront" / "Compact NetFront" and thier OEM, expects to be "Mozilla/4.0"
+    // Sample: "Mozilla/4.0 (PS2; PlayStation BB Navigator 1.0) NetFront/3.0" (PlayStation BB Navigator, for SONY PlayStation 2)
+    // Sample: "Mozilla/4.0 (PDA; PalmOS/sony/model crdb/Revision:1.1.19) NetFront/3.0" (SONY Clie series)
+    // Sample: "Mozilla/4.0 (PDA; SL-A300/1.0,Embedix/Qtopia/1.1.0) NetFront/3.0" (SHARP Zaurus)
+    array('pattern'=>'#^(?:Mozilla/4).*\b(NetFront)/([0-9\.]+)#',	'profile'=>'default'),
 
     // Embedded browsers (Non-rich)
 
-	// Windows CE (the others)
-	// Sample: "Mozilla/2.0 (compatible; MSIE 3.02; Windows CE; 240x320 )" (GFORT, NTT DoCoMo)
-	array('pattern'=>'#\b(Windows CE)\b#', 'profile'=>'keitai'),
+    // Windows CE (the others)
+    // Sample: "Mozilla/2.0 (compatible; MSIE 3.02; Windows CE; 240x320 )" (GFORT, NTT DoCoMo)
+    array('pattern'=>'#\b(Windows CE)\b#', 'profile'=>'keitai'),
 
-	// ACCESS "NetFront" / "Compact NetFront" and thier OEM
-	// Sample: "Mozilla/3.0 (AveFront/2.6)" ("SUNTAC OnlineStation", USB-Modem for PlayStation 2)
-	// Sample: "Mozilla/3.0(DDIPOCKET;JRC/AH-J3001V,AH-J3002V/1.0/0100/c50)CNF/2.0" (DDI Pocket: AirH" Phone by JRC)
-	array('pattern'=>'#\b(NetFront)/([0-9\.]+)#',	'profile'=>'keitai'),
-	array('pattern'=>'#\b(CNF)/([0-9\.]+)#',	'profile'=>'keitai'),
-	array('pattern'=>'#\b(AveFront)/([0-9\.]+)#',	'profile'=>'keitai'),
-	array('pattern'=>'#\b(AVE-Front)/([0-9\.]+)#',	'profile'=>'keitai'), // The same?
+    // ACCESS "NetFront" / "Compact NetFront" and thier OEM
+    // Sample: "Mozilla/3.0 (AveFront/2.6)" ("SUNTAC OnlineStation", USB-Modem for PlayStation 2)
+    // Sample: "Mozilla/3.0(DDIPOCKET;JRC/AH-J3001V,AH-J3002V/1.0/0100/c50)CNF/2.0" (DDI Pocket: AirH" Phone by JRC)
+    array('pattern'=>'#\b(NetFront)/([0-9\.]+)#',	'profile'=>'keitai'),
+    array('pattern'=>'#\b(CNF)/([0-9\.]+)#',	'profile'=>'keitai'),
+    array('pattern'=>'#\b(AveFront)/([0-9\.]+)#',	'profile'=>'keitai'),
+    array('pattern'=>'#\b(AVE-Front)/([0-9\.]+)#',	'profile'=>'keitai'), // The same?
 
-	// NTT-DoCoMo, i-mode (embeded Compact NetFront) and FOMA (embedded NetFront) phones
-	// Sample: "DoCoMo/1.0/F501i", "DoCoMo/1.0/N504i/c10/TB/serXXXX" // c以降は可変
-	// Sample: "DoCoMo/2.0 MST_v_SH2101V(c100;TB;W22H12;serXXXX;iccxxxx)" // ()の中は可変
-	array('pattern'=>'#^(DoCoMo)/([0-9\.]+)#',	'profile'=>'keitai'),
+    // NTT-DoCoMo, i-mode (embeded Compact NetFront) and FOMA (embedded NetFront) phones
+    // Sample: "DoCoMo/1.0/F501i", "DoCoMo/1.0/N504i/c10/TB/serXXXX" // c以降は可変
+    // Sample: "DoCoMo/2.0 MST_v_SH2101V(c100;TB;W22H12;serXXXX;iccxxxx)" // ()の中は可変
+    array('pattern'=>'#^(DoCoMo)/([0-9\.]+)#',	'profile'=>'keitai'),
 
-	// Vodafone's embedded browser
-	// Sample: "J-PHONE/2.0/J-T03"	// 2.0は"ブラウザの"バージョン
-	// Sample: "J-PHONE/4.0/J-SH51/SNxxxx SH/0001a Profile/MIDP-1.0 Configuration/CLDC-1.0 Ext-Profile/JSCL-1.1.0"
-	array('pattern'=>'#^(J-PHONE)/([0-9\.]+)#',	'profile'=>'keitai'),
+    // Vodafone's embedded browser
+    // Sample: "J-PHONE/2.0/J-T03"	// 2.0は"ブラウザの"バージョン
+    // Sample: "J-PHONE/4.0/J-SH51/SNxxxx SH/0001a Profile/MIDP-1.0 Configuration/CLDC-1.0 Ext-Profile/JSCL-1.1.0"
+    array('pattern'=>'#^(J-PHONE)/([0-9\.]+)#',	'profile'=>'keitai'),
 
-	// Openwave(R) Mobile Browser (EZweb, WAP phone, etc)
-	// Sample: "OPWV-SDK/62K UP.Browser/6.2.0.5.136 (GUI) MMP/2.0"
-	array('pattern'=>'#\b(UP\.Browser)/([0-9\.]+)#',	'profile'=>'keitai'),
+    // Openwave(R) Mobile Browser (EZweb, WAP phone, etc)
+    // Sample: "OPWV-SDK/62K UP.Browser/6.2.0.5.136 (GUI) MMP/2.0"
+    array('pattern'=>'#\b(UP\.Browser)/([0-9\.]+)#',	'profile'=>'keitai'),
 
-	// Opera, dressing up as other embedded browsers
-	// Sample: "Mozilla/3.0(DDIPOCKET;KYOCERA/AH-K3001V/1.4.1.67.000000/0.1/C100) Opera 7.0" (Like CNF at 'keitai'-mode)
-	array('pattern'=>'#\b(?:DDIPOCKET|WILLCOM)\b.+\b(Opera) ([0-9\.]+)\b#',	'profile'=>'keitai'),
+    // Opera, dressing up as other embedded browsers
+    // Sample: "Mozilla/3.0(DDIPOCKET;KYOCERA/AH-K3001V/1.4.1.67.000000/0.1/C100) Opera 7.0" (Like CNF at 'keitai'-mode)
+    array('pattern'=>'#\b(?:DDIPOCKET|WILLCOM)\b.+\b(Opera) ([0-9\.]+)\b#',	'profile'=>'keitai'),
 
-	// Planetweb http://www.planetweb.com/
-	// Sample: "Mozilla/3.0 (Planetweb/v1.07 Build 141; SPS JP)" ("EGBROWSER", Web browser for PlayStation 2)
-	array('pattern'=>'#\b(Planetweb)/v([0-9\.]+)#', 'profile'=>'keitai'),
+    // Planetweb http://www.planetweb.com/
+    // Sample: "Mozilla/3.0 (Planetweb/v1.07 Build 141; SPS JP)" ("EGBROWSER", Web browser for PlayStation 2)
+    array('pattern'=>'#\b(Planetweb)/v([0-9\.]+)#', 'profile'=>'keitai'),
 
-	// DreamPassport, Web browser for SEGA DreamCast
-	// Sample: "Mozilla/3.0 (DreamPassport/3.0)"
-	array('pattern'=>'#\b(DreamPassport)/([0-9\.]+)#',	'profile'=>'keitai'),
+    // DreamPassport, Web browser for SEGA DreamCast
+    // Sample: "Mozilla/3.0 (DreamPassport/3.0)"
+    array('pattern'=>'#\b(DreamPassport)/([0-9\.]+)#',	'profile'=>'keitai'),
 
-	// Palm "Web Pro" http://www.palmone.com/us/support/accessories/webpro/
-	// Sample: "Mozilla/4.76 [en] (PalmOS; U; WebPro)"
-	array('pattern'=>'#\b(WebPro)\b#',	'profile'=>'keitai'),
+    // Palm "Web Pro" http://www.palmone.com/us/support/accessories/webpro/
+    // Sample: "Mozilla/4.76 [en] (PalmOS; U; WebPro)"
+    array('pattern'=>'#\b(WebPro)\b#',	'profile'=>'keitai'),
 
-	// ilinx "Palmscape" / "Xiino" http://www.ilinx.co.jp/
-	// Sample: "Xiino/2.1SJ [ja] (v. 4.1; 153x130; c16/d)"
-	array('pattern'=>'#^(Palmscape)/([0-9\.]+)#',	'profile'=>'keitai'),
-	array('pattern'=>'#^(Xiino)/([0-9\.]+)#',	'profile'=>'keitai'),
+    // ilinx "Palmscape" / "Xiino" http://www.ilinx.co.jp/
+    // Sample: "Xiino/2.1SJ [ja] (v. 4.1; 153x130; c16/d)"
+    array('pattern'=>'#^(Palmscape)/([0-9\.]+)#',	'profile'=>'keitai'),
+    array('pattern'=>'#^(Xiino)/([0-9\.]+)#',	'profile'=>'keitai'),
 
-	// SHARP PDA Browser (SHARP Zaurus)
-	// Sample: "sharp pda browser/6.1[ja](MI-E1/1.0) "
-	array('pattern'=>'#^(sharp [a-z]+ browser)/([0-9\.]+)#',	'profile'=>'keitai'),
+    // SHARP PDA Browser (SHARP Zaurus)
+    // Sample: "sharp pda browser/6.1[ja](MI-E1/1.0) "
+    array('pattern'=>'#^(sharp [a-z]+ browser)/([0-9\.]+)#',	'profile'=>'keitai'),
 
-	// WebTV
-	array('pattern'=>'#^(WebTV)/([0-9\.]+)#',	'profile'=>'keitai'),
+    // WebTV
+    array('pattern'=>'#^(WebTV)/([0-9\.]+)#',	'profile'=>'keitai'),
 
     // Desktop-PC browsers
 
-	// Opera (for desktop PC, not embedded) -- See BugTrack/743 for detail
-	// NOTE: Keep this pattern above MSIE and Mozilla
-	// Sample: "Opera/7.0 (OS; U)" (not disguise)
-	// Sample: "Mozilla/4.0 (compatible; MSIE 5.0; OS) Opera 6.0" (disguise)
-	array('pattern'=>'#\b(Opera)[/ ]([0-9\.]+)\b#',	'profile'=>'default'),
+    // Opera (for desktop PC, not embedded) -- See BugTrack/743 for detail
+    // NOTE: Keep this pattern above MSIE and Mozilla
+    // Sample: "Opera/7.0 (OS; U)" (not disguise)
+    // Sample: "Mozilla/4.0 (compatible; MSIE 5.0; OS) Opera 6.0" (disguise)
+    array('pattern'=>'#\b(Opera)[/ ]([0-9\.]+)\b#',	'profile'=>'default'),
 
-	// MSIE: Microsoft Internet Explorer (or something disguised as MSIE)
-	// Sample: "Mozilla/4.0 (compatible; MSIE 6.0; Windows NT 5.0)"
-	array('pattern'=>'#\b(MSIE) ([0-9\.]+)\b#',	'profile'=>'default'),
+    // MSIE: Microsoft Internet Explorer (or something disguised as MSIE)
+    // Sample: "Mozilla/4.0 (compatible; MSIE 6.0; Windows NT 5.0)"
+    array('pattern'=>'#\b(MSIE) ([0-9\.]+)\b#',	'profile'=>'default'),
 
-	// Mozilla Firefox
-	// NOTE: Keep this pattern above Mozilla
-	// Sample: "Mozilla/5.0 (Windows; U; Windows NT 5.0; ja-JP; rv:1.7) Gecko/20040803 Firefox/0.9.3"
-	array('pattern'=>'#\b(Firefox)/([0-9\.]+)\b#',	'profile'=>'default'),
+    // Mozilla Firefox
+    // NOTE: Keep this pattern above Mozilla
+    // Sample: "Mozilla/5.0 (Windows; U; Windows NT 5.0; ja-JP; rv:1.7) Gecko/20040803 Firefox/0.9.3"
+    array('pattern'=>'#\b(Firefox)/([0-9\.]+)\b#',	'profile'=>'default'),
 
-    	// Loose default: Including something Mozilla
-	array('pattern'=>'#^([a-zA-z0-9 ]+)/([0-9\.]+)\b#',	'profile'=>'default'),
+    // Loose default: Including something Mozilla
+    array('pattern'=>'#^([a-zA-z0-9 ]+)/([0-9\.]+)\b#',	'profile'=>'default'),
 
-	array('pattern'=>'#^#',	'profile'=>'default'),	// Sentinel
+    array('pattern'=>'#^#',	'profile'=>'default'),	// Sentinel
 );
 
 /////////////////////////////////////////////////
@@ -658,5 +658,5 @@ $agents = array(
 // https://github.com/m0370/pukiwiki153_md
 // https://github.com/sparksuite/simplemde-markdown-editor/
 
-$markdown_safemode = 1; // Safemode 1:On, 0:Off
-$use_simplemde = 1; // simple Markdown editorを使用 1:Enable, 0:Disable
+$markdown_safemode = 0; // Safemode 1:On, 0:Off
+$use_simplemde = 0; // simple Markdown editorを使用 1:Enable, 0:Disable
