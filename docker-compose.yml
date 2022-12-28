@@ -3,6 +3,7 @@ services:
     nginx:
         container_name: nginx
         image: nginx:latest
+        restart: always
         ports:
             - 8080:80
         volumes:
@@ -12,5 +13,6 @@ services:
     php:
         container_name: php
         image: php:8-fpm
+        restart: always
         volumes:
             - ./pukiwiki-1.5.4_utf8:/var/www/html
