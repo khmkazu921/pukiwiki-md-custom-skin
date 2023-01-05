@@ -434,11 +434,9 @@ class AttachFile
 	$this->file = preg_replace('#^.*/#','',$file);
 	$this->age  = is_numeric($age) ? $age : 0;
         
-	#$this->leafbasename = encode($page) . '_' . encode($this->file);
         mkdir(UPLOAD_DIR . $page , 0777 , true);
         $this->leafbasename = $this->file;
         $this->basename = UPLOAD_DIR . $page . DIRECTORY_SEPARATOR . $this->leafbasename;
-	//$this->filename = $this->basename . ($age ? '.' . $age : '');
         $this->filename = $this->basename;
 	$this->logname  = $this->basename . '.log';
 	$this->exist    = file_exists($this->filename);
@@ -696,8 +694,7 @@ class AttachFile
 		return attach_info('err_password');
 	    }
 	}
-	#$newbase = UPLOAD_DIR . encode($this->page) . '_' . encode($newname);
-	$newbase = UPLOAD_DIR . $this->page . '/' . $newname;
+	$newbase = UPLOAD_DIR . encode($this->page) . DIRECTORY_SEPARATOR . encode($newname);
 	if (file_exists($newbase)) {
 	    return array('msg'=>$_attach_messages['err_exists']);
 	}
@@ -906,7 +903,6 @@ class AttachPages
 	//$dir = opendir(UPLOAD_DIR) or
 	// die('directory ' . UPLOAD_DIR . ' is not exist or not readable.');
         $realpaths = plugin_attach_recursive_readdir(UPLOAD_DIR.$page);
-        //var_dump($realpaths);
         foreach ($realpaths as $key => $realpath) {
             $file = substr($realpath, strlen(realpath(UPLOAD_DIR))+1);
             $_page = dirname($file);

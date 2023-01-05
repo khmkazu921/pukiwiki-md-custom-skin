@@ -290,14 +290,10 @@ EOD;
 
     ksort($pages, SORT_STRING);
     $ret['body'] .= '<ul>' . "\n";
-    /* foreach ($pages as $old=>$new)
-       $ret['body'] .= '<li>' .  make_pagelink(decode($old)) .
-       $_rename_messages['msg_arrow'] .
-       htmlsc(decode($new)) .  '</li>' . "\n"; */
     foreach ($pages as $old=>$new)
-	$ret['body'] .= '<li>' .  make_pagelink($old) .
-			$_rename_messages['msg_arrow'] .
-			htmlsc($new) .  '</li>' . "\n";
+        $ret['body'] .= '<li>' .  make_pagelink(decode($old)) .
+                        $_rename_messages['msg_arrow'] .
+                        htmlsc(decode($new)) .  '</li>' . "\n";
     $ret['body'] .= '</ul>' . "\n";
     return $ret;
 }
@@ -374,10 +370,8 @@ function plugin_rename_proceed($pages, $files, $exists)
 	}
 	// linkデータベースを更新する BugTrack/327 arino
 	$new_page = $pages[$page];
-	/* links_update(decode($page));
-	   links_update(decode($new_page)); */
-	links_update($page);
-	links_update($new_page);
+	links_update(decode($page));
+	links_update(decode($new_page));
     }
 
     $dirs  = array(BACKUP_DIR, DIFF_DIR, DATA_DIR);
@@ -390,8 +384,7 @@ function plugin_rename_proceed($pages, $files, $exists)
     // Rename counter
     $pages_decoded = array();
     foreach ($pages as $old=>$new) {
-	// $pages_decoded[decode($old)] = decode($new);
-	$pages_decoded[$old] = $new;
+	$pages_decoded[decode($old)] = decode($new);
     }
     if (exist_plugin('counter')) {
 	plugin_counter_page_rename($pages_decoded);
@@ -412,10 +405,8 @@ function plugin_rename_proceed($pages, $files, $exists)
     if (! empty($exists)) {
 	$postdata[] = "\n" . $_rename_messages['msg_result'] . "\n";
 	foreach ($exists as $page=>$arr) {
-	    /* $postdata[] = '-' . decode($page) .
-	       $_rename_messages['msg_arrow'] . decode($pages[$page]) . "\n"; */
-	    $postdata[] = '-' . $page .
-			  $_rename_messages['msg_arrow'] . $pages[$page] . "\n";
+	    $postdata[] = '-' . decode($page) .
+	                  $_rename_messages['msg_arrow'] . decode($pages[$page]) . "\n";
 	    foreach ($arr as $ofile=>$nfile)
 		$postdata[] = '--' . $ofile .
 			      $_rename_messages['msg_arrow'] . $nfile . "\n";
@@ -424,10 +415,8 @@ function plugin_rename_proceed($pages, $files, $exists)
     }
 
     foreach ($pages as $old=>$new) {
-        /* $postdata[] = '-' . decode($old) .
-         *               $_rename_messages['msg_arrow'] . decode($new) . "\n"; */
-	$postdata[] = '-' . $old .
-		      $_rename_messages['msg_arrow'] . $new . "\n";
+        $postdata[] = '-' . decode($old) .
+                      $_rename_messages['msg_arrow'] . decode($new) . "\n";
     }
 
     // 更新の衝突はチェックしない。
