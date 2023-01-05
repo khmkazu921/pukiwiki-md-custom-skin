@@ -9,6 +9,8 @@
 // function 'convert_html()', wiki text parser
 // and related classes-and-functions
 
+include 'convert_md_html.php';
+
 function convert_html($lines)
 {
     global $vars, $digest;
@@ -19,55 +21,11 @@ function convert_html($lines)
 
     if (! is_array($lines)) $lines = explode("\n", $lines);
 
+    $body = new MdBody(++$contents_id, $lines);
+    // $body = new Body(++$contents_id);
+    $body->parse($lines);
 
-    if (! preg_grep('/^\#notemd/', $lines) ) {
-	// Pukiwiki記法
-	$body = new Body(++$contents_id);
-	$body->parse($lines);
-
-	return $body->toString();
-    } else {
-	// Markdown記法
-	foreach ( $lines as &$line ) {
-	    $matches = array();
-	    
-	    $line = preg_replace('/(\#author\(.*\)|\#notemd|\#freeze)/', '', $line); // #author,#notemd,#freezeはMarkdown Parserに渡さない
-	    if ( preg_match('/^\\!([a-zA-Z0-9_]+)(\\(([^\\)\\n]*)?\\))?/', $line, $matches) ) {
-		$plugin = $matches[1];
-		if ( exist_plugin_convert($plugin) ) {
-		    $name = 'plugin_' . $matches[1] . '_convert';
-		    $params = array();
-		    if ( isset($matches[3]) ) {
-			$params = explode(',', $matches[3]);
-		    }
-		    $line = call_user_func_array($name, $params);
-		} else {
-		    $line = "plugin ${plugin} failed.";
-		}
-	    } else if (preg_match('/^\!(\[.*\])(\((https?\:\/\/[\-_\.\!\~\*\'\(\)a-zA-Z0-9\;\/\?\:\@\&\=\+\$\,\%\#]+\.)?(jpe?g|png|gif|webp)\))/u', $line, $matchimg)) {
-		// Markdown記法の画像の場合はmake_linkに渡さない
-	    } else {
-		// $line = preg_replace('/\[(.*?)\]\((https?\:\/\/[\-_\.\!\~\*\'\(\)a-zA-Z0-9\;\/\?\:\@\&\=\+\$\,\%\#]+)( )?(\".*\")?\)/', "[[$1>$2]]", $line); // Markdown式リンクをPukiwiki式リンクに変換
-		$line = preg_replace('/\[\[(.+)[\:\>](https?\:\/\/[\-_\.\!\~\*\'\(\)a-zA-Z0-9\;\/\?\:\@\&\=\+\$\,\%\#]+)\]\]/', "[$1]($2)", $line); // Pukiwiki式リンクをMarkdown式リンクに変換
-		$line = preg_replace('/\[\#[a-zA-Z0-9]{8}\]$/', "", $line); // Pukiwiki式アンカーを非表示に
-		$line = make_link($line);
-		// ファイル読み込んだ場合に改行コードが末尾に付いていることがあるので削除
-		// 空白は削除しちゃだめなのでrtrim()は使ってはいけない
-	    }
-	    $line = str_replace(array("\r\n","\n","\r"), "", $line);
-	}
-	unset($line);
-	
-	$text = implode("\n", $lines);
-	
-	$parsedown = new \ParsedownExtra(); //Parsedown→ParsedownExtraに変更しても良い
-	$result = $parsedown->setMarkupEscaped(false)
-                            ->setSafeMode(false) // safemode
-                            ->setBreaksEnabled(true) // enables automatic line breaks
-                            ->text($text);
-	
-	return $result;
-    }
+    return $body->toString();
 }
 
 // Block elements
@@ -910,6 +868,35 @@ class Align extends Element
     }
 }
 
+class Contents_UList extends ListContainer
+{
+    function Contents_UList($text, $level, $id)
+    {
+	$this->__construct($text, $level, $id);
+    }
+    function __construct($text, $level, $id)
+    {
+	// Reformatting $text
+	// A line started with "\n" means "preformatted" ... X(
+	make_heading($text);
+	$text = "\n" . '<a href="#' . $id . '">' . $text . '</a>' . "\n";
+	parent::__construct('ul', 'li', '-', str_repeat('-', $level));
+	$this->insert(Factory_Inline($text));
+    }
+
+    function setParent(& $parent)
+    {
+	parent::setParent($parent);
+	$step   = $this->level;
+	if (isset($parent->parent) && is_a($parent->parent, 'ListContainer')) {
+	    $step  -= $parent->parent->level;
+	}
+	$indent_level = ($step == $this->level ? 1 : $step);
+	$this->style = sprintf(pkwk_list_attrs_template(), $this->level, $indent_level);
+    }
+}
+
+
 // Body
 class Body extends Element
 {
@@ -1076,33 +1063,5 @@ class Body extends Element
 		     $this->contents->toString() . "\n" .
 		     '</div>' . "\n";
 	return $contents;
-    }
-}
-
-class Contents_UList extends ListContainer
-{
-    function Contents_UList($text, $level, $id)
-    {
-	$this->__construct($text, $level, $id);
-    }
-    function __construct($text, $level, $id)
-    {
-	// Reformatting $text
-	// A line started with "\n" means "preformatted" ... X(
-	make_heading($text);
-	$text = "\n" . '<a href="#' . $id . '">' . $text . '</a>' . "\n";
-	parent::__construct('ul', 'li', '-', str_repeat('-', $level));
-	$this->insert(Factory_Inline($text));
-    }
-
-    function setParent(& $parent)
-    {
-	parent::setParent($parent);
-	$step   = $this->level;
-	if (isset($parent->parent) && is_a($parent->parent, 'ListContainer')) {
-	    $step  -= $parent->parent->level;
-	}
-	$indent_level = ($step == $this->level ? 1 : $step);
-	$this->style = sprintf(pkwk_list_attrs_template(), $this->level, $indent_level);
     }
 }

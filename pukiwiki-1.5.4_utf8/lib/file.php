@@ -101,8 +101,7 @@ function get_page_date_atom($page)
 // Get physical file name of the page
 function get_filename($page)
 {
-    //return DATA_DIR . encode($page) . '.txt';
-    return DATA_DIR . $page . '.txt';
+    return DATA_DIR . encode($page) . '.txt';
 }
 
 // Put a data(wiki text) into a physical file(diff, backup, text)
@@ -153,6 +152,7 @@ function make_str_rules($source)
     global $str_rules, $fixed_heading_anchor;
 
     $lines = explode("\n", $source);
+    $is_markdown = preg_match('/#notemd/', $lines[0]);
     $count = count($lines);
 
     $modify    = TRUE;
@@ -190,6 +190,7 @@ function make_str_rules($source)
 	
 	// Adding fixed anchor into headings
 	if ($fixed_heading_anchor &&
+            !$is_markdown &&
 	    preg_match('/^(\*{1,3}.*?)(?:\[#([A-Za-z][\w-]*)\]\s*)?$/', $line, $matches) &&
 	    (! isset($matches[2]) || $matches[2] == '')) {
 	    // Generate unique id
@@ -394,14 +395,10 @@ function file_write($dir, $page, $str, $notimestamp = FALSE, $is_delete = FALSE)
     $str = rtrim(preg_replace('/' . "\r" . '/', '', $str)) . "\n";
     $timestamp = ($file_exists && $notimestamp) ? filemtime($file) : FALSE;
 
-    /* $fp = fopen($file, 'a') or die('fopen() failed: ' .
-       htmlsc(basename($dir) . '/' . encode($page) . '.txt') .	
-       '<br />' . "\n" .
-       'Maybe permission is not writable or filename is too long'); */
     $fp = fopen($file, 'a') or die('fopen() failed: ' .
-		                   htmlsc(basename($dir) . '/' . $page . '.txt') .	
-		                   '<br />' . "\n" .
-		                   'Maybe permission is not writable or filename is too long');
+                                   htmlsc(basename($dir) . '/' . encode($page) . '.txt') .	
+                                   '<br />' . "\n" .
+                                   'Maybe permission is not writable or filename is too long');
     set_file_buffer($fp, 0);
     flock($fp, LOCK_EX);
     ftruncate($fp, 0);
@@ -1118,16 +1115,12 @@ function prepare_display_materials() {
 function prepare_links_related($page) {
     global $defaultpage;
 
-    //$enc_defaultpage = encode($defaultpage);
-    //if (file_exists(CACHE_DIR . $enc_defaultpage . '.rel')) return;
-    //if (file_exists(CACHE_DIR . $enc_defaultpage . '.ref')) return;
-    //$enc_name = encode($page);
-    //if (file_exists(CACHE_DIR . $enc_name . '.rel')) return;
-    //if (file_exists(CACHE_DIR . $enc_name . '.ref')) return;
-    if (file_exists(CACHE_DIR . $defaultpage . '.rel')) return;
-    if (file_exists(CACHE_DIR . $defaultpage . '.ref')) return;
-    if (file_exists(CACHE_DIR . $page . '.rel')) return;
-    if (file_exists(CACHE_DIR . $page . '.ref')) return;
+    $enc_defaultpage = encode($defaultpage);
+    if (file_exists(CACHE_DIR . $enc_defaultpage . '.rel')) return;
+    if (file_exists(CACHE_DIR . $enc_defaultpage . '.ref')) return;
+    $enc_name = encode($page);
+    if (file_exists(CACHE_DIR . $enc_name . '.rel')) return;
+    if (file_exists(CACHE_DIR . $enc_name . '.ref')) return;
 
     $pattern = '/^((?:[0-9A-F]{2})+)' . '(\.ref|\.rel)' . '$/';
     $dir = CACHE_DIR;
@@ -1175,7 +1168,19 @@ function remove_notemd($wikitext)
 /**
  * Get author info from wikitext
  */
-function get_notemd($wikitext)
+/* function get_notemd($wikitext)
+ * {
+ *     return preg_match('/(^|\n)\#notemd\n/',$wikitext);
+ * }
+ *  */
+function get_notemd($pagename)
 {
-    return preg_match('/(^|\n)\#notemd\n/',$wikitext);
+    $file = DATA_DIR . $pagename . '.txt';
+    $lines = file($file);
+    if($lines === null) {
+        echo "Error in opening file ". $file;
+    }
+    return preg_match('/(^|\n)\#notemd\n/', $lines[0]);
+//    $three_lines = array_slice($lines, 0, 3);
+//    return preg_match('/(^|\n)\#notemd\n/', implode('', $three_lines));
 }

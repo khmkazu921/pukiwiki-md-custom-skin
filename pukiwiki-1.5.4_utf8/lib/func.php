@@ -164,13 +164,11 @@ function page_exists_in_history($page)
     if (is_page($page)) {
 	return true;
     }
-    //$diff_file = DIFF_DIR . encode($page) . '.txt';
-    $diff_file = DIFF_DIR . $page . '.txt';    
+    $diff_file = DIFF_DIR . encode($page) . '.txt';
     if (file_exists($diff_file)) {
 	return true;
     }
-    //$backup_file = BACKUP_DIR . encode($page) . BACKUP_EXT;
-    $backup_file = BACKUP_DIR . $page . BACKUP_EXT;    
+    $backup_file = BACKUP_DIR . encode($page) . BACKUP_EXT;
     if (file_exists($backup_file)) {
 	return true;
     }

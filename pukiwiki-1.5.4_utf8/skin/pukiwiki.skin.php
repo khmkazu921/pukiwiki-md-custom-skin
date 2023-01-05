@@ -129,12 +129,17 @@ header('Content-Type: text/html; charset=' . CONTENT_CHARSET);
 
             <div id="readMode">
                 <div id="menuList">
-                    <?php echo convert_html(get_source('MenuBar')) ?>
+                    <div class="menuListPadding">
+                        <?php echo convert_html(get_source('MenuBar')) ?>
+                    </div>
                 </div>
 
                 <div id="article">
-                    <button class="menuButton" onclick="toggleMenuList()">&#9776;</button>
                     <div id="navigator">
+                        <div>
+                            <button class="menuButton" onclick="toggleMenuList()">&#9776;</button>
+                        </div>
+
                         <?php
                         if(PKWK_SKIN_SHOW_NAVBAR) { 
                             function _navigator($key, $value = '', $javascript = ''){
@@ -148,7 +153,7 @@ header('Content-Type: text/html; charset=' . CONTENT_CHARSET);
 	                        return TRUE;
                             }
                         ?>
-                        <div align="right">
+                        <div class="navigator-right">
                             <?php if ($is_page) {
                                 echo "[ ";
                                 if ($rw) { 
@@ -269,10 +274,10 @@ header('Content-Type: text/html; charset=' . CONTENT_CHARSET);
               return TRUE;
           }
           ?>
-          <?php _toolbar('top') ?>
+          <?php //_toolbar('top') ?>
 
           <?php if ($is_page) { ?>
-              &nbsp;
+              <!-- &nbsp; -->
               <?php if ($rw) { ?>
                   <?php _toolbar('edit') ?>
                   <?php if ($is_read && $function_freeze) { ?>
@@ -290,16 +295,16 @@ header('Content-Type: text/html; charset=' . CONTENT_CHARSET);
                   <?php _toolbar('copy') ?>
                   <?php _toolbar('rename') ?>
               <?php } ?>
-              <?php _toolbar('reload') ?>
+              <?php // _toolbar('reload') ?>
           <?php } ?>
-          &nbsp;
+          <!-- &nbsp; -->
           <?php if ($rw) { ?>
               <?php _toolbar('new') ?>
           <?php } ?>
           <?php _toolbar('list')   ?>
-          <?php _toolbar('search') ?>
+          <?php //_toolbar('search') ?>
           <?php _toolbar('recent') ?>
-          &nbsp; <?php _toolbar('help') ?>
+          <!-- &nbsp; --> <?php // _toolbar('help') ?>
       </div>
 
       <div id="signature">

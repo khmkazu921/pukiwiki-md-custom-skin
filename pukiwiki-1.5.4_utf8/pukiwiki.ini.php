@@ -525,7 +525,7 @@ $auto_template_rules = array(
 
 /////////////////////////////////////////////////
 // Automatically add fixed heading anchor
-$fixed_heading_anchor = 0;
+$fixed_heading_anchor = 1;
 
 /////////////////////////////////////////////////
 // Remove the first spaces from Preformatted text

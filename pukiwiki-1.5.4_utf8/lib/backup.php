@@ -84,6 +84,7 @@ function make_backup($page, $is_delete, $wikitext)
 	    $body_on_delete = PKWK_SPLITTER . ' ' . UTIME . "\n" . $wikitext;
 	    $body_on_delete = preg_replace("/\n*$/", "\n", $body_on_delete);
 	}
+        mkdir( BACKUP_DIR . dirname($page) , 0777, true);
 	$fp = _backup_fopen($page, 'wb')
 	or die_message('Cannot open ' . htmlsc(_backup_get_filename($page)) .
 		       '<br />Maybe permission is not writable or filename is too long');
@@ -150,8 +151,7 @@ function get_backup($page, $age = 0)
  */
 function _backup_get_filename($page)
 {
-    //return BACKUP_DIR . encode($page) . BACKUP_EXT;
-    return BACKUP_DIR . $page . BACKUP_EXT;    
+    return BACKUP_DIR . encode($page) . BACKUP_EXT;
 }
 
 /**

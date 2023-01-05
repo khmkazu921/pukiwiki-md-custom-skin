@@ -2,55 +2,23 @@
 
 const breakPoint = 1024;
 
-function ShowAndHide(win){
-    if( win > breakPoint ){
-        $('#menuButton').hide();
-        $('#menuList').show();
-        openMenuList();
-        $('#menuList').css({'flex-direcrion':'row'});
-    } else {
-        closeMenuList();
-        $('#menuButton').show();
-        $('#menuButton').removeClass('open');
-    }
-}
-
 $(function (){
-    ShowAndHide( $(window).width() );
-    $('#menuButton a').on('click', function () {
-	$('#menuList').slideToggle(500);
-	console.log('ok');
-    });
-    var currentWidth = $(window).width();
+    if( $(window).width() < breakPoint ){
+        $('#menuList').addClass('close');
+    }
     $(window).resize(function(){
-	if (currentWidth != $(window).width()) {
-	    ShowAndHide( $(window).width() );
-	}
+        if( $(window).width() < breakPoint ){
+            $('#menuList').addClass('close');
+        } else {
+            $('#menuList').removeClass('close');
+            $("#article").removeClass('close-menu');
+        }
     });
 });
 
 function toggleMenuList() {
-    if( $("#menuList").width() > 0) {
-        closeMenuList();
-    } else {
-        openMenuList();
-    }
-}
-
-function closeMenuList() {
-    $("#menuList").css({'min-width': '0',
-                        'width': '0',
-                        'padding-left': '0rem',
-                        'padding-right': '0rem'});
-    $("#article").css({'width': 'calc(100% - 4rem)'});
-}
-
-function openMenuList() {
-    $("#menuList").css({'min-width': '200px',
-                        'width': '200px',
-                        'padding-left': '2rem',
-                        'padding-right': '2rem'});
-    $("#article").css({'width': 'calc(100% - 200px - 8rem)'});
+    $('#menuList').toggleClass('close');
+    $("#article").toggleClass('close-menu');
 }
 
 // Smooth Scrool /////////////////////////////////////////////////////////////
@@ -117,67 +85,3 @@ $(function (){
     });
 
 });
-
-
-
-
-
-
-// <!doctype html>
-// <html lang="en">
-// <head>
-//   <meta charset="utf-8">
-//   <title>toggleClass demo</title>
-//   <style>
-//   p {
-//     cursor: pointer;
-//   }
-  
-//   .code {
-//       max-height: 50px;
-//       overflow: hidden;
-//   }
-//   .highlight {
-//       max-height: 100px;
-//    }
-//   </style>
-//   <script src="https://code.jquery.com/jquery-3.5.0.js"></script>
-// </head>
-// <body>
- 
-// <p class="blue">Click to toggle</p>
-// <p class="blue highlight">highlight</p>
-// <p class="blue">on these</p>
-// <p class="blue">paragraphs</p>
-//  <pre class="code">
-//  asdf<br>
-//   asdf<br>
-//    asdf<br>
-//     asdf<br>
-//      asdf<br>
-//       asdf<br>
-//        asdf<br>
-//         asdf<br>
-//          asdf<br>
-//           asdf<br>
-//            asdf<br>
-//             asdf<br>
-//              asdf<br>
-//               asdf<br>
-//                asdf<br>
-//                 asdf<br>
-//                  asdf<br>
-//                   asdf<br>
-//                    asdf<br>
-//                     asdf<br>
-//                      asdf<br> asdf<br>
-//                      </pre>
-
-// <script>
-// $( "p" ).click(function() {
-//   $( ".code" ).toggleClass( "highlight" );
-// });
-// </script>
- 
-// </body>
-// </html>

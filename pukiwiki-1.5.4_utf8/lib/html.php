@@ -411,7 +411,7 @@ EOD;
 
     // Pukiwiki-Markdown
     $add_notemd = '';
-    if(get_notemd($postdata) || ! is_page($page, $clearcache = TRUE) /*新規ページはデフォルトでMarkdown*/) { $notemd_on = 'checked="checked"';};
+    if(get_notemd($page) || ! is_page($page, $clearcache = TRUE) /*新規ページはデフォルトでMarkdown*/) { $notemd_on = 'checked="checked"';};
     if(isset($use_simplemde) && $use_simplemde) {
 	$simplemde = '<link rel="stylesheet" href="plugin/vendor/easymde/easymde.min.css"> <script src="plugin/vendor/easymde/easymde.min.js"></script><script src="https://cdn.jsdelivr.net/highlight.js/latest/highlight.min.js"></script> <script>
 var _imageMaxSize = 1024 * 1024 * 2; // 画像サイズは2MBまで
