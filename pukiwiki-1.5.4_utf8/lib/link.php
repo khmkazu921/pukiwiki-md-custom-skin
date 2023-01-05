@@ -118,9 +118,8 @@ function links_update($page)
 		links_update($_page);
 	}
     }
-    //$ref_file = CACHE_DIR . encode($page) . '.ref';
-    $ref_file = CACHE_DIR . $page . '.ref';
-
+    $ref_file = CACHE_DIR . encode($page) . '.ref';
+    
     // $pageが削除されたときに、
     if (! $time && file_exists($ref_file)) {
 	foreach (file($ref_file) as $line) {
@@ -177,22 +176,18 @@ function links_init()
 	}
 	$rel = array_unique($rel);
 	if (! empty($rel)) {
-	    //$fp = fopen(CACHE_DIR . encode($page) . '.rel', 'w')
-            //or die_message('cannot write ' . htmlsc(CACHE_DIR . encode($page) . '.rel'));
-            mkdir( CACHE_DIR . dirname($page), 0777, true);
-	    $fp = fopen(CACHE_DIR . $page . '.rel', 'w')
-	    or die_message('cannot write ' . htmlsc(CACHE_DIR . $page . '.rel (link.php:183)'));
+            mkdir( CACHE_DIR . dirname($page), 0777, true);            
+	    $fp = fopen(CACHE_DIR . encode($page) . '.rel', 'w')
+            or die_message('cannot write ' . htmlsc(CACHE_DIR . encode($page) . '.rel'));
 	    fputs($fp, join("\t", $rel));
 	    fclose($fp);
 	}
     }
 
     foreach ($ref as $page=>$arr) {
-	/* $fp  = fopen(CACHE_DIR . encode($page) . '.ref', 'w')
-	   or die_message('cannot write ' . htmlsc(CACHE_DIR . encode($page) . '.ref')); */
         mkdir( CACHE_DIR . dirname($page) , 0777, true);                    
-	$fp = fopen(CACHE_DIR . $page . '.ref', 'w')
-	or die_message('cannot write ' . htmlsc(CACHE_DIR . $page . '.ref (link.php:194)'));
+	$fp  = fopen(CACHE_DIR . encode($page) . '.ref', 'w')
+	or die_message('cannot write ' . htmlsc(CACHE_DIR . encode($page) . '.ref'));
 	foreach ($arr as $ref_page=>$ref_auto)
 	    fputs($fp, $ref_page . "\t" . $ref_auto . "\n");
 	fclose($fp);
@@ -210,8 +205,7 @@ function links_add($page, $add, $rel_auto)
 	$is_page  = is_page($_page);
 	$ref      = $page . "\t" . ($all_auto ? 1 : 0) . "\n";
 
-	//$ref_file = CACHE_DIR . encode($_page) . '.ref';
-	$ref_file = CACHE_DIR . $_page . '.ref';
+	$ref_file = CACHE_DIR . encode($_page) . '.ref';
 	if (file_exists($ref_file)) {
 	    foreach (file($ref_file) as $line) {
 		list($ref_page, $ref_auto) = explode("\t", rtrim($line));
@@ -249,8 +243,7 @@ function links_delete($page, $del)
     if (PKWK_READONLY) return; // Do nothing
 
     foreach ($del as $_page) {
-	//$ref_file = CACHE_DIR . encode($_page) . '.ref';
-        $ref_file = CACHE_DIR . $_page . '.ref';        
+	$ref_file = CACHE_DIR . encode($_page) . '.ref';
 	if (! file_exists($ref_file) ) continue;
 
 	$all_auto = TRUE;

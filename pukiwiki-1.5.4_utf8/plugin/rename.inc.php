@@ -182,15 +182,12 @@ function plugin_rename_refer()
     $page  = plugin_rename_getvar('page');
     $refer = plugin_rename_getvar('refer');
 
-    //$pages[encode($refer)] = encode($page);
-    $pages[$refer] = $page;    
+    $pages[encode($refer)] = encode($page);
     if (plugin_rename_getvar('related') != '') {
 	$from = strip_bracket($refer);
 	$to   = strip_bracket($page);
-	/* foreach (plugin_rename_getrelated($refer) as $_page)
-	   $pages[encode($_page)] = encode(str_replace($from, $to, $_page)); */
 	foreach (plugin_rename_getrelated($refer) as $_page)
-	    $pages[$_page] = str_replace($from, $to, $_page);
+	    $pages[encode($_page)] = encode(str_replace($from, $to, $_page));
     }
     return plugin_rename_phase3($pages);
 }
@@ -207,10 +204,8 @@ function plugin_rename_regex($arr_from, $arr_to)
 	return plugin_rename_phase1('already', $exists);
     } else {
 	$pages = array();
-	/* foreach ($arr_from as $refer)
-	   $pages[encode($refer)] = encode(array_shift($arr_to)); */
 	foreach ($arr_from as $refer)
-	    $pages[$refer] = array_shift($arr_to);
+	    $pages[encode($refer)] = encode(array_shift($arr_to));
 	return plugin_rename_phase3($pages);
     }
 }
@@ -222,7 +217,6 @@ function plugin_rename_phase3($pages)
     $script = get_base_uri();
     $msg = $input = '';
     $files = plugin_rename_get_files($pages);
-    //echo '<pre>' , var_dump($files);
     $exists = array();
     foreach ($files as $_page=>$arr)
 	foreach ($arr as $old=>$new)
@@ -258,12 +252,9 @@ function plugin_rename_phase3($pages)
     if (! empty($exists)) {
 	$msg .= $_rename_messages['err_already_below'] . '<ul>';
 	foreach ($exists as $page=>$arr) {
-	    /* $msg .= '<li>' . make_pagelink(decode($page));
-	       $msg .= $_rename_messages['msg_arrow'];
-	       $msg .= htmlsc(decode($pages[$page])); */
-	    $msg .= '<li>' . make_pagelink($page);
+	    $msg .= '<li>' . make_pagelink(decode($page));
 	    $msg .= $_rename_messages['msg_arrow'];
-	    $msg .= htmlsc($pages[$page]);
+	    $msg .= htmlsc(decode($pages[$page]));
 	    if (! empty($arr)) {
 		$msg .= '<ul>' . "\n";
 		foreach ($arr as $ofile=>$nfile)
@@ -335,19 +326,18 @@ function plugin_rename_get_files($pages)
     if (exist_plugin_convert('counter')) $dirs[] = COUNTER_DIR;
     // and more ...
 
+    $matches = array();
     foreach ($dirs as $path) {
         $realpaths = plugin_rename_recursive_readdir($path);
         foreach ($realpaths as $realpath) {
             $file = substr($realpath, strlen(realpath($path))+1);
-            $oldfile = $path . $file;
-            if(is_dir($oldfile)) continue;
+            if(is_dir($path . $file)) continue;
 
-            $matches = array();
             foreach ($pages as $from => $to) {
                 $pattern = '/^' . str_replace('/', '\/', $from) . '([.\/][^\/]*)$/';
 	        if (preg_match($pattern, $file, $matches)) {
                     $newfile = $to . $matches[1];
-	            $files[$from][$oldfile] = $path.$newfile;
+	            $files[$from][$path . $file] = $path . $newfile;
                 }
             }
         }
@@ -512,8 +502,7 @@ function plugin_rename_get_existpages() {
  * Return where the page exists or existed
  */
 function plugin_rename_is_page($page) {
-    //$enc = encode($page);
-    $enc = $page;
+    $enc = encode($page);
     if (is_page($page)) {
 	return true;
     }

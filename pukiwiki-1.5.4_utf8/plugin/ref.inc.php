@@ -162,19 +162,17 @@ function plugin_ref_body($args)
 	    }
 	    $name = $matches[2];
 	    $page = get_fullname(strip_bracket($matches[1]), $page); // strip is a compat
-	    //$file = UPLOAD_DIR . encode($page) . '_' . encode($name);
-            $file = UPLOAD_DIR . $page . DIRECTORY_SEPARATOR . $name;
+	    $file = UPLOAD_DIR . encode($page) . DIRECTORY_SEPARATOR . encode($name);
 	    $is_file = is_file($file);
 
 	    // 第二引数以降が存在し、それはrefのオプション名称などと一致しない
 	} else if (isset($args[0]) && $args[0] != '' && ! isset($params[$args[0]])) {
-	    //$e_name = encode($name);
+	    $e_name = encode($name);
 
 	    // Try the second argument, as a page-name or a path-name
 	    //$_arg = get_fullname(strip_bracket($args[0]), $page); // strip is a compat
             $_arg = $page;
-	    //$file = UPLOAD_DIR .  encode($_arg) . '_' . $e_name;
-	    $file = UPLOAD_DIR .  $_arg . DIRECTORY_SEPARATOR . $name;
+	    $file = UPLOAD_DIR .  encode($_arg) . DIRECTORY_SEPARATOR . $e_name;
 	    $is_file_second = is_file($file);
 
 	    // If the second argument is WikiName, or double-bracket-inserted pagename (compat)
@@ -187,8 +185,7 @@ function plugin_ref_body($args)
 		$is_file = TRUE;
 	    } else {
 		// Try default page, with default params
-		//$is_file_default = is_file(UPLOAD_DIR . encode($page) . '_' . $e_name);
-                $is_file_default = is_file(UPLOAD_DIR . $page . DIRECTORY_SEPARATOR . $name);                
+		$is_file_default = is_file(UPLOAD_DIR . encode($page) . DIRECTORY_SEPARATOR . $e_name);
 
 		// Promote new design
 		if ($is_file_default && $is_file_second) {
@@ -206,8 +203,7 @@ function plugin_ref_body($args)
 	    }
 	} else {
 	    // Simple single argument
-	    //$file = UPLOAD_DIR . encode($page) . '_' . encode($name);
-	    $file = UPLOAD_DIR . $page . DIRECTORY_SEPARATOR . $name;
+	    $file = UPLOAD_DIR . encode($page) . DIRECTORY_SEPARATOR . encode($name);
 	    $is_file = is_file($file);
 	}
 	if (! $is_file) {
@@ -420,8 +416,7 @@ function plugin_ref_action()
     $page     = $vars['page'];
     $filename = $vars['src'] ;
 
-    //$ref = UPLOAD_DIR . encode($page) . '_' . encode(preg_replace('#^.*/#', '', $filename));
-    $ref = UPLOAD_DIR . $page . DIRECTORY_SEPARATOR . preg_replace('#^.*/#', '', $filename);
+    $ref = UPLOAD_DIR . encode($page) . DIRECTORY_SEPARATOR . encode(preg_replace('#^.*/#', '', $filename));
     if(! file_exists($ref))
 	return array('msg'=>'Attach file not found', 'body'=>$usage);
 

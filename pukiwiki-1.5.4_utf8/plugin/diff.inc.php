@@ -47,8 +47,7 @@ function plugin_diff_view($page)
     }
 
     
-    //$filename = DIFF_DIR . encode($page) . '.txt';
-    $filename = DIFF_DIR . $page . '.txt';
+    $filename = DIFF_DIR . encode($page) . '.txt';
     if (file_exists($filename)) {
 	if (! PKWK_READONLY) {
 	    $menu[] = '<li><a href="' . $script . '?cmd=diff&amp;action=delete&amp;page=' .
@@ -80,8 +79,7 @@ function plugin_diff_delete($page)
     global $_msg_diff_adminpass, $_btn_delete, $_msg_invalidpass;
 
     $script = get_base_uri();
-    //$filename = DIFF_DIR . encode($page) . '.txt';
-    $filename = DIFF_DIR . $page . '.txt';    
+    $filename = DIFF_DIR . encode($page) . '.txt';
     $body = '';
     if (! is_pagename($page))     $body = 'Invalid page name';
     if (! file_exists($filename)) $body = make_pagelink($page) . '\'s diff seems not found';
