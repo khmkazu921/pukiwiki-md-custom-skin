@@ -868,35 +868,6 @@ class Align extends Element
     }
 }
 
-class Contents_UList extends ListContainer
-{
-    function Contents_UList($text, $level, $id)
-    {
-	$this->__construct($text, $level, $id);
-    }
-    function __construct($text, $level, $id)
-    {
-	// Reformatting $text
-	// A line started with "\n" means "preformatted" ... X(
-	make_heading($text);
-	$text = "\n" . '<a href="#' . $id . '">' . $text . '</a>' . "\n";
-	parent::__construct('ul', 'li', '-', str_repeat('-', $level));
-	$this->insert(Factory_Inline($text));
-    }
-
-    function setParent(& $parent)
-    {
-	parent::setParent($parent);
-	$step   = $this->level;
-	if (isset($parent->parent) && is_a($parent->parent, 'ListContainer')) {
-	    $step  -= $parent->parent->level;
-	}
-	$indent_level = ($step == $this->level ? 1 : $step);
-	$this->style = sprintf(pkwk_list_attrs_template(), $this->level, $indent_level);
-    }
-}
-
-
 // Body
 class Body extends Element
 {
@@ -1063,5 +1034,33 @@ class Body extends Element
 		     $this->contents->toString() . "\n" .
 		     '</div>' . "\n";
 	return $contents;
+    }
+}
+
+class Contents_UList extends ListContainer
+{
+    function Contents_UList($text, $level, $id)
+    {
+	$this->__construct($text, $level, $id);
+    }
+    function __construct($text, $level, $id)
+    {
+	// Reformatting $text
+	// A line started with "\n" means "preformatted" ... X(
+	make_heading($text);
+	$text = "\n" . '<a href="#' . $id . '">' . $text . '</a>' . "\n";
+	parent::__construct('ul', 'li', '-', str_repeat('-', $level));
+	$this->insert(Factory_Inline($text));
+    }
+
+    function setParent(& $parent)
+    {
+	parent::setParent($parent);
+	$step   = $this->level;
+	if (isset($parent->parent) && is_a($parent->parent, 'ListContainer')) {
+	    $step  -= $parent->parent->level;
+	}
+	$indent_level = ($step == $this->level ? 1 : $step);
+	$this->style = sprintf(pkwk_list_attrs_template(), $this->level, $indent_level);
     }
 }
