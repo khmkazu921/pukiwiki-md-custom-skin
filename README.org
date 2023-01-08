@@ -4,5 +4,5 @@
 
 
 参考：
-- [[https://oncologynote.com/?baa57eda56][Pukiwiki 1.5.4も無理やりMarkdown記法とPukiwiki記法に両対応させた]]
+- [[https://oncology.uvs.jp/?baa57eda56][Pukiwiki 1.5.4も無理やりMarkdown記法とPukiwiki記法に両対応させた]]
 - [[https://design.kyusan-u.ac.jp/OpenSquareJP/?PukiWiki/Customize][PukiWiki Customize]]
