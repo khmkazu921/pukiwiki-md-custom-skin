@@ -46,13 +46,17 @@ function toggleShowSwitch() {
     Array.prototype.forEach.call(blocks, function(block) {
         if (block.offsetWidth < block.scrollWidth) {
             // your element have overflow
-            $('#pre-'+_selectIndex+' .switch').css({'display':'initial'});
+            $('#pre-'+_selectIndex+' .wrap-switch').css({'display':'initial'});
         } else {
             // your element doesn't have overflow
-            $('#pre-'+_selectIndex+' .switch').css({'display':'none'});
+            $('#pre-'+_selectIndex+' .wrap-switch').css({'display':'none'});
         }
         _selectIndex++;
     });
+}
+
+function toggleMoreCode(id) {
+    $("#pre-"+id).toggleClass("open");
 }
 
 $(function (){
@@ -64,8 +68,17 @@ $(function (){
         block.parentElement.setAttribute('id','pre-'+_selectIndex);
         block.setAttribute('id','code-'+_selectIndex);
         var language = block.result.language;
-        var html_switch = '<div class="code-header"><label class="hljs-label">'+language+'</label><label class="switch"><input type="checkbox" onclick="toggleWrapText(this)" value='+_selectIndex+' wrap=false><span class="slider round"></span></label></div>';
-        block.insertAdjacentHTML("beforebegin",`${html_switch}`)
+        var header = `<div class="code-header"><label class="hljs-label">${language}</label><div class="switch-wrapper">`
+        if( $("#pre-"+_selectIndex).height() >= 150 ) {
+            header += `<label class="switch"><input type="checkbox" onclick="toggleMoreCode(${_selectIndex})" value=${_selectIndex} wrap=false><span class="slider round"></span></label>`;
+        }
+        header += `<label class="switch wrap-switch"><input type="checkbox" onclick="toggleWrapText(this)" value=${_selectIndex} wrap=false><span class="slider round"></span></label></div>`;
+        if( $("#pre-"+_selectIndex).height() >= 150 ) {
+            header += `<div class="code-fade"></div>`;
+        }
+        header += `</div>`;
+
+        block.insertAdjacentHTML("beforebegin",`${header}`)
         _selectIndex++;        
     });
     hljs.initLineNumbersOnLoad();
@@ -80,8 +93,6 @@ $(function (){
     // $('pre:has(code)').addClass('hljs-ln-outer-code');
     
     $(function(){
-
         $('code.hljs:has(table)').addClass('hljs-ln-outer-code');
-    });
-
+    });    
 });

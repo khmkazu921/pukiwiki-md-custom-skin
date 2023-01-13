@@ -357,8 +357,11 @@ function file_write($dir, $page, $str, $notimestamp = FALSE, $is_delete = FALSE)
 
     $page = strip_bracket($page);
     mkdir( $dir . dirname($page) , 0777, true);
-    $file = $dir . $page . '.txt';
+    $file = $dir . encode($page) . '.txt';
     $file_exists = file_exists($file);
+
+    // ----
+    // Delete?
     
     if ($dir == DATA_DIR && $is_delete) {
 	// Page deletion
@@ -808,7 +811,7 @@ function get_existpages($dir = DATA_DIR, $ext = '.txt')
     foreach ($files as $file) {
         $file = preg_replace('/'.preg_quote(realpath(DATA_DIR).'/', '/').'/', '', $file);
 	if (preg_match($pattern, $file , $matches)) {
-            $aryret[$file] = $matches[1];
+            $aryret[$file] = decode($matches[1]);
 	}
     }
 
@@ -1181,6 +1184,6 @@ function get_notemd($pagename)
         echo "Error in opening file ". $file;
     }
     return preg_match('/(^|\n)\#notemd\n/', $lines[0]);
-//    $three_lines = array_slice($lines, 0, 3);
-//    return preg_match('/(^|\n)\#notemd\n/', implode('', $three_lines));
+    //    $three_lines = array_slice($lines, 0, 3);
+    //    return preg_match('/(^|\n)\#notemd\n/', implode('', $three_lines));
 }

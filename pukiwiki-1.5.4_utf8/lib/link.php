@@ -95,7 +95,7 @@ function links_update($page)
 	if (! empty($rel_new)) {
             mkdir( dirname($rel_file) , 0777, true);
     	    $fp = fopen($rel_file, 'w')
-    	    or die_message('cannot write ' . htmlsc($rel_file) . ' (link.php:97)');
+    	    or die_message('cannot write ' . htmlsc($rel_file));
 	    fputs($fp, join("\t", $rel_new));
 	    fclose($fp);
 	}
@@ -222,7 +222,7 @@ function links_add($page, $add, $rel_auto)
 	if ($is_page || ! $all_auto) {
             mkdir( dirname($ref_file), 0777, true);    
 	    $fp = fopen($ref_file, 'w')
-	    or die_message('cannot write ' . htmlsc($ref_file) . '(link.php:221)');
+	    or die_message('cannot write ' . htmlsc($ref_file));
 	    fputs($fp, $ref);
 	    fclose($fp);
 	}
@@ -258,7 +258,7 @@ function links_delete($page, $del)
 	    }
 	}
 	unlink($ref_file);
-        links_remove_empty_dirs(CACHEDIR);
+        links_remove_empty_dirs(CACHE_DIR);
 
 	if (($is_page || ! $all_auto) && $ref != '') {
             mkdir( dirname($ref_file), 0777, true);    

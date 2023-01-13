@@ -78,7 +78,7 @@ class InlineConverter
 		if ($converters === NULL) {
 			$converters = array(
 				'plugin',        // Inline plugins
-				'note',          // Footnotes
+				// 'note',          // Footnotes
 				// 'url',           // URLs
 				// 'url_interwiki', // URLs (interwiki definition)
 				// 'mailto',        // mailto: URL schemes

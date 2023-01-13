@@ -217,6 +217,7 @@ function plugin_rename_phase3($pages)
     $script = get_base_uri();
     $msg = $input = '';
     $files = plugin_rename_get_files($pages);
+    
     $exists = array();
     foreach ($files as $_page=>$arr)
 	foreach ($arr as $old=>$new)
@@ -414,10 +415,9 @@ function plugin_rename_proceed($pages, $files, $exists)
 	$postdata[] = '----' . "\n";
     }
 
-    foreach ($pages as $old=>$new) {
+    foreach ($pages as $old=>$new)
         $postdata[] = '-' . decode($old) .
                       $_rename_messages['msg_arrow'] . decode($new) . "\n";
-    }
 
     // 更新の衝突はチェックしない。
 
