@@ -1,3 +1,0 @@
-* Notes [#p7ee528b]
-
-#ls2(Notes,reverse);
