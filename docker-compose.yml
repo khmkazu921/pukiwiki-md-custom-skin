@@ -7,20 +7,7 @@ services:
         ports:
             - 8080:80
         volumes:
-            - ./index.php:/var/www/html/index.php
-            - ./pukiwiki.ini.php:/var/www/html/pukiwiki.ini.php
-            - ./default.ini.php:/var/www/html/default.ini.php
-            - ./rules.ini.php:/var/www/html/rules.ini.php
-            - ./en.lng.php:/var/www/html/en.lng.php
-            - ./lib:/var/www/html/lib
-            - ./skin:/var/www/html/skin
-            - ./plugin:/var/www/html/plugin
-            - ./wiki:/var/www/html/wiki
-            - ./image:/var/www/html/image
-            - ./backup:/var/www/html/backup
-            - ./diff:/var/www/html/diff
-            - ./cache:/var/www/html/cache
-            - ./counter:/var/www/html/counter
+            - ./pukiwiki:/var/www/html
             - ./default.conf:/etc/nginx/conf.d/default.conf
 
     php:
@@ -28,17 +15,4 @@ services:
         image: php:8-fpm
         restart: always
         volumes:
-            - ./index.php:/var/www/html/index.php
-            - ./pukiwiki.ini.php:/var/www/html/pukiwiki.ini.php
-            - ./default.ini.php:/var/www/html/default.ini.php
-            - ./rules.ini.php:/var/www/html/rules.ini.php
-            - ./en.lng.php:/var/www/html/en.lng.php
-            - ./lib:/var/www/html/lib
-            - ./skin:/var/www/html/skin
-            - ./plugin:/var/www/html/plugin
-            - ./wiki:/var/www/html/wiki
-            - ./image:/var/www/html/image
-            - ./backup:/var/www/html/backup
-            - ./diff:/var/www/html/diff            
-            - ./cache:/var/www/html/cache
-            - ./counter:/var/www/html/counter
+            - ./pukiwiki:/var/www/html
