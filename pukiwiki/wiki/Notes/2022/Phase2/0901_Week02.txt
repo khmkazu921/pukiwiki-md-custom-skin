@@ -1,0 +1,1298 @@
+#notemd
+# 220907a_FP6
+
+## ECO 1
+
+  - area 122784.1782
+  - LVT 4395.5159
+  - wire length 3545480.9750
+  - original :: Core Area is : 451746.202
+  - Core Area is : 470159.7696
+
+| corner                       | WNS (wo/w IO)  | TNS (wo/w IO)  | NVP       | Tran | Cap | Nois |
+| ---------------------------- | -------------- | -------------- | --------- | ---- | --- | ---- |
+| wcl_cwst_ccwstt (S) | \-0.062/-0.226 | 1.162/ 145.962 | 101/ 2735 | 0    | 0   | 0    |
+| wcl_rcwst_ccwstt(S) | \-0.039/-0.216 | 0.222/ 160.307 | 19/ 2749  | 0    | 0   | 0    |
+| wc_cwst_ccwstt (S)  | 0.000/-0.218   | 0.000/ 136.057 | 0/ 2415   | 94   | 0   | 0    |
+| wc_rcwst_ccwstt (S) | 0.000/-0.215   | 0.000/ 165.484 | 0/ 2609   | 0    | 0   | 0    |
+| wcl_rcwst_ccwst (H) | 0.000/ 0.000   | 0.000/ 0.000   | 0/ 0      | 0    | 0   | 0    |
+| wcl_cwst_ccwst (H)  | 0.000/ 0.000   | 0.000/ 0.000   | 0/ 0      | 0    | 0   | 0    |
+| wc_cwst_ccwst (H)   | 0.000/ 0.000   | 0.000/ 0.000   | 0/ 0      | 294  | 3   | 0    |
+| wc_rcwst_ccwst (H)  | 0.000/ 0.000   | 0.000/ 0.000   | 0/ 0      | 0    | 0   | 0    |
+| lt_rcwst_ccwst (H)  | 0.000/ 0.000   | 0.000/ 0.000   | 0/ 0      | 0    | 0   | 0    |
+| lt_cwst_ccwst (H)   | 0.000/ 0.000   | 0.000/ 0.000   | 0/ 0      | 0    | 5   | 0    |
+| lt_cbst_ccbst (H)   | 0.000/ 0.000   | 0.000/ 0.000   | 0/ 0      | 0    | 0   | 0    |
+| lt_rcbst_ccbst (H)  | 0.000/ 0.000   | 0.000/ 0.000   | 0/ 0      | 0    | 2   | 0    |
+| ml_rcwst_ccwst (H)  | 0.000/ 0.000   | 0.000/ 0.000   | 0/ 0      | 0    | 0   | 0    |
+| ml_cwst_ccwst (H)   | 0.000/ 0.000   | 0.000/ 0.000   | 0/ 0      | 0    | 1   | 0    |
+| ml_cbst_ccbst (H)   | 0.000/ 0.000   | 0.000/ 0.000   | 0/ 0      | 0    | 0   | 0    |
+| ml_rcbst_ccbst (H)  | 0.000/ 0.000   | 0.000/ 0.000   | 0/ 0      | 0    | 0   | 0    |
+
+## 1st STA
+
+| corner                       | WNS (wo/w IO)  | TNS (wo/w IO)   | NVP       | Tran | Cap | Nois |
+| ---------------------------- | -------------- | --------------- | --------- | ---- | --- | ---- |
+| wcl_cwst_ccwstt (S) | \-0.065/-1.181 | 10.131/3279.646 | 798/ 8751 | 0    | 0   | 0    |
+| wcl_rcwst_ccwstt(S) | \-0.065/-1.181 | 10.131/3279.646 | 798/ 8751 | 0    | 0   | 0    |
+| wc_cwst_ccwstt (S)  | 0.000/-0.980   | 0.000/2352.049  | 0/ 7605   | 92   | 5   | 0    |
+| wc_rcwst_ccwstt (S) | 0.000/-0.980   | 0.000/2352.049  | 0/ 7605   | 92   | 5   | 0    |
+| wcl_rcwst_ccwst (H) | 0.000/ 0.000   | 0.000/ 0.000    | 0/ 0      | 0    | 0   | 0    |
+| wcl_cwst_ccwst (H)  | 0.000/ 0.000   | 0.000/ 0.000    | 0/ 0      | 0    | 0   | 0    |
+| wc_cwst_ccwst (H)   | 0.000/ 0.000   | 0.000/ 0.000    | 0/ 0      | 92   | 5   | 0    |
+| wc_rcwst_ccwst (H)  | 0.000/ 0.000   | 0.000/ 0.000    | 0/ 0      | 92   | 5   | 0    |
+| lt_rcwst_ccwst (H)  | 0.000/ 0.000   | 0.000/ 0.000    | 1/ 1      | 0    | 7   | 0    |
+| lt_cwst_ccwst (H)   | 0.000/ 0.000   | 0.000/ 0.000    | 1/ 1      | 0    | 7   | 0    |
+| lt_cbst_ccbst (H)   | 0.000/ 0.000   | 0.000/ 0.000    | 1/ 1      | 0    | 7   | 0    |
+| lt_rcbst_ccbst (H)  | 0.000/ 0.000   | 0.000/ 0.000    | 1/ 1      | 0    | 7   | 0    |
+| ml_rcwst_ccwst (H)  | 0.000/ 0.000   | 0.000/ 0.000    | 0/ 0      | 0    | 3   | 0    |
+| ml_cwst_ccwst (H)   | 0.000/ 0.000   | 0.000/ 0.000    | 0/ 0      | 0    | 3   | 0    |
+| ml_cbst_ccbst (H)   | 0.000/ 0.000   | 0.000/ 0.000    | 0/ 0      | 0    | 3   | 0    |
+| ml_rcbst_ccbst (H)  | 0.000/ 0.000   | 0.000/ 0.000    | 0/ 0      | 0    | 3   | 0    |
+
+``` text
+Timing
+---------------------------------------------------------------------------
+Context                                 WNS            TNS            NVE
+---------------------------------------------------------------------------
+func::ss72_cworst_CCworst_T_m40c (Setup)        -0.0445        -0.0918             23
+func::ss72_rcworst_CCworst_T_125c (Setup)         0.0750         0.0000              0
+Design             (Setup)          -0.0445        -0.0918             23
+
+func::ff88_rcworst_CCworst_125c (Hold)        -0.0360        -4.6379           2864
+func::ss72_cworst_CCworst_125c (Hold)         0.0041         0.0000              0
+func::ss72_rcworst_CCworst_125c (Hold)         0.0064         0.0000              0
+Design             (Hold)           -0.0360        -4.6379           2864
+---------------------------------------------------------------------------
+```
+
+# 220905a_RESETVIOLATION (def_5)
+
+  - original  
+    Core Area is : 451746.202
+
+<!-- end list -->
+
+  - Core Area is : 470159.7696
+
+| STEP: place_opt             | WNS      | TNS        | NVP   | Std. Cell   |
+| ------------------------------------- | -------- | ---------- | ----- | ----------- |
+| ss72_cworstCCworstTm40c(S)  | \-3.3739 | \-938.4237 | 2135  | \-          |
+| ss72_rcworstCCworstT125c(S) | \-2.4254 | \-517.7164 | 1324  | \-          |
+| Design(S)                             | \-3.3739 | \-938.5121 | 2141  | 109162.1560 |
+| ff88_rcworstCCworst125c(H)  | \-0.1687 | \-544.5543 | 21701 | \-          |
+| ss72_cworstCCworst125c(H)   | \-0.1908 | \-168.7429 | 1750  | \-          |
+| ss72_rcworstCCworst125c(H)  | \-0.1925 | \-188.7695 | 1929  | \-          |
+| Design(H)                             | \-0.1925 | \-545.2666 | 21701 | 109162.1560 |
+
+| STEP: clock_optcts          | WNS      | TNS         | NVP   | Std. Cell   |
+| ------------------------------------- | -------- | ----------- | ----- | ----------- |
+| ss72_cworstCCworstTm40c(S)  | \-3.1380 | \-1116.5672 | 2526  | \-          |
+| ss72_rcworstCCworstT125c(S) | \-2.3685 | \-713.0136  | 1729  | \-          |
+| Design(S)                             | \-3.1380 | \-1119.8631 | 2535  | 109741.6212 |
+| ff88_rcworstCCworst125c(H)  | \-0.1385 | \-685.3635  | 26730 | \-          |
+| ss72_cworstCCworst125c(H)   | \-0.1411 | \-35.8762   | 2210  | \-          |
+| ss72_rcworstCCworst125c(H)  | \-0.1499 | \-47.8356   | 2479  | \-          |
+| Design(H)                             | \-0.1499 | \-685.4475  | 26730 | 109741.6212 |
+
+| STEP: clock_optopto         | WNS      | TNS         | NVP  | Std. Cell   |
+| ------------------------------------- | -------- | ----------- | ---- | ----------- |
+| ss72_cworstCCworstTm40c(S)  | \-3.4290 | \-1196.3462 | 2308 | \-          |
+| ss72_rcworstCCworstT125c(S) | \-2.6779 | \-698.9393  | 1545 | \-          |
+| Design(S)                             | \-3.4290 | \-1196.7725 | 2310 | 127209.6276 |
+| ff88_rcworstCCworst125c(H)  | \-0.1064 | \-18.7957   | 2051 | \-          |
+| ss72_cworstCCworst125c(H)   | \-0.0648 | \-0.3717    | 20   | \-          |
+| ss72_rcworstCCworst125c(H)  | \-0.0646 | \-0.6026    | 34   | \-          |
+| Design(H)                             | \-0.1064 | \-18.7957   | 2051 | 127209.6276 |
+
+# 220905a_RESETVIOLATION (def_4)
+
+## Issues
+
+  - Hold fixing (clock_optopto) do not finish
+
+## Status (clock_optcts)
+
+  - Total wire length = 369042.6260 micron
+  - 
+<!-- end list -->
+
+``` text
+  Startpoint: fmem/arbiterImpl/requestBanksReg_1_0_reg (rising edge-triggered flip-flop clocked by clock)
+  Endpoint: storeFdma/fmemReader/fmemQPacked_6_reg_102_ (rising edge-triggered flip-flop clocked by clock)
+  Mode: func
+  Corner: ss72_cworst_CCworst_T_m40c
+  Scenario: func::ss72_cworst_CCworst_T_m40c
+  Path Group: clock
+  Path Type: max
+
+
+Attributes
+    b - black-box (unknown)
+    s - size_only
+    d - dont_touch
+    u - dont_use
+    g - generic
+    h - hierarchical
+    i - ideal
+    n - noncombinational
+    E - extracted timing model
+    Q - Quick timing model
+
+
+  Point                                                                       Fanout     Cap        Trans      Derate      Incr        Path           Location       Attributes
+  -----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+  clock clock (rise edge)                                                                                                 0.0000      0.0000
+  clock network delay (propagated)                                                                                        0.3392      0.3392
+
+  fmem/arbiterImpl/requestBanksReg_1_0_reg/CP (SDFQD1BWP6T16P96CPD)                                 0.0368      1.0000    0.0000      0.3392 r    (332.87,490.18)   s, n
+  fmem/arbiterImpl/requestBanksReg_1_0_reg/Q (SDFQD1BWP6T16P96CPD)                                  0.0214      1.0430    0.1078      0.4470 r    (333.06,490.18)   s, n
+  fmem/arbiterImpl/requestBanksReg_1_0 (net)                                     1      0.0016
+  fmem/arbiterImpl/place_opt_HFSBUF_176304_72499/I (BUFFD12BWP6T16P96CPDLVT)                        0.0214      1.0000    0.0001      0.4471 r    (332.68,490.56)
+  fmem/arbiterImpl/place_opt_HFSBUF_176304_72499/Z (BUFFD12BWP6T16P96CPDLVT)                        0.0243      1.0430    0.0334      0.4805 r    (331.78,490.56)
+  fmem/arbiterImpl/place_opt_HFSNET_5703 (net)                                   3      0.0370
+  fmem/arbiterImpl/place_opt_HFSBUF_91321_72498/I (BUFFD16BWP6T16P96CPDLVT)                         0.0252      1.0000    0.0033      0.4838 r    (378.96,490.18)
+  fmem/arbiterImpl/place_opt_HFSBUF_91321_72498/Z (BUFFD16BWP6T16P96CPDLVT)                         0.0154      1.0430    0.0288      0.5126 r    (377.90,490.18)
+  fmem/arbiterImpl/place_opt_HFSNET_5702 (net)                                   5      0.1008
+  fmem/arbiterImpl/place_opt_HFSINV_46414_72465/I (INVD1BWP6T16P96CPDLVT)                           0.3016      1.0000    0.1478      0.6604 r    (670.11,406.49)
+  fmem/arbiterImpl/place_opt_HFSINV_46414_72465/ZN (INVD1BWP6T16P96CPDLVT)                          0.5759      1.0430    0.4466      1.1070 f    (670.04,406.46)
+  fmem/arbiterImpl/place_opt_HFSNET_5653 (net)                                   2      0.0530
+  fmem/arbiterImpl/place_opt_ZINV_inst_97010/I (INVD10BWP6T16P96CPD)                                0.5874      1.0000    0.0587      1.1658 f    (671.47,481.34)
+  fmem/arbiterImpl/place_opt_ZINV_inst_97010/ZN (INVD10BWP6T16P96CPD)                               0.1501      1.0430    0.2286      1.3944 r    (671.76,481.34)
+  fmem/arbiterImpl/place_opt_ZINV_5222 (net)                                     1      0.0499
+  fmem/arbiterImpl/place_opt_ZBUF_inst_97009/I (BUFFD6BWP6T16P96CPD)                                0.2019      1.0000    0.0688      1.4632 r    (674.41,282.82)
+  fmem/arbiterImpl/place_opt_ZBUF_inst_97009/Z (BUFFD6BWP6T16P96CPD)                                0.0362      1.0430    0.1346      1.5978 r    (674.86,282.82)
+  fmem/arbiterImpl/place_opt_ZBUF_5222 (net)                                     1      0.0174
+  fmem/arbiterImpl/place_opt_ZBUF_inst_97008/I (BUFFD8BWP6T16P96CPD)                                0.0466      1.0000    0.0141      1.6119 r    (672.29,221.38)
+  fmem/arbiterImpl/place_opt_ZBUF_inst_97008/Z (BUFFD8BWP6T16P96CPD)                                0.0480      1.0430    0.0675      1.6794 r    (672.82,221.38)
+  fmem/arbiterImpl/place_opt_ZBUF_5221 (net)                                     1      0.0421
+  fmem/arbiterImpl/place_opt_ZINV_inst_97007/I (INVD10BWP6T16P96CPD)                                0.1052      1.0000    0.0420      1.7214 r    (472.94,219.07)
+  fmem/arbiterImpl/place_opt_ZINV_inst_97007/ZN (INVD10BWP6T16P96CPD)                               0.0549      1.0430    0.0816      1.8030 f    (473.23,219.07)
+  fmem/arbiterImpl/place_opt_ZINV_5221 (net)                                     1      0.0417
+  fmem/arbiterImpl/place_opt_HFSINV_42391_72462/I (INVD3BWP6T16P96CPDLVT)                           0.1058      1.0000    0.0415      1.8445 f    (452.87,419.14)
+  fmem/arbiterImpl/place_opt_HFSINV_42391_72462/ZN (INVD3BWP6T16P96CPDLVT)                          0.0279      1.0430    0.0260      1.8705 r    (452.97,419.14)
+  fmem/arbiterImpl/place_opt_HFSNET_5647 (net)                                   1      0.0032
+  fmem/arbiterImpl/place_opt_ZINV_inst_92268/I (INVD4BWP6T16P96CPDLVT)                              0.0279      1.0000    0.0007      1.8711 r    (455.37,426.05)
+  fmem/arbiterImpl/place_opt_ZINV_inst_92268/ZN (INVD4BWP6T16P96CPDLVT)                             0.0255      1.0430    0.0285      1.8996 f    (455.50,426.05)
+  fmem/arbiterImpl/place_opt_ZINV_3748 (net)                                     1      0.0090
+  fmem/arbiterImpl/place_opt_ZINV_inst_92267/I (INVD16BWP6T16P96CPDLVT)                             0.0255      1.0000    0.0025      1.9021 f    (451.82,410.69)
+  fmem/arbiterImpl/place_opt_ZINV_inst_92267/ZN (INVD16BWP6T16P96CPDLVT)                            0.0172      1.0430    0.0158      1.9179 r    (451.82,410.69)
+  fmem/arbiterImpl/place_opt_ZINV_3747 (net)                                     6      0.0495
+  fmem/arbiterImpl/place_opt_ZINV_inst_88900/I (INVD4BWP6T16P96CPDLVT)                              0.0660      1.0000    0.0321      1.9500 r    (540.82,321.22)
+  fmem/arbiterImpl/place_opt_ZINV_inst_88900/ZN (INVD4BWP6T16P96CPDLVT)                             0.0434      1.0430    0.0486      1.9986 f    (540.70,321.22)
+  fmem/arbiterImpl/place_opt_ZINV_3513 (net)                                     1      0.0153
+  fmem/arbiterImpl/place_opt_ZINV_inst_88899/I (INVD12BWP6T16P96CPDLVT)                             0.0492      1.0000    0.0111      2.0097 f    (540.53,364.61)
+  fmem/arbiterImpl/place_opt_ZINV_inst_88899/ZN (INVD12BWP6T16P96CPDLVT)                            0.0207      1.0430    0.0202      2.0299 r    (540.53,364.61)
+  fmem/arbiterImpl/place_opt_ZINV_3512 (net)                                     1      0.0210
+  fmem/arbiterImpl/place_opt_ZBUF_inst_88898/I (BUFFD16BWP6T16P96CPDLVT)                            0.0424      1.0000    0.0162      2.0461 r    (542.16,289.73)
+  fmem/arbiterImpl/place_opt_ZBUF_inst_88898/Z (BUFFD16BWP6T16P96CPDLVT)                            0.0169      1.0430    0.0365      2.0826 r    (543.22,289.73)
+  fmem/arbiterImpl/place_opt_ZBUF_3512 (net)                                     1      0.0420
+  fmem/arbiterImpl/place_opt_ZBUF_inst_88896/I (BUFFD16BWP6T16P96CPDLVT)                            0.0918      1.0000    0.0380      2.1206 r    (673.30,212.54)
+  fmem/arbiterImpl/place_opt_ZBUF_inst_88896/Z (BUFFD16BWP6T16P96CPDLVT)                            0.0161      1.0430    0.0491      2.1697 r    (674.35,212.54)
+  fmem/arbiterImpl/place_opt_ZBUF_3510 (net)                                     2      0.0223
+  fmem/arbiterImpl/place_opt_ZBUF_inst_96563/I (BUFFD10BWP6T16P96CPDLVT)                            0.0236      1.0000    0.0081      2.1778 r    (675.02,276.67)
+  fmem/arbiterImpl/place_opt_ZBUF_inst_96563/Z (BUFFD10BWP6T16P96CPDLVT)                            0.0184      1.0430    0.0270      2.2048 r    (674.26,276.67)
+  fmem/arbiterImpl/place_opt_ZBUF_4928 (net)                                     3      0.0214
+  fmem/arbiterImpl/place_opt_ZINV_inst_96562/I (INVD8BWP6T16P96CPDLVT)                              0.0253      1.0000    0.0057      2.2105 r    (671.61,272.45)
+  fmem/arbiterImpl/place_opt_ZINV_inst_96562/ZN (INVD8BWP6T16P96CPDLVT)                             0.0677      1.0430    0.0337      2.2442 f    (671.86,272.45)
+  fmem/arbiterImpl/place_opt_ZINV_4928 (net)                                     2      0.0766
+  fmem/arbiterImpl/place_opt_ZINV_inst_96561/I (INVD8BWP6T16P96CPDLVT)                              0.1270      1.0000    0.0559      2.3001 f    (674.49,451.78)
+  fmem/arbiterImpl/place_opt_ZINV_inst_96561/ZN (INVD8BWP6T16P96CPDLVT)                             0.1068      1.0430    0.0862      2.3863 r    (674.74,451.78)
+  fmem/arbiterImpl/place_opt_ZINV_4927 (net)                                    11      0.0974
+  fmem/arbiterImpl/place_opt_ZINV_inst_88926/I (INVD1BWP6T16P96CPDLVT)                              0.1133      1.0000    0.0186      2.4049 r    (675.33,570.08)
+  fmem/arbiterImpl/place_opt_ZINV_inst_88926/ZN (INVD1BWP6T16P96CPDLVT)                             0.5531      1.0430    0.3557      2.7606 f    (675.40,570.05)
+  fmem/arbiterImpl/place_opt_ZINV_3524 (net)                                     1      0.0544
+  fmem/arbiterImpl/place_opt_ZINV_inst_88925/I (INVD2BWP6T16P96CPDLVT)                              0.5761      1.0000    0.1020      2.8625 f    (673.24,350.75)
+  fmem/arbiterImpl/place_opt_ZINV_inst_88925/ZN (INVD2BWP6T16P96CPDLVT)                             0.3367      1.0430    0.2873      3.1499 r    (673.31,350.78)
+  fmem/arbiterImpl/place_opt_ZINV_3523 (net)                                     2      0.0723
+  fmem/arbiterImpl/place_opt_HFSINV_40806_72461/I (INVD8BWP6T16P96CPDLVT)                           0.4312      1.0000    0.1145      3.2644 r    (674.40,530.11)
+  fmem/arbiterImpl/place_opt_HFSINV_40806_72461/ZN (INVD8BWP6T16P96CPDLVT)                          0.2096      1.0430    0.2313      3.4956 f    (674.16,530.11)
+  fmem/arbiterImpl/place_opt_HFSNET_5646 (net)                                  17      0.1699
+  fmem/arbiterImpl/place_opt_ZBUF_inst_86542/I (BUFFD6BWP6T16P96CPDLVT)                             0.2109      1.0000    0.0016      3.4973 f    (672.29,530.50)
+  fmem/arbiterImpl/place_opt_ZBUF_inst_86542/Z (BUFFD6BWP6T16P96CPDLVT)                             0.0508      1.0430    0.0596      3.5569 f    (672.74,530.50)
+  fmem/arbiterImpl/place_opt_ZBUF_2618 (net)                                     9      0.0782
+  fmem/arbiterImpl/alchip3291_dc/B1 (AO22D1BWP6T16P96CPDLVT)                                        0.0871      1.0000    0.0126      3.5695 f    (673.01,510.10)
+  fmem/arbiterImpl/alchip3291_dc/Z (AO22D1BWP6T16P96CPDLVT)                                         0.6015      1.0430    0.3624      3.9319 f    (672.54,510.14)
+  fmem/arbiterImpl/io_read_1_read_0_data[870] (net)                              1      0.0588
+  storeFdma/fmemReader/place_opt_ZBUF_inst_97583/I (BUFFD2BWP6T16P96CPD)                            0.6130      1.0000    0.0888      4.0207 f    (459.56,421.06)
+  storeFdma/fmemReader/place_opt_ZBUF_inst_97583/Z (BUFFD2BWP6T16P96CPD)                            0.4292      1.0430    0.4001      4.4209 f    (459.37,421.06)
+  storeFdma/fmemReader/place_opt_ZBUF_5438 (net)                                 1      0.0660
+  storeFdma/fmemReader/place_opt_ZBUF_inst_97582/I (BUFFD2BWP6T16P96CPD)                            0.4672      1.0000    0.1105      4.5313 f    (671.52,294.72)
+  storeFdma/fmemReader/place_opt_ZBUF_inst_97582/Z (BUFFD2BWP6T16P96CPD)                            0.1901      1.0430    0.2634      4.7948 f    (671.33,294.72)
+  storeFdma/fmemReader/place_opt_ZBUF_5437 (net)                                 1      0.0283
+  storeFdma/fmemReader/place_opt_ZBUF_inst_97581/I (BUFFD2BWP6T16P96CPD)                            0.1928      1.0000    0.0219      4.8167 f    (540.00,312.00)
+  storeFdma/fmemReader/place_opt_ZBUF_inst_97581/Z (BUFFD2BWP6T16P96CPD)                            0.3778      1.0430    0.2745      5.0912 f    (539.81,312.00)
+  storeFdma/fmemReader/place_opt_ZBUF_5436 (net)                                 1      0.0596
+  storeFdma/fmemReader/place_opt_ZINV_inst_97580/I (INVD6BWP6T16P96CPD)                             0.4335      1.0000    0.1201      5.2113 f    (543.64,543.17)
+  storeFdma/fmemReader/place_opt_ZINV_inst_97580/ZN (INVD6BWP6T16P96CPD)                            0.1469      1.0430    0.2213      5.4326 r    (543.72,543.17)
+  storeFdma/fmemReader/place_opt_ZINV_5436 (net)                                 1      0.0441
+  storeFdma/fmemReader/place_opt_ZINV_inst_97579/I (INVD4BWP6T16P96CPD)                             0.1752      1.0000    0.0495      5.4820 r    (474.00,401.09)
+  storeFdma/fmemReader/place_opt_ZINV_inst_97579/ZN (INVD4BWP6T16P96CPD)                            0.1380      1.0430    0.1647      5.6468 f    (474.12,401.09)
+  storeFdma/fmemReader/place_opt_ZINV_5435 (net)                                 1      0.0344
+  storeFdma/fmemReader/place_opt_ZBUF_inst_97578/I (BUFFD2BWP6T16P96CPD)                            0.1507      1.0000    0.0347      5.6815 f    (542.31,294.34)
+  storeFdma/fmemReader/place_opt_ZBUF_inst_97578/Z (BUFFD2BWP6T16P96CPD)                            0.2936      1.0430    0.2310      5.9125 f    (542.12,294.34)
+  storeFdma/fmemReader/place_opt_ZBUF_5435 (net)                                 1      0.0441
+  storeFdma/fmemReader/fmemQPacked_6_reg_102_/D (SDFQD1BWP6T16P96CPD)                               0.3048      1.0000    0.0561      5.9686 f    (672.22,384.19)   s, n
+  data arrival time                                                                                                                   5.9686
+
+  clock clock (rise edge)                                                                                                 1.2500      1.2500
+  clock network delay (propagated)                                                                                        0.3542      1.6042
+  clock reconvergence pessimism                                                                                           0.0006      1.6049
+  storeFdma/fmemReader/fmemQPacked_6_reg_102_/CP (SDFQD1BWP6T16P96CPD)                              0.0905      1.0000    0.0000      1.6049 r    (670.24,384.19)   s, n
+  clock uncertainty                                                                                                      -0.0410      1.5639
+  library setup time                                                                                            1.0000   -0.0813      1.4825
+  data required time                                                                                                                  1.4825
+  -----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+  data required time                                                                                                                  1.4825
+  data arrival time                                                                                                                  -5.9686
+  -----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+  slack (VIOLATED)                                                                                                                   -4.4861
+
+
+
+
+---------------------------------------------------------------------------
+Context                                 WNS            TNS            NVE
+---------------------------------------------------------------------------
+func::ss72_cworst_CCworst_T_m40c (Setup)        -4.4861     -3425.8538           5055
+func::ss72_rcworst_CCworst_T_125c (Setup)        -4.0123     -2627.6266           3717
+Design             (Setup)          -4.4861     -3442.7867           5077
+
+func::ff88_rcworst_CCworst_125c (Hold)        -0.1260      -669.4860          26507
+func::ss72_cworst_CCworst_125c (Hold)        -0.0954       -26.9548           2004
+func::ss72_rcworst_CCworst_125c (Hold)        -0.1054       -33.1087           2204
+Design             (Hold)           -0.1260      -669.4860          26507
+---------------------------------------------------------------------------
+```
+
+# 220901c_FLOORPLAN16
+
+## ECO 4
+
+| corner                       | WNS (wo/w IO)  | TNS (wo/w IO) | NVP    | Tran | Cap | Nois |
+| ---------------------------- | -------------- | ------------- | ------ | ---- | --- | ---- |
+| wcl_cwst_ccwstt (S) | \-0.073/-0.087 | 0.526/ 2.825  | 34/ 95 | 0    | 0   | 0    |
+| wcl_rcwst_ccwstt(S) | \-0.057/-0.078 | 0.236/ 2.310  | 17/ 82 | 0    | 0   | 0    |
+| wc_cwst_ccwstt (S)  | \-0.016/-0.053 | 0.016/ 0.766  | 1/ 30  | 27   | 0   | 0    |
+| wc_rcwst_ccwstt (S) | \-0.006/-0.051 | 0.006/ 0.757  | 1/ 35  | 0    | 0   | 0    |
+| wcl_rcwst_ccwst (H) | 0.000/ 0.000   | 0.000/ 0.000  | 0/ 0   | 1    | 0   | 0    |
+| wcl_cwst_ccwst (H)  | 0.000/ 0.000   | 0.000/ 0.000  | 0/ 0   | 1    | 1   | 0    |
+| wc_cwst_ccwst (H)   | 0.000/ 0.000   | 0.000/ 0.000  | 0/ 0   | 64   | 2   | 0    |
+| wc_rcwst_ccwst (H)  | 0.000/ 0.000   | 0.000/ 0.000  | 0/ 0   | 1    | 0   | 0    |
+| lt_rcwst_ccwst (H)  | \-0.002/-0.002 | 0.002/ 0.002  | 1/ 1   | 1    | 0   | 0    |
+| lt_cwst_ccwst (H)   | 0.000/ 0.000   | 0.000/ 0.000  | 0/ 0   | 0    | 3   | 0    |
+| lt_cbst_ccbst (H)   | 0.000/ 0.000   | 0.000/ 0.000  | 0/ 0   | 0    | 0   | 0    |
+| lt_rcbst_ccbst (H)  | 0.000/ 0.000   | 0.000/ 0.000  | 0/ 0   | 0    | 0   | 0    |
+| ml_rcwst_ccwst (H)  | \-0.003/-0.003 | 0.003/ 0.003  | 1/ 1   | 1    | 0   | 0    |
+| ml_cwst_ccwst (H)   | 0.000/ 0.000   | 0.000/ 0.000  | 0/ 0   | 1    | 0   | 0    |
+| ml_cbst_ccbst (H)   | 0.000/ 0.000   | 0.000/ 0.000  | 0/ 0   | 0    | 0   | 0    |
+| ml_rcbst_ccbst (H)  | 0.000/ 0.000   | 0.000/ 0.000  | 0/ 0   | 0    | 0   | 0    |
+
+## ECO 3
+
+| corner                       | WNS (wo/w IO)  | TNS (wo/w IO) | NVP     | Tran | Cap | Nois |
+| ---------------------------- | -------------- | ------------- | ------- | ---- | --- | ---- |
+| wcl_cwst_ccwstt (S) | \-0.065/-0.090 | 0.641/ 3.047  | 55/ 126 | 0    | 0   | 0    |
+| wcl_rcwst_ccwstt(S) | \-0.049/-0.079 | 0.216/ 2.394  | 17/ 99  | 0    | 0   | 0    |
+| wc_cwst_ccwstt (S)  | \-0.008/-0.058 | 0.008/ 0.893  | 1/ 32   | 27   | 0   | 0    |
+| wc_rcwst_ccwstt (S) | 0.000/-0.052   | 0.000/ 0.810  | 0/ 34   | 0    | 0   | 0    |
+| wcl_rcwst_ccwst (H) | 0.000/ 0.000   | 0.000/ 0.000  | 0/ 0    | 1    | 0   | 0    |
+| wcl_cwst_ccwst (H)  | 0.000/ 0.000   | 0.000/ 0.000  | 0/ 0    | 0    | 1   | 0    |
+| wc_cwst_ccwst (H)   | 0.000/ 0.000   | 0.000/ 0.000  | 0/ 0    | 64   | 2   | 0    |
+| wc_rcwst_ccwst (H)  | 0.000/ 0.000   | 0.000/ 0.000  | 0/ 0    | 1    | 0   | 0    |
+| lt_rcwst_ccwst (H)  | \-0.002/-0.002 | 0.002/ 0.002  | 1/ 1    | 1    | 0   | 0    |
+| lt_cwst_ccwst (H)   | 0.000/ 0.000   | 0.000/ 0.000  | 0/ 0    | 0    | 3   | 0    |
+| lt_cbst_ccbst (H)   | 0.000/ 0.000   | 0.000/ 0.000  | 0/ 0    | 0    | 0   | 0    |
+| lt_rcbst_ccbst (H)  | 0.000/ 0.000   | 0.000/ 0.000  | 0/ 0    | 0    | 0   | 0    |
+| ml_rcwst_ccwst (H)  | \-0.003/-0.003 | 0.003/ 0.003  | 1/ 1    | 1    | 0   | 0    |
+| ml_cwst_ccwst (H)   | 0.000/ 0.000   | 0.000/ 0.000  | 0/ 0    | 1    | 0   | 0    |
+| ml_cbst_ccbst (H)   | 0.000/ 0.000   | 0.000/ 0.000  | 0/ 0    | 0    | 0   | 0    |
+| ml_rcbst_ccbst (H)  | 0.000/ 0.000   | 0.000/ 0.000  | 0/ 0    | 0    | 0   | 0    |
+
+## ECO 2
+
+| corner                       | WNS (wo/w IO)  | TNS (wo/w IO) | NVP     | Tran | Cap | Nois |
+| ---------------------------- | -------------- | ------------- | ------- | ---- | --- | ---- |
+| wcl_cwst_ccwstt (S) | \-0.082/-0.095 | 0.881/ 3.384  | 68/ 128 | 0    | 0   | 0    |
+| wcl_rcwst_ccwstt(S) | \-0.066/-0.080 | 0.260/ 2.491  | 20/ 89  | 0    | 0   | 0    |
+| wc_cwst_ccwstt (S)  | \-0.023/-0.064 | 0.023/ 0.863  | 1/ 33   | 27   | 0   | 0    |
+| wc_rcwst_ccwstt (S) | \-0.012/-0.053 | 0.012/ 0.846  | 1/ 37   | 0    | 0   | 0    |
+| wcl_rcwst_ccwst (H) | 0.000/ 0.000   | 0.000/ 0.000  | 0/ 0    | 1    | 0   | 0    |
+| wcl_cwst_ccwst (H)  | 0.000/ 0.000   | 0.000/ 0.000  | 0/ 0    | 1    | 1   | 0    |
+| wc_cwst_ccwst (H)   | 0.000/ 0.000   | 0.000/ 0.000  | 0/ 0    | 64   | 2   | 0    |
+| wc_rcwst_ccwst (H)  | 0.000/ 0.000   | 0.000/ 0.000  | 0/ 0    | 1    | 0   | 0    |
+| lt_rcwst_ccwst (H)  | \-0.002/-0.002 | 0.002/ 0.002  | 1/ 1    | 1    | 0   | 0    |
+| lt_cwst_ccwst (H)   | 0.000/ 0.000   | 0.000/ 0.000  | 0/ 0    | 0    | 2   | 0    |
+| lt_cbst_ccbst (H)   | 0.000/ 0.000   | 0.000/ 0.000  | 0/ 0    | 0    | 0   | 0    |
+| lt_rcbst_ccbst (H)  | 0.000/ 0.000   | 0.000/ 0.000  | 0/ 0    | 0    | 0   | 0    |
+| ml_rcwst_ccwst (H)  | \-0.003/-0.003 | 0.003/ 0.003  | 1/ 1    | 1    | 0   | 0    |
+| ml_cwst_ccwst (H)   | 0.000/ 0.000   | 0.000/ 0.000  | 0/ 0    | 1    | 0   | 0    |
+| ml_cbst_ccbst (H)   | 0.000/ 0.000   | 0.000/ 0.000  | 0/ 0    | 0    | 0   | 0    |
+| ml_rcbst_ccbst (H)  | 0.000/ 0.000   | 0.000/ 0.000  | 0/ 0    | 0    | 0   | 0    |
+
+## 2nd Trial ECO 1 using LVT
+
+  - Usage CKN for data path
+
+| corner                       | WNS (wo/w IO)  | TNS (wo/w IO) | NVP      | Tran | Cap | Nois |
+| ---------------------------- | -------------- | ------------- | -------- | ---- | --- | ---- |
+| wcl_cwst_ccwstt (S) | \-0.232/-0.232 | 1.471/ 4.384  | 124/ 219 | 0    | 0   | 0    |
+| wcl_rcwst_ccwstt(S) | \-0.211/-0.211 | 0.416/ 3.046  | 19/ 122  | 0    | 0   | 0    |
+| wc_cwst_ccwstt (S)  | \-0.176/-0.176 | 0.191/ 1.067  | 2/ 38    | 28   | 0   | 0    |
+| wc_rcwst_ccwstt (S) | \-0.158/-0.158 | 0.160/ 1.038  | 2/ 42    | 1    | 0   | 0    |
+| wcl_rcwst_ccwst (H) | 0.000/ 0.000   | 0.000/ 0.000  | 0/ 0     | 1    | 0   | 0    |
+| wcl_cwst_ccwst (H)  | 0.000/ 0.000   | 0.000/ 0.000  | 0/ 0     | 1    | 1   | 0    |
+| wc_cwst_ccwst (H)   | 0.000/ 0.000   | 0.000/ 0.000  | 0/ 0     | 64   | 2   | 0    |
+| wc_rcwst_ccwst (H)  | 0.000/ 0.000   | 0.000/ 0.000  | 0/ 0     | 1    | 0   | 0    |
+| lt_rcwst_ccwst (H)  | \-0.002/-0.002 | 0.002/ 0.002  | 1/ 1     | 1    | 0   | 0    |
+| lt_cwst_ccwst (H)   | 0.000/ 0.000   | 0.000/ 0.000  | 0/ 0     | 1    | 3   | 0    |
+| lt_cbst_ccbst (H)   | 0.000/ 0.000   | 0.000/ 0.000  | 0/ 0     | 0    | 0   | 0    |
+| lt_rcbst_ccbst (H)  | 0.000/ 0.000   | 0.000/ 0.000  | 0/ 0     | 0    | 0   | 0    |
+| ml_rcwst_ccwst (H)  | \-0.003/-0.003 | 0.003/ 0.003  | 1/ 1     | 1    | 0   | 0    |
+| ml_cwst_ccwst (H)   | 0.000/ 0.000   | 0.000/ 0.000  | 0/ 0     | 1    | 0   | 0    |
+| ml_cbst_ccbst (H)   | 0.000/ 0.000   | 0.000/ 0.000  | 0/ 0     | 0    | 0   | 0    |
+| ml_rcbst_ccbst (H)  | 0.000/ 0.000   | 0.000/ 0.000  | 0/ 0     | 0    | 0   | 0    |
+
+## 1st ECO 1
+
+``` text
+Unfixable violations:
+  A - There are available library cells outside area limit
+  B - Delay improvement is too small to fix the violation
+  C - The violation is in clock network
+  I - Buffer insertion with given library cells cannot fix the violation
+  S - Cell sizing with alternative library cells cannot fix the violation
+  T - Timing margin is too tight to fix the violation
+  U - UPF restricts fixing the violation
+  V - Net or cell is invalid or has dont_touch attribute
+  W - Fixing the violation might degrade DRC violations
+
+  Violation                                                    Reasons  Prio/slk
+  ------------------------------------------------------------------------------
+  C:fdmaAdapter/writeDataDeq/impl/place_opt_HFSINV_4434_14421/ZN                
+    fdmaAdapter/writeDataDeq/impl/place_opt_HFSINV_852_14420/ZN      A        P9
+    fdmaAdapter/writeDataDeq/impl/alchip117_dc/ZN                  A W        P0
+    fdmaAdapter/writeDataDeq/impl/alchip302_dc/ZN                  A W        P1
+    place_opt_HFSINV_202_9547/ZN                                   A W        P1
+    place_opt_HFSINV_56_9546/ZN                                    A W        P1
+    port_buf_io_fdmaAxi4_wdata_103_/Z                                V        P1
+  E:io_fdmaAxi4_wdata[103]                                                -0.088
+  S:fdmaAdapter/writeDataDeq/impl/U_T_105_reg/Q                                 
+    fdmaAdapter/writeDataDeq/impl/place_opt_HFSINV_4434_14421/ZN     A        P9
+    fdmaAdapter/writeDataDeq/impl/place_opt_HFSINV_2390_14416/ZN     A        P1
+    fdmaAdapter/writeDataDeq/impl/alchip97_dc/ZN                   A W        P0
+    fdmaAdapter/writeDataDeq/impl/alchip275_dc/ZN                  A W        P0
+    place_opt_HFSINV_97_9553/ZN                                    A W        P0
+    place_opt_HFSINV_80_9552/ZN                                      A        P0
+    port_buf_io_fdmaAxi4_wdata_48_/Z                                 V        P0
+  E:io_fdmaAxi4_wdata[48]                                                 -0.087
+  (...)
+  C:fdmaAdapter/writeDataDeq/impl/place_opt_HFSINV_366_14419/ZN                 
+    fdmaAdapter/writeDataDeq/impl/alchip393_dc/ZN                    A        P4
+    fdmaAdapter/writeDataDeq/impl/alchip519_dc/ZN                    A        P4
+    fdmaAdapter/writeDataDeq/impl/alchip22_dc/Z                      A        P9
+    port_buf_io_fdmaAxi4_wdata_114_/Z                                V        P9
+  E:io_fdmaAxi4_wdata[114]                                                -0.000
+
+Final ECO Summary:
+--------------------------------------------------------
+Number of size_cell commands                        5039
+Total number of commands                            5039
+Area increased by cell sizing                     165.48
+Total area increased                              165.48
+
+Information: Elapsed time [             5747 seconds ]
+Information: Completed at [ Mon Sep  5 13:43:08 2022 ]
+
+1
+```
+
+## STA 1
+
+  - endpoints  
+    7105 reset -0.770 (16) (clock:0.000)
+
+<!-- end list -->
+
+  - 3926309.44 micron
+
+| corner                       | WNS (wo/w IO)  | TNS (wo/w IO)  | NVP       | Tran | Cap | Nois |
+| ---------------------------- | -------------- | -------------- | --------- | ---- | --- | ---- |
+| wcl_cwst_ccwstt (S) | \-0.109/-0.771 | 8.086/2027.627 | 637/ 8882 | 0    | 2   | 0    |
+| wcl_rcwst_ccwstt(S) | \-0.082/-0.732 | 1.878/1913.718 | 141/ 8355 | 0    | 2   | 0    |
+| wc_cwst_ccwstt (S)  | \-0.024/-0.634 | 0.044/1289.257 | 2/ 7529   | 42   | 2   | 0    |
+| wc_rcwst_ccwstt (S) | 0.000/-0.601   | 0.000/1220.265 | 0/ 7352   | 0    | 2   | 0    |
+| wcl_rcwst_ccwst (H) | 0.000/ 0.000   | 0.000/ 0.000   | 0/ 0      | 0    | 2   | 0    |
+| wcl_cwst_ccwst (H)  | 0.000/ 0.000   | 0.000/ 0.000   | 0/ 0      | 0    | 3   | 0    |
+| wc_cwst_ccwst (H)   | 0.000/ 0.000   | 0.000/ 0.000   | 0/ 0      | 103  | 5   | 0    |
+| wc_rcwst_ccwst (H)  | 0.000/ 0.000   | 0.000/ 0.000   | 0/ 0      | 0    | 2   | 0    |
+| lt_rcwst_ccwst (H)  | \-0.002/-0.002 | 0.002/ 0.002   | 2/ 2      | 0    | 1   | 0    |
+| lt_cwst_ccwst (H)   | \-0.001/-0.001 | 0.001/ 0.001   | 1/ 1      | 0    | 5   | 0    |
+| lt_cbst_ccbst (H)   | 0.000/ 0.000   | 0.000/ 0.000   | 1/ 1      | 0    | 1   | 0    |
+| lt_rcbst_ccbst (H)  | \-0.002/-0.002 | 0.002/ 0.002   | 1/ 1      | 0    | 3   | 0    |
+| ml_rcwst_ccwst (H)  | \-0.003/-0.003 | 0.003/ 0.003   | 1/ 1      | 0    | 0   | 0    |
+| ml_cwst_ccwst (H)   | 0.000/ 0.000   | 0.000/ 0.000   | 1/ 1      | 0    | 3   | 0    |
+| ml_cbst_ccbst (H)   | 0.000/ 0.000   | 0.000/ 0.000   | 0/ 0      | 0    | 0   | 0    |
+| ml_rcbst_ccbst (H)  | 0.000/ 0.000   | 0.000/ 0.000   | 0/ 0      | 0    | 2   | 0    |
+
+``` text
+Startpoint: reset (input port clocked by clock)
+Endpoint: f2a/pipeline/quantizer/pipeline_10/outreg_reg_1_
+             (rising edge-triggered flip-flop clocked by clock)
+Path Group: clock
+Path Type: max  (recalculated)
+
+Point                                                                                 Fanout   Cap   DTrans  Trans   Derate  Delta    Incr      Path
+------------------------------------------------------------------------------------------------------------------------------------------------------
+clock clock (rise edge)                                                                                                             0.000     0.000
+clock network delay (propagated)                                                                                                    0.000     0.000
+input external delay                                                                                                                0.925     0.925 f
+reset (in)                                                                                                  0.005                   0.003 &   0.928 f
+reset (net)                                                                             1   0.001 
+port_buf_reset/I (BUFFD4BWP6T16P96CPD)                                                              0.001   0.010   1.070   0.000   0.000 &   0.928 f
+port_buf_reset/Z (BUFFD4BWP6T16P96CPD)                                                                      0.013   1.045           0.033 &   0.961 f
+place_opt_HFSNET_7418 (net)                                                             1   0.002 
+clock_opt_BINV_R_153761/I (INVD4BWP6T16P96CPD)                                                      0.000   0.013   1.070   0.000   0.000 &   0.962 f
+clock_opt_BINV_R_153761/ZN (INVD4BWP6T16P96CPD)                                                             0.066   1.039           0.040 &   1.001 r
+BUF_net_58272 (net)                                                                     2   0.022 
+clock_opt_BINV_R_153759/I (CKNCTD8BWP6T16P96CPD)                                                    0.006   0.068   1.070   0.002   0.014 &   1.015 r
+clock_opt_BINV_R_153759/ZN (CKNCTD8BWP6T16P96CPD)                                                           0.083   1.026           0.074 &   1.089 f
+BUF_net_58270 (net)                                                                     2   0.053 
+place_opt_BUFT_RR_78016/I (CKBCTD3BWP6T16P96CPD)                                                    0.004   0.119   1.070   0.001   0.052 &   1.142 f
+place_opt_BUFT_RR_78016/Z (CKBCTD3BWP6T16P96CPD)                                                            0.072   1.046           0.117 &   1.259 f
+BUF_net_29258 (net)                                                                     2   0.016 
+place_opt_HFSINV_44183_p_17635/I (INVD6BWP6T16P96CPD)                                               0.000   0.072   1.070   0.000   0.006 &   1.265 f
+place_opt_HFSINV_44183_p_17635/ZN (INVD6BWP6T16P96CPD)                                                      0.077   1.030           0.078 &   1.342 r
+place_opt_HFSNET_7268 (net)                                                            15   0.034 
+place_opt_HFSINV_43990_17619/I (INVD4BWP6T16P96CPD)                                                 0.000   0.077   1.070   0.000   0.006 &   1.348 r
+place_opt_HFSINV_43990_17619/ZN (INVD4BWP6T16P96CPD)                                                        0.132   1.039           0.111 &   1.459 f
+place_opt_HFSNET_7254 (net)                                                            25   0.037 
+place_opt_BUFT_RR_78244/I (BUFFD4BWP6T16P96CPD)                                                     0.001   0.134   1.070   0.000   0.007 &   1.466 f
+place_opt_BUFT_RR_78244/Z (BUFFD4BWP6T16P96CPD)                                                             0.127   1.045           0.148 &   1.614 f
+BUF_net_29486 (net)                                                                    32   0.038 
+place_opt_HFSINV_43852_p_17607/I (CKNCTD2BWP6T16P96CPD)                                             0.000   0.134   1.070   0.000   0.022 &   1.636 f
+place_opt_HFSINV_43852_p_17607/ZN (CKNCTD2BWP6T16P96CPD)                                                    0.109   1.057           0.132 &   1.768 r
+place_opt_HFSNET_7242 (net)                                                             9   0.014 
+place_opt_HFSINV_42051_17602/I (INVD2BWP6T16P96CPD)                                                 0.000   0.109   1.070   0.000   0.003 &   1.771 r
+place_opt_HFSINV_42051_17602/ZN (INVD2BWP6T16P96CPD)                                                        0.101   1.056           0.127 &   1.898 f
+place_opt_HFSNET_7238 (net)                                                            14   0.012 
+f2a/pipeline/quantizer/pipeline_10/alchip28_dc/C (OAOI211D1BWP6T16P96CPDLVT)                        0.003   0.101   1.070   0.001   0.002 &   1.900 f
+f2a/pipeline/quantizer/pipeline_10/alchip28_dc/ZN (OAOI211D1BWP6T16P96CPDLVT)                               0.105   1.075           0.095 &   1.995 r
+f2a/pipeline/quantizer/pipeline_10/N56 (net)                                            1   0.004 
+f2a/pipeline/quantizer/pipeline_10/place_opt_HFSINV_231_8170/I (CKNCTD1BWP6T16P96CPD)               0.023   0.105   1.070   0.007   0.008 &   2.004 r
+f2a/pipeline/quantizer/pipeline_10/place_opt_HFSINV_231_8170/ZN (CKNCTD1BWP6T16P96CPD)                      0.115   1.092           0.146 &   2.149 f
+f2a/pipeline/quantizer/pipeline_10/place_opt_HFSNET_7312 (net)                          1   0.008 
+f2a/pipeline/quantizer/pipeline_10/place_opt_HFSINV_64_8169/I (INVD1BWP6T16P96CPD)                  0.011   0.115   1.070   0.005   0.007 &   2.156 f
+f2a/pipeline/quantizer/pipeline_10/place_opt_HFSINV_64_8169/ZN (INVD1BWP6T16P96CPD)                         0.078   1.091           0.101 &   2.257 r
+f2a/pipeline/quantizer/pipeline_10/place_opt_HFSNET_7311 (net)                          1   0.006 
+f2a/pipeline/quantizer/pipeline_10/outreg_reg_1_/D (SDFQD4BWP6T16P96CPD)                            0.000   0.078   1.070   0.000   0.001 &   2.258 r
+data arrival time                                                                                                                             2.258
+
+clock clock (rise edge)                                                                                                             1.250     1.250
+clock network delay (propagated)                                                                                                    0.349     1.599
+clock reconvergence pessimism                                                                                                       0.000     1.599
+clock uncertainty                                                                                                                  -0.055     1.544
+f2a/pipeline/quantizer/pipeline_10/outreg_reg_1_/CP (SDFQD4BWP6T16P96CPD)                                                                     1.544 r
+library setup time                                                                                                  1.000          -0.056     1.488
+data required time                                                                                                                            1.488
+------------------------------------------------------------------------------------------------------------------------------------------------------
+data required time                                                                                                                            1.488
+data arrival time                                                                                                                            -2.258
+------------------------------------------------------------------------------------------------------------------------------------------------------
+slack (VIOLATED)                                                                                                                             -0.770
+
+```
+
+## Setting
+
+|                      | DC  | Place | CTS | Route |
+| -------------------- | --- | ----- | --- | ----- |
+| Setup Uncertainty    | 150 | 41    | 41  | 41    |
+| Hold Uncertainty     | 160 | 49    | 49  | 49    |
+| Data Max Trans       | 200 | 240   | 240 | 240   |
+| Clock Max Trans      | 80  | 100   | 100 | 100   |
+| IO Path Group Weight | 0.1 | 1.0   | 1.0 | 1.0   |
+| To Fmem              | 160 | 0     | 0   | 0     |
+| From Fmem            | 80  | 0     | 0   | 0     |
+| All Out              | 100 | 0     | 0   | 0     |
+| All In               | 50  | 0     | 0   | 0     |
+
+# 220902a_FLOORPLAN1-3 for Weekend
+
+|                     | wire length  | cell area     | LVT       | WSNS     | WHNS     | NVE(S) | NVE(H) |
+| ------------------- | ------------ | ------------- | --------- | -------- | -------- | ------ | ------ |
+|                     |              | approx.400000 |           |          |          |        |        |
+| FP1_6     | 3891355.8970 | 123283.0218   | 3381.4979 | \-0.0163 | \-0.0510 | 58     | 2987   |
+| FP1_7     | 3796896.6760 | 122627.1375   | 3168.0922 | \-0.0558 | \-0.0349 | 26     | 2683   |
+| FP1_7soft | 3805657.6340 | 123267.8339   | 3183.5382 | \-0.0164 | \-0.0394 | 64     | 2804   |
+| FP1_8     | 4179696.8050 | 123949.0068   | 3937.3332 | \-0.2654 | \-0.0307 | 186    | 2858   |
+| FP1_9     | 4342084.5660 | 125165.8506   | 4332.4416 | \-0.2059 | \-0.0327 | 268    | 3102   |
+
+## FP1_9
+
+  - 4342084.5660 micron
+
+  - cell area 125165.8506 30%
+
+  - LVT 4332.4416
+
+<!-- end list -->
+
+``` text
+Timing
+---------------------------------------------------------------------------
+Context                                 WNS            TNS            NVE
+---------------------------------------------------------------------------
+func::ss72_cworst_CCworst_T_m40c (Setup)        -0.2059        -6.9865            268
+func::ss72_rcworst_CCworst_T_125c (Setup)        -0.0769        -0.5072             25
+Design             (Setup)          -0.2059        -6.9865            268
+
+func::ff88_rcworst_CCworst_125c (Hold)        -0.0327        -5.4484           3102
+func::ss72_cworst_CCworst_125c (Hold)         0.0102         0.0000              0
+func::ss72_rcworst_CCworst_125c (Hold)         0.0118         0.0000              0
+Design             (Hold)           -0.0327        -5.4484           3102
+---------------------------------------------------------------------------
+
+Miscellaneous
+---------------------------------------------------------------------------
+Cell Area (netlist):                        399889.8163
+Cell Area (netlist and physical only):      406834.1090
+Nets with DRC Violations:     1922
+1
+```
+
+## FP1_8 (report 09071253)
+
+  - 4179696.8050 micron
+  - cell area 123949.0068 30%
+  - LVT 3937.3332
+
+<!-- end list -->
+
+``` text
+---------------------------------------------------------------------------
+Context                                 WNS            TNS            NVE
+---------------------------------------------------------------------------
+func::ss72_cworst_CCworst_T_m40c (Setup)        -0.2654        -4.6489            185
+func::ss72_rcworst_CCworst_T_125c (Setup)        -0.0828        -0.6030             18
+Design             (Setup)          -0.2654        -4.6672            186
+
+func::ff88_rcworst_CCworst_125c (Hold)        -0.0307        -4.2193           2858
+func::ss72_cworst_CCworst_125c (Hold)         0.0140         0.0000              0
+func::ss72_rcworst_CCworst_125c (Hold)         0.0223         0.0000              0
+Design             (Hold)           -0.0307        -4.2193           2858
+---------------------------------------------------------------------------
+```
+
+## FP1_7soft (report 09062315)
+
+``` text
+   Total wire length = 3805657.6340 micron
+TOTAL LEAF CELLS           328217  100  404936.0924   100 unit:10990478  
+  Standard cells           328193   99  123267.8339    30 unit:3343854  
+LVT                          6917    2    3183.5382     0 unit:86359  
+```
+
+``` text
+---------------------------------------------------------------------------
+Context                                 WNS            TNS            NVE
+---------------------------------------------------------------------------
+func::ss72_cworst_CCworst_T_m40c (Setup)        -0.0164        -0.0819             36
+func::ss72_rcworst_CCworst_T_125c (Setup)         0.0734         0.0000              0
+Design             (Setup)          -0.0164        -0.0819             36
+
+func::ff88_rcworst_CCworst_125c (Hold)        -0.0394        -4.0231           2804
+func::ss72_cworst_CCworst_125c (Hold)        -0.0066        -0.0066              1
+func::ss72_rcworst_CCworst_125c (Hold)        -0.0039        -0.0039              1
+Design             (Hold)           -0.0394        -4.0231           2804
+---------------------------------------------------------------------------
+```
+
+## FP1_7 (report_design 09061100)
+
+  - 3796896.6760 micron
+  - cell area 122627.1375 30%
+  - LVT 3168.0922
+
+<!-- end list -->
+
+``` text
+---------------------------------------------------------------------------
+Context                                 WNS            TNS            NVE
+---------------------------------------------------------------------------
+func::ss72_cworst_CCworst_T_m40c (Setup)        -0.0558        -0.1122             26
+func::ss72_rcworst_CCworst_T_125c (Setup)         0.0736         0.0000              0
+Design             (Setup)          -0.0558        -0.1122             26
+
+func::ff88_rcworst_CCworst_125c (Hold)        -0.0349        -3.7161           2683
+func::ss72_cworst_CCworst_125c (Hold)         0.0088         0.0000              0
+func::ss72_rcworst_CCworst_125c (Hold)         0.0097         0.0000              0
+Design             (Hold)           -0.0349        -3.7161           2683
+---------------------------------------------------------------------------
+
+```
+
+## FP1_6 (report_design 09052245)
+
+  - 3891355.8970 micron
+  - cell area 123283.0218 30%
+  - LVT 3381.4979
+
+<!-- end list -->
+
+``` text
+Timing
+---------------------------------------------------------------------------
+Context                                 WNS            TNS            NVE
+---------------------------------------------------------------------------
+func::ss72_cworst_CCworst_T_m40c (Setup)        -0.0163        -0.2327             58
+func::ss72_rcworst_CCworst_T_125c (Setup)         0.0562         0.0000              0
+Design             (Setup)          -0.0163        -0.2327             58
+
+func::ff88_rcworst_CCworst_125c (Hold)        -0.0510        -4.6207           2987
+func::ss72_cworst_CCworst_125c (Hold)         0.0006         0.0000              0
+func::ss72_rcworst_CCworst_125c (Hold)         0.0052         0.0000              0
+Design             (Hold)           -0.0510        -4.6207           2987
+---------------------------------------------------------------------------
+
+Miscellaneous
+---------------------------------------------------------------------------
+Cell Area (netlist):                        398007.3562
+Cell Area (netlist and physical only):      404951.2800
+
+1
+
+```
+
+| STEP: init_design           | WNS       | TNS          | NVP  | Std. Cell   |
+| ------------------------------------- | --------- | ------------ | ---- | ----------- |
+| ss72_cworstCCworstTm40c(S)  | \-11.2614 | \-26958.9598 | 6634 | \-          |
+| ss72_rcworstCCworstT125c(S) | \-14.2873 | \-35261.1779 | 6628 | \-          |
+| Design(S)                             | \-14.2873 | \-35273.0171 | 6634 | 103925.5511 |
+| ff88_rcworstCCworst125c(H)  | 0.0198    | 0.0000       | 0    | \-          |
+| ss72_cworstCCworst125c(H)   | 0.0341    | 0.0000       | 0    | \-          |
+| ss72_rcworstCCworst125c(H)  | 0.0341    | 0.0000       | 0    | \-          |
+| Design(H)                             | 0.0198    | 0.0000       | 0    | 103925.5511 |
+
+| STEP: 09051115/ place_opt   | WNS      | TNS        | NVP   | Std. Cell   |
+| ------------------------------------- | -------- | ---------- | ----- | ----------- |
+| ss72_cworstCCworstTm40c(S)  | \-0.0159 | \-0.0399   | 10    | \-          |
+| ss72_rcworstCCworstT125c(S) | 0.0298   | 0.0000     | 0     | \-          |
+| Design(S)                             | \-0.0159 | \-0.0399   | 10    | 107793.2851 |
+| ff88_rcworstCCworst125c(H)  | \-0.1557 | \-485.0977 | 21707 | \-          |
+| ss72_cworstCCworst125c(H)   | \-0.1398 | \-32.5000  | 1054  | \-          |
+| ss72_rcworstCCworst125c(H)  | \-0.1425 | \-53.0147  | 1433  | \-          |
+| Design(H)                             | \-0.1557 | \-485.0977 | 21707 | 107793.2851 |
+
+## 1_4
+
+| STEP: place_opt             | WNS      | TNS        | NVP   | Std. Cell   |
+| ------------------------------------- | -------- | ---------- | ----- | ----------- |
+| ss72_cworstCCworstTm40c(S)  | 0.0009   | 0.0000     | 0     | \-          |
+| ss72_rcworstCCworstT125c(S) | 0.0740   | 0.0000     | 0     | \-          |
+| Design(S)                             | 0.0009   | 0.0000     | 0     | 109128.9784 |
+| ff88_rcworstCCworst125c(H)  | \-0.1612 | \-598.6562 | 21279 | \-          |
+| ss72_cworstCCworst125c(H)   | \-0.1565 | \-200.7776 | 2327  | \-          |
+| ss72_rcworstCCworst125c(H)  | \-0.1585 | \-223.5817 | 2412  | \-          |
+| Design(H)                             | \-0.1612 | \-598.6563 | 21279 | 109128.9784 |
+
+| STEP: clock_optcts          | WNS      | TNS        | NVP   | Std. Cell   |
+| ------------------------------------- | -------- | ---------- | ----- | ----------- |
+| ss72_cworstCCworstTm40c(S)  | \-0.1952 | \-68.8714  | 1411  | \-          |
+| ss72_rcworstCCworstT125c(S) | \-0.0413 | \-0.1361   | 21    | \-          |
+| Design(S)                             | \-0.1952 | \-68.8714  | 1411  | 109786.1530 |
+| ff88_rcworstCCworst125c(H)  | \-0.1346 | \-728.2999 | 26333 | \-          |
+| ss72_cworstCCworst125c(H)   | \-0.0819 | \-42.8387  | 2199  | \-          |
+| ss72_rcworstCCworst125c(H)  | \-0.0931 | \-52.4410  | 2383  | \-          |
+| Design(H)                             | \-0.1346 | \-728.2999 | 26333 | 109786.1530 |
+
+| STEP: clock_optopto         | WNS      | TNS      | NVP  | Std. Cell   |
+| ------------------------------------- | -------- | -------- | ---- | ----------- |
+| ss72_cworstCCworstTm40c(S)  | \-0.0484 | \-1.8654 | 221  | \-          |
+| ss72_rcworstCCworstT125c(S) | 0.0560   | 0.0000   | 0    | \-          |
+| Design(S)                             | \-0.0484 | \-1.8654 | 221  | 127980.8594 |
+| ff88_rcworstCCworst125c(H)  | \-0.0567 | \-2.0690 | 1523 | \-          |
+| ss72_cworstCCworst125c(H)   | \-0.0194 | \-0.0213 | 2    | \-          |
+| ss72_rcworstCCworst125c(H)  | \-0.0153 | \-0.0172 | 2    | \-          |
+| Design(H)                             | \-0.0567 | \-2.0690 | 1523 | 127980.8594 |
+
+| STEP: route_opt             | WNS      | TNS      | NVP  | Std. Cell   |
+| ------------------------------------- | -------- | -------- | ---- | ----------- |
+| ss72_cworstCCworstTm40c(S)  | \-0.0085 | \-0.0611 | 35   | \-          |
+| ss72_rcworstCCworstT125c(S) | 0.0731   | 0.0000   | 0    | \-          |
+| Design(S)                             | \-0.0085 | \-0.0611 | 35   | 124596.0069 |
+| ff88_rcworstCCworst125c(H)  | \-0.0538 | \-4.7252 | 2779 | \-          |
+| ss72_cworstCCworst125c(H)   | 0.0094   | 0.0000   | 0    | \-          |
+| ss72_rcworstCCworst125c(H)  | 0.0102   | 0.0000   | 0    | \-          |
+| Design(H)                             | \-0.0538 | \-4.7252 | 2779 | 124596.0069 |
+
+| STEP: signoff_drc           | WNS      | TNS      | NVP  | Std. Cell   |
+| ------------------------------------- | -------- | -------- | ---- | ----------- |
+| ss72_cworstCCworstTm40c(S)  | \-0.0085 | \-0.0611 | 35   | \-          |
+| ss72_rcworstCCworstT125c(S) | 0.0731   | 0.0000   | 0    | \-          |
+| Design(S)                             | \-0.0085 | \-0.0611 | 35   | 124596.0069 |
+| ff88_rcworstCCworst125c(H)  | \-0.0538 | \-4.7252 | 2779 | \-          |
+| ss72_cworstCCworst125c(H)   | 0.0094   | 0.0000   | 0    | \-          |
+| ss72_rcworstCCworst125c(H)  | 0.0102   | 0.0000   | 0    | \-          |
+| Design(H)                             | \-0.0538 | \-4.7252 | 2779 | 124596.0069 |
+
+| STEP: chip_finish           | WNS      | TNS      | NVP  | Std. Cell   |
+| ------------------------------------- | -------- | -------- | ---- | ----------- |
+| ss72_cworstCCworstTm40c(S)  | \-0.0085 | \-0.0611 | 35   | \-          |
+| ss72_rcworstCCworstT125c(S) | 0.0731   | 0.0000   | 0    | \-          |
+| Design(S)                             | \-0.0085 | \-0.0611 | 35   | 124596.0069 |
+| ff88_rcworstCCworst125c(H)  | \-0.0538 | \-4.7252 | 2779 | \-          |
+| ss72_cworstCCworst125c(H)   | 0.0094   | 0.0000   | 0    | \-          |
+| ss72_rcworstCCworst125c(H)  | 0.0102   | 0.0000   | 0    | \-          |
+| Design(H)                             | \-0.0538 | \-4.7252 | 2779 | 124596.0069 |
+
+## List of def files
+
+./outputs_icc2/Bxb_memrow14.def
+./outputs_icc2/Bxb_memrow15.def
+./outputs_icc2/Bxb_memrow16.def
+./outputs_icc2/Bxb_memrow17.def
+./outputs_icc2/Bxb_memrow17soft.def
+./outputs_icc2/Bxb_memrow1.def
+./outputs_icc2/Bxb_memrow2.def
+./outputs_icc2/Bxb_memrow3.def
+
+# 220901c_FLOORPLAN16
+
+## signoff_drc/09030057/
+
+  - Total wire length 3926309.44
+  - LVT 9506 2 3911.197 0 unit:106098
+  - HVT 0 0 0.000 0
+  - Normal VT 324899 97 118514.110 29 unit:3214901
+
+## ECO1
+
+| corner                               | WNS (wo/w IO)  | TNS (wo/w IO) | NVP       | Trans | Cap | Noise |
+| ------------------------------------ | -------------- | ------------- | --------- | ----- | --- | ----- |
+| wcl_cworstccworsttm40cmax  | \-0.447/-0.447 | 51.249/63.434 | 907/1241  | 78    | 0   | 0     |
+| wcl_rcworstccworsttm40cmax | \-0.360/-0.360 | 29.557/38.848 | 492/777   | 31    | 0   | 0     |
+| wc_cworstccworstt125cmax   | \-0.336/-0.336 | 14.703/17.376 | 150/265   | 73    | 0   | 0     |
+| wc_rcworstccworstt125cmax  | \-0.254/-0.254 | 8.112/10.453  | 100/207   | 28    | 0   | 0     |
+| wcl_rcworstccworstm40cmin  | \-0.011/-0.011 | 0.016/0.016   | 3/3       | 13    | 0   | 0     |
+| wcl_cworstccworstm40cmin   | \-0.012/-0.012 | 0.035/0.035   | 15/15     | 129   | 6   | 0     |
+| wc_cworstccworst125cmin    | 0.000/0.000    | 0.000/0.000   | 0/0       | 121   | 11  | 0     |
+| wc_rcworstccworst125cmin   | 0.000/0.000    | 0.000/0.000   | 0/0       | 9     | 0   | 0     |
+| lt_rcworstccworstm40cmin   | \-0.028/-0.028 | 4.770/4.770   | 1783/1783 | 0     | 0   | 0     |
+| lt_cworstccworstm40cmin    | \-0.024/-0.024 | 6.228/6.228   | 2152/2152 | 0     | 11  | 0     |
+| lt_cbestccbestm40cmin      | \-0.033/-0.033 | 0.255/0.255   | 98/98     | 0     | 0   | 0     |
+| lt_rcbestccbestm40cmin     | \-0.029/-0.029 | 0.162/0.162   | 79/79     | 0     | 4   | 0     |
+| ml_rcworstccworst125cmin   | \-0.028/-0.028 | 4.836/4.836   | 1473/1473 | 0     | 0   | 0     |
+| ml_cworstccworst125cmin    | \-0.028/-0.028 | 5.325/5.325   | 1587/1587 | 0     | 11  | 0     |
+| ml_cbestccbest125cmin      | \-0.035/-0.035 | 0.209/0.209   | 46/46     | 0     | 0   | 0     |
+| ml_rcbestccbest125cmin     | \-0.034/-0.034 | 0.237/0.237   | 93/93     | 0     | 4   | 0     |
+
+## First STA
+
+| corner                               | WNS (wo/w IO)  | TNS (wo/w IO)   | NVP       | Trans | Cap | Noise |
+| ------------------------------------ | -------------- | --------------- | --------- | ----- | --- | ----- |
+| wcl_cworstccworsttm40cmax  | \-0.110/-0.110 | 7.957/20.099    | 481/815   | 0     | 0   | 0     |
+| wcl_rcworstccworsttm40cmax | \-0.092/-0.092 | 2.475/11.727    | 162/447   | 0     | 0   | 0     |
+| wc_cworstccworstt125cmax   | \-0.023/-0.050 | 0.023/2.695     | 1/116     | 0     | 0   | 0     |
+| wc_rcworstccworstt125cmax  | 0.000/-0.048   | 0.000/2.334     | 0/107     | 0     | 0   | 0     |
+| wcl_rcworstccworstm40cmin  | \-0.158/-0.158 | 94.778/94.778   | 2985/2985 | 0     | 0   | 0     |
+| wcl_cworstccworstm40cmin   | \-0.158/-0.158 | 93.695/93.695   | 3124/3124 | 0     | 0   | 0     |
+| wc_cworstccworst125cmin    | \-0.142/-0.142 | 74.101/74.101   | 2541/2541 | 0     | 0   | 0     |
+| wc_rcworstccworst125cmin   | \-0.142/-0.142 | 75.639/75.639   | 2508/2508 | 0     | 0   | 0     |
+| lt_rcworstccworstm40cmin   | \-0.120/-0.120 | 141.896/141.896 | 7629/7629 | 0     | 0   | 0     |
+| lt_cworstccworstm40cmin    | \-0.121/-0.121 | 139.359/139.359 | 7919/7919 | 0     | 0   | 0     |
+| lt_cbestccbestm40cmin      | \-0.127/-0.127 | 145.329/145.329 | 6519/6519 | 0     | 0   | 0     |
+| lt_rcbestccbestm40cmin     | \-0.128/-0.128 | 141.952/141.952 | 6930/6930 | 0     | 0   | 0     |
+| ml_rcworstccworst125cmin   | \-0.121/-0.121 | 143.904/143.905 | 6933/6933 | 0     | 0   | 0     |
+| ml_cworstccworst125cmin    | \-0.123/-0.123 | 141.117/141.117 | 7128/7128 | 0     | 0   | 0     |
+| ml_cbestccbest125cmin      | \-0.129/-0.129 | 148.872/148.874 | 5854/5854 | 0     | 0   | 0     |
+| ml_rcbestccbest125cmin     | \-0.131/-0.131 | 145.479/145.479 | 6238/6238 | 0     | 0   | 0     |
+
+## ICC2
+
+# Progress Report
+
+``` verilog
+output [1:0] io_qdmaAxi4_arburst ;
+output io_qdmaAxi4_arlock ;
+output [3:0] io_qdmaAxi4_arcache ;
+output [2:0] io_qdmaAxi4_arprot ;
+output [3:0] io_qdmaAxi4_arqos ;
+output io_qdmaAxi4_arvalid ;
+input  io_qdmaAxi4_arready ;
+input  [7:0] io_qdmaAxi4_rid ;
+input  [127:0] io_qdmaAxi4_rdata ;
+input  [1:0] io_qdmaAxi4_rresp ;
+input  io_qdmaAxi4_rlast ;
+input  io_qdmaAxi4_rvalid ;
+output io_qdmaAxi4_rready ;
+
+wire [7:3] io_idmaAxi4_arlen_0 ;
+
+assign io_idmaAxi4_arlen_0[3] = 1'b0 ;
+assign io_qdmaAxi4_arburst_0[0] = 1'b1 ;
+```
+
+  - Considering abutment of power line
+      - unalighned memory should be cared
+  - report power ??
+  - what is fmem / amem connection ?
+
+# Soft Blockage
+
+  - Main  
+    to reduce routing congestion from logic standard cells.
+
+# Connectivity
+
+``` text
+=============================================================
+ Focus macro: amem/arbiterImpl/mem/mem_0/mem_0/bram_inst/inst0
+=============================================================
+ Direct connecting endpoints:       reg:256    port:0     macro:0    other:0   
+ Side startpoints:                  reg:5      port:0     macro:3    other:0   
+ Beyond endpoints:                  reg:22656  port:0     macro:0    other:0   
+ Direct connecting startpoints:     reg:319    port:0     macro:0    other:0    # clock source no inclusion.                  
+ Side endpoints:                    reg:269    port:0     macro:3    other:0   
+ Beyond startpoints:                reg:3731   port:130   macro:0    other:0    # clock source no inclusion.                  
+
+ macro(side_startpoints): amem/arbiterImpl/mem/mem_1/mem_0/bram_inst/inst0 amem/arbiterImpl/mem/mem_2/mem_0/bram_inst/inst0 amem/arbiterImpl/mem/mem_3/mem_0/bram_inst/inst0
+ macro(side_endpoints): amem/arbiterImpl/mem/mem_1/mem_0/bram_inst/inst0 amem/arbiterImpl/mem/mem_2/mem_0/bram_inst/inst0 amem/arbiterImpl/mem/mem_3/mem_0/bram_inst/inst0
+ port(beyond_startpoints): {io_admaAxi*_rdata[*]} io_admaAxi*_rvalid reset
+
+=============================================================
+ Focus macro: amem/arbiterImpl/mem/mem_1/mem_0/bram_inst/inst0
+=============================================================
+ Direct connecting endpoints:       reg:256    port:0     macro:0    other:0   
+ Side startpoints:                  reg:5      port:0     macro:3    other:0   
+ Beyond endpoints:                  reg:22656  port:0     macro:0    other:0   
+ Direct connecting startpoints:     reg:319    port:0     macro:0    other:0    # clock source no inclusion.                  
+ Side endpoints:                    reg:269    port:0     macro:3    other:0   
+ Beyond startpoints:                reg:3731   port:130   macro:0    other:0    # clock source no inclusion.                  
+
+ macro(side_startpoints): amem/arbiterImpl/mem/mem_0/mem_0/bram_inst/inst0 amem/arbiterImpl/mem/mem_2/mem_0/bram_inst/inst0 amem/arbiterImpl/mem/mem_3/mem_0/bram_inst/inst0
+ macro(side_endpoints): amem/arbiterImpl/mem/mem_0/mem_0/bram_inst/inst0 amem/arbiterImpl/mem/mem_2/mem_0/bram_inst/inst0 amem/arbiterImpl/mem/mem_3/mem_0/bram_inst/inst0
+ port(beyond_startpoints): {io_admaAxi*_rdata[*]} io_admaAxi*_rvalid reset
+
+=============================================================
+ Focus macro: amem/arbiterImpl/mem/mem_2/mem_0/bram_inst/inst0
+=============================================================
+ Direct connecting endpoints:       reg:256    port:0     macro:0    other:0   
+ Side startpoints:                  reg:5      port:0     macro:3    other:0   
+ Beyond endpoints:                  reg:22656  port:0     macro:0    other:0   
+ Direct connecting startpoints:     reg:319    port:0     macro:0    other:0    # clock source no inclusion.                  
+ Side endpoints:                    reg:269    port:0     macro:3    other:0   
+ Beyond startpoints:                reg:3731   port:130   macro:0    other:0    # clock source no inclusion.                  
+
+ macro(side_startpoints): amem/arbiterImpl/mem/mem_0/mem_0/bram_inst/inst0 amem/arbiterImpl/mem/mem_1/mem_0/bram_inst/inst0 amem/arbiterImpl/mem/mem_3/mem_0/bram_inst/inst0
+ macro(side_endpoints): amem/arbiterImpl/mem/mem_0/mem_0/bram_inst/inst0 amem/arbiterImpl/mem/mem_1/mem_0/bram_inst/inst0 amem/arbiterImpl/mem/mem_3/mem_0/bram_inst/inst0
+ port(beyond_startpoints): {io_admaAxi*_rdata[*]} io_admaAxi*_rvalid reset
+
+=============================================================
+ Focus macro: amem/arbiterImpl/mem/mem_3/mem_0/bram_inst/inst0
+=============================================================
+ Direct connecting endpoints:       reg:256    port:0     macro:0    other:0   
+ Side startpoints:                  reg:5      port:0     macro:3    other:0   
+ Beyond endpoints:                  reg:22656  port:0     macro:0    other:0   
+ Direct connecting startpoints:     reg:319    port:0     macro:0    other:0    # clock source no inclusion.                  
+ Side endpoints:                    reg:269    port:0     macro:3    other:0   
+ Beyond startpoints:                reg:3731   port:130   macro:0    other:0    # clock source no inclusion.                  
+
+ macro(side_startpoints): amem/arbiterImpl/mem/mem_0/mem_0/bram_inst/inst0 amem/arbiterImpl/mem/mem_1/mem_0/bram_inst/inst0 amem/arbiterImpl/mem/mem_2/mem_0/bram_inst/inst0
+ macro(side_endpoints): amem/arbiterImpl/mem/mem_0/mem_0/bram_inst/inst0 amem/arbiterImpl/mem/mem_1/mem_0/bram_inst/inst0 amem/arbiterImpl/mem/mem_2/mem_0/bram_inst/inst0
+ port(beyond_startpoints): {io_admaAxi*_rdata[*]} io_admaAxi*_rvalid reset
+
+=============================================================
+ Focus macro: fmem/arbiterImpl/mem/mem_0/mem_0/bram_inst/inst0
+=============================================================
+ Direct connecting endpoints:       reg:384    port:0     macro:0    other:0   
+ Side startpoints:                  reg:3      port:0     macro:1    other:0   
+ Beyond endpoints:                  reg:144    port:0     macro:2    other:0   
+ Direct connecting startpoints:     reg:584    port:0     macro:0    other:0    # clock source no inclusion.                  
+ Side endpoints:                    reg:37     port:0     macro:15   other:0   
+ Beyond startpoints:                reg:317    port:1     macro:2    other:0    # clock source no inclusion.                  
+
+ macro(side_startpoints): fmem/arbiterImpl/mem/mem_1/mem_0/bram_inst/inst0
+ macro(beyond_endpoints): fmem/arbiterImpl/mem/mem_0/mem_0/bram_inst/inst0 fmem/arbiterImpl/mem/mem_1/mem_0/bram_inst/inst0
+ macro(side_endpoints): fmem/arbiterImpl/mem/mem_0/mem_0/bram_inst/inst1 fmem/arbiterImpl/mem/mem_0/mem_0/bram_inst/inst2 fmem/arbiterImpl/mem/mem_0/mem_0/bram_inst/inst3 fmem/arbiterImpl/mem/mem_0/mem_0/bram_inst/inst4 fmem/arbiterImpl/mem/mem_0/mem_0/bram_inst/inst5 fmem/arbiterImpl/mem/mem_0/mem_0/bram_inst/inst6 fmem/arbiterImpl/mem/mem_0/mem_0/bram_inst/inst7 fmem/arbiterImpl/mem/mem_1/mem_0/bram_inst/inst0 fmem/arbiterImpl/mem/mem_1/mem_0/bram_inst/inst1 fmem/arbiterImpl/mem/mem_1/mem_0/bram_inst/inst2 fmem/arbiterImpl/mem/mem_1/mem_0/bram_inst/inst3 fmem/arbiterImpl/mem/mem_1/mem_0/bram_inst/inst4 fmem/arbiterImpl/mem/mem_1/mem_0/bram_inst/inst5 fmem/arbiterImpl/mem/mem_1/mem_0/bram_inst/inst6 fmem/arbiterImpl/mem/mem_1/mem_0/bram_inst/inst7
+ macro(beyond_startpoints): fmem/arbiterImpl/mem/mem_0/mem_0/bram_inst/inst0 fmem/arbiterImpl/mem/mem_1/mem_0/bram_inst/inst0
+ port(beyond_startpoints): reset
+
+=============================================================
+ Focus macro: fmem/arbiterImpl/mem/mem_0/mem_0/bram_inst/inst1
+=============================================================
+ Direct connecting endpoints:       reg:384    port:0     macro:0    other:0   
+ Side startpoints:                  reg:3      port:0     macro:1    other:0   
+ Beyond endpoints:                  reg:144    port:0     macro:2    other:0   
+ Direct connecting startpoints:     reg:584    port:0     macro:0    other:0    # clock source no inclusion.                  
+ Side endpoints:                    reg:165    port:0     macro:15   other:0   
+ Beyond startpoints:                reg:317    port:1     macro:2    other:0    # clock source no inclusion.                  
+
+ macro(side_startpoints): fmem/arbiterImpl/mem/mem_1/mem_0/bram_inst/inst1
+ macro(beyond_endpoints): fmem/arbiterImpl/mem/mem_0/mem_0/bram_inst/inst1 fmem/arbiterImpl/mem/mem_1/mem_0/bram_inst/inst1
+ macro(side_endpoints): fmem/arbiterImpl/mem/mem_0/mem_0/bram_inst/inst0 fmem/arbiterImpl/mem/mem_0/mem_0/bram_inst/inst2 fmem/arbiterImpl/mem/mem_0/mem_0/bram_inst/inst3 fmem/arbiterImpl/mem/mem_0/mem_0/bram_inst/inst4 fmem/arbiterImpl/mem/mem_0/mem_0/bram_inst/inst5 fmem/arbiterImpl/mem/mem_0/mem_0/bram_inst/inst6 fmem/arbiterImpl/mem/mem_0/mem_0/bram_inst/inst7 fmem/arbiterImpl/mem/mem_1/mem_0/bram_inst/inst0 fmem/arbiterImpl/mem/mem_1/mem_0/bram_inst/inst1 fmem/arbiterImpl/mem/mem_1/mem_0/bram_inst/inst2 fmem/arbiterImpl/mem/mem_1/mem_0/bram_inst/inst3 fmem/arbiterImpl/mem/mem_1/mem_0/bram_inst/inst4 fmem/arbiterImpl/mem/mem_1/mem_0/bram_inst/inst5 fmem/arbiterImpl/mem/mem_1/mem_0/bram_inst/inst6 fmem/arbiterImpl/mem/mem_1/mem_0/bram_inst/inst7
+ macro(beyond_startpoints): fmem/arbiterImpl/mem/mem_0/mem_0/bram_inst/inst1 fmem/arbiterImpl/mem/mem_1/mem_0/bram_inst/inst1
+ port(beyond_startpoints): reset
+
+=============================================================
+ Focus macro: fmem/arbiterImpl/mem/mem_0/mem_0/bram_inst/inst2
+=============================================================
+ Direct connecting endpoints:       reg:384    port:0     macro:0    other:0   
+ Side startpoints:                  reg:3      port:0     macro:1    other:0   
+ Beyond endpoints:                  reg:144    port:0     macro:2    other:0   
+ Direct connecting startpoints:     reg:584    port:0     macro:0    other:0    # clock source no inclusion.                  
+ Side endpoints:                    reg:165    port:0     macro:15   other:0   
+ Beyond startpoints:                reg:317    port:1     macro:2    other:0    # clock source no inclusion.                  
+
+ macro(side_startpoints): fmem/arbiterImpl/mem/mem_1/mem_0/bram_inst/inst2
+ macro(beyond_endpoints): fmem/arbiterImpl/mem/mem_0/mem_0/bram_inst/inst2 fmem/arbiterImpl/mem/mem_1/mem_0/bram_inst/inst2
+ macro(side_endpoints): fmem/arbiterImpl/mem/mem_0/mem_0/bram_inst/inst0 fmem/arbiterImpl/mem/mem_0/mem_0/bram_inst/inst1 fmem/arbiterImpl/mem/mem_0/mem_0/bram_inst/inst3 fmem/arbiterImpl/mem/mem_0/mem_0/bram_inst/inst4 fmem/arbiterImpl/mem/mem_0/mem_0/bram_inst/inst5 fmem/arbiterImpl/mem/mem_0/mem_0/bram_inst/inst6 fmem/arbiterImpl/mem/mem_0/mem_0/bram_inst/inst7 fmem/arbiterImpl/mem/mem_1/mem_0/bram_inst/inst0 fmem/arbiterImpl/mem/mem_1/mem_0/bram_inst/inst1 fmem/arbiterImpl/mem/mem_1/mem_0/bram_inst/inst2 fmem/arbiterImpl/mem/mem_1/mem_0/bram_inst/inst3 fmem/arbiterImpl/mem/mem_1/mem_0/bram_inst/inst4 fmem/arbiterImpl/mem/mem_1/mem_0/bram_inst/inst5 fmem/arbiterImpl/mem/mem_1/mem_0/bram_inst/inst6 fmem/arbiterImpl/mem/mem_1/mem_0/bram_inst/inst7
+ macro(beyond_startpoints): fmem/arbiterImpl/mem/mem_0/mem_0/bram_inst/inst2 fmem/arbiterImpl/mem/mem_1/mem_0/bram_inst/inst2
+ port(beyond_startpoints): reset
+
+=============================================================
+ Focus macro: fmem/arbiterImpl/mem/mem_0/mem_0/bram_inst/inst3
+=============================================================
+ Direct connecting endpoints:       reg:384    port:0     macro:0    other:0   
+ Side startpoints:                  reg:3      port:0     macro:1    other:0   
+ Beyond endpoints:                  reg:144    port:0     macro:2    other:0   
+ Direct connecting startpoints:     reg:584    port:0     macro:0    other:0    # clock source no inclusion.                  
+ Side endpoints:                    reg:165    port:0     macro:15   other:0   
+ Beyond startpoints:                reg:317    port:1     macro:2    other:0    # clock source no inclusion.                                                   
+
+ macro(side_startpoints): fmem/arbiterImpl/mem/mem_1/mem_0/bram_inst/inst3
+ macro(beyond_endpoints): fmem/arbiterImpl/mem/mem_0/mem_0/bram_inst/inst3 fmem/arbiterImpl/mem/mem_1/mem_0/bram_inst/inst3
+ macro(side_endpoints): fmem/arbiterImpl/mem/mem_0/mem_0/bram_inst/inst0 fmem/arbiterImpl/mem/mem_0/mem_0/bram_inst/inst1 fmem/arbiterImpl/mem/mem_0/mem_0/bram_inst/inst2 fmem/arbiterImpl/mem/mem_0/mem_0/bram_inst/inst4 fmem/arbiterImpl/mem/mem_0/mem_0/bram_inst/inst5 fmem/arbiterImpl/mem/mem_0/mem_0/bram_inst/inst6 fmem/arbiterImpl/mem/mem_0/mem_0/bram_inst/inst7 fmem/arbiterImpl/mem/mem_1/mem_0/bram_inst/inst0 fmem/arbiterImpl/mem/mem_1/mem_0/bram_inst/inst1 fmem/arbiterImpl/mem/mem_1/mem_0/bram_inst/inst2 fmem/arbiterImpl/mem/mem_1/mem_0/bram_inst/inst3 fmem/arbiterImpl/mem/mem_1/mem_0/bram_inst/inst4 fmem/arbiterImpl/mem/mem_1/mem_0/bram_inst/inst5 fmem/arbiterImpl/mem/mem_1/mem_0/bram_inst/inst6 fmem/arbiterImpl/mem/mem_1/mem_0/bram_inst/inst7
+ macro(beyond_startpoints): fmem/arbiterImpl/mem/mem_0/mem_0/bram_inst/inst3 fmem/arbiterImpl/mem/mem_1/mem_0/bram_inst/inst3
+ port(beyond_startpoints): reset
+
+=============================================================
+ Focus macro: fmem/arbiterImpl/mem/mem_0/mem_0/bram_inst/inst4
+=============================================================
+ Direct connecting endpoints:       reg:384    port:0     macro:0    other:0   
+ Side startpoints:                  reg:3      port:0     macro:1    other:0   
+ Beyond endpoints:                  reg:144    port:0     macro:2    other:0   
+ Direct connecting startpoints:     reg:584    port:0     macro:0    other:0    # clock source no inclusion.                  
+ Side endpoints:                    reg:165    port:0     macro:15   other:0   
+ Beyond startpoints:                reg:317    port:1     macro:2    other:0    # clock source no inclusion.                  
+
+ macro(side_startpoints): fmem/arbiterImpl/mem/mem_1/mem_0/bram_inst/inst4
+ macro(beyond_endpoints): fmem/arbiterImpl/mem/mem_0/mem_0/bram_inst/inst4 fmem/arbiterImpl/mem/mem_1/mem_0/bram_inst/inst4
+ macro(side_endpoints): fmem/arbiterImpl/mem/mem_0/mem_0/bram_inst/inst0 fmem/arbiterImpl/mem/mem_0/mem_0/bram_inst/inst1 fmem/arbiterImpl/mem/mem_0/mem_0/bram_inst/inst2 fmem/arbiterImpl/mem/mem_0/mem_0/bram_inst/inst3 fmem/arbiterImpl/mem/mem_0/mem_0/bram_inst/inst5 fmem/arbiterImpl/mem/mem_0/mem_0/bram_inst/inst6 fmem/arbiterImpl/mem/mem_0/mem_0/bram_inst/inst7 fmem/arbiterImpl/mem/mem_1/mem_0/bram_inst/inst0 fmem/arbiterImpl/mem/mem_1/mem_0/bram_inst/inst1 fmem/arbiterImpl/mem/mem_1/mem_0/bram_inst/inst2 fmem/arbiterImpl/mem/mem_1/mem_0/bram_inst/inst3 fmem/arbiterImpl/mem/mem_1/mem_0/bram_inst/inst4 fmem/arbiterImpl/mem/mem_1/mem_0/bram_inst/inst5 fmem/arbiterImpl/mem/mem_1/mem_0/bram_inst/inst6 fmem/arbiterImpl/mem/mem_1/mem_0/bram_inst/inst7
+ macro(beyond_startpoints): fmem/arbiterImpl/mem/mem_0/mem_0/bram_inst/inst4 fmem/arbiterImpl/mem/mem_1/mem_0/bram_inst/inst4
+ port(beyond_startpoints): reset
+
+=============================================================
+ Focus macro: fmem/arbiterImpl/mem/mem_0/mem_0/bram_inst/inst5
+=============================================================
+ Direct connecting endpoints:       reg:384    port:0     macro:0    other:0   
+ Side startpoints:                  reg:3      port:0     macro:1    other:0   
+ Beyond endpoints:                  reg:144    port:0     macro:2    other:0   
+ Direct connecting startpoints:     reg:584    port:0     macro:0    other:0    # clock source no inclusion.
+ Side endpoints:                    reg:165    port:0     macro:15   other:0   
+ Beyond startpoints:                reg:317    port:1     macro:2    other:0    # clock source no inclusion.
+
+ macro(side_startpoints): fmem/arbiterImpl/mem/mem_1/mem_0/bram_inst/inst5
+ macro(beyond_endpoints): fmem/arbiterImpl/mem/mem_0/mem_0/bram_inst/inst5 fmem/arbiterImpl/mem/mem_1/mem_0/bram_inst/inst5
+ macro(side_endpoints): fmem/arbiterImpl/mem/mem_0/mem_0/bram_inst/inst0 fmem/arbiterImpl/mem/mem_0/mem_0/bram_inst/inst1 fmem/arbiterImpl/mem/mem_0/mem_0/bram_inst/inst2 fmem/arbiterImpl/mem/mem_0/mem_0/bram_inst/inst3 fmem/arbiterImpl/mem/mem_0/mem_0/bram_inst/inst4 fmem/arbiterImpl/mem/mem_0/mem_0/bram_inst/inst6 fmem/arbiterImpl/mem/mem_0/mem_0/bram_inst/inst7 fmem/arbiterImpl/mem/mem_1/mem_0/bram_inst/inst0 fmem/arbiterImpl/mem/mem_1/mem_0/bram_inst/inst1 fmem/arbiterImpl/mem/mem_1/mem_0/bram_inst/inst2 fmem/arbiterImpl/mem/mem_1/mem_0/bram_inst/inst3 fmem/arbiterImpl/mem/mem_1/mem_0/bram_inst/inst4 fmem/arbiterImpl/mem/mem_1/mem_0/bram_inst/inst5 fmem/arbiterImpl/mem/mem_1/mem_0/bram_inst/inst6 fmem/arbiterImpl/mem/mem_1/mem_0/bram_inst/inst7
+ macro(beyond_startpoints): fmem/arbiterImpl/mem/mem_0/mem_0/bram_inst/inst5 fmem/arbiterImpl/mem/mem_1/mem_0/bram_inst/inst5
+ port(beyond_startpoints): reset
+
+=============================================================
+ Focus macro: fmem/arbiterImpl/mem/mem_0/mem_0/bram_inst/inst6
+=============================================================
+ Direct connecting endpoints:       reg:384    port:0     macro:0    other:0   
+ Side startpoints:                  reg:3      port:0     macro:1    other:0   
+ Beyond endpoints:                  reg:144    port:0     macro:2    other:0   
+ Direct connecting startpoints:     reg:584    port:0     macro:0    other:0    # clock source no inclusion.                  
+ Side endpoints:                    reg:165    port:0     macro:15   other:0   
+ Beyond startpoints:                reg:317    port:1     macro:2    other:0    # clock source no inclusion.                  
+
+ macro(side_startpoints): fmem/arbiterImpl/mem/mem_1/mem_0/bram_inst/inst6
+ macro(beyond_endpoints): fmem/arbiterImpl/mem/mem_0/mem_0/bram_inst/inst6 fmem/arbiterImpl/mem/mem_1/mem_0/bram_inst/inst6
+ macro(side_endpoints): fmem/arbiterImpl/mem/mem_0/mem_0/bram_inst/inst0 fmem/arbiterImpl/mem/mem_0/mem_0/bram_inst/inst1 fmem/arbiterImpl/mem/mem_0/mem_0/bram_inst/inst2 fmem/arbiterImpl/mem/mem_0/mem_0/bram_inst/inst3 fmem/arbiterImpl/mem/mem_0/mem_0/bram_inst/inst4 fmem/arbiterImpl/mem/mem_0/mem_0/bram_inst/inst5 fmem/arbiterImpl/mem/mem_0/mem_0/bram_inst/inst7 fmem/arbiterImpl/mem/mem_1/mem_0/bram_inst/inst0 fmem/arbiterImpl/mem/mem_1/mem_0/bram_inst/inst1 fmem/arbiterImpl/mem/mem_1/mem_0/bram_inst/inst2 fmem/arbiterImpl/mem/mem_1/mem_0/bram_inst/inst3 fmem/arbiterImpl/mem/mem_1/mem_0/bram_inst/inst4 fmem/arbiterImpl/mem/mem_1/mem_0/bram_inst/inst5 fmem/arbiterImpl/mem/mem_1/mem_0/bram_inst/inst6 fmem/arbiterImpl/mem/mem_1/mem_0/bram_inst/inst7
+ macro(beyond_startpoints): fmem/arbiterImpl/mem/mem_0/mem_0/bram_inst/inst6 fmem/arbiterImpl/mem/mem_1/mem_0/bram_inst/inst6
+ port(beyond_startpoints): reset
+
+=============================================================
+ Focus macro: fmem/arbiterImpl/mem/mem_0/mem_0/bram_inst/inst7
+=============================================================
+ Direct connecting endpoints:       reg:384    port:0     macro:0    other:0   
+ Side startpoints:                  reg:3      port:0     macro:1    other:0   
+ Beyond endpoints:                  reg:144    port:0     macro:2    other:0   
+ Direct connecting startpoints:     reg:584    port:0     macro:0    other:0    # clock source no inclusion.                  
+ Side endpoints:                    reg:165    port:0     macro:15   other:0   
+ Beyond startpoints:                reg:189    port:129   macro:2    other:0    # clock source no inclusion.                  
+
+ macro(side_startpoints): fmem/arbiterImpl/mem/mem_1/mem_0/bram_inst/inst7
+ macro(beyond_endpoints): fmem/arbiterImpl/mem/mem_0/mem_0/bram_inst/inst7 fmem/arbiterImpl/mem/mem_1/mem_0/bram_inst/inst7
+ macro(side_endpoints): fmem/arbiterImpl/mem/mem_0/mem_0/bram_inst/inst0 fmem/arbiterImpl/mem/mem_0/mem_0/bram_inst/inst1 fmem/arbiterImpl/mem/mem_0/mem_0/bram_inst/inst2 fmem/arbiterImpl/mem/mem_0/mem_0/bram_inst/inst3 fmem/arbiterImpl/mem/mem_0/mem_0/bram_inst/inst4 fmem/arbiterImpl/mem/mem_0/mem_0/bram_inst/inst5 fmem/arbiterImpl/mem/mem_0/mem_0/bram_inst/inst6 fmem/arbiterImpl/mem/mem_1/mem_0/bram_inst/inst0 fmem/arbiterImpl/mem/mem_1/mem_0/bram_inst/inst1 fmem/arbiterImpl/mem/mem_1/mem_0/bram_inst/inst2 fmem/arbiterImpl/mem/mem_1/mem_0/bram_inst/inst3 fmem/arbiterImpl/mem/mem_1/mem_0/bram_inst/inst4 fmem/arbiterImpl/mem/mem_1/mem_0/bram_inst/inst5 fmem/arbiterImpl/mem/mem_1/mem_0/bram_inst/inst6 fmem/arbiterImpl/mem/mem_1/mem_0/bram_inst/inst7
+ macro(beyond_startpoints): fmem/arbiterImpl/mem/mem_0/mem_0/bram_inst/inst7 fmem/arbiterImpl/mem/mem_1/mem_0/bram_inst/inst7
+ port(beyond_startpoints): {io_fdmaAxi*_rdata[*]} reset
+
+=============================================================
+ Focus macro: fmem/arbiterImpl/mem/mem_1/mem_0/bram_inst/inst0
+=============================================================
+ Direct connecting endpoints:       reg:384    port:0     macro:0    other:0   
+ Side startpoints:                  reg:3      port:0     macro:1    other:0   
+ Beyond endpoints:                  reg:144    port:0     macro:2    other:0   
+ Direct connecting startpoints:     reg:584    port:0     macro:0    other:0    # clock source no inclusion.                  
+ Side endpoints:                    reg:37     port:0     macro:15   other:0   
+ Beyond startpoints:                reg:317    port:1     macro:2    other:0    # clock source no inclusion.                  
+
+ macro(side_startpoints): fmem/arbiterImpl/mem/mem_0/mem_0/bram_inst/inst0
+ macro(beyond_endpoints): fmem/arbiterImpl/mem/mem_0/mem_0/bram_inst/inst0 fmem/arbiterImpl/mem/mem_1/mem_0/bram_inst/inst0
+ macro(side_endpoints): fmem/arbiterImpl/mem/mem_0/mem_0/bram_inst/inst0 fmem/arbiterImpl/mem/mem_0/mem_0/bram_inst/inst1 fmem/arbiterImpl/mem/mem_0/mem_0/bram_inst/inst2 fmem/arbiterImpl/mem/mem_0/mem_0/bram_inst/inst3 fmem/arbiterImpl/mem/mem_0/mem_0/bram_inst/inst4 fmem/arbiterImpl/mem/mem_0/mem_0/bram_inst/inst5 fmem/arbiterImpl/mem/mem_0/mem_0/bram_inst/inst6 fmem/arbiterImpl/mem/mem_0/mem_0/bram_inst/inst7 fmem/arbiterImpl/mem/mem_1/mem_0/bram_inst/inst1 fmem/arbiterImpl/mem/mem_1/mem_0/bram_inst/inst2 fmem/arbiterImpl/mem/mem_1/mem_0/bram_inst/inst3 fmem/arbiterImpl/mem/mem_1/mem_0/bram_inst/inst4 fmem/arbiterImpl/mem/mem_1/mem_0/bram_inst/inst5 fmem/arbiterImpl/mem/mem_1/mem_0/bram_inst/inst6 fmem/arbiterImpl/mem/mem_1/mem_0/bram_inst/inst7
+ macro(beyond_startpoints): fmem/arbiterImpl/mem/mem_0/mem_0/bram_inst/inst0 fmem/arbiterImpl/mem/mem_1/mem_0/bram_inst/inst0
+ port(beyond_startpoints): reset
+
+=============================================================
+ Focus macro: fmem/arbiterImpl/mem/mem_1/mem_0/bram_inst/inst1
+=============================================================
+ Direct connecting endpoints:       reg:384    port:0     macro:0    other:0   
+ Side startpoints:                  reg:3      port:0     macro:1    other:0   
+ Beyond endpoints:                  reg:144    port:0     macro:2    other:0   
+ Direct connecting startpoints:     reg:584    port:0     macro:0    other:0    # clock source no inclusion.                  
+ Side endpoints:                    reg:165    port:0     macro:15   other:0   
+ Beyond startpoints:                reg:317    port:1     macro:2    other:0    # clock source no inclusion.                  
+
+ macro(side_startpoints): fmem/arbiterImpl/mem/mem_0/mem_0/bram_inst/inst1
+ macro(beyond_endpoints): fmem/arbiterImpl/mem/mem_0/mem_0/bram_inst/inst1 fmem/arbiterImpl/mem/mem_1/mem_0/bram_inst/inst1
+ macro(side_endpoints): fmem/arbiterImpl/mem/mem_0/mem_0/bram_inst/inst0 fmem/arbiterImpl/mem/mem_0/mem_0/bram_inst/inst1 fmem/arbiterImpl/mem/mem_0/mem_0/bram_inst/inst2 fmem/arbiterImpl/mem/mem_0/mem_0/bram_inst/inst3 fmem/arbiterImpl/mem/mem_0/mem_0/bram_inst/inst4 fmem/arbiterImpl/mem/mem_0/mem_0/bram_inst/inst5 fmem/arbiterImpl/mem/mem_0/mem_0/bram_inst/inst6 fmem/arbiterImpl/mem/mem_0/mem_0/bram_inst/inst7 fmem/arbiterImpl/mem/mem_1/mem_0/bram_inst/inst0 fmem/arbiterImpl/mem/mem_1/mem_0/bram_inst/inst2 fmem/arbiterImpl/mem/mem_1/mem_0/bram_inst/inst3 fmem/arbiterImpl/mem/mem_1/mem_0/bram_inst/inst4 fmem/arbiterImpl/mem/mem_1/mem_0/bram_inst/inst5 fmem/arbiterImpl/mem/mem_1/mem_0/bram_inst/inst6 fmem/arbiterImpl/mem/mem_1/mem_0/bram_inst/inst7
+ macro(beyond_startpoints): fmem/arbiterImpl/mem/mem_0/mem_0/bram_inst/inst1 fmem/arbiterImpl/mem/mem_1/mem_0/bram_inst/inst1
+ port(beyond_startpoints): reset
+
+=============================================================
+ Focus macro: fmem/arbiterImpl/mem/mem_1/mem_0/bram_inst/inst2
+=============================================================
+ Direct connecting endpoints:       reg:384    port:0     macro:0    other:0   
+ Side startpoints:                  reg:3      port:0     macro:1    other:0   
+ Beyond endpoints:                  reg:144    port:0     macro:2    other:0   
+ Direct connecting startpoints:     reg:584    port:0     macro:0    other:0    # clock source no inclusion.                  
+ Side endpoints:                    reg:165    port:0     macro:15   other:0   
+ Beyond startpoints:                reg:317    port:1     macro:2    other:0    # clock source no inclusion.                  
+
+ macro(side_startpoints): fmem/arbiterImpl/mem/mem_0/mem_0/bram_inst/inst2
+ macro(beyond_endpoints): fmem/arbiterImpl/mem/mem_0/mem_0/bram_inst/inst2 fmem/arbiterImpl/mem/mem_1/mem_0/bram_inst/inst2
+ macro(side_endpoints): fmem/arbiterImpl/mem/mem_0/mem_0/bram_inst/inst0 fmem/arbiterImpl/mem/mem_0/mem_0/bram_inst/inst1 fmem/arbiterImpl/mem/mem_0/mem_0/bram_inst/inst2 fmem/arbiterImpl/mem/mem_0/mem_0/bram_inst/inst3 fmem/arbiterImpl/mem/mem_0/mem_0/bram_inst/inst4 fmem/arbiterImpl/mem/mem_0/mem_0/bram_inst/inst5 fmem/arbiterImpl/mem/mem_0/mem_0/bram_inst/inst6 fmem/arbiterImpl/mem/mem_0/mem_0/bram_inst/inst7 fmem/arbiterImpl/mem/mem_1/mem_0/bram_inst/inst0 fmem/arbiterImpl/mem/mem_1/mem_0/bram_inst/inst1 fmem/arbiterImpl/mem/mem_1/mem_0/bram_inst/inst3 fmem/arbiterImpl/mem/mem_1/mem_0/bram_inst/inst4 fmem/arbiterImpl/mem/mem_1/mem_0/bram_inst/inst5 fmem/arbiterImpl/mem/mem_1/mem_0/bram_inst/inst6 fmem/arbiterImpl/mem/mem_1/mem_0/bram_inst/inst7
+ macro(beyond_startpoints): fmem/arbiterImpl/mem/mem_0/mem_0/bram_inst/inst2 fmem/arbiterImpl/mem/mem_1/mem_0/bram_inst/inst2
+ port(beyond_startpoints): reset
+
+=============================================================
+ Focus macro: fmem/arbiterImpl/mem/mem_1/mem_0/bram_inst/inst3
+=============================================================
+ Direct connecting endpoints:       reg:384    port:0     macro:0    other:0   
+ Side startpoints:                  reg:3      port:0     macro:1    other:0   
+ Beyond endpoints:                  reg:144    port:0     macro:2    other:0   
+ Direct connecting startpoints:     reg:584    port:0     macro:0    other:0    # clock source no inclusion.                  
+ Side endpoints:                    reg:165    port:0     macro:15   other:0   
+ Beyond startpoints:                reg:317    port:1     macro:2    other:0    # clock source no inclusion.                  
+
+ macro(side_startpoints): fmem/arbiterImpl/mem/mem_0/mem_0/bram_inst/inst3
+ macro(beyond_endpoints): fmem/arbiterImpl/mem/mem_0/mem_0/bram_inst/inst3 fmem/arbiterImpl/mem/mem_1/mem_0/bram_inst/inst3
+ macro(side_endpoints): fmem/arbiterImpl/mem/mem_0/mem_0/bram_inst/inst0 fmem/arbiterImpl/mem/mem_0/mem_0/bram_inst/inst1 fmem/arbiterImpl/mem/mem_0/mem_0/bram_inst/inst2 fmem/arbiterImpl/mem/mem_0/mem_0/bram_inst/inst3 fmem/arbiterImpl/mem/mem_0/mem_0/bram_inst/inst4 fmem/arbiterImpl/mem/mem_0/mem_0/bram_inst/inst5 fmem/arbiterImpl/mem/mem_0/mem_0/bram_inst/inst6 fmem/arbiterImpl/mem/mem_0/mem_0/bram_inst/inst7 fmem/arbiterImpl/mem/mem_1/mem_0/bram_inst/inst0 fmem/arbiterImpl/mem/mem_1/mem_0/bram_inst/inst1 fmem/arbiterImpl/mem/mem_1/mem_0/bram_inst/inst2 fmem/arbiterImpl/mem/mem_1/mem_0/bram_inst/inst4 fmem/arbiterImpl/mem/mem_1/mem_0/bram_inst/inst5 fmem/arbiterImpl/mem/mem_1/mem_0/bram_inst/inst6 fmem/arbiterImpl/mem/mem_1/mem_0/bram_inst/inst7
+ macro(beyond_startpoints): fmem/arbiterImpl/mem/mem_0/mem_0/bram_inst/inst3 fmem/arbiterImpl/mem/mem_1/mem_0/bram_inst/inst3
+ port(beyond_startpoints): reset
+
+=============================================================
+ Focus macro: fmem/arbiterImpl/mem/mem_1/mem_0/bram_inst/inst4
+=============================================================
+ Direct connecting endpoints:       reg:384    port:0     macro:0    other:0   
+ Side startpoints:                  reg:3      port:0     macro:1    other:0   
+ Beyond endpoints:                  reg:144    port:0     macro:2    other:0   
+ Direct connecting startpoints:     reg:584    port:0     macro:0    other:0    # clock source no inclusion.                  
+ Side endpoints:                    reg:165    port:0     macro:15   other:0   
+ Beyond startpoints:                reg:317    port:1     macro:2    other:0    # clock source no inclusion.                  
+
+ macro(side_startpoints): fmem/arbiterImpl/mem/mem_0/mem_0/bram_inst/inst4
+ macro(beyond_endpoints): fmem/arbiterImpl/mem/mem_0/mem_0/bram_inst/inst4 fmem/arbiterImpl/mem/mem_1/mem_0/bram_inst/inst4
+ macro(side_endpoints): fmem/arbiterImpl/mem/mem_0/mem_0/bram_inst/inst0 fmem/arbiterImpl/mem/mem_0/mem_0/bram_inst/inst1 fmem/arbiterImpl/mem/mem_0/mem_0/bram_inst/inst2 fmem/arbiterImpl/mem/mem_0/mem_0/bram_inst/inst3 fmem/arbiterImpl/mem/mem_0/mem_0/bram_inst/inst4 fmem/arbiterImpl/mem/mem_0/mem_0/bram_inst/inst5 fmem/arbiterImpl/mem/mem_0/mem_0/bram_inst/inst6 fmem/arbiterImpl/mem/mem_0/mem_0/bram_inst/inst7 fmem/arbiterImpl/mem/mem_1/mem_0/bram_inst/inst0 fmem/arbiterImpl/mem/mem_1/mem_0/bram_inst/inst1 fmem/arbiterImpl/mem/mem_1/mem_0/bram_inst/inst2 fmem/arbiterImpl/mem/mem_1/mem_0/bram_inst/inst3 fmem/arbiterImpl/mem/mem_1/mem_0/bram_inst/inst5 fmem/arbiterImpl/mem/mem_1/mem_0/bram_inst/inst6 fmem/arbiterImpl/mem/mem_1/mem_0/bram_inst/inst7
+ macro(beyond_startpoints): fmem/arbiterImpl/mem/mem_0/mem_0/bram_inst/inst4 fmem/arbiterImpl/mem/mem_1/mem_0/bram_inst/inst4
+ port(beyond_startpoints): reset
+
+=============================================================
+ Focus macro: fmem/arbiterImpl/mem/mem_1/mem_0/bram_inst/inst5
+=============================================================
+ Direct connecting endpoints:       reg:384    port:0     macro:0    other:0   
+ Side startpoints:                  reg:3      port:0     macro:1    other:0   
+ Beyond endpoints:                  reg:144    port:0     macro:2    other:0   
+ Direct connecting startpoints:     reg:584    port:0     macro:0    other:0    # clock source no inclusion.                  
+ Side endpoints:                    reg:165    port:0     macro:15   other:0   
+ Beyond startpoints:                reg:317    port:1     macro:2    other:0    # clock source no inclusion.                  
+
+ macro(side_startpoints): fmem/arbiterImpl/mem/mem_0/mem_0/bram_inst/inst5
+ macro(beyond_endpoints): fmem/arbiterImpl/mem/mem_0/mem_0/bram_inst/inst5 fmem/arbiterImpl/mem/mem_1/mem_0/bram_inst/inst5
+ macro(side_endpoints): fmem/arbiterImpl/mem/mem_0/mem_0/bram_inst/inst0 fmem/arbiterImpl/mem/mem_0/mem_0/bram_inst/inst1 fmem/arbiterImpl/mem/mem_0/mem_0/bram_inst/inst2 fmem/arbiterImpl/mem/mem_0/mem_0/bram_inst/inst3 fmem/arbiterImpl/mem/mem_0/mem_0/bram_inst/inst4 fmem/arbiterImpl/mem/mem_0/mem_0/bram_inst/inst5 fmem/arbiterImpl/mem/mem_0/mem_0/bram_inst/inst6 fmem/arbiterImpl/mem/mem_0/mem_0/bram_inst/inst7 fmem/arbiterImpl/mem/mem_1/mem_0/bram_inst/inst0 fmem/arbiterImpl/mem/mem_1/mem_0/bram_inst/inst1 fmem/arbiterImpl/mem/mem_1/mem_0/bram_inst/inst2 fmem/arbiterImpl/mem/mem_1/mem_0/bram_inst/inst3 fmem/arbiterImpl/mem/mem_1/mem_0/bram_inst/inst4 fmem/arbiterImpl/mem/mem_1/mem_0/bram_inst/inst6 fmem/arbiterImpl/mem/mem_1/mem_0/bram_inst/inst7
+ macro(beyond_startpoints): fmem/arbiterImpl/mem/mem_0/mem_0/bram_inst/inst5 fmem/arbiterImpl/mem/mem_1/mem_0/bram_inst/inst5
+ port(beyond_startpoints): reset
+
+=============================================================
+ Focus macro: fmem/arbiterImpl/mem/mem_1/mem_0/bram_inst/inst6
+=============================================================
+ Direct connecting endpoints:       reg:384    port:0     macro:0    other:0   
+ Side startpoints:                  reg:3      port:0     macro:1    other:0   
+ Beyond endpoints:                  reg:144    port:0     macro:2    other:0   
+ Direct connecting startpoints:     reg:584    port:0     macro:0    other:0    # clock source no inclusion.                  
+ Side endpoints:                    reg:165    port:0     macro:15   other:0   
+ Beyond startpoints:                reg:317    port:1     macro:2    other:0    # clock source no inclusion.                  
+
+ macro(side_startpoints): fmem/arbiterImpl/mem/mem_0/mem_0/bram_inst/inst6
+ macro(beyond_endpoints): fmem/arbiterImpl/mem/mem_0/mem_0/bram_inst/inst6 fmem/arbiterImpl/mem/mem_1/mem_0/bram_inst/inst6
+ macro(side_endpoints): fmem/arbiterImpl/mem/mem_0/mem_0/bram_inst/inst0 fmem/arbiterImpl/mem/mem_0/mem_0/bram_inst/inst1 fmem/arbiterImpl/mem/mem_0/mem_0/bram_inst/inst2 fmem/arbiterImpl/mem/mem_0/mem_0/bram_inst/inst3 fmem/arbiterImpl/mem/mem_0/mem_0/bram_inst/inst4 fmem/arbiterImpl/mem/mem_0/mem_0/bram_inst/inst5 fmem/arbiterImpl/mem/mem_0/mem_0/bram_inst/inst6 fmem/arbiterImpl/mem/mem_0/mem_0/bram_inst/inst7 fmem/arbiterImpl/mem/mem_1/mem_0/bram_inst/inst0 fmem/arbiterImpl/mem/mem_1/mem_0/bram_inst/inst1 fmem/arbiterImpl/mem/mem_1/mem_0/bram_inst/inst2 fmem/arbiterImpl/mem/mem_1/mem_0/bram_inst/inst3 fmem/arbiterImpl/mem/mem_1/mem_0/bram_inst/inst4 fmem/arbiterImpl/mem/mem_1/mem_0/bram_inst/inst5 fmem/arbiterImpl/mem/mem_1/mem_0/bram_inst/inst7
+ macro(beyond_startpoints): fmem/arbiterImpl/mem/mem_0/mem_0/bram_inst/inst6 fmem/arbiterImpl/mem/mem_1/mem_0/bram_inst/inst6
+ port(beyond_startpoints): reset
+
+=============================================================
+ Focus macro: fmem/arbiterImpl/mem/mem_1/mem_0/bram_inst/inst7
+=============================================================
+ Direct connecting endpoints:       reg:384    port:0     macro:0    other:0   
+ Side startpoints:                  reg:3      port:0     macro:1    other:0   
+ Beyond endpoints:                  reg:144    port:0     macro:2    other:0   
+ Direct connecting startpoints:     reg:584    port:0     macro:0    other:0    # clock source no inclusion.                  
+ Side endpoints:                    reg:165    port:0     macro:15   other:0   
+ Beyond startpoints:                reg:189    port:129   macro:2    other:0    # clock source no inclusion.                  
+
+ macro(side_startpoints): fmem/arbiterImpl/mem/mem_0/mem_0/bram_inst/inst7
+ macro(beyond_endpoints): fmem/arbiterImpl/mem/mem_0/mem_0/bram_inst/inst7 fmem/arbiterImpl/mem/mem_1/mem_0/bram_inst/inst7
+ macro(side_endpoints): fmem/arbiterImpl/mem/mem_0/mem_0/bram_inst/inst0 fmem/arbiterImpl/mem/mem_0/mem_0/bram_inst/inst1 fmem/arbiterImpl/mem/mem_0/mem_0/bram_inst/inst2 fmem/arbiterImpl/mem/mem_0/mem_0/bram_inst/inst3 fmem/arbiterImpl/mem/mem_0/mem_0/bram_inst/inst4 fmem/arbiterImpl/mem/mem_0/mem_0/bram_inst/inst5 fmem/arbiterImpl/mem/mem_0/mem_0/bram_inst/inst6 fmem/arbiterImpl/mem/mem_0/mem_0/bram_inst/inst7 fmem/arbiterImpl/mem/mem_1/mem_0/bram_inst/inst0 fmem/arbiterImpl/mem/mem_1/mem_0/bram_inst/inst1 fmem/arbiterImpl/mem/mem_1/mem_0/bram_inst/inst2 fmem/arbiterImpl/mem/mem_1/mem_0/bram_inst/inst3 fmem/arbiterImpl/mem/mem_1/mem_0/bram_inst/inst4 fmem/arbiterImpl/mem/mem_1/mem_0/bram_inst/inst5 fmem/arbiterImpl/mem/mem_1/mem_0/bram_inst/inst6
+ macro(beyond_startpoints): fmem/arbiterImpl/mem/mem_0/mem_0/bram_inst/inst7 fmem/arbiterImpl/mem/mem_1/mem_0/bram_inst/inst7
+ port(beyond_startpoints): {io_fdmaAxi*_rdata[*]} reset
+
+=============================================================
+ Focus macro: qmem/arbiterImpl/mem/mem_0/mem_0/bram_inst/inst0
+=============================================================
+ Direct connecting endpoints:       reg:80     port:0     macro:0    other:0   
+ Side startpoints:                  reg:1      port:0     macro:1    other:0   
+ Beyond endpoints:                  reg:120    port:0     macro:0    other:0   
+ Direct connecting startpoints:     reg:64     port:0     macro:0    other:0    # clock source no inclusion.
+ Side endpoints:                    reg:64     port:0     macro:1    other:0   
+ Beyond startpoints:                reg:92     port:42    macro:0    other:0    # clock source no inclusion.                             
+
+ macro(side_startpoints): qmem/arbiterImpl/mem/mem_1/mem_0/bram_inst/inst0
+ macro(side_endpoints): qmem/arbiterImpl/mem/mem_1/mem_0/bram_inst/inst0
+ port(beyond_startpoints): {io_qdmaAxi*_rdata[*]} io_qdmaAxi*_rvalid reset
+
+=============================================================
+ Focus macro: qmem/arbiterImpl/mem/mem_1/mem_0/bram_inst/inst0
+=============================================================
+ Direct connecting endpoints:       reg:80     port:0     macro:0    other:0   
+ Side startpoints:                  reg:1      port:0     macro:1    other:0   
+ Beyond endpoints:                  reg:120    port:0     macro:0    other:0   
+ Direct connecting startpoints:     reg:64     port:0     macro:0    other:0    # clock source no inclusion.                  
+ Side endpoints:                    reg:64     port:0     macro:1    other:0   
+ Beyond startpoints:                reg:92     port:42    macro:0    other:0    # clock source no inclusion.
+
+ macro(side_startpoints): qmem/arbiterImpl/mem/mem_0/mem_0/bram_inst/inst0
+ macro(side_endpoints): qmem/arbiterImpl/mem/mem_0/mem_0/bram_inst/inst0
+ port(beyond_startpoints): {io_qdmaAxi*_rdata[*]} io_qdmaAxi*_rvalid reset
+
+=============================================================
+ Focus macro: wmem/arbiterImpl/mem/mem_0/mem_0/bram_inst/inst0
+=============================================================
+ Direct connecting endpoints:       reg:176    port:0     macro:0    other:0   
+ Side startpoints:                  reg:1      port:0     macro:1    other:0   
+ Beyond endpoints:                  reg:148    port:0     macro:0    other:0   
+ Direct connecting startpoints:     reg:90     port:0     macro:0    other:0    # clock source no inclusion.                  
+ Side endpoints:                    reg:77     port:0     macro:1    other:0   
+ Beyond startpoints:                reg:119    port:66    macro:0    other:0    # clock source no inclusion.
+
+ macro(side_startpoints): wmem/arbiterImpl/mem/mem_1/mem_0/bram_inst/inst0
+ macro(side_endpoints): wmem/arbiterImpl/mem/mem_1/mem_0/bram_inst/inst0
+ port(beyond_startpoints): {io_wdmaAxi*_rdata[*]} io_wdmaAxi*_rvalid reset
+
+=============================================================
+ Focus macro: wmem/arbiterImpl/mem/mem_1/mem_0/bram_inst/inst0
+=============================================================
+ Direct connecting endpoints:       reg:176    port:0     macro:0    other:0   
+ Side startpoints:                  reg:1      port:0     macro:1    other:0   
+ Beyond endpoints:                  reg:148    port:0     macro:0    other:0   
+ Direct connecting startpoints:     reg:90     port:0     macro:0    other:0    # clock source no inclusion.                  
+ Side endpoints:                    reg:77     port:0     macro:1    other:0   
+ Beyond startpoints:                reg:119    port:66    macro:0    other:0    # clock source no inclusion.
+
+ macro(side_startpoints): wmem/arbiterImpl/mem/mem_0/mem_0/bram_inst/inst0
+ macro(side_endpoints): wmem/arbiterImpl/mem/mem_0/mem_0/bram_inst/inst0
+ port(beyond_startpoints): {io_wdmaAxi*_rdata[*]} io_wdmaAxi*_rvalid reset
+
+#
+#                       Focus macro
+#  +---+       +---+       +---+       +---+       +---+
+#  |   |---@-->|   |---@-->|   |---@-->|   |---@-->|   |
+#  +---+       +---+   |   +---+   |   +---+       +---+
+#  Beyond      Direct  |           |   Direct      Beyond
+#                      |   +---+   |
+#                      |   |   |---+
+#                      |   +---+
+#                      |   Side
+#                      |   +---+
+#                      +-->|   |
+#                          +---+
+#
+
+=== Grouping candidates ===
+Group:1 (Color:green)
+ amem/arbiterImpl/mem/mem_0/mem_0/bram_inst/inst0
+ amem/arbiterImpl/mem/mem_1/mem_0/bram_inst/inst0
+ amem/arbiterImpl/mem/mem_2/mem_0/bram_inst/inst0
+ amem/arbiterImpl/mem/mem_3/mem_0/bram_inst/inst0
+ *** Related (direct or indirect) port ***
+  io_admaAxi*_rdata[*]
+  io_admaAxi*_rvalid
+  reset
+ *** Group information (port no inclusion) ***
+ Region: {-0.0530 -0.0170} {646.1760 488.8240} ( Horizontal length: 646.229, Vertical length: 488.841 , Area: 315903.230589 )
+ Total cell area: 76366.1425921 ( macro: 52353.707136 no_macro: 24012.435456 ) Util(%): 24.174                                                                           
+
+ # Created gui-highlight script : ./gui_change_highlight_group_1.tcl
+
+Group:2 (Color:blue)
+ fmem/arbiterImpl/mem/mem_0/mem_0/bram_inst/inst0
+ fmem/arbiterImpl/mem/mem_0/mem_0/bram_inst/inst1
+ fmem/arbiterImpl/mem/mem_0/mem_0/bram_inst/inst2
+ fmem/arbiterImpl/mem/mem_0/mem_0/bram_inst/inst3
+ fmem/arbiterImpl/mem/mem_0/mem_0/bram_inst/inst4
+ fmem/arbiterImpl/mem/mem_0/mem_0/bram_inst/inst5
+ fmem/arbiterImpl/mem/mem_0/mem_0/bram_inst/inst6
+ fmem/arbiterImpl/mem/mem_0/mem_0/bram_inst/inst7
+ fmem/arbiterImpl/mem/mem_1/mem_0/bram_inst/inst0
+ fmem/arbiterImpl/mem/mem_1/mem_0/bram_inst/inst1
+ fmem/arbiterImpl/mem/mem_1/mem_0/bram_inst/inst2
+ fmem/arbiterImpl/mem/mem_1/mem_0/bram_inst/inst3
+ fmem/arbiterImpl/mem/mem_1/mem_0/bram_inst/inst4
+ fmem/arbiterImpl/mem/mem_1/mem_0/bram_inst/inst5
+ fmem/arbiterImpl/mem/mem_1/mem_0/bram_inst/inst6
+ fmem/arbiterImpl/mem/mem_1/mem_0/bram_inst/inst7
+ *** Related (direct or indirect) port ***
+  io_fdmaAxi*_rdata[*]
+  reset
+ *** Group information (port no inclusion) ***
+ Region: {-0.0530 -0.0170} {710.6320 699.8800} ( Horizontal length: 710.685, Vertical length: 699.897 , Area: 497406.299445 )
+ Total cell area: 216608.322048 ( macro: 209414.828544 no_macro: 7193.493504 ) Util(%): 43.548                                                   
+
+ # Created gui-highlight script : ./gui_change_highlight_group_2.tcl
+
+Group:3 (Color:purple)
+ qmem/arbiterImpl/mem/mem_0/mem_0/bram_inst/inst0
+ qmem/arbiterImpl/mem/mem_1/mem_0/bram_inst/inst0
+ *** Related (direct or indirect) port ***
+  io_qdmaAxi*_rdata[*]
+  io_qdmaAxi*_rvalid
+  reset
+ *** Group information (port no inclusion) ***
+ Region: {-0.0530 -0.0170} {194.5780 255.3520} ( Horizontal length: 194.631, Vertical length: 255.369 , Area: 49702.723839 )
+ Total cell area: 6263.866944 ( macro: 5915.317824 no_macro: 348.54912 ) Util(%): 12.603
+
+ # Created gui-highlight script : ./gui_change_highlight_group_3.tcl
+
+Group:4 (Color:light_orange)
+ wmem/arbiterImpl/mem/mem_0/mem_0/bram_inst/inst0
+ wmem/arbiterImpl/mem/mem_1/mem_0/bram_inst/inst0
+ *** Related (direct or indirect) port ***
+  io_wdmaAxi*_rdata[*]
+  io_wdmaAxi*_rvalid
+  reset
+ *** Group information (port no inclusion) ***
+ Region: {-0.0530 -0.0170} {194.5780 179.4640} ( Horizontal length: 194.631, Vertical length: 179.481 , Area: 34932.566511 )
+ Total cell area: 14489.552448 ( macro: 13984.405056 no_macro: 505.147392 ) Util(%): 41.479
+
+ # Created gui-highlight script : ./gui_change_highlight_group_4.tcl
+```

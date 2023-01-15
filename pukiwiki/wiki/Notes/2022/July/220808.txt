@@ -1,0 +1,14 @@
+#notemd
+# Tech Sharing 220824
+
+## JTAG Yamauchi-san
+
+# All-hands Forum 220808
+
+## Furuzono-san
+
+  - TSMC Symposium
+
+## Early Rail Analysis Ke-san
+
+  - ERA finds power plan issues @ FP stage

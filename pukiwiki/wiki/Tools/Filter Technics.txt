@@ -1,0 +1,17 @@
+#author("2022-12-27T01:38:30+00:00","","")
+#notemd
+
+[[Tools]]
+
+https://solvnetplus.synopsys.com/s/article/How-to-use-collection-argument-in-the-filter
+
+# Filter Layer
+```tcl
+filter_collection [get_shapes -within $bottom_pb] {layer.name == M2}
+```
+
+# OR
+
+```tcl
+set m5_pgs [get_shapes -filter {layer.name==M5 && (net_type==power || net_type==ground) && width==0.278}]
+```

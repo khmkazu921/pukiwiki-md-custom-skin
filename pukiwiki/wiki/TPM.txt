@@ -1,0 +1,22 @@
+#author("2022-12-05T05:56:02+00:00","","")
+#notemd
+
+
+# TPM by Yamamoto-san
+
+## Presales, Technical Proposal, 
+
+IPS
+: IP Survey
+
+- IPS > DE - (Die size / Power) -> APE? > SA
+
+## WW TPM
+
+## Record
+
+- FCCSP vs FCBGA
+
+## AdoreSys
+
+- Singapore

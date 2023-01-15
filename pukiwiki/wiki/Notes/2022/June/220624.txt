@@ -1,0 +1,176 @@
+#notemd
+# Training
+
+``` text
+Warning: Design r:/TS1N12FFCLLSBSVTD1024X128M4S_SSGNP0P72VM40C/TS1N12FFCLLSBSVTD1024X128M4S
+is a black box and there are cells referencing it (FM-160)
+```
+
+``` tcl
+set target_library ""
+foreach path $SVT_LIB {
+    foreach db [glob $path] {
+      set target_library [concat $target_library $db]
+    }
+}
+print_file_list $target_library
+tcbn12ffcllbwp6t16p96cpdssgnp0p72vm40c_hm_ccs.db
+set synthetic_library dw_foundation.sldb
+dw_foundation.sldb
+set link_library "* $target_library $synthetic_library"
+* /proj/ATEPairChip/RELEASE/Training_Phase1/Library/sc/6T/tcbn12ffcllbwp6t16p96cpd/120c/TSMCHOME/digital/Front_End/timing_power_noise/CCS/tcbn12ffcllbwp6t16p96cpd_120a/tcbn12ffcllbwp6t16p96cpdssgnp0p72vm40c_hm_ccs.db dw_foundation.sldb
+foreach path $MEM_LIB {
+    echo $path
+    foreach db [glob $path] {
+       set link_library [concat $link_library $db]
+    }
+}
+/proj/ATEPairChip/RELEASE/Training_Phase1/Library/mem/shdspsb/ts1n12ffcll*/CCS/*m4s_130a_ssgnp0p72vm40c.db
+print_file_list $link_library
+*
+tcbn12ffcllbwp6t16p96cpdssgnp0p72vm40c_hm_ccs.db
+dw_foundation.sldb
+ts1n12ffcllsbsvtd1024x128m4s_130a_ssgnp0p72vm40c.db
+ts1n12ffcllsbsvtd1024x64m4s_130a_ssgnp0p72vm40c.db
+ts1n12ffcllsbsvtd512x40m4s_130a_ssgnp0p72vm40c.db
+ts1n12ffcllsbsvtd256x40m4s_130a_ssgnp0p72vm40c.db
+#print_file_list [glob ${LIB_DIR}/mem/shdspsb/ts1n12ffcll*/CCS/*ss*m40c.db]
+#===================================================================
+#=================== intial setting ================================
+#===================================================================
+set_svf ${TOP}.svf
+1
+# read_ddc ./result/${TOP}.ddc
+# set hdlin_infer_multibit default_all
+foreach rtl $RTL_LIST {
+    analyze -format verilog $rtl
+}
+Running PRESTO HDLC
+Compiling source file /proj/ATEPairChip/RELEASE/Training_Phase1/Data/rtl_mem_b64/single_port_ram_1024x128_NonBIST_NonBWEB_NonSLP_NonSD_NonRED_wrap.v
+Presto compilation completed successfully.
+Loading db file '/proj/ATEPairChip/RELEASE/Training_Phase1/Library/sc/6T/tcbn12ffcllbwp6t16p96cpd/120c/TSMCHOME/digital/Front_End/timing_power_noise/CCS/tcbn12ffcllbwp6t16p96cpd_120a/tcbn12ffcllbwp6t16p96cpdssgnp0p72vm40c_hm_ccs.db'
+Information: Using CCS timing libraries. (TIM-024)
+Loading db file '/apps/synopsys/syn_vM-2016.12-SP5/libraries/syn/dw_foundation.sldb'
+Loading db file '/proj/ATEPairChip/RELEASE/Training_Phase1/Library/mem/shdspsb/ts1n12ffcllsbsvtd1024x128m4s_130a/CCS/ts1n12ffcllsbsvtd1024x128m4s_130a_ssgnp0p72vm40c.db'
+Loading db file '/proj/ATEPairChip/RELEASE/Training_Phase1/Library/mem/shdspsb/ts1n12ffcllsbsvtd1024x64m4s_130a/CCS/ts1n12ffcllsbsvtd1024x64m4s_130a_ssgnp0p72vm40c.db'
+Loading db file '/proj/ATEPairChip/RELEASE/Training_Phase1/Library/mem/shdspsb/ts1n12ffcllsbsvtd512x40m4s_130a/CCS/ts1n12ffcllsbsvtd512x40m4s_130a_ssgnp0p72vm40c.db'
+Loading db file '/proj/ATEPairChip/RELEASE/Training_Phase1/Library/mem/shdspsb/ts1n12ffcllsbsvtd256x40m4s_130a/CCS/ts1n12ffcllsbsvtd256x40m4s_130a_ssgnp0p72vm40c.db'
+```
+
+# create_lib
+
+``` tcl
+#EXAMPLES
+#The following example creates a library named r4000 in the current directory that uses the tcbn90g.tf technology file.
+
+prompt> create_lib -technology LIBS/TECH/tcbn90g.tf r4000
+Information: Loading technology file '/usr/LIBS/TECH/tcbn90g.tf' (FILE-007)
+{r4000}
+prompt> current_lib
+{r4000}
+
+#The following example creates a library named r4000 in the current directory that uses the tcbn90g.tf technology file and has a scale factor of 4000.
+
+prompt> create_lib -technology LIBS/TECH/tcbn90g.tf r4000 -scale_factor 4000
+Information: Loading technology file '/usr/LIBS/TECH/tcbn90g.tf' (FILE-007)
+{r4000}
+prompt> current_lib
+{r4000}
+prompt> get_attribute [current_lib] scale_factor
+4000
+
+#The following example creates a library named top_lib in the ./lib_dir directory that uses the tcbn90g.tf technology file.
+
+prompt> create_lib -technology LIBS/TECH/tcbn90g.tf lib_dir/top_lib
+Information: Loading technology file '/usr/LIBS/TECH/tcbn90g.tf' (FILE-007)
+{top_lib}
+
+# The following example creates a library named design_lib in the /home/user directory that uses the my_tech.tf technology file.
+
+prompt> create_lib -technology my_tech.tf /home/user/design_lib
+Information: Loading technology file 'my_tech.tf' (FILE-007)
+{design_lib}
+
+#The following example creates a sparse library named top_sparse_lib based on the design library top_lib in the /home/user directory.
+
+prompt> create_lib -base_lib /home/user/top_lib top_sparse_lib
+Information: Creating Sparse View library 'top_sparse_lib' with base 
+library '/home/user/top_lib'. (NDM-103)
+{top_sparse_lib}
+
+#The following example creates a library named design_lib and automatically creates cell libraries for it. The cell libraries are created based on the logic library files specified in the link_library variable and the physical library specified with the -ref_libs option.
+
+prompt> set_app_var link_library \
+   "* 1_pvt1.db 1_pvt2.db 2_pvt1.db 2_pvt2.db"
+prompt> create_lib -technology my_tech.tf /home/user/design_lib \
+   -ref_libs frame_only.ndm
+ ... run lm_shell to build reference libraries.
+ ................................................................
+
+#Information: Successfully built 3 reference libraries: 1.ndm 2.ndm 
+
+EXPLORE_physical_only.ndm
+{design_lib}
+```
+
+``` tcl
+###############################################
+## Configures analysis settings for scenarios
+###############################################
+
+foreach scenario [list $scenario1 $scenario2 $scenario3 $scenario4] {
+    set_scenario_status $scenario1 -setup true -hold false \
+        -leakage_power true -dynamic_power true -max_transition true \
+        -max_capacitance true -min_capacitance false -active true
+}
+
+##
+## BEGIN MODIFIED @220623
+##
+
+########################################
+## Read parasitic files
+########################################
+## Read in the TLUPlus files first.
+#  Later on in the corner constraints, you can then refer to these parasitic models.
+foreach p [array name tluplus_file] {  
+        puts "RM-info: read_parasitic_tech -tlup $tluplus_file($p) -layermap $layer_map_file($p) -name $p"
+        read_parasitic_tech -tlup $tluplus_file($p) -layermap $layer_map_file($p) -name $p
+}
+
+# set corner1 "ss72_cworst_CCworst_T_m40c" ;
+# set corner2 "ss72_rcworst_CCworst_T_m40c" ;
+# set corner3 "ss72_cworst_CCworst_T_125c" ;
+# set corner4 "ss72_rcworst_CCworst_T_125c" ;
+
+#set_parasitic_parameters -corners ss72_cworst_CCworst_T_m40c -early_spec cworst_CCworst_T -late_spec $tluplus_file($parasitic1) -library tech_only
+set_parasitic_parameters -corners ss72_cworst_CCworst_T_m40c -early_spec cworst_CCworst_T -library tech_only
+set_temperature -corners ss72_cworst_CCworst_T_m40c -40 -min -40
+set_voltage     -corners ss72_cworst_CCworst_T_m40c 0.72 -min 0.72
+#set_voltage -corners ss72_cworst_CCworst_T_m40c 0.72 -min 0.72 -object_list VDD_IO
+#set_voltage -corners ss72_cworst_CCworst_T_m40c 0.40 -min 0.40 -object_list VDD
+#set_voltage -corners ss72_cworst_CCworst_T_m40c 0 -min 0 -object_list VSS
+set_process_number -corners ss72_cworst_CCworst_T_m40c 1
+
+#set_parasitic_parameters -corners ss72_rcworst_CCworst_T_m40c -early_spec rcworst_CCworst_T -late_spec $tluplus_file($parasitic2) -library tech_only
+set_parasitic_parameters -corners ss72_cworst_CCworst_T_m40c -early_spec rcworst_CCworst_T -library tech_only
+set_temperature -corners ss72_rcworst_CCworst_T_m40c -40 -min -40
+set_voltage     -corners ss72_rcworst_CCworst_T_m40c 0.72 -min 0.72
+set_process_number -corners ss72_rcworst_CCworst_T_m40c 1
+
+#set_parasitic_parameters -corners ss72_cworst_CCworst_T_125c -early_spec cworst_CCworst_T -late_spec $tluplus_file($parasitic1) -library tech_only
+set_parasitic_parameters -corners ss72_cworst_CCworst_T_m40c -early_spec cworst_CCworst_T -library tech_only
+set_temperature -corners ss72_cworst_CCworst_T_125c 125 -min 125
+set_voltage     -corners ss72_cworst_CCworst_T_125c 0.72 -min 0.72
+set_process_number -corners ss72_cworst_CCworst_T_125c 1
+
+#set_parasitic_parameters -corners ss72_rcworst_CCworst_T_125c -early_spec rcworst_CCworst_T -late_spec $tluplus_file($parasitic2) -library tech_only
+set_parasitic_parameters -corners ss72_cworst_CCworst_T_m40c -early_spec rcworst_CCworst_T -library tech_only
+set_temperature -corners ss72_rcworst_CCworst_T_125c 125 -min 125
+set_voltage     -corners ss72_rcworst_CCworst_T_125c 0.72 -min 0.72
+set_process_number -corners ss72_rcworst_CCworst_T_125c 1
+```
+
+# TO-DO
+
+  - /proj/ATEPairChip/WORK/kazuki_furukawa/ICC2_0611a/220623a_INITIAL/rm_userscripts/N12_settings/init_design.tcl.12nm.floorplan_settings

@@ -1,0 +1,282 @@
+#author("2022-12-21T07:58:00+00:00","","")
+#notemd
+
+[[Tools/PG Planning]]
+
+# **`create_pg_std_cell_conn_pattern`**
+
+- [[What is follow pin?>https://www.edaboard.com/threads/what-is-a-followpin-in-p-r.45970/]]
+
+> -mark_as_follow_pin true | false | @var
+> 
+> Specifies the output shape_use of the generated rails. If set the option false, the generated rail will have "lib_cell_pin_connect" attribute in shape_use. If it is true, it will be "follow_pin". The at character (@) is used as a prefix keyword to evaluate the variable. By default, the option is "false".
+
+# get polygon
+
+```tcl
+set kz_box [get_attribute [resize_polygons [get_attribute [get_shapes PATH_31_0] bbox] -size 0.2] bbox]
+create_pg_vias -nets {VDD} -from_layers M2 -to_layers M5 -within_bbox $kz_box\
+        -via_masters {VIAGEN23_RECT_1 VIAGEN34_RECT_1 VIAGEN45_RECT_3} -drc no_check
+```
+
+```tcl
+# ?????
+set_pg_via_master_rule RULE_VIAGEN12_RECT_1 -contact_code VIAGEN12_RECT_1 -allow_multiple {0.1890 0.115}
+create_pg_vias -nets {VDD} -from_layers M1 -to_layers M2 -from_types follow_pin -to_types lib_cell_pin_connect -via_masters RULE_VIAGEN12_RECT_1 -allow_parallel_objects
+```
+
+# code
+```tcl
+proc furukawa_gen_power_settings {} {
+    remove_vias [get_vias -filter "net_type == ground"]
+    remove_vias [get_vias -filter "net_type == power"]
+    remove_shapes [get_shapes -of [get_nets -hier -physical_context VDD]]
+    remove_shapes [get_shapes -of [get_nets -hier -physical_context VSS]]
+    remove_shape_patterns [get_shape_patterns]
+    remove_pg_strategies -all
+    remove_pg_strategy_via_rules -all
+    remove_pg_patterns -all
+    remove_placement_blockages -all
+    remove_routing_blockages -all
+
+
+    ##
+    ## Settings
+    ##
+
+    # read_def ./innov_viadef.def
+    set_pg_strategy_via_rule VIA_NIL -via_rule {{{intersection: undefined} {via_master:NIL}}}
+
+    create_pg_wire_pattern wire_base -direction @d -layer @l -width @w -spacing @s -pitch @p -track_alignment @t -parameters {d l w s p t}
+    create_pg_wire_pattern seg_base  -direction @d -layer @l -width @w -spacing @s -pitch @p -track_alignment @t -low_end_reference_point @low -high_end_reference_point @high -parameters {d l w s p t low high}
+}
+
+proc furukawa_gen_power_m5 {} {
+    ##
+    ## M1 - M2
+    ##
+
+    create_pg_std_cell_conn_pattern m1_rail_color -layers {M1} -rail_width {@wtop @wbottom} -parameters {wtop wbottom} -mark_as_follow_pin true
+    set_pg_strategy m1_rail_strategy -pattern {{name: m1_rail_color} {nets: VDD VSS} {parameters: {0.090 0.090}}} -core -blockage {{layers: M1} {placement_blockages:all}}
+    compile_pg -strategies {m1_rail_strategy} -via_rule VIA_NIL
+
+    create_pg_std_cell_conn_pattern m2_rail_color -layers {M2} -rail_width {@wtop @wbottom} -parameters {wtop wbottom} -mark_as_follow_pin true
+    set_pg_strategy m2_rail_strategy -pattern {{name: m2_rail_color} {nets: VDD VSS} {parameters: {0.064 0.064}}} -core -blockage {{layers: M2} {placement_blockages:all}}
+    compile_pg -strategies {m2_rail_strategy} -via_rule VIA_NIL
+    create_pg_vias -nets {VDD VSS}  -from_layers M1 -to_layers M2 -from_types follow_pin -to_types lib_cell_pin_connect -via_masters VIAGEN12_RECT_1 -allow_parallel_objects
+
+    ##
+    ## - M3 - M5
+    ##
+
+    create_pg_composite_pattern comp_M5 -nets {VDD VSS} \
+        -add_patterns \
+        { \
+              {{pattern: wire_base} {nets: {VDD}}  {parameters: vertical   M5   0.278 0.102  5.000 track} {offset:  1.940}} \
+              {{pattern: wire_base} {nets: {VSS}}  {parameters: vertical   M5   0.278 0.102  5.000 track} {offset:  3.060}} \
+          } -via_rule { {intersection: all} {via_master: NIL} }
+
+    set_pg_strategy stra_M5 -pattern {{name: comp_M5} {nets: {VDD VSS}} {offset: {0 0}}} -core -blockage {{layers: M5} {placement_blockages:all}}
+    compile_pg -strategies stra_M5 -via_rule VIA_NIL -ignore_drc
+    report_pg_strategies stra_M5
+    set core [get_attribute [get_core_area] bbox]
+    set shrunk_core [get_attribute [resize_polygons $core -size -0.1] bbox]
+    create_pg_vias -nets {VDD VSS} -from_layers M2 -to_layers M5 -within_bbox $core\
+        -via_masters {VIAGEN23_RECT_1 VIAGEN34_RECT_1 VIAGEN45_RECT_1} -drc no_check
+}
+
+proc furukawa_gen_power_m6_m9 {} {
+    create_pg_composite_pattern comp_M6_M9 -nets {VDD VSS} \
+        -add_patterns \
+        { \
+              {{pattern: wire_base} {nets: {VDD}}  {parameters: horizontal M6   1.160 0.102 10.400 track} {offset:  2.180}} \
+              {{pattern: wire_base} {nets: {VSS}}  {parameters: horizontal M6   1.160 0.102 10.400 track} {offset:  4.820}} \
+              {{pattern: wire_base} {nets: {VDD}}  {parameters: vertical   M7   0.600 0.102  5.120 track} {offset:  1.820}} \
+              {{pattern: wire_base} {nets: {VSS}}  {parameters: vertical   M7   0.600 0.102  5.120 track} {offset:  3.100}} \
+              {{pattern: wire_base} {nets: {VDD}}  {parameters: horizontal M8   1.280 0.102 10.458 track} {offset:  2.162}} \
+              {{pattern: wire_base} {nets: {VSS}}  {parameters: horizontal M8   1.280 0.102 10.458 track} {offset:  4.808}} \
+              {{pattern: wire_base} {nets: {VDD}}  {parameters: vertical   M9   1.638 0.102 10.080 track} {offset:  2.477}} \
+              {{pattern: wire_base} {nets: {VSS}}  {parameters: vertical   M9   1.638 0.102 10.080 track} {offset:  7.517}} \
+          } -via_rule { {intersection: all} {via_master: NIL} }
+
+    set_pg_strategy stra_M6_M9 -pattern {{name: comp_M6_M9} {nets: {VDD VSS}} {offset: {0 0}}} -core -blockage {{layers: {M6 M7}} {placement_blockages:all}}
+    # set_pg_strategy_via_rule VIA_ADJ -via_rule {{intersection: adjacent} {via_master: {VIAGEN56_RECT_1 VIAGEN67_RECT_1 VIAGEN78_1 VIAGEN89_1}}}
+
+    report_pg_strategies stra_M6_M9
+    compile_pg -strategies stra_M6_M9 -via_rule VIA_NIL -ignore_drc
+
+    create_pg_vias -nets {VDD VSS} -from_layers M5 -to_layers M6 -via_masters {VIAGEN56_RECT_1} -drc no_check
+    create_pg_vias -nets {VDD VSS} -from_layers M6 -to_layers M7 -via_masters {VIAGEN67_RECT_1} -drc no_check
+    create_pg_vias -nets {VDD VSS} -from_layers M7 -to_layers M8 -via_masters {VIAGEN78_1} -drc no_check
+    create_pg_vias -nets {VDD VSS} -from_layers M8 -to_layers M9 -via_masters {VIAGEN89_1} -drc no_check
+}
+
+proc furukawa_gen_power_m10_m11 {} {
+    create_pg_composite_pattern comp_above_M10 -nets {VDD VSS} \
+        -add_patterns \
+        { \
+              {{pattern: wire_base} {nets: {VDD}}  {parameters: horizontal M10 10.800 0.102 28.800 track} {offset:  7.760}} \
+              {{pattern: wire_base} {nets: {VSS}}  {parameters: horizontal M10 10.800 0.102 28.800 track} {offset: 22.160}} \
+              {{pattern: wire_base} {nets: {VDD}}  {parameters: vertical   M11 10.800 0.102 28.800 track} {offset:  7.760}} \
+              {{pattern: wire_base} {nets: {VSS}}  {parameters: vertical   M11 10.800 0.102 28.800 track} {offset: 22.160}} \
+          } -via_rule { {intersection: all} {via_master: NIL} }
+
+    set_pg_strategy stra_above_M10 -pattern {{name: comp_above_M10} {nets: {VDD VSS}} {offset: {0 0}}} -design_boundary
+    compile_pg -strategies stra_above_M10 -via_rule VIA_NIL -ignore_drc
+
+    create_pg_vias -nets {VDD VSS} -from_layers M9 -to_layers M10 -via_masters {VIAGEN910_1} -drc no_check
+    create_pg_vias -nets {VDD VSS} -from_layers M10 -to_layers M11 -via_masters {VIAGEN1011_1} -drc no_check
+}
+
+proc furukawa_gen_power_macros {} {
+    set mems [get_cells -hierarchical -filter "design_type == macro"]
+    foreach_in_collection mem $mems {
+	set mem_bbox [get_attribute $mem boundary_bbox]
+	#    set mem_bbox [get_attribute $mem bbox]    
+	set mem_xmin [lindex $mem_bbox 0 0]
+	set mem_ymin [lindex $mem_bbox 0 1]
+	set mem_xmax [lindex $mem_bbox 1 0]
+	set mem_ymax [lindex $mem_bbox 1 1]
+
+	set pg_density 0.500
+	set pg_width 0.500
+	set x_length [expr $mem_xmax - $mem_xmin]
+	set pg_total_width [ expr $x_length * $pg_density]
+	set pg_pair_num [expr ceil([expr $pg_total_width / ($pg_width * 2.0) ])]
+	set pg_pair_num [expr int($pg_pair_num)]
+	set pg_total_width [expr ($pg_width * 2.0 * $pg_pair_num )]
+	set no_pg_total_width [expr $x_length - $pg_total_width ]
+	set spacing [expr ($no_pg_total_width - $pg_width ) / ($pg_pair_num * 2.0 - 1.0)]
+	set spacing [expr  [expr int ([expr $spacing * 1000.0])] * 0.001 ]
+	set Dpitch  [expr ($spacing * 2.0 + $pg_width * 2.0) ]
+	set pitch   [expr ($spacing + $pg_width)]
+
+	#set p_offset [ expr ($x_length - $pg_width * 2.0 * $pg_pair_num - ($pg_pair_num * 2.0 - 1.0 ) * $spacing) / 2.0 + $pg_width / 2.0]
+	set p_offset [expr 0.571]
+	set p_offset [expr  [expr int ([expr $p_offset * 1000.0])] * 0.001 ]
+
+	#set g_offset [ expr ($x_length - $pg_width * 2.0 * $pg_pair_num - ($pg_pair_num * 2.0 - 1.0 ) * $spacing) / 2.0 + $pg_width / 2.0 + $pitch  ]
+	set g_offset [expr 0.571 + $pitch]
+	set g_offset [expr  [expr int ([expr $g_offset * 1000.0])] * 0.001 ]
+
+	if { 0 } {
+	    create_pg_pattern_shapes -width $pg_width -net VDD -low_end $mem_ymin -high_end $mem_ymax -start $p_offset -xPitch $Dpitch -within_bbox $mem_bbox -direction vertical -layer M5 -mark_as stripe -mask_pattern alternate_column -mask {mask_one}
+	    create_pg_pattern_shapes -width $pg_width -net VSS -low_end $mem_ymin -high_end $mem_ymax -start $g_offset -xPitch $Dpitch -within_bbox $mem_bbox -direction vertical -layer M5 -mark_as stripe -mask_pattern alternate_column -mask {mask_one}
+	} else {
+	    # -track_alignment track | half_track | auto | none| @var
+	    create_pg_composite_pattern comp_mem_m5 -nets {VDD VSS} -add_patterns \
+		{ \
+		      {{pattern: wire_base} {nets: {VDD}} {parameters: vertical M5 $pg_width $spacing $Dpitch none} {offset: $p_offset}} \
+		      {{pattern: wire_base} {nets: {VSS}} {parameters: vertical M5 $pg_width $spacing $Dpitch none} {offset: $g_offset}} \
+		  }
+	    set_pg_strategy stra_mem_m5 -pattern {{name: comp_mem_m5} {nets: {VDD VSS}} {offset: {0 0}}} -polygon $mem_bbox
+	    set_pg_strategy_via_rule VIA_macro -via_rule {{{intersection: undefined} {via_master:NIL}}}
+	    compile_pg -strategies stra_mem_m5 -via_rule VIA_macro -ignore_drc -tag macro_pg
+	    create_pg_vias -within_bbox $mem_bbox -nets {VDD VSS} -from_layers M4 -to_layers M5 -via_masters {VIAGEN45_RECT_1} -tag macro_pg -drc no_check
+	}
+	
+	create_keepout_margin -type hard -outer {0.9 0.9 0.9 0.9} $mems
+	set expand_bbox [get_attribute [resize_polygon -size {0.9} -object $mem ] bbox]
+	create_placement_blockage -type hard -boundary $expand_bbox
+    }
+}
+
+proc furukawa_rm_tap_bnd {} {
+    set bnd [get_flat_cells -filter "ref_name =~*BOUNDARY*" -all -quiet]
+    remove_cells $bnd
+    set tap [get_flat_cells -filter "ref_name =~*TAP*" -all -quiet]
+    remove_cells $tap
+}
+
+proc furukawa_gen_tap_bnd {} {
+
+    set_app_options -name plan.mtcmos.snap_to_via0_grid -value true ;# for power switch VIA0 alignment
+    set_app_options -name place.legalize.via0_alignment_grid_name -value via0_grid
+    set_app_options -name place.legalize.enable_2D_legalizer -value true
+    ## create_boundary_cells
+    set_app_options -name  chipfinishing.enable_boundary_tap_prerouted_net_check    -value true
+    set_app_options -name  place.legalize.enable_prerouted_net_check -value true
+
+    set BOUNDARY_LIB_CELL_NROW3     "*/BOUNDARY_NROW3BWP16P90CPD"
+    set BOUNDARY_LIB_CELL_NROW2     "*/BOUNDARY_NROW2BWP16P90CPD"
+    set BOUNDARY_LIB_CELL_NROW1     "*/BOUNDARY_NROW1BWP16P90CPD"
+    set BOUNDARY_LIB_CELL_PROW3     "*/BOUNDARY_PROW3BWP16P90CPD"
+    set BOUNDARY_LIB_CELL_PROW2     "*/BOUNDARY_PROW2BWP16P90CPD"
+    set BOUNDARY_LIB_CELL_PROW1     "*/BOUNDARY_PROW1BWP16P90CPD"
+    set BOUNDARY_LIB_CELL_LEFT      "*/BOUNDARY_LEFTBWP16P90CPD"
+    set BOUNDARY_LIB_CELL_RIGHT     "*/BOUNDARY_RIGHTBWP16P90CPD"
+    set BOUNDARY_LIB_CELL_NCORNER   "*/BOUNDARY_NCORNERBWP16P90CPD"
+    set BOUNDARY_LIB_CELL_PCORNER   "*/BOUNDARY_PCORNERBWP16P90CPD"
+    set BOUNDARY_LIB_CELL_NTAP   "*/BOUNDARY_NTAPBWP16P90CPD"
+    set BOUNDARY_LIB_CELL_PTAP   "*/BOUNDARY_PTAPBWP16P90CPD"
+    set TAP_LIB_CELL        "*/TAPCELLBWP16P90CPD"
+    set TAP_DISTANCE        60
+
+    create_boundary_cells \
+	-prefix {ALCP_ENDCAP} \
+	-right_boundary_cell [list $BOUNDARY_LIB_CELL_RIGHT] \
+	-left_boundary_cell [list $BOUNDARY_LIB_CELL_LEFT] \
+	-top_right_outside_corner_cell [list $BOUNDARY_LIB_CELL_NCORNER] \
+	-bottom_right_outside_corner_cell [list $BOUNDARY_LIB_CELL_PCORNER] \
+	-top_left_outside_corner_cell [list $BOUNDARY_LIB_CELL_NCORNER] \
+	-bottom_left_outside_corner_cell [list $BOUNDARY_LIB_CELL_PCORNER] \
+	-top_left_inside_corner_cells [list $BOUNDARY_LIB_CELL_RIGHT] \
+	-top_right_inside_corner_cells [list $BOUNDARY_LIB_CELL_LEFT] \
+	-bottom_left_inside_corner_cells [list $BOUNDARY_LIB_CELL_RIGHT] \
+	-bottom_right_inside_corner_cells [list $BOUNDARY_LIB_CELL_LEFT] \
+	-top_tap_cell [list $BOUNDARY_LIB_CELL_NTAP] \
+	-bottom_tap_cell [list $BOUNDARY_LIB_CELL_PTAP] \
+	-tap_distance 30  \
+	-top_boundary_cells [list $BOUNDARY_LIB_CELL_NROW3 $BOUNDARY_LIB_CELL_NROW2 $BOUNDARY_LIB_CELL_NROW1] \
+	-bottom_boundary_cells [list $BOUNDARY_LIB_CELL_PROW3 $BOUNDARY_LIB_CELL_PROW2 $BOUNDARY_LIB_CELL_PROW1] \
+	-mirror_left_outside_corner_cell \
+	-voltage_area {DEFAULT_VA } \
+	-at_va_boundary
+
+    create_tap_cells -prefix {ALCP_WELLTAP} -lib_cell $TAP_LIB_CELL -distance $TAP_DISTANCE -pattern stagger -skip_fixed_cells -enable_prerouted_net_check -voltage_area DEFAULT_VA 
+}
+
+proc furukawa_gen_terminal {} {
+    create_net -power VDD
+    create_net -power VSS
+    create_port VDD -direction inout -port_type power
+    create_port VSS -direction inout -port_type power
+    connect_net VDD [get_ports VDD]
+    connect_net VSS [get_ports VSS]
+    connect_pg_net -net VDD [get_flat_pins -all */VDD]
+    connect_pg_net -net VSS [get_flat_pins -all */VSS]
+
+    remove_terminals [get_terminals]
+
+    foreach pg {VDD VSS} {
+	set target_shape_m10($pg) [get_shapes -of_objects [get_nets $pg] -filter layer_name==M10]
+	set target_term_m10($pg)  [compute_polygons -operation XOR -objects1 $target_shape_m10($pg) -objects2 [resize_polygons -size {-10.8 0} $target_shape_m10($pg)]]
+  	foreach_in_collection term [split_polygons $target_term_m10($pg)] {
+	    create_shape -shape_type rect -layer M10 -shape_use stripe -boundary [get_attr $term bbox] -port $pg
+	}
+	set target_shape_m11($pg) [get_shapes -of_objects [get_nets $pg] -filter layer_name==M11]
+	set target_term_m11($pg)  [compute_polygons -operation XOR -objects1 $target_shape_m11($pg) -objects2 [resize_polygons -size {0 -10.8} $target_shape_m11($pg)]]
+	foreach_in_collection term [split_polygons $target_term_m11($pg)] {
+	    create_shape -shape_type rect -layer M11 -shape_use stripe -boundary [get_attr $term bbox] -port $pg	
+	}
+    }
+}
+
+furukawa_rm_tap_bnd
+furukawa_gen_power_settings
+furukawa_gen_power_macros
+furukawa_gen_power_m5
+furukawa_gen_tap_bnd
+furukawa_gen_power_m6_m9
+furukawa_gen_power_m10_m11
+furukawa_gen_terminal
+
+place_pins -ports *
+
+# set CREATE_GRID_OFFSET  [expr [lindex [lindex [get_attribute [get_core_area] bbox] 0] 0] + \
+#                  [get_attribute [get_site_defs -filter is_default] width] / 2.0]
+# set CREATE_GRID_STEP    [expr [get_attribute [get_site_defs -filter is_default] width] * 2.0]
+
+# remove_grids -all
+# create_grid via0 -y_offset 1.44 -y_step 90 -x_offset 1.44 -x_step 90
+```

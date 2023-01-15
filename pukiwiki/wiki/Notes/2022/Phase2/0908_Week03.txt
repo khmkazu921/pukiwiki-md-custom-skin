@@ -1,0 +1,455 @@
+#notemd
+# Pins regalize
+
+# Reset Violations
+
+## ECO 6
+
+| corner                       | WNS (wo/w IO)  | TNS (wo/w IO) | NVP    | Tran | Cap | Nois |
+| ---------------------------- | -------------- | ------------- | ------ | ---- | --- | ---- |
+| wcl_cwst_ccwstt (S) | \-0.146/-0.146 | 0.227/ 0.227  | 14/ 14 | 0    | 0   | 0    |
+| lt_cwst_ccwst (H)   | 0.000/ 0.000   | 0.000/ 0.000  | 7/ 7   | 0    | 4   | 0    |
+| lt_cbst_ccbst (H)   | 0.000/ 0.000   | 0.000/ 0.000  | 0/ 0   | 0    | 0   | 0    |
+| ml_cbst_ccbst (H)   | 0.000/ 0.000   | 0.000/ 0.000  | 8/ 8   | 0    | 0   | 0    |
+
+## ECO 4
+
+| corner                       | WNS (wo/w IO)  | TNS (wo/w IO) | NVP        | Tran | Cap | Nois |
+| ---------------------------- | -------------- | ------------- | ---------- | ---- | --- | ---- |
+| wcl_cwst_ccwstt (S) | \-0.010/-0.010 | 0.024/ 0.024  | 5/ 5       | 0    | 0   | 0    |
+| lt_cwst_ccwst (H)   | \-0.015/-0.015 | 4.994/ 4.994  | 1751/ 1751 | 0    | 4   | 0    |
+| lt_cbst_ccbst (H)   | \-0.008/-0.008 | 1.200/ 1.200  | 633/ 633   | 0    | 0   | 0    |
+| ml_cbst_ccbst (H)   | \-0.074/-0.074 | 0.613/ 0.613  | 30/ 30     | 0    | 0   | 0    |
+
+| \# 1: pt_eco4             | WNS      | TNS        | NVP  |
+| ----------------------------------- | -------- | ---------- | ---- |
+| ss72_cworstCCworstTm40c S | \-1.8804 | \-448.5271 | 2310 |
+| Design S                            | \-1.8804 | \-448.5271 | 2310 |
+| ff88_cbestCCbestm40c H    | \-0.0024 | \-0.0120   | 24   |
+| ss72_cworstCCworst125c H  | 0.0114   | 0.0000     | 0    |
+| ss72_cworstCCworstm40c H  | 0.0045   | 0.0000     | 0    |
+| ss72_rcworstCCworst125c H | 0.0177   | 0.0000     | 0    |
+| Design H                            | \-0.0024 | \-0.0120   | 24   |
+
+| Misc.     | Areas       |
+| --------- | ----------- |
+| Buff/Inv  | 9648.4147   |
+| LVT       | 3964.3546   |
+| Std. cell | 114889.4208 |
+| Core      | 474657.4725 |
+| Chip      | 482983.2645 |
+| Wire len  | 3442110.07  |
+
+## STA 1
+
+| corner                       | WNS (wo/w IO)  | TNS (wo/w IO)    | NVP        | Tran | Cap | Nois |
+| ---------------------------- | -------------- | ---------------- | ---------- | ---- | --- | ---- |
+| wcl_cwst_ccwstt (S) | \-0.113/-0.113 | 33.436/ 37.720   | 1731/ 1904 | 0    | 0   | 0    |
+| lt_cwst_ccwst (H)   | \-0.012/-0.012 | 5.021/ 5.021     | 1810/ 1810 | 0    | 0   | 0    |
+| lt_cbst_ccbst (H)   | \-0.008/-0.008 | 1.911/ 1.911     | 915/ 915   | 0    | 0   | 0    |
+| ml_cbst_ccbst (H)   | \-0.122/-0.122 | 187.667/ 187.667 | 6609/ 6609 | 0    | 0   | 0    |
+
+/proj/ATEPairChip/WORK/kazuki_furukawa/220907a_FP6/ICC2/rpts_icc2/chip_finish/09132058
+
+| \# 1: write_dataeco0(chip_fin) | WNS      | TNS      | NVP |
+| -------------------------------------------------- | -------- | -------- | --- |
+| ss72_cworstCCworstTm40c S                | \-0.0143 | \-0.0846 | 20  |
+| Design S                                           | \-0.0143 | \-0.0846 | 20  |
+| ff88_cbestCCbestm40c H                   | \-0.0121 | \-0.4704 | 378 |
+| ss72_cworstCCworst125c H                 | 0.0117   | 0.0000   | 0   |
+| ss72_cworstCCworstm40c H                 | 0.0047   | 0.0000   | 0   |
+| ss72_rcworstCCworst125c H                | 0.0170   | 0.0000   | 0   |
+| Design H                                           | \-0.0121 | \-0.4704 | 378 |
+
+| Misc.     | Areas        |
+| --------- | ------------ |
+| Buff/Inv  | 4492.9106    |
+| LVT       | 3693.5885    |
+| Std. cell | 109656.1336  |
+| Core      | 474657.4725  |
+| Chip      | 482983.2645  |
+| Wire len  | 3228602.4090 |
+
+## Change settings of mcmm.tcl
+
+``` tcl
+foreach i [array name corner] {
+    echo "RM-info : set corner_constraints for $corner($i)"
+    set corner_constraints($corner($i))    ""
+
+    echo "RM-info : scenario($i) ${mode1}::$corner($i)"
+    set scenario($i) "${mode1}::$corner($i)"
+
+    echo "RM-info : scenario_constraints($scenario($i))"
+    set scenario_constraints($scenario($i)) /proj/ATEPairChip/RELEASE/Training_Phase2/Data/constraints_0818/Bxb_lvt.icc2.tcl
+}
+```
+
+# 220907a_FP6 (size up def9)
+
+  - default  
+    741504 645504
+
+<!-- end list -->
+
+  - 
+## Pin Blockage
+
+``` tcl
+place_pin -ports [get_ports [get_selection]]
+```
+
+  - todo  
+    generate code which automatically select qmem related in/out ports
+
+# 220907a_FP6 (rm path_margin from synth, def8)
+
+## Suzuki
+
+``` text
+****************************************
+Report : timing
+        -path_type full
+        -delay_type max
+        -input_pins
+        -nets
+        -nworst 20
+        -slack_lesser_than 1.000
+        -max_paths 20
+        -transition_time
+        -capacitance
+        -crosstalk_delta
+        -derate
+        -pba_mode path
+        -sort_by slack
+Design : Bxb
+Version: Q-2019.12-SP1
+Date   : Fri Sep  9 11:29:06 2022
+****************************************
+
+Warning: There are 4 invalid end points for constrained paths. (UITE-416)
+
+  Startpoint: reset (input port clocked by clock)
+  Endpoint: a2f/pipeline/accumulationPipeline/pipeline_0/U_T_758_reg_14_
+               (rising edge-triggered flip-flop clocked by clock)
+  Path Group: clock
+  Path Type: max  (recalculated)
+
+  Point                                                                                              Fanout   Cap   DTrans  Trans   Derate  Delta    Incr      Path
+  -------------------------------------------------------------------------------------------------------------------------------------------------------------------
+  clock clock (rise edge)                                                                                                                          0.000     0.000
+  clock network delay (propagated)                                                                                                                 0.000     0.000
+  input external delay                                                                                                                             0.925     0.925 f
+  reset (in)                                                                                                               0.005                   0.004 &   0.929 f
+  reset (net)                                                                                          1   0.001 
+  port_buf_reset/I (BUFFD4BWP6T16P96CPD)                                                                           0.000   0.011   1.070   0.000  -0.000 &   0.929 f
+  port_buf_reset/Z (BUFFD4BWP6T16P96CPD)                                                                                   0.013   1.046           0.034 &   0.963 f
+  place_opt_HFSNET_11443 (net)                                                                         1   0.002 
+  place_opt_ZBUF_inst_89344/I (BUFFD16BWP6T16P96CPD)                                                               0.000   0.013   1.070   0.000   0.000 &   0.963 f
+  place_opt_ZBUF_inst_89344/Z (BUFFD16BWP6T16P96CPD)                                                                       0.022   1.017           0.033 &   0.995 f
+  place_opt_ZBUF_148 (net)                                                                             4   0.020 
+  place_opt_HFSBUF_194775_87963/I (BUFFD12BWP6T16P96CPD)                                                           0.000   0.025   1.070   0.000   0.008 &   1.003 f
+  place_opt_HFSBUF_194775_87963/Z (BUFFD12BWP6T16P96CPD)                                                                   0.024   1.021           0.043 &   1.046 f
+  place_opt_HFSNET_11440 (net)                                                                         2   0.016 
+  place_opt_HFSINV_191900_87940/I (INVD16BWP6T16P96CPD)                                                            0.000   0.029   1.070   0.000   0.008 &   1.054 f
+  place_opt_HFSINV_191900_87940/ZN (INVD16BWP6T16P96CPD)                                                                   0.023   1.017           0.024 &   1.078 r
+  place_opt_HFSNET_11423 (net)                                                                         2   0.016 
+  a2f/pipeline/accumulationPipeline/pipeline_0/place_opt_HFSBUF_148508_87910/I (BUFFD10BWP6T16P96CPD)              0.000   0.026   1.070   0.000   0.006 &   1.084 r
+  a2f/pipeline/accumulationPipeline/pipeline_0/place_opt_HFSBUF_148508_87910/Z (BUFFD10BWP6T16P96CPD)                      0.022   1.021           0.045 &   1.128 r
+  a2f/pipeline/accumulationPipeline/pipeline_0/net_net_37850 (net)                                     1   0.014 
+  a2f/pipeline/accumulationPipeline/pipeline_0/clock_opt_BINV_RR_123772/I (INVD12BWP6T16P96CPD)                    0.001   0.025   1.070   0.000   0.006 &   1.134 r
+  a2f/pipeline/accumulationPipeline/pipeline_0/clock_opt_BINV_RR_123772/ZN (INVD12BWP6T16P96CPD)                           0.024   1.023           0.028 &   1.162 f
+  a2f/pipeline/accumulationPipeline/pipeline_0/net_net_37849 (net)                                     1   0.014 
+  a2f/pipeline/accumulationPipeline/pipeline_0/clock_opt_BINV_RR_123771/I (INVD16BWP6T16P96CPD)                    0.000   0.026   1.070   0.000   0.006 &   1.168 f
+  a2f/pipeline/accumulationPipeline/pipeline_0/clock_opt_BINV_RR_123771/ZN (INVD16BWP6T16P96CPD)                           0.025   1.017           0.022 &   1.190 r
+  a2f/pipeline/accumulationPipeline/pipeline_0/place_opt_HFSNET_11400 (net)                            5   0.022 
+  a2f/pipeline/accumulationPipeline/pipeline_0/place_opt_HFSINV_143373_87904/I (INVD10BWP6T16P96CPD)               0.000   0.031   1.070   0.000   0.010 &   1.201 r
+  a2f/pipeline/accumulationPipeline/pipeline_0/place_opt_HFSINV_143373_87904/ZN (INVD10BWP6T16P96CPD)                      0.035   1.022           0.039 &   1.240 f
+  a2f/pipeline/accumulationPipeline/pipeline_0/place_opt_HFSNET_11394 (net)                            1   0.016 
+  a2f/pipeline/accumulationPipeline/pipeline_0/place_opt_ZINV_inst_96023/I (INVD12BWP6T16P96CPD)                   0.006   0.037   1.070   0.002   0.008 &   1.247 f
+  a2f/pipeline/accumulationPipeline/pipeline_0/place_opt_ZINV_inst_96023/ZN (INVD12BWP6T16P96CPD)                          0.024   1.023           0.028 &   1.275 r               
+  a2f/pipeline/accumulationPipeline/pipeline_0/place_opt_ZINV_342 (net)                                1   0.015 
+  a2f/pipeline/accumulationPipeline/pipeline_0/place_opt_ZINV_inst_96022/I (INVD16BWP6T16P96CPD)                   0.004   0.025   1.070   0.001   0.005 &   1.280 r
+  a2f/pipeline/accumulationPipeline/pipeline_0/place_opt_ZINV_inst_96022/ZN (INVD16BWP6T16P96CPD)                          0.036   1.017           0.030 &   1.310 f
+  a2f/pipeline/accumulationPipeline/pipeline_0/place_opt_ZINV_341 (net)                               33   0.040 
+  a2f/pipeline/accumulationPipeline/pipeline_0/alchip391_dc/B1 (INR2D12BWP6T16P96CPD)                              0.000   0.050   1.070   0.000   0.017 &   1.328 f
+  a2f/pipeline/accumulationPipeline/pipeline_0/alchip391_dc/ZN (INR2D12BWP6T16P96CPD)                                      0.050   1.023           0.050 &   1.378 r
+  a2f/pipeline/accumulationPipeline/pipeline_0/N1207 (net)                                            16   0.016 
+  a2f/pipeline/accumulationPipeline/pipeline_0/U_T_758_reg_14_/D (SDFQD4BWP6T16P96CPD)                             0.000   0.051   1.070   0.000   0.007 &   1.385 r
+  data arrival time                                                                                                                                          1.385
+
+  clock clock (rise edge)                                                                                                                          1.250     1.250
+  clock network delay (propagated)                                                                                                                 0.334     1.584
+  clock reconvergence pessimism                                                                                                                    0.000     1.584
+  clock uncertainty                                                                                                                               -0.055     1.529
+  a2f/pipeline/accumulationPipeline/pipeline_0/U_T_758_reg_14_/CP (SDFQD4BWP6T16P96CPD)                                                                      1.529 r
+  library setup time                                                                                                               1.000          -0.051     1.478
+  data required time                                                                                                                                         1.478
+  -------------------------------------------------------------------------------------------------------------------------------------------------------------------
+  data required time                                                                                                                                         1.478
+  data arrival time                                                                                                                                         -1.385
+  -------------------------------------------------------------------------------------------------------------------------------------------------------------------
+  slack (MET)                                                                                                                                                0.093
+
+
+  Startpoint: reset (input port clocked by clock)
+  Endpoint: a2f/pipeline/accumulationPipeline/pipeline_0/U_T_758_reg_14_
+               (rising edge-triggered flip-flop clocked by clock)
+  Path Group: clock
+  Path Type: max  (recalculated)
+
+  Point                                                                                              Fanout   Cap   DTrans  Trans   Derate  Delta    Incr      Path
+  -------------------------------------------------------------------------------------------------------------------------------------------------------------------
+  clock clock (rise edge)                                                                                                                          0.000     0.000                                            
+  clock network delay (propagated)                                                                                                                 0.000     0.000
+  input external delay                                                                                                                             0.925     0.925 r
+  reset (in)                                                                                                               0.005                   0.004 &   0.929 r
+  reset (net)                                                                                          1   0.001 
+  port_buf_reset/I (BUFFD4BWP6T16P96CPD)                                                                           0.000   0.010   1.070   0.000  -0.000 &   0.929 r
+  port_buf_reset/Z (BUFFD4BWP6T16P96CPD)                                                                                   0.012   1.046           0.037 &   0.965 r
+  place_opt_HFSNET_11443 (net)                                                                         1   0.002 
+  place_opt_ZBUF_inst_89344/I (BUFFD16BWP6T16P96CPD)                                                               0.000   0.012   1.070   0.000   0.000 &   0.966 r
+  place_opt_ZBUF_inst_89344/Z (BUFFD16BWP6T16P96CPD)                                                                       0.021   1.017           0.032 &   0.998 r
+  place_opt_ZBUF_148 (net)                                                                             4   0.020 
+  place_opt_HFSBUF_194775_87963/I (BUFFD12BWP6T16P96CPD)                                                           0.000   0.024   1.070   0.000   0.008 &   1.005 r
+  place_opt_HFSBUF_194775_87963/Z (BUFFD12BWP6T16P96CPD)                                                                   0.022   1.021           0.045 &   1.051 r
+  place_opt_HFSNET_11440 (net)                                                                         2   0.017 
+  place_opt_HFSINV_191900_87940/I (INVD16BWP6T16P96CPD)                                                            0.000   0.029   1.070   0.000   0.008 &   1.059 r
+  place_opt_HFSINV_191900_87940/ZN (INVD16BWP6T16P96CPD)                                                                   0.025   1.017           0.030 &   1.089 f
+  place_opt_HFSNET_11423 (net)                                                                         2   0.016 
+  a2f/pipeline/accumulationPipeline/pipeline_0/place_opt_HFSBUF_148508_87910/I (BUFFD10BWP6T16P96CPD)              0.000   0.028   1.070   0.000   0.006 &   1.094 f
+  a2f/pipeline/accumulationPipeline/pipeline_0/place_opt_HFSBUF_148508_87910/Z (BUFFD10BWP6T16P96CPD)                      0.024   1.021           0.043 &   1.137 f
+  a2f/pipeline/accumulationPipeline/pipeline_0/net_net_37850 (net)                                     1   0.014 
+  a2f/pipeline/accumulationPipeline/pipeline_0/clock_opt_BINV_RR_123772/I (INVD12BWP6T16P96CPD)                    0.001   0.026   1.070   0.000   0.006 &   1.143 f
+  a2f/pipeline/accumulationPipeline/pipeline_0/clock_opt_BINV_RR_123772/ZN (INVD12BWP6T16P96CPD)                           0.022   1.023           0.023 &   1.166 r
+  a2f/pipeline/accumulationPipeline/pipeline_0/net_net_37849 (net)                                     1   0.014 
+  a2f/pipeline/accumulationPipeline/pipeline_0/clock_opt_BINV_RR_123771/I (INVD16BWP6T16P96CPD)                    0.000   0.024   1.070   0.000   0.006 &   1.172 r
+  a2f/pipeline/accumulationPipeline/pipeline_0/clock_opt_BINV_RR_123771/ZN (INVD16BWP6T16P96CPD)                           0.027   1.017           0.026 &   1.198 f
+  a2f/pipeline/accumulationPipeline/pipeline_0/place_opt_HFSNET_11400 (net)                            5   0.022 
+  a2f/pipeline/accumulationPipeline/pipeline_0/place_opt_HFSINV_143373_87904/I (INVD10BWP6T16P96CPD)               0.000   0.032   1.070   0.000   0.010 &   1.208 f
+  a2f/pipeline/accumulationPipeline/pipeline_0/place_opt_HFSINV_143373_87904/ZN (INVD10BWP6T16P96CPD)                      0.032   1.022           0.032 &   1.240 r
+  a2f/pipeline/accumulationPipeline/pipeline_0/place_opt_HFSNET_11394 (net)                            1   0.016 
+  a2f/pipeline/accumulationPipeline/pipeline_0/place_opt_ZINV_inst_96023/I (INVD12BWP6T16P96CPD)                   0.004   0.033   1.070   0.002   0.007 &   1.247 r
+  a2f/pipeline/accumulationPipeline/pipeline_0/place_opt_ZINV_inst_96023/ZN (INVD12BWP6T16P96CPD)                          0.026   1.023           0.032 &   1.279 f
+  a2f/pipeline/accumulationPipeline/pipeline_0/place_opt_ZINV_342 (net)                                1   0.015 
+  a2f/pipeline/accumulationPipeline/pipeline_0/place_opt_ZINV_inst_96022/I (INVD16BWP6T16P96CPD)                   0.004   0.026   1.070   0.002   0.006 &   1.284 f
+  a2f/pipeline/accumulationPipeline/pipeline_0/place_opt_ZINV_inst_96022/ZN (INVD16BWP6T16P96CPD)                          0.035   1.017           0.026 &   1.310 r
+  a2f/pipeline/accumulationPipeline/pipeline_0/place_opt_ZINV_341 (net)                               33   0.041 
+  a2f/pipeline/accumulationPipeline/pipeline_0/alchip391_dc/B1 (INR2D12BWP6T16P96CPD)                              0.000   0.050   1.070   0.000   0.018 &   1.328 r
+  a2f/pipeline/accumulationPipeline/pipeline_0/alchip391_dc/ZN (INR2D12BWP6T16P96CPD)                                      0.038   1.023           0.047 &   1.375 f
+  a2f/pipeline/accumulationPipeline/pipeline_0/N1207 (net)                                            16   0.016 
+  a2f/pipeline/accumulationPipeline/pipeline_0/U_T_758_reg_14_/D (SDFQD4BWP6T16P96CPD)                             0.000   0.039   1.070   0.000   0.007 &   1.382 f
+  data arrival time                                                                                                                                          1.382
+
+  clock clock (rise edge)                                                                                                                          1.250     1.250
+  clock network delay (propagated)                                                                                                                 0.334     1.584
+  clock reconvergence pessimism                                                                                                                    0.000     1.584
+  clock uncertainty                                                                                                                               -0.055     1.529
+  a2f/pipeline/accumulationPipeline/pipeline_0/U_T_758_reg_14_/CP (SDFQD4BWP6T16P96CPD)                                                                      1.529 r
+  library setup time                                                                                                               1.000           0.005     1.534
+  data required time                                                                                                                                         1.534
+  -------------------------------------------------------------------------------------------------------------------------------------------------------------------
+  data required time                                                                                                                                         1.534
+  data arrival time                                                                                                                                         -1.382
+  -------------------------------------------------------------------------------------------------------------------------------------------------------------------
+  slack (MET)                                                                                                                                                0.152
+
+
+****************************************
+Report : timing
+        -path_type full
+        -delay_type max
+        -max_paths 1
+        -pba_mode path
+        -sort_by slack
+Design : Bxb
+Version: Q-2019.12-SP1
+Date   : Fri Sep  9 10:40:23 2022
+****************************************
+
+Warning: There are 4 invalid end points for constrained paths. (UITE-416)
+
+  Startpoint: reset (input port clocked by clock)
+  Endpoint: a2f/pipeline/accumulationPipeline/pipeline_0/U_T_1129_reg
+               (rising edge-triggered flip-flop clocked by clock)
+  Path Group: clock
+  Path Type: max  (recalculated)
+
+  Point                                                                                                            Incr       Path
+  ---------------------------------------------------------------------------------------------------------------------------------------
+  clock clock (rise edge)                                                                                         0.000      0.000
+  clock network delay (propagated)                                                                                0.000      0.000
+  input external delay                                                                                            0.925      0.925 f
+  reset (in)                                                                                                      0.004 &    0.929 f
+  port_buf_reset/Z (BUFFD4BWP6T16P96CPD)                                                                          0.034 &    0.963 f
+  place_opt_ZBUF_inst_89344/Z (BUFFD16BWP6T16P96CPD)                                                              0.033 &    0.995 f
+  place_opt_ZBUF_inst_89343/Z (BUFFD16BWP6T16P96CPD)                                                              0.046 &    1.042 f
+  place_opt_HFSBUF_31125_87852/Z (BUFFD16BWP6T16P96CPD)                                                           0.040 &    1.082 f
+  place_opt_HFSINV_11686_87841/ZN (INVD16BWP6T16P96CPD)                                                           0.029 &    1.111 r
+  place_opt_HFSINV_10289_87840/ZN (INVD10BWP6T16P96CPD)                                                           0.047 &    1.158 f
+  a2f/pipeline/accumulationPipeline/pipeline_0/alchip405_dc/ZN (INR2D8BWP6T16P96CPD)                              0.030 &    1.188 r
+  a2f/pipeline/accumulationPipeline/pipeline_0/place_opt_HFSBUF_6372_80786/Z (BUFFD6BWP6T16P96CPD)                0.043 &    1.231 r
+  a2f/pipeline/accumulationPipeline/pipeline_0/place_opt_HFSBUF_2353_80781/Z (BUFFD8BWP6T16P96CPD)                0.065 &    1.296 r
+  a2f/pipeline/accumulationPipeline/pipeline_0/U_T_1129_reg/D (SDFQD1BWP6T16P96CPD)                               0.028 &    1.325 r
+  data arrival time                                                                                                          1.325
+
+  clock clock (rise edge)                                                                                         1.250      1.250
+  clock network delay (propagated)                                                                                0.317      1.567
+  clock reconvergence pessimism                                                                                   0.000      1.567
+  clock uncertainty                                                                                              -0.055      1.512
+  a2f/pipeline/accumulationPipeline/pipeline_0/U_T_1129_reg/CP (SDFQD1BWP6T16P96CPD)                                         1.512 r
+  library setup time                                                                                             -0.079      1.434
+  data required time                                                                                                         1.434
+  ---------------------------------------------------------------------------------------------------------------------------------------
+  data required time                                                                                                         1.434
+  data arrival time                                                                                                         -1.325
+  ---------------------------------------------------------------------------------------------------------------------------------------
+  slack (MET)                                                                                                                0.109
+```
+
+## STA 1
+
+``` text
+****************************************
+Report : timing
+        -path_type full
+        -delay_type max
+        -input_pins
+        -nets
+        -slack_lesser_than 0.000
+        -max_paths 2000000
+        -transition_time
+        -capacitance
+        -crosstalk_delta
+        -derate
+        -pba_mode path
+        -sort_by slack
+Design : Bxb
+Version: Q-2019.12-SP1
+Date   : Fri Sep  9 08:45:52 2022
+****************************************
+
+
+  Startpoint: reset (input port clocked by clock)
+  Endpoint: a2f/pipeline/accumulationPipeline/pipeline_0/U_T_1129_reg
+               (rising edge-triggered flip-flop clocked by clock)
+  Path Group: clock
+  Path Type: max  (recalculated)
+
+  Point                                                                                               Fanout   Cap   DTrans  Trans   Derate  Delta    Incr      Path
+  --------------------------------------------------------------------------------------------------------------------------------------------------------------------
+  clock clock (rise edge)                                                                                                                           0.000     0.000
+  clock network delay (propagated)                                                                                                                  0.000     0.000
+  input external delay                                                                                                                              0.925     0.925 f
+  reset (in)                                                                                                                0.005                   0.003 &   0.928 f
+  reset (net)                                                                                           1   0.001 
+  port_buf_reset/I (BUFFD4BWP6T16P96CPD)                                                                            0.000   0.010   1.070   0.000  -0.000 &   0.928 f
+  port_buf_reset/Z (BUFFD4BWP6T16P96CPD)                                                                                    0.153   1.046           0.105 &   1.034 f
+  place_opt_HFSNET_6078 (net)                                                                          38   0.049 
+  place_opt_HFSBUF_336159_70946/I (BUFFD6BWP6T16P96CPD)                                                             0.012   0.161   1.070   0.004   0.022 &   1.055 f
+  place_opt_HFSBUF_336159_70946/Z (BUFFD6BWP6T16P96CPD)                                                                     0.090   1.031           0.119 &   1.174 f
+  place_opt_HFSNET_6073 (net)                                                                           3   0.043 
+  place_opt_HFSINV_201472_70849/I (INVD3BWP6T16P96CPD)                                                              0.000   0.113   1.070   0.000   0.043 &   1.218 f
+  place_opt_HFSINV_201472_70849/ZN (INVD3BWP6T16P96CPD)                                                                     0.109   1.046           0.112 &   1.329 r
+  place_opt_HFSNET_5865 (net)                                                                           1   0.021 
+  place_opt_HFSINV_201173_70848/I (INVD8BWP6T16P96CPD)                                                              0.000   0.113   1.070   0.000   0.021 &   1.350 r
+  place_opt_HFSINV_201173_70848/ZN (INVD8BWP6T16P96CPD)                                                                     0.101   1.026           0.103 &   1.453 f
+  place_opt_HFSNET_5860 (net)                                                                          35   0.050 
+  place_opt_HFSINV_171255_70824/I (INVD8BWP6T16P96CPD)                                                              0.000   0.110   1.070   0.000   0.009 &   1.462 f
+  place_opt_HFSINV_171255_70824/ZN (INVD8BWP6T16P96CPD)                                                                     0.089   1.026           0.089 &   1.550 r
+  place_opt_HFSNET_5783 (net)                                                                          20   0.044 
+  place_opt_HFSINV_159630_70805/I (INVD2BWP6T16P96CPD)                                                              0.000   0.091   1.070   0.000   0.014 &   1.564 r
+  place_opt_HFSINV_159630_70805/ZN (INVD2BWP6T16P96CPD)                                                                     0.128   1.057           0.139 &   1.703 f
+  place_opt_HFSNET_5719 (net)                                                                           9   0.015 
+  a2f/pipeline/accumulationPipeline/pipeline_0/alchip2442_dc/B1 (INR2D12BWP6T16P96CPD)                              0.000   0.130   1.070   0.000   0.007 &   1.711 f
+  a2f/pipeline/accumulationPipeline/pipeline_0/alchip2442_dc/ZN (INR2D12BWP6T16P96CPD)                                      0.190   1.023           0.158 &   1.868 r
+  a2f/pipeline/accumulationPipeline/pipeline_0/n1590 (net)                                             14   0.091 
+  a2f/pipeline/accumulationPipeline/pipeline_0/place_opt_HFSBUF_14878_67557/I (BUFFD4BWP6T16P96CPDLVT)              0.000   0.195   1.070   0.000   0.026 &   1.894 r
+  a2f/pipeline/accumulationPipeline/pipeline_0/place_opt_HFSBUF_14878_67557/Z (BUFFD4BWP6T16P96CPDLVT)                      0.084   1.039           0.115 &   2.009 r
+  a2f/pipeline/accumulationPipeline/pipeline_0/place_opt_HFSNET_1988 (net)                              7   0.039 
+  a2f/pipeline/accumulationPipeline/pipeline_0/place_opt_HFSINV_13804_67556/I (INVD1BWP6T16P96CPD)                  0.000   0.094   1.070   0.000   0.019 &   2.027 r
+  a2f/pipeline/accumulationPipeline/pipeline_0/place_opt_HFSINV_13804_67556/ZN (INVD1BWP6T16P96CPD)                         0.088   1.093           0.126 &   2.153 f
+  a2f/pipeline/accumulationPipeline/pipeline_0/place_opt_HFSNET_1987 (net)                              2   0.004 
+  a2f/pipeline/accumulationPipeline/pipeline_0/place_opt_HFSINV_10375_67555/I (INVD6BWP6T16P96CPD)                  0.000   0.088   1.070   0.000   0.001 &   2.154 f
+  a2f/pipeline/accumulationPipeline/pipeline_0/place_opt_HFSINV_10375_67555/ZN (INVD6BWP6T16P96CPD)                         0.098   1.031           0.072 &   2.226 r
+  a2f/pipeline/accumulationPipeline/pipeline_0/place_opt_HFSNET_1986 (net)                              8   0.051 
+  a2f/pipeline/accumulationPipeline/pipeline_0/clock_opt_ZINV_inst_87818/I (INVD1BWP6T16P96CPD)                     0.000   0.150   1.070   0.000   0.055 &   2.281 r
+  a2f/pipeline/accumulationPipeline/pipeline_0/clock_opt_ZINV_inst_87818/ZN (INVD1BWP6T16P96CPD)                            0.099   1.093           0.157 &   2.438 f
+  a2f/pipeline/accumulationPipeline/pipeline_0/clock_opt_ZINV_158 (net)                                 1   0.004 
+  a2f/pipeline/accumulationPipeline/pipeline_0/clock_opt_ZINV_inst_87817/I (INVD10BWP6T16P96CPD)                    0.000   0.099   1.070   0.000   0.001 &   2.439 f
+  a2f/pipeline/accumulationPipeline/pipeline_0/clock_opt_ZINV_inst_87817/ZN (INVD10BWP6T16P96CPD)                           0.043   1.022           0.048 &   2.488 r
+  a2f/pipeline/accumulationPipeline/pipeline_0/clock_opt_ZINV_157 (net)                                12   0.043 
+  a2f/pipeline/accumulationPipeline/pipeline_0/U_T_1129_reg/D (SDFQD4BWP6T16P96CPD)                                 0.000   0.145   1.070   0.000   0.079 &   2.567 r
+  data arrival time                                                                                                                                           2.567
+
+  clock clock (rise edge)                                                                                                                           1.250     1.250
+  clock network delay (propagated)                                                                                                                  0.286     1.536
+  clock reconvergence pessimism                                                                                                                     0.000     1.536
+  clock uncertainty                                                                                                                                -0.055     1.481
+  a2f/pipeline/accumulationPipeline/pipeline_0/U_T_1129_reg/CP (SDFQD4BWP6T16P96CPD)                                                                          1.481 r
+  library setup time                                                                                                                1.000          -0.093     1.388
+  data required time                                                                                                                                          1.388
+  --------------------------------------------------------------------------------------------------------------------------------------------------------------------
+  data required time                                                                                                                                          1.388
+  data arrival time                                                                                                                                          -2.567
+  --------------------------------------------------------------------------------------------------------------------------------------------------------------------
+  slack (VIOLATED)                                                                                                                                           -1.178
+```
+
+| corner                       | WNS (wo/w IO)  | TNS (wo/w IO)  | NVP        | Tran | Cap | Nois |
+| ---------------------------- | -------------- | -------------- | ---------- | ---- | --- | ---- |
+| wcl_cwst_ccwstt (S) | \-0.045/-1.178 | 6.050/3529.078 | 492/ 8649  | 0    | 0   | 0    |
+| wcl_rcwst_ccwstt(S) | \-0.028/-1.177 | 1.406/3391.859 | 154/ 8285  | 0    | 0   | 0    |
+| wc_cwst_ccwstt (S)  | 0.000/-1.050   | 0.000/2645.451 | 0/ 7888    | 0    | 0   | 0    |
+| wc_rcwst_ccwstt (S) | 0.000/-1.060   | 0.000/2558.833 | 0/ 7821    | 0    | 0   | 0    |
+| wcl_rcwst_ccwst (H) | \-0.025/-0.025 | 0.246/ 0.246   | 79/ 79     | 0    | 0   | 0    |
+| wcl_cwst_ccwst (H)  | \-0.025/-0.025 | 0.571/ 0.571   | 144/ 144   | 0    | 0   | 0    |
+| wc_cwst_ccwst (H)   | \-0.014/-0.014 | 0.081/ 0.081   | 21/ 21     | 0    | 0   | 0    |
+| wc_rcwst_ccwst (H)  | \-0.014/-0.014 | 0.033/ 0.033   | 5/ 5       | 0    | 0   | 0    |
+| lt_rcwst_ccwst (H)  | \-0.012/-0.012 | 5.510/ 5.510   | 1982/ 1982 | 0    | 0   | 0    |
+| lt_cwst_ccwst (H)   | \-0.019/-0.019 | 6.914/ 6.914   | 2107/ 2107 | 0    | 0   | 0    |
+| lt_cbst_ccbst (H)   | \-0.035/-0.035 | 13.393/ 13.393 | 2501/ 2501 | 0    | 0   | 0    |
+| lt_rcbst_ccbst (H)  | \-0.042/-0.042 | 11.873/ 11.873 | 2400/ 2400 | 0    | 0   | 0    |
+| ml_rcwst_ccwst (H)  | \-0.011/-0.011 | 3.730/ 3.730   | 1455/ 1455 | 0    | 0   | 0    |
+| ml_cwst_ccwst (H)   | \-0.015/-0.015 | 4.461/ 4.461   | 1430/ 1430 | 0    | 0   | 0    |
+| ml_cbst_ccbst (H)   | \-0.032/-0.032 | 12.834/ 12.834 | 2205/ 2205 | 0    | 0   | 0    |
+| ml_rcbst_ccbst (H)  | \-0.043/-0.043 | 10.919/ 10.919 | 1889/ 1889 | 0    | 0   | 0    |
+
+``` text
+Error: couldn't execute "bash ~/.local/rm-trash/rm-trash.sh -rf $DESIGN_LIBRARY": no such file or directory
+        Use error_info for more info. (CMD-013)
+```
+
+## Settings
+
+### DC
+
+  - Setup Uncertainty  
+    0.200
+  - Hold Uncertainty  
+    0.013
+  - Path Margin  
+    0.0
+
+### ICC2
+
+  - def_8
+  - Setup Uncertainty :: 0.050
+  - Hold Uncertainty :: 0.010
+  - Path Margin :: 0.0
+
+# Weekly Report
+
+  - reset ports
+
+  - transition
+
+  - Reduce Hold unsertainty
+
+  - reduce corners
+
+  - Hold buffer
+
+  - register tracing
+
+  - Hold :: bad cworst may be caused by clock nets

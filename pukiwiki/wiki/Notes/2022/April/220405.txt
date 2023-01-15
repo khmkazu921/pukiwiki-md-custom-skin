@@ -1,0 +1,43 @@
+#notemd
+# Fresh meeting
+
+  - should take a note for daily report
+
+  - PPA :: power performance area
+
+  - ADAS :: Advanced Driver-Assistance Systems
+
+  - Shuttle :: a few chips on the same package
+
+  - ULL :: H-chip by Sony, Ultra Low Leakage
+
+# Special Lecture
+
+  - 古園さん
+
+  - Operation
+
+  - aim at 1 billion company
+
+  - Tape-out :: take out tape which have circuit information to factory
+
+  - Johnny, Leo, Peter
+
+NO1 Global Leading Provider of High-end Custom ASICs
+
+  - D\&P  
+    Design & Prototype
+  - MP  
+    Mass Production
+
+<!-- end list -->
+
+  - Pre-sales promotion  
+    Quate, Tech-info Slide by DE
+
+PL DPM
+
+# Personal Time
+
+  - Install Ubuntu on Windows + editor with GUI
+  -

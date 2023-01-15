@@ -1,0 +1,457 @@
+#notemd
+# Plan to Automatic Best Settings Determine
+
+## Iteration
+
+# ECO Last Last Week's Design
+
+## ECO34
+
+| corner                               | WNS (wo/w IO) | TNS (wo/w IO) | NVP (wo/w IO) | Trans | Cap | Noise |
+| ------------------------------------ | ------------- | ------------- | ------------- | ----- | --- | ----- |
+| wcl_cworstccworsttm40cmax  | 0.000/-0.014  | 0.000/0.143   | 0/27          | 0     | 27  | 2     |
+| wcl_rcworstccworsttm40cmax | 0.000/-0.010  | 0.000/0.057   | 0/13          | 0     | 2   | 3     |
+| wc_cworstccworstt125cmax   | 0.000/0.000   | 0.000/0.000   | 0/0           | 0     | 19  | 2     |
+| wc_rcworstccworstt125cmax  | 0.000/0.000   | 0.000/0.000   | 0/0           | 0     | 0   | 2     |
+
+## ECO18=ECO30 \> ECO31 : Auto ECO
+
+| corner                               | WNS (wo/w IO) | TNS (wo/w IO) | NVP (wo/w IO) | Trans | Cap | Noise |
+| ------------------------------------ | ------------- | ------------- | ------------- | ----- | --- | ----- |
+| wcl_cworstccworsttm40cmax  | 0.000/-0.014  | 0.000/0.382   | 0/65          | 0     | 27  | 2     |
+| wcl_rcworstccworsttm40cmax | 0.000/-0.011  | 0.000/0.173   | 0/34          | 0     | 2   | 3     |
+| wc_cworstccworstt125cmax   | 0.000/0.000   | 0.000/0.000   | 0/0           | 0     | 19  | 2     |
+| wc_rcworstccworstt125cmax  | 0.000/0.000   | 0.000/0.000   | 0/0           | 0     | 0   | 2     |
+
+## ECO22 : Capacitance reduction
+
+| corner                               | WNS (wo/w IO) | TNS (wo/w IO) | NVP (wo/w IO) | Trans | Cap | Noise |
+| ------------------------------------ | ------------- | ------------- | ------------- | ----- | --- | ----- |
+| wcl_cworstccworsttm40cmax  | 0.000/-0.018  | 0.000/0.198   | 0/37          | 0     | 27  | 2     |
+| wcl_rcworstccworsttm40cmax | 0.000/-0.014  | 0.000/0.133   | 0/26          | 0     | 2   | 3     |
+| wc_cworstccworstt125cmax   | 0.000/0.000   | 0.000/0.000   | 0/0           | 0     | 19  | 2     |
+| wc_rcworstccworstt125cmax  | 0.000/0.000   | 0.000/0.000   | 0/0           | 0     | 0   | 2     |
+
+``` text
+
+Point                                                                             Fanout   Cap   Trans   Derate   Incr      Path
+----------------------------------------------------------------------------------------------------------------------------------
+clock clock (rise edge)                                                                                         0.000     0.000
+clock network delay (propagated)                                                                                0.474     0.474
+admaAdapter/writeDataDeq/impl/U_T_105_reg/CP (SDFQD6BWP6T16P96CPD)                              0.094           0.000     0.474 r
+admaAdapter/writeDataDeq/impl/U_T_105_reg/Q (SDFQD6BWP6T16P96CPD)                               0.026   1.038   0.169 &   0.643 f
+admaAdapter/writeDataDeq/impl/N_T_105 (net)                                         1   0.010 
+admaAdapter/writeDataDeq/impl/place_opt_HFSINV_6378_15438/I (INVD28BWP6T16P96CPD)               0.026   1.070   0.002 &   0.645 f
+admaAdapter/writeDataDeq/impl/place_opt_HFSINV_6378_15438/ZN (INVD28BWP6T16P96CPD)              0.020   1.022   0.020 &   0.666 r
+admaAdapter/writeDataDeq/impl/place_opt_HFSNET_3363 (net)                          21   0.029 
+admaAdapter/writeDataDeq/impl/place_opt_HFSINV_1140_15431/I (INVD4BWP6T16P96CPD)                0.024   1.070   0.008 &   0.673 r
+admaAdapter/writeDataDeq/impl/place_opt_HFSINV_1140_15431/ZN (INVD4BWP6T16P96CPD)               0.024   1.049   0.031 &   0.704 f
+admaAdapter/writeDataDeq/impl/place_opt_HFSNET_3356 (net)                           2   0.004 
+admaAdapter/writeDataDeq/impl/place_opt_HFSINV_510_p_15429/I (INVD4BWP6T16P96CPD)               0.024   1.070   0.001 &   0.705 f
+admaAdapter/writeDataDeq/impl/place_opt_HFSINV_510_p_15429/ZN (INVD4BWP6T16P96CPD)              0.041   1.049   0.034 &   0.738 r
+admaAdapter/writeDataDeq/impl/place_opt_HFSNET_3354 (net)                          12   0.013 
+admaAdapter/writeDataDeq/impl/alchip240_dc/B1 (AO22D4BWP6T16P96CPD)                             0.043   1.070   0.005 &   0.744 r
+admaAdapter/writeDataDeq/impl/alchip240_dc/Z (AO22D4BWP6T16P96CPD)                              0.029   1.057   0.100 &   0.844 r
+admaAdapter/writeDataDeq/impl/io_deq_bits[46] (net)                                 1   0.005 
+eco_cell_0/I (BUFFD20BWP6T16P96CPD)                                                             0.030   1.070   0.002 &   0.846 r
+eco_cell_0/Z (BUFFD20BWP6T16P96CPD) <-                                                          0.017   1.021   0.041 &   0.887 r
+io_admaAxi4_wdata[29] (net)                                                         1   0.029 
+io_admaAxi4_wdata[29] (out)                                                                     0.061   1.070   0.027 &   0.915 r
+data arrival time                                                                                                         0.915
+
+clock clock (rise edge)                                                                                         1.250     1.250
+clock network delay (propagated)                                                                                0.000     1.250
+clock reconvergence pessimism                                                                                   0.000     1.250
+output external delay                                                                                          -0.325     0.925
+data required time                                                                                                        0.925
+----------------------------------------------------------------------------------------------------------------------------------
+data required time                                                                                                        0.925
+data arrival time                                                                                                        -0.915
+----------------------------------------------------------------------------------------------------------------------------------
+slack (MET)                                                                                                               0.010
+```
+
+## ECO21 vs ECO22 : ECO Buffer Insertion
+
+``` text
+Point                                                                             Fanout   Cap   DTrans  Trans   Derate  Delta    Incr      Path  |     Incr      Path  
+--------------------------------------------------------------------------------------------------------------------------------------------------| --------------------
+clock clock (rise edge)                                                                                                         0.000     0.000   |   0.000     0.000   
+clock network delay (propagated)                                                                                                0.474     0.474   |   0.474     0.474   
+admaAdapter/writeDataDeq/impl/U_T_105_reg/CP (SDFQD6BWP6T16P96CPD)                                      0.094                   0.000     0.474 r |   0.000     0.474 r 
+admaAdapter/writeDataDeq/impl/U_T_105_reg/Q (SDFQD6BWP6T16P96CPD)                                       0.026   1.038           0.169 &   0.643 f |   0.169 &   0.643 f 
+admaAdapter/writeDataDeq/impl/N_T_105 (net)                                         1   0.010                                                     |                     
+admaAdapter/writeDataDeq/impl/place_opt_HFSINV_6378_15438/I (INVD28BWP6T16P96CPD)               0.000   0.026   1.070   0.000   0.002 &   0.645 f |   0.002 &   0.645 f 
+admaAdapter/writeDataDeq/impl/place_opt_HFSINV_6378_15438/ZN (INVD28BWP6T16P96CPD)                      0.022   1.022           0.021 &   0.666 r |   0.021 &   0.666 r 
+admaAdapter/writeDataDeq/impl/place_opt_HFSNET_3363 (net)                          21   0.032                                                     |                     
+admaAdapter/writeDataDeq/impl/clock_opt_SGI129_149940/I (BUFFEEQVZD3BWP6T16P96CPD)              0.000   0.026   1.070   0.000   0.008 &   0.674 r |   0.008 &   0.675 r 
+admaAdapter/writeDataDeq/impl/clock_opt_SGI129_149940/Z (BUFFEEQVZD3BWP6T16P96CPD)                      0.052   1.056           0.080 &   0.754 r |   0.081 &   0.755 r 
+admaAdapter/writeDataDeq/impl/place_opt_HFSNET_3353 (net)                          13   0.012                                                     |                     
+admaAdapter/writeDataDeq/impl/clock_opt_SGI38_149885/A1 (AN2D2BWP6T16P96CPD)                    0.000   0.052   1.070   0.000   0.002 &   0.756 r |   0.002 &   0.757 r 
+admaAdapter/writeDataDeq/impl/clock_opt_SGI38_149885/Z (AN2D2BWP6T16P96CPD)                             0.030   1.060           0.084 &   0.840 r |   0.084 &   0.841 r 
+admaAdapter/writeDataDeq/impl/ropt_net_62513 (net)                                  1   0.004                                                     |                     
+admaAdapter/writeDataDeq/impl/clock_opt_SGI39_149886/A2 (OR2D16BWP6T16P96CPD)                   0.000   0.030   1.070   0.000   0.001 &   0.841 r |   0.001 &   0.843 r 
+admaAdapter/writeDataDeq/impl/clock_opt_SGI39_149886/Z (OR2D16BWP6T16P96CPD)                            0.009   1.021           0.043 &   0.884 r |   0.049 &   0.892 r 
+admaAdapter/writeDataDeq/impl/io_deq_bits[0] (net)                                  1   0.003                                                     |                     
+eco_cell_3/I (BUFFD16BWP6T16P96CPD)                                                             0.000   0.009   1.070   0.000   0.001 &   0.885 r | 
+eco_cell_3/Z (BUFFD16BWP6T16P96CPD)                                                                     0.024   1.021           0.029 &   0.914 r | 
+io_admaAxi4_wstrb[0] (net)                                                          1   0.044                                                     |   
+io_admaAxi4_wstrb[0] (out)                                                                      0.036   0.110   1.070   0.011   0.059 &   0.973 r |   0.054 &   0.945 r                     
+data arrival time                                                                                                                         0.973   |             0.945   
+                                                                                                                                                  |                     
+clock clock (rise edge)                                                                                                         1.250     1.250   |   1.250     1.250   
+clock network delay (propagated)                                                                                                0.000     1.250   |   0.000     1.250   
+clock reconvergence pessimism                                                                                                   0.000     1.250   |   0.000     1.250   
+output external delay                                                                                                          -0.325     0.925   |  -0.325     0.925   
+data required time                                                                                                                        0.925   |             0.925   
+------------------------------------------------------------------------------------------------------------------------------------------------- | --------------------
+data required time                                                                                                                        0.925   |             0.925   
+data arrival time                                                                                                                        -0.973   |            -0.945   
+------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------
+slack (VIOLATED)                                                                                                                         -0.048   |            -0.020
+```
+
+``` text
+Point                                                                             Fanout   Cap   DTrans  Trans   Derate  Delta    Incr      Path
+--------------------------------------------------------------------------------------------------------------------------------------------------
+clock clock (rise edge)                                                                                                         0.000     0.000
+clock network delay (propagated)                                                                                                0.474     0.474
+admaAdapter/writeDataDeq/impl/U_T_105_reg/CP (SDFQD6BWP6T16P96CPD)                                      0.094                   0.000     0.474 r
+admaAdapter/writeDataDeq/impl/U_T_105_reg/Q (SDFQD6BWP6T16P96CPD)                                       0.026   1.040           0.169 &   0.643 f
+admaAdapter/writeDataDeq/impl/N_T_105 (net)                                         1   0.010 
+admaAdapter/writeDataDeq/impl/place_opt_HFSINV_6378_15438/I (INVD28BWP6T16P96CPD)               0.000   0.026   1.070   0.000   0.002 &   0.645 f
+admaAdapter/writeDataDeq/impl/place_opt_HFSINV_6378_15438/ZN (INVD28BWP6T16P96CPD)                      0.022   1.023           0.021 &   0.666 r
+admaAdapter/writeDataDeq/impl/place_opt_HFSNET_3363 (net)                          21   0.032 
+admaAdapter/writeDataDeq/impl/clock_opt_SGI129_149940/I (BUFFEEQVZD3BWP6T16P96CPD)              0.000   0.026   1.070   0.000   0.008 &   0.675 r
+admaAdapter/writeDataDeq/impl/clock_opt_SGI129_149940/Z (BUFFEEQVZD3BWP6T16P96CPD)                      0.052   1.058           0.081 &   0.755 r
+admaAdapter/writeDataDeq/impl/place_opt_HFSNET_3353 (net)                          13   0.012 
+admaAdapter/writeDataDeq/impl/clock_opt_SGI38_149885/A1 (AN2D2BWP6T16P96CPD)                    0.000   0.052   1.070   0.000   0.002 &   0.757 r
+admaAdapter/writeDataDeq/impl/clock_opt_SGI38_149885/Z (AN2D2BWP6T16P96CPD)                             0.030   1.062           0.084 &   0.841 r
+admaAdapter/writeDataDeq/impl/ropt_net_62513 (net)                                  1   0.004 
+admaAdapter/writeDataDeq/impl/clock_opt_SGI39_149886/A2 (OR2D16BWP6T16P96CPD)                   0.000   0.030   1.070   0.000   0.001 &   0.843 r
+admaAdapter/writeDataDeq/impl/clock_opt_SGI39_149886/Z (OR2D16BWP6T16P96CPD)                            0.024   1.022           0.049 &   0.892 r
+admaAdapter/writeDataDeq/impl/io_deq_bits[0] (net)                                  1   0.038 
+io_admaAxi4_wstrb[0] (out)                                                                      0.047   0.081   1.070   0.020   0.054 &   0.945 r
+io_admaAxi4_wstrb[0] (net)                                                          1 
+data arrival time                                                                                                                         0.945
+
+clock clock (rise edge)                                                                                                         1.250     1.250
+clock network delay (propagated)                                                                                                0.000     1.250
+clock reconvergence pessimism                                                                                                   0.000     1.250
+output external delay                                                                                                          -0.325     0.925
+data required time                                                                                                                        0.925
+--------------------------------------------------------------------------------------------------------------------------------------------------
+data required time                                                                                                                        0.925
+data arrival time                                                                                                                        -0.945
+--------------------------------------------------------------------------------------------------------------------------------------------------
+slack (VIOLATED)                                                                                                                         -0.020
+```
+
+## ECO 18
+
+  - size_cell INVD20BWP6T16P96CPD \> INVD28BWP6T16P96CPD
+
+| corner                               | WNS (wo/w IO) | TNS (wo/w IO) | NVP (wo/w IO) | Trans | Cap | Noise |
+| ------------------------------------ | ------------- | ------------- | ------------- | ----- | --- | ----- |
+| wcl_cworstccworsttm40cmax  | 0.000/-0.020  | 0.000/0.076   | 0/14          | 0     | 27  | 2     |
+| wcl_rcworstccworsttm40cmax | 0.000/-0.022  | 0.000/0.050   | 0/3           | 0     | 2   | 3     |
+| wc_cworstccworstt125cmax   | 0.000/0.000   | 0.000/0.000   | 0/0           | 0     | 19  | 2     |
+| wc_rcworstccworstt125cmax  | 0.000/0.000   | 0.000/0.000   | 0/0           | 0     | 0   | 2     |
+
+``` text
+Warning: Shape {5536120 1744920 5536520 1893926} on layer M5 is not on min manufacturing grid. Snap it to 
+{5536120 1744920 5536520 1893930}. The shape belongs to Net: io_admaAxi4_wdata[18]. (ZRT-543)            
+Warning: Shape {5512920 1306520 5513320 1945708} on layer M5 is not on min manufacturing grid. Snap it to 
+{5512920 1306520 5513320 1945710}. The shape belongs to Net: io_admaAxi4_wdata[22]. (ZRT-543)            
+Warning: Shape {5632120 2036978 5632520 2045320} on layer M7 is not on min manufacturing grid. Snap it to 
+{5632120 2036970 5632520 2045320}. The shape belongs to Net: eco_net_26_io_admaAxi4_wdata[30]. (ZRT-543) 
+Warning: Shape {5632120 2019320 5632520 2036578} on layer M7 is not on min manufacturing grid. Snap it to 
+{5632120 2019320 5632520 2036580}. The shape belongs to Net: io_admaAxi4_wdata[30]. (ZRT-543)            
+Warning: Shape {5692252 1904030 5991430 1904650} on layer M8 is not on min manufacturing grid. Snap it to 
+{5692250 1904030 5991430 1904650}. The shape belongs to Net: io_admaAxi4_wdata[116]. (ZRT-543) 
+```
+
+``` text
+Point                                     Fanout   Cap   DTrans  Trans  Delta    Incr      Path   |    Cap   DTrans  Trans  Delta    Incr      Path  
+------------------------------------------------------------------------------------------------- | -------------------------------------------------
+U_T_105_reg/CP (SDFQD6BWP6T16P96CPD)                             0.095          0.000     0.474 r |                  0.094          0.000     0.474 r 
+U_T_105_reg/Q (SDFQD6BWP6T16P96CPD)                              0.026          0.169 &   0.643 f |                  0.022          0.167 &   0.640 f 
+N_T_105 (net)                                1   0.010                                            |  0.008                                           
+_HFSINV_6378_15438/I (INVD28BWP6T16P96CPD)               0.000   0.026  0.000   0.002 &   0.646 f |          0.000   0.022  0.000   0.002 &   0.642 f 
+_HFSINV_6378_15438/ZN (INVD28BWP6T16P96CPD)                      0.020          0.021 &   0.666 r |                  0.023          0.021 &   0.663 r 
+_HFSNET_3363 (net)                          21   0.029                                            |  0.029                                            
+_HFSINV_1140_15431/I (INVD4BWP6T16P96CPD)                0.000   0.024  0.000   0.008 &   0.674 r |          0.000   0.027  0.000   0.008 &   0.671 r 
+_HFSINV_1140_15431/ZN (INVD4BWP6T16P96CPD)                       0.024          0.031 &   0.705 f |                  0.025          0.032 &   0.703 f 
+_HFSNET_3356 (net)                           2   0.004                                            |  0.004                                            
+_HFSINV_510_p_15429/I (INVD4BWP6T16P96CPD)               0.000   0.024  0.000   0.001 &   0.705 f |          0.000   0.025  0.000   0.001 &   0.704 f 
+_HFSINV_510_p_15429/ZN (INVD4BWP6T16P96CPD)                      0.041          0.034 &   0.739 r |                  0.041          0.034 &   0.738 r 
+_HFSNET_3354 (net)                          12   0.014                                            |  0.013                                            
+alchip240_dc/B1 (AO22D4BWP6T16P96CPD)                    0.000   0.043  0.000   0.006 &   0.745 r |          0.000   0.043  0.000   0.005 &   0.743 r 
+------------------------------------------------------------------------------------------------- | -------------------------------------------------
+alchip240_dc/Z (AO22D4BWP6T16P96CPD)                             0.034          0.106 &   0.850 r |                  0.020          0.093     0.836 r 
+io_deq_bits[46] (net)                        1   0.007                                            |  0.002                                            
+eco_cell_0/I (BUFFD20BWP6T16P96CPD)                      0.000   0.035  0.000   0.002 &   0.853 r |          0.000   0.020  0.000   0.000     0.836 r 
+eco_cell_0/Z (BUFFD20BWP6T16P96CPD)                              0.018          0.046 &   0.898 r |                  0.017          0.036 &   0.872 r 
+io_admaAxi4_wdata[29] (net)                  1   0.041                                            |  0.019                                            
+io_admaAxi4_wdata[29] (out)                              0.028   0.095  0.007   0.047 &   0.945 r |          0.009   0.029  0.002   0.011 &   0.882 r
+------------------------------------------------------------------------------------------------- | ------------------------------------------------- 
+data arrival time                                                                         0.945   |                                           0.882   
+data required time                                                                        0.925   |                                           0.925   
+------------------------------------------------------------------------------------------------- | --------------------------------------------------
+slack (VIOLATED)                                                                         -0.020   |                                           0.043   
+```
+
+## ECO 17-2
+
+| corner                               | WNS (wo/w IO) | TNS (wo/w IO) | NVP (wo/w IO) | Trans | Cap | Noise |
+| ------------------------------------ | ------------- | ------------- | ------------- | ----- | --- | ----- |
+| wcl_cworstccworsttm40cmax  | 0.000/-0.014  | 0.000/0.169   | 0/38          | 0     | 27  | 2     |
+| wcl_rcworstccworsttm40cmax | 0.000/-0.014  | 0.000/0.115   | 0/23          | 0     | 2   | 3     |
+| wc_cworstccworstt125cmax   | 0.000/0.000   | 0.000/0.000   | 0/0           | 0     | 19  | 2     |
+| wc_rcworstccworstt125cmax  | 0.000/0.000   | 0.000/0.000   | 0/0           | 0     | 0   | 2     |
+
+``` text
+Point                                                                             Fanout   Cap   DTrans  Trans   Derate  Delta    Incr      Path
+--------------------------------------------------------------------------------------------------------------------------------------------------
+clock clock (rise edge)                                                                                                         0.000     0.000
+clock network delay (propagated)                                                                                                0.474     0.474
+admaAdapter/writeDataDeq/impl/U_T_105_reg/CP (SDFQD6BWP6T16P96CPD)                                      0.094                   0.000     0.474 r
+admaAdapter/writeDataDeq/impl/U_T_105_reg/Q (SDFQD6BWP6T16P96CPD)                                       0.022   1.038           0.167 &   0.640 f
+admaAdapter/writeDataDeq/impl/N_T_105 (net)                                         1   0.008 
+admaAdapter/writeDataDeq/impl/place_opt_HFSINV_6378_15438/I (INVD20BWP6T16P96CPD)               0.000   0.022   1.070   0.000   0.002 &   0.642 f
+admaAdapter/writeDataDeq/impl/place_opt_HFSINV_6378_15438/ZN (INVD20BWP6T16P96CPD)                      0.023   1.022           0.021 &   0.663 r
+admaAdapter/writeDataDeq/impl/place_opt_HFSNET_3363 (net)                          21   0.029 
+admaAdapter/writeDataDeq/impl/place_opt_HFSINV_1140_15431/I (INVD4BWP6T16P96CPD)                0.000   0.027   1.070   0.000   0.008 &   0.671 r
+admaAdapter/writeDataDeq/impl/place_opt_HFSINV_1140_15431/ZN (INVD4BWP6T16P96CPD)                       0.025   1.049           0.032 &   0.703 f
+admaAdapter/writeDataDeq/impl/place_opt_HFSNET_3356 (net)                           2   0.004 
+admaAdapter/writeDataDeq/impl/place_opt_HFSINV_510_p_15429/I (INVD4BWP6T16P96CPD)               0.000   0.025   1.070   0.000   0.001 &   0.704 f
+admaAdapter/writeDataDeq/impl/place_opt_HFSINV_510_p_15429/ZN (INVD4BWP6T16P96CPD)                      0.041   1.049           0.034 &   0.738 r
+admaAdapter/writeDataDeq/impl/place_opt_HFSNET_3354 (net)                          12   0.013 
+admaAdapter/writeDataDeq/impl/alchip240_dc/B1 (AO22D4BWP6T16P96CPD)                             0.000   0.043   1.070   0.000   0.005 &   0.743 r
+admaAdapter/writeDataDeq/impl/alchip240_dc/Z (AO22D4BWP6T16P96CPD)                                      0.020   1.057           0.093     0.836 r
+admaAdapter/writeDataDeq/impl/io_deq_bits[46] (net)                                 1   0.002 
+eco_cell_0/I (BUFFD20BWP6T16P96CPD)                                                             0.000   0.020   1.070   0.000   0.000     0.836 r
+eco_cell_0/Z (BUFFD20BWP6T16P96CPD)                                                                     0.017   1.021           0.036 &   0.872 r
+io_admaAxi4_wdata[29] (net)                                                         1   0.019 
+io_admaAxi4_wdata[29] (out)                                                                     0.009   0.029   1.070   0.002   0.011 &   0.882 r
+data arrival time                                                                                                                         0.882
+
+clock clock (rise edge)                                                                                                         1.250     1.250
+clock network delay (propagated)                                                                                                0.000     1.250
+clock reconvergence pessimism                                                                                                   0.000     1.250
+output external delay                                                                                                          -0.325     0.925
+data required time                                                                                                                        0.925
+--------------------------------------------------------------------------------------------------------------------------------------------------
+data required time                                                                                                                        0.925
+data arrival time                                                                                                                        -0.882
+--------------------------------------------------------------------------------------------------------------------------------------------------
+slack (MET)                                                                                                                               0.043   
+```
+
+## ECO 17
+
+| corner                               | WNS (wo/w IO) | TNS (wo/w IO) | NVP (wo/w IO) | Trans | Cap | Noise |
+| ------------------------------------ | ------------- | ------------- | ------------- | ----- | --- | ----- |
+| wcl_cworstccworsttm40cmax  | 0.000/-0.050  | 0.000/0.317   | 0/44          | 0     | 27  | 2     |
+| wcl_rcworstccworsttm40cmax | 0.000/-0.047  | 0.000/0.249   | 0/29          | 0     | 2   | 3     |
+| wc_cworstccworstt125cmax   | 0.000/0.000   | 0.000/0.000   | 0/0           | 0     | 19  | 2     |
+| wc_rcworstccworstt125cmax  | 0.000/0.000   | 0.000/0.000   | 0/0           | 0     | 0   | 2     |
+
+``` text
+Point                                                                             Fanout   Cap   DTrans  Trans   Derate  Delta    Incr      Path
+--------------------------------------------------------------------------------------------------------------------------------------------------
+clock clock (rise edge)                                                                                                         0.000     0.000
+clock network delay (propagated)                                                                                                0.474     0.474
+admaAdapter/writeDataDeq/impl/U_T_105_reg/CP (SDFQD6BWP6T16P96CPD)                                      0.094                   0.000     0.474 r
+admaAdapter/writeDataDeq/impl/U_T_105_reg/Q (SDFQD6BWP6T16P96CPD)                                       0.022   1.038           0.167 &   0.640 f
+admaAdapter/writeDataDeq/impl/N_T_105 (net)                                         1   0.008 
+admaAdapter/writeDataDeq/impl/place_opt_HFSINV_6378_15438/I (INVD20BWP6T16P96CPD)               0.000   0.022   1.070   0.000   0.002 &   0.642 f
+admaAdapter/writeDataDeq/impl/place_opt_HFSINV_6378_15438/ZN (INVD20BWP6T16P96CPD)                      0.023   1.022           0.021 &   0.663 r
+admaAdapter/writeDataDeq/impl/place_opt_HFSNET_3363 (net)                          21   0.029 
+admaAdapter/writeDataDeq/impl/place_opt_HFSINV_1140_15431/I (INVD4BWP6T16P96CPD)                0.000   0.027   1.070   0.000   0.008 &   0.671 r
+admaAdapter/writeDataDeq/impl/place_opt_HFSINV_1140_15431/ZN (INVD4BWP6T16P96CPD)                       0.025   1.049           0.032 &   0.703 f
+admaAdapter/writeDataDeq/impl/place_opt_HFSNET_3356 (net)                           2   0.004 
+admaAdapter/writeDataDeq/impl/place_opt_HFSINV_510_p_15429/I (INVD4BWP6T16P96CPD)               0.000   0.025   1.070   0.000   0.001 &   0.704 f
+admaAdapter/writeDataDeq/impl/place_opt_HFSINV_510_p_15429/ZN (INVD4BWP6T16P96CPD)                      0.041   1.049           0.034 &   0.738 r
+admaAdapter/writeDataDeq/impl/place_opt_HFSNET_3354 (net)                          12   0.013 
+admaAdapter/writeDataDeq/impl/alchip240_dc/B1 (AO22D4BWP6T16P96CPD)                             0.000   0.043   1.070   0.000   0.005 &   0.743 r
+admaAdapter/writeDataDeq/impl/alchip240_dc/Z (AO22D4BWP6T16P96CPD)                                      0.069   1.057           0.125 &   0.868 r
+admaAdapter/writeDataDeq/impl/io_deq_bits[46] (net)                                 1   0.020 
+eco_cell_0/I (BUFFD20BWP6T16P96CPD)                                                             0.024   0.071   1.070   0.008   0.017 &   0.885 r
+eco_cell_0/Z (BUFFD20BWP6T16P96CPD)                                                                     0.018   1.021           0.064 &   0.949 r
+io_admaAxi4_wdata[29] (net)                                                         1   0.019 
+io_admaAxi4_wdata[29] (out)                                                                     0.003   0.031   1.070   0.001   0.009 &   0.958 r
+data arrival time                                                                                                                         0.958
+
+clock clock (rise edge)                                                                                                         1.250     1.250
+clock network delay (propagated)                                                                                                0.000     1.250
+clock reconvergence pessimism                                                                                                   0.000     1.250
+output external delay                                                                                                          -0.325     0.925
+data required time                                                                                                                        0.925
+--------------------------------------------------------------------------------------------------------------------------------------------------
+data required time                                                                                                                        0.925
+data arrival time                                                                                                                        -0.958
+--------------------------------------------------------------------------------------------------------------------------------------------------
+slack (VIOLATED)                                                                                                                         -0.033
+```
+
+``` text
+Point                                                                             Fanout   Cap   DTrans  Trans   Derate  Delta    Incr      Path
+--------------------------------------------------------------------------------------------------------------------------------------------------
+clock clock (rise edge)                                                                                                         0.000     0.000
+clock network delay (propagated)                                                                                                0.474     0.474
+admaAdapter/writeDataDeq/impl/U_T_105_reg/CP (SDFQD6BWP6T16P96CPD)                                      0.094                   0.000     0.474 r
+admaAdapter/writeDataDeq/impl/U_T_105_reg/Q (SDFQD6BWP6T16P96CPD)                                       0.022   1.040           0.167 &   0.641 f
+admaAdapter/writeDataDeq/impl/N_T_105 (net)                                         1   0.008 
+admaAdapter/writeDataDeq/impl/place_opt_HFSINV_6378_15438/I (INVD20BWP6T16P96CPD)               0.000   0.022   1.070   0.000   0.002 &   0.643 f
+admaAdapter/writeDataDeq/impl/place_opt_HFSINV_6378_15438/ZN (INVD20BWP6T16P96CPD)                      0.023   1.023           0.021 &   0.663 r
+admaAdapter/writeDataDeq/impl/place_opt_HFSNET_3363 (net)                          21   0.029 
+admaAdapter/writeDataDeq/impl/place_opt_HFSINV_1140_15431/I (INVD4BWP6T16P96CPD)                0.000   0.027   1.070   0.000   0.008 &   0.671 r
+admaAdapter/writeDataDeq/impl/place_opt_HFSINV_1140_15431/ZN (INVD4BWP6T16P96CPD)                       0.025   1.051           0.033 &   0.704 f
+admaAdapter/writeDataDeq/impl/place_opt_HFSNET_3356 (net)                           2   0.004 
+admaAdapter/writeDataDeq/impl/place_opt_HFSINV_510_p_15429/I (INVD4BWP6T16P96CPD)               0.000   0.025   1.070   0.000   0.001 &   0.704 f
+admaAdapter/writeDataDeq/impl/place_opt_HFSINV_510_p_15429/ZN (INVD4BWP6T16P96CPD)                      0.041   1.051           0.034 &   0.739 r
+admaAdapter/writeDataDeq/impl/place_opt_HFSNET_3354 (net)                          12   0.013 
+admaAdapter/writeDataDeq/impl/alchip240_dc/B1 (AO22D4BWP6T16P96CPD)                             0.000   0.043   1.070   0.000   0.005 &   0.744 r
+admaAdapter/writeDataDeq/impl/alchip240_dc/Z (AO22D4BWP6T16P96CPD)                                      0.108   1.059           0.142 &   0.886 r
+admaAdapter/writeDataDeq/impl/io_deq_bits[46] (net)                                 1   0.033 
+io_admaAxi4_wdata[29] (out)                                                                     0.082   0.137   1.070   0.035   0.059 &   0.945 r
+io_admaAxi4_wdata[29] (net)                                                         1 
+data arrival time                                                                                                                         0.945
+
+clock clock (rise edge)                                                                                                         1.250     1.250
+clock network delay (propagated)                                                                                                0.000     1.250
+clock reconvergence pessimism                                                                                                   0.000     1.250
+output external delay                                                                                                          -0.325     0.925
+data required time                                                                                                                        0.925
+--------------------------------------------------------------------------------------------------------------------------------------------------
+data required time                                                                                                                        0.925
+data arrival time                                                                                                                        -0.945
+--------------------------------------------------------------------------------------------------------------------------------------------------
+slack (VIOLATED)                                                                                                                         -0.020
+
+  Point                                                                             Fanout   Cap   DTrans  Trans   Derate  Delta    Incr      Path
+  --------------------------------------------------------------------------------------------------------------------------------------------------
+  clock clock (rise edge)                                                                                                         0.000     0.000
+  clock network delay (propagated)                                                                                                0.474     0.474
+  admaAdapter/writeDataDeq/impl/U_T_105_reg/CP (SDFQD6BWP6T16P96CPD)                                      0.094                   0.000     0.474 r
+  admaAdapter/writeDataDeq/impl/U_T_105_reg/Q (SDFQD6BWP6T16P96CPD)                                       0.022   1.041           0.167 &   0.641 f
+  admaAdapter/writeDataDeq/impl/N_T_105 (net)                                         1   0.008 
+  admaAdapter/writeDataDeq/impl/place_opt_HFSINV_6378_15438/I (INVD20BWP6T16P96CPD)               0.000   0.022   1.070   0.000   0.002 &   0.643 f
+  admaAdapter/writeDataDeq/impl/place_opt_HFSINV_6378_15438/ZN (INVD20BWP6T16P96CPD)                      0.023   1.024           0.021 &   0.664 r
+  admaAdapter/writeDataDeq/impl/place_opt_HFSNET_3363 (net)                          21   0.029 
+  admaAdapter/writeDataDeq/impl/clock_opt_SGI129_149940/I (BUFFEEQVZD3BWP6T16P96CPD)              0.000   0.027   1.070   0.000   0.008 &   0.672 r
+  admaAdapter/writeDataDeq/impl/clock_opt_SGI129_149940/Z (BUFFEEQVZD3BWP6T16P96CPD)                      0.050   1.060           0.079 &   0.751 r
+  admaAdapter/writeDataDeq/impl/place_opt_HFSNET_3353 (net)                          13   0.012 
+  admaAdapter/writeDataDeq/impl/alchip226_dc/B1 (AO22D4BWP6T16P96CPD)                             0.000   0.051   1.070   0.000   0.001 &   0.752 r
+  admaAdapter/writeDataDeq/impl/alchip226_dc/Z (AO22D4BWP6T16P96CPD)                                      0.110   1.061           0.141 &   0.893 r
+  admaAdapter/writeDataDeq/impl/io_deq_bits[32] (net)                                 1   0.034 
+  io_admaAxi4_wdata[15] (out)                                                                     0.059   0.142   1.070   0.020   0.050 &   0.942 r
+  io_admaAxi4_wdata[15] (net)                                                         1 
+  data arrival time                                                                                                                         0.942
+
+  clock clock (rise edge)                                                                                                         1.250     1.250
+  clock network delay (propagated)                                                                                                0.000     1.250
+  clock reconvergence pessimism                                                                                                   0.000     1.250
+  output external delay                                                                                                          -0.325     0.925
+  data required time                                                                                                                        0.925
+  --------------------------------------------------------------------------------------------------------------------------------------------------
+  data required time                                                                                                                        0.925
+  data arrival time                                                                                                                        -0.942
+  --------------------------------------------------------------------------------------------------------------------------------------------------
+  slack (VIOLATED)                                                                                                                         -0.017
+```
+
+``` text
+Point                                                                             Fanout   Cap   DTrans  Trans   Derate  Delta    Incr      Path
+--------------------------------------------------------------------------------------------------------------------------------------------------
+clock clock (rise edge)                                                                                                         0.000     0.000
+clock network delay (propagated)                                                                                                0.474     0.474
+admaAdapter/writeDataDeq/impl/U_T_105_reg/CP (SDFQD6BWP6T16P96CPD)                                      0.094                   0.000     0.474 r
+admaAdapter/writeDataDeq/impl/U_T_105_reg/Q (SDFQD6BWP6T16P96CPD)                                       0.030   1.040           0.163 &   0.637 r
+admaAdapter/writeDataDeq/impl/N_T_105 (net)                                         1   0.013 
+admaAdapter/writeDataDeq/impl/place_opt_HFSINV_6378_15438/I (INVD36BWP6T16P96CPD)               0.000   0.030   1.070   0.000   0.003 &   0.641 r
+admaAdapter/writeDataDeq/impl/place_opt_HFSINV_6378_15438/ZN (INVD36BWP6T16P96CPD)                      0.025   1.023           0.028 &   0.669 f
+admaAdapter/writeDataDeq/impl/place_opt_HFSNET_3363 (net)                          21   0.028 
+admaAdapter/writeDataDeq/impl/place_opt_HFSINV_1140_15431/I (INVD4BWP6T16P96CPD)                0.000   0.028   1.070   0.000   0.008 &   0.677 f
+admaAdapter/writeDataDeq/impl/place_opt_HFSINV_1140_15431/ZN (INVD4BWP6T16P96CPD)                       0.020   1.051           0.026 &   0.703 r
+admaAdapter/writeDataDeq/impl/place_opt_HFSNET_3356 (net)                           2   0.004 
+admaAdapter/writeDataDeq/impl/place_opt_HFSINV_510_p_15429/I (INVD4BWP6T16P96CPD)               0.000   0.020   1.070   0.000   0.001 &   0.703 r
+admaAdapter/writeDataDeq/impl/place_opt_HFSINV_510_p_15429/ZN (INVD4BWP6T16P96CPD)                      0.047   1.051           0.039 &   0.742 f
+admaAdapter/writeDataDeq/impl/place_opt_HFSNET_3354 (net)                          12   0.014 
+admaAdapter/writeDataDeq/impl/alchip240_dc/B1 (AO22D4BWP6T16P96CPD)                             0.000   0.048   1.070   0.000   0.005 &   0.747 f
+admaAdapter/writeDataDeq/impl/alchip240_dc/Z (AO22D4BWP6T16P96CPD)                                      0.121   1.059           0.139 &   0.886 f
+admaAdapter/writeDataDeq/impl/io_deq_bits[46] (net)                                 1   0.033 
+io_admaAxi4_wdata[29] (out)                                                                     0.079   0.143   1.070   0.042   0.067 &   0.953 f
+io_admaAxi4_wdata[29] (net)                                                         1 
+data arrival time                                                                                                                         0.953
+
+clock clock (rise edge)                                                                                                         1.250     1.250
+clock network delay (propagated)                                                                                                0.000     1.250
+clock reconvergence pessimism                                                                                                   0.000     1.250
+output external delay                                                                                                          -0.325     0.925
+data required time                                                                                                                        0.925
+--------------------------------------------------------------------------------------------------------------------------------------------------
+data required time                                                                                                                        0.925
+data arrival time                                                                                                                        -0.953
+--------------------------------------------------------------------------------------------------------------------------------------------------
+slack (VIOLATED)                                                                                                                         -0.028
+
+Point                                                                             Fanout   Cap   DTrans  Trans   Derate  Delta    Incr      Path
+--------------------------------------------------------------------------------------------------------------------------------------------------
+clock clock (rise edge)                                                                                                         0.000     0.000
+clock network delay (propagated)                                                                                                0.474     0.474
+admaAdapter/writeDataDeq/impl/U_T_105_reg/CP (SDFQD6BWP6T16P96CPD)                                      0.094                   0.000     0.474 r
+admaAdapter/writeDataDeq/impl/U_T_105_reg/Q (SDFQD6BWP6T16P96CPD)                                       0.031   1.041           0.172 &   0.646 f
+admaAdapter/writeDataDeq/impl/N_T_105 (net)                                         1   0.013 
+admaAdapter/writeDataDeq/impl/place_opt_HFSINV_6378_15438/I (INVD36BWP6T16P96CPD)               0.000   0.031   1.070   0.000   0.003 &   0.649 f
+admaAdapter/writeDataDeq/impl/place_opt_HFSINV_6378_15438/ZN (INVD36BWP6T16P96CPD)                      0.021   1.024           0.023 &   0.672 r
+admaAdapter/writeDataDeq/impl/place_opt_HFSNET_3363 (net)                          21   0.029 
+admaAdapter/writeDataDeq/impl/clock_opt_SGI129_149940/I (BUFFEEQVZD3BWP6T16P96CPD)              0.000   0.026   1.070   0.000   0.008 &   0.681 r
+admaAdapter/writeDataDeq/impl/clock_opt_SGI129_149940/Z (BUFFEEQVZD3BWP6T16P96CPD)                      0.050   1.060           0.078 &   0.758 r
+admaAdapter/writeDataDeq/impl/place_opt_HFSNET_3353 (net)                          13   0.012 
+admaAdapter/writeDataDeq/impl/alchip226_dc/B1 (AO22D4BWP6T16P96CPD)                             0.000   0.051   1.070   0.000   0.001 &   0.759 r
+admaAdapter/writeDataDeq/impl/alchip226_dc/Z (AO22D4BWP6T16P96CPD)                                      0.110   1.061           0.141 &   0.900 r
+admaAdapter/writeDataDeq/impl/io_deq_bits[32] (net)                                 1   0.034 
+io_admaAxi4_wdata[15] (out)                                                                     0.059   0.142   1.070   0.020   0.049 &   0.950 r
+io_admaAxi4_wdata[15] (net)                                                         1 
+data arrival time                                                                                                                         0.950
+
+clock clock (rise edge)                                                                                                         1.250     1.250
+clock network delay (propagated)                                                                                                0.000     1.250
+clock reconvergence pessimism                                                                                                   0.000     1.250
+output external delay                                                                                                          -0.325     0.925
+data required time                                                                                                                        0.925
+--------------------------------------------------------------------------------------------------------------------------------------------------
+data required time                                                                                                                        0.925
+data arrival time                                                                                                                        -0.950
+--------------------------------------------------------------------------------------------------------------------------------------------------
+slack (VIOLATED)                                                                                                                         -0.025
+```
+
+## Manual ECO 1 size_cell
+
+| corner                               | WNS (wo/w IO) | TNS (wo/w IO) | NVP (wo/w IO) | Trans | Cap | Noise |
+| ------------------------------------ | ------------- | ------------- | ------------- | ----- | --- | ----- |
+| wcl_cworstccworsttm40cmax  | 0.000/-0.020  | 0.000/0.220   | 0/41          | 0     | 27  | 2     |
+| wcl_rcworstccworsttm40cmax | 0.000/-0.015  | 0.000/0.158   | 0/26          | 0     | 2   | 3     |
+| wc_cworstccworstt125cmax   | 0.000/0.000   | 0.000/0.000   | 0/0           | 0     | 19  | 2     |
+| wc_rcworstccworstt125cmax  | 0.000/0.000   | 0.000/0.000   | 0/0           | 0     | 0   | 2     |
+
+## Manual ECO 1 size_cell
+
+| corner                               | WNS (wo/w IO) | TNS (wo/w IO) | NVP (wo/w IO) | Trans | Cap | Noise |
+| ------------------------------------ | ------------- | ------------- | ------------- | ----- | --- | ----- |
+| wcl_cworstccworsttm40cmax  | 0.000/-0.024  | 0.000/0.421   | 0/60          | 0     | 27  | 2     |
+| wcl_rcworstccworsttm40cmax | 0.000/-0.020  | 0.000/0.324   | 0/45          | 0     | 2   | 3     |
+| wc_cworstccworstt125cmax   | 0.000/0.000   | 0.000/0.000   | 0/0           | 0     | 19  | 2     |
+| wc_rcworstccworstt125cmax  | 0.000/0.000   | 0.000/0.000   | 0/0           | 0     | 0   | 2     |
+
+## Auto-ECO
+
+| corner                               | WNS (wo/w IO) | TNS (wo/w IO) | NVP (wo/w IO) | Trans | Cap | Noise |
+| ------------------------------------ | ------------- | ------------- | ------------- | ----- | --- | ----- |
+| wcl_cworstccworsttm40cmax  | 0.000/-0.028  | 0.000/0.754   | 0/84          | 0     | 27  | 2     |
+| wcl_rcworstccworsttm40cmax | 0.000/-0.024  | 0.000/0.625   | 0/72          | 0     | 2   | 3     |
+| wc_cworstccworstt125cmax   | 0.000/0.000   | 0.000/0.000   | 0/0           | 0     | 19  | 2     |
+| wc_rcworstccworstt125cmax  | 0.000/0.000   | 0.000/0.000   | 0/0           | 0     | 0   | 2     |

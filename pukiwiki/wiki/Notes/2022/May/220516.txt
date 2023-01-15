@@ -1,0 +1,250 @@
+#notemd
+# Status meeting
+
+  - Test vs Product Engineering
+
+# Tech Forum: GPFN2 Noise Issue (Nakai-san)
+
+## Issue
+
+  - Noise issue  
+    replace CAP
+    
+      - Find out in 2020 Dec
+
+  - PI Simulation  
+    test for power quarity
+    
+      - AC analysis / Transient analysis
+      - PFN2 12nm 0.55V :: very sensitive for voltage fluctuation
+
+  - CPM  
+    Chip Power Model in Redhawk (Die mode for Voltus)
+
+<!-- end list -->
+
+  - SPICE
+  - PDN :: Power Distribution Network
+      - Capacitances reduce voltage fluctuation
+
+## Analysis Plan
+
+  - **Ramp up Ramp down**
+      - Ramp up  
+        The case which many processors work at once
+  - Capacitance Check
+      - 必要なキャパシタンスが入ってないんじゃないか？
+  - CPM Affection/Resistance
+  - CPM Generation ::
+
+## Murata Analysis
+
+  - 周波数分離  
+    500MHz, 50MHz, 4MHz
+
+<!-- end list -->
+
+  - Capacitance Replacement
+  - 400MHz
+      - Switching Noise, add Registance
+  - Noise Gap
+
+## Q\&A
+
+  - PI simulation doesn't use a real device
+  - Cause of Noise :: IR drop等のSwitcing Activity + 寄生容量＋寄生抵抗
+
+# DE Meeting
+
+## Takashima-san
+
+  - TSMC has Multi-bit with scan-en while ZDK3 (PEZY) is not necessary
+    \> re-K
+  - NEC Ark
+  - SAGA+ Nel (NTT electronics)
+      - NoC  
+        Network on Chip
+  - Advantest :: chip for high-end tester
+
+## Nakai-san
+
+  - Gifu  
+    DRC Violation
+    
+      - for reduce SRAM to 20%, enlarge chip size
+
+<!-- end list -->
+
+  - H-chip
+
+## Miura-san
+
+  - out-sourcing
+
+## Ishii-san
+
+  - EM error
+
+<!-- end list -->
+
+  - multi-voltage
+  - Tool study
+
+## Sassa-san
+
+  - physical-aware synthesis \> to reduce man-power like Saga+
+
+## Lin-san
+
+  - Useful-skew
+  - better Correlation
+
+## Yamauchi-san
+
+  - DFT-flow study
+
+## Ke-san
+
+  - bump coordinate
+  - ball map
+
+## Takemoto-san
+
+  - Genus Physical, SAIF file
+
+# Self Study
+
+## ICC2 Unit4 revise
+
+  - N row vs FS row  
+    triangles show the power grid porarity
+
+<!-- end list -->
+
+  - **each row has legalized cell rotation**
+      - R0  
+        Rotation 0 degree
+      - R180  
+        Rotation 180 degree
+      - MX  
+        Mirror with respect to X axis
+      - MY  
+        Mirror with respect to X Y axis
+    <!-- end list -->
+      - symmetry attribute = X
+          - PG arrays are vertically aligned
+          - R0 & MX, R180\&MY are the equivalent
+      - symmetri attribute = Y
+          - PG arrays are horizontally aligned
+          - R0 & MY, R180\&MX are the equivalent
+
+## ICC2 Unit5
+
+  - UPF' vs UPF''
+    
+      - All UPF changes performed by DC are captured in a UPF' file
+      - All UPF' changes performed by ICC II are captured in a UPF''
+        file
+
+  - Golden UPF flow
+    
+      - User UPF is preserved as golden UPF (G-UPF)
+      - All intent changes captured in supplemental UPF (S-UPF)
+      - You can optionally use the Verilog netlist to store all PG
+        connectivity information
+
+  - Load a DEF Floorplan File
+
+  - Load the Floorplan
+
+  - Better to ignore unused metal layer to gain accurate congestion and
+    STA
+
+  - Load Scan Chain identification information
+
+  - Connect PG Pins to supply nets
+
+  - Enable Tie-high/low cells
+
+  - Pack/Unpack
+    
+      - When packing:
+          - All reference libraries are packed unless you specify
+            `-exciude_reflibs`
+          - All blocks are packed by default. Use -blocks to pack a
+            specificlist of blocks
+          - Collections are not packed, you can rebuild them from the
+            unpacked design
+          - All variables and application options are saved as well
+      - When unpacking:
+          - opens the library and sets the current block
+          - All the referencelibraries are located in the reflibs
+            directory under the library
+          - Use -destination to specify the destination directory in
+            which to unpack the design
+
+  - A design library
+    
+      - Contains the physical designs saved after various design phases
+      - Is always tied to a specific technology
+      - Must contain pointers to all referencelibraries
+
+  - When using the Golden-UPF flow, a name mapping file is required,
+    because DC or ICC I might change the names of objects that are
+    described in the golden UPF file.
+
+  - Tie-high/low cells will be inserted during placement optimization
+
+  - This can be doneeither in Library Manager, during the creation of a
+
+  - Cell placement site and symmetry are defined either in
+    "technology-only library” (the recommended approach), or
+    alternatively in ICC II, during design setup.
+    
+    ![](./img/design-setup.png)
+
+## ICC2 Lab5
+
+1.  setup search_path
+2.  ref_libs options
+3.  close_libs to reset
+4.  create_lib to create design library
+5.  load_upf & commit_upf
+6.  source floorplan.tcl which is created by write_floorplan
+7.  read_def ORCA_TOP.scandef
+8.  connect_pgnet & check_mvdesign
+9.  set_ignoredlayers -max_routinglayer M6
+10. rename_block -to_block
+    ORCA_TOP/init_design & save_block or
+    save_lib
+
+## question
+
+  - **Physical Only Cell ??**
+  - **Ramp up Ramp down**
+
+## ICC2 Unit 6
+
+  - Switching current corner or mode changescurrent scenario
+
+  - Timing constraints :: classified into four categories
+    
+      - Mode-specific
+      - Corner-specific
+      - Scenario-specific
+      - Global
+
+  - While set_donttouchnetwork is a global constraint command,
+    it may be applied to clock objects (which are mode-specific), in
+    which case the constraint will be treated as a mode-specific
+    constraint.
+
+  - Scenario Constraints
+    
+      - typically in a single file
+      - Contains scenario, modal and comertiming constraints
+      - modes and corners :: shareable among scenarios
+
+  - Loading Constraints
+    
+      - should be loaded only once

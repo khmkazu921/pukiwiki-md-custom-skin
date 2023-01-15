@@ -1,0 +1,445 @@
+#notemd
+
+[[Notes/2022]]
+
+# All Hands Forum
+
+UDL
+:User-defined logic (logic provided customers)
+
+# New PG Net Script
+
+## SANDBOX
+
+```tcl
+set core_bbox [get_attribute [get_core_area] bbox]
+set core_xmin [lindex $core_bbox 0 0]
+set core_ymin [lindex $core_bbox 0 1]
+set core_xmax [lindex $core_bbox 1 0]
+set core_ymax [lindex $core_bbox 1 1]
+
+filter_collection [get_shapes -at [list [expr $core_xmin+0.5] [expr $core_ymax-1.15]]] {layer.name==M2}
+
+set top_pgrail [list [list [expr $core_xmin-0.1] [expr $core_ymax-0.2]] [list [expr $core_xmax+0.1] [expr $pg_ymax+0.1]]]
+create_pg_vias -nets {VDD} -from_layers M2 -to_layers M5 -within_bbox $top_pgrail\
+        -via_masters {VIAGEN23_RECT_1 VIAGEN34_RECT_1 VIAGEN45_RECT_3} -drc no_check
+set btm_pgrail [list [list [expr $core_xmin-0.1] [expr $core_ymin-0.1]] [list [expr $core_xmax+0.1] [expr $pg_ymin+0.2]]]
+create_pg_vias -nets {VDD} -from_layers M2 -to_layers M5 -within_bbox $btm_pgrail\
+        -via_masters {VIAGEN23_RECT_1 VIAGEN34_RECT_1 VIAGEN45_RECT_3} -drc no_check
+        
+set m5_pgs [get_shapes -filter {layer.name==M5 && (net_type==power || net_type==ground) && width==0.278}]
+foreach_in_collection m5_pg $m5_pgs {
+    set pg_bbox [get_attribute [get_shapes $m5_pg] points]
+    set pg_xmin [lindex $pg_bbox 0 0]
+    set pg_ymin [lindex $pg_bbox 0 1]
+    set pg_xmax [lindex $pg_bbox 1 0]
+    set pg_ymax [lindex $pg_bbox 1 1]
+    set_attribute [get_shapes $m5_pg] points -value [list [list $pg_xmin [expr $pg_ymin-0.04]] [list $pg_xmax [expr $pg_ymax+0.04]]]
+}
+```
+
+# FMAPWR_WRAP
+## 20221228e_cf_pv
+
+```text
+--- RULECHECK RESULTS STATISTICS
+RULECHECK G.4:M6 ................... TOTAL Result Count = 2   (2)
+RULECHECK G.4:M7 ................... TOTAL Result Count = 2   (2)
+RULECHECK M2.G0.1__M2.G0.2__M2.G0.3  TOTAL Result Count = 102 (102)
+RULECHECK M5.L.3.1 ................. TOTAL Result Count = 48  (48)
+RULECHECK M6.L.3 ................... TOTAL Result Count = 25  (25)
+RULECHECK M6.L.3.1 ................. TOTAL Result Count = 8   (8)
+RULECHECK M6.L.5 ................... TOTAL Result Count = 8   (8)
+RULECHECK M7.L.3 ................... TOTAL Result Count = 9   (9)
+RULECHECK M7.L.3.1 ................. TOTAL Result Count = 8   (8)
+RULECHECK M7.L.5 ................... TOTAL Result Count = 1   (1)
+```
+## 20221228d_cf_pv
+
+## 20221228c_cf_eco
+
+- 20221228a_cf_eco
+- 20221227c_cf_eco
+- 20221226a_cf_eco
+- 20221223b_ext_sta
+- 20221221d_init_pv
+
+```text
++---------------------------------------------+---------------------+---------------------+---------------------------+-----------------+----------------+-----------------+
+| corner name                                 | Internal timing     | Input timing        | Output Timing             | Max capacitance | Max transition | Crosstalk noise |
+|                                             | (WNS:TNS:#)         | (WNS:TNS:#)         | (WNS:TNS:#)               | (WNS:#)         | (WNS:#)        | (WNS:#)         |
++=============================================+=====================+=====================+===========================+=================+================+=================+
+| func.tt0p8v.wc.rcworst_ccworst_t_125c.setup |  0.000 :  0.000 : 0 |  0.000 :  0.000 : 0 | -0.516 : -1341.740 : 3077 |       0.000 : 0 |      0.000 : 0 |       0.000 : 0 |
++---------------------------------------------+---------------------+---------------------+---------------------------+-----------------+----------------+-----------------+
+| func.tt0p8v.wcl.cworst_ccworst_t_m40c.setup |  0.000 :  0.000 : 0 |  0.000 :  0.000 : 0 | -0.477 : -1229.822 : 3077 |       0.000 : 0 |      0.000 : 0 |       0.000 : 0 |
++---------------------------------------------+---------------------+---------------------+---------------------------+-----------------+----------------+-----------------+
+| func.tt0p8v.wcz.cworst_ccworst_t_0c.setup   |  0.000 :  0.000 : 0 |  0.000 :  0.000 : 0 | -0.474 : -1227.720 : 3077 |       0.000 : 0 |      0.000 : 0 |       0.000 : 0 |
++---------------------------------------------+---------------------+---------------------+---------------------------+-----------------+----------------+-----------------+
+| func.tt0p8v.lt.cbest_ccbest_m40c.hold       |  0.000 :  0.000 : 0 |  0.000 :  0.000 : 0 |  0.000 :     0.000 :    0 |       0.000 : 0 |      0.000 : 0 |       0.000 : 0 |
++---------------------------------------------+---------------------+---------------------+---------------------------+-----------------+----------------+-----------------+
+| func.tt0p8v.ml.rcworst_ccworst_125c.hold    |  0.000 :  0.000 : 0 |  0.000 :  0.000 : 0 |  0.000 :     0.000 :    0 |       0.000 : 0 |      0.000 : 0 |       0.000 : 0 |
++---------------------------------------------+---------------------+---------------------+---------------------------+-----------------+----------------+-----------------+
+```
+
+## 20221228b_cf_pv
+
+- 20221227d_cf_pv
+- 20221221d_init_pv
+
+## 20221228a_cf_eco
+
+- 20221227c_cf_eco
+- 20221226a_cf_eco
+- 20221223b_ext_sta
+- 20221221d_init_pv
+
+```text
++---------------------------------------------+----------------------+---------------------+---------------------------+-----------------+----------------+-----------------+
+| corner name                                 | Internal timing      | Input timing        | Output Timing             | Max capacitance | Max transition | Crosstalk noise |
+|                                             | (WNS:TNS:#)          | (WNS:TNS:#)         | (WNS:TNS:#)               | (WNS:#)         | (WNS:#)        | (WNS:#)         |
++=============================================+======================+=====================+===========================+=================+================+=================+
+| func.tt0p8v.wc.rcworst_ccworst_t_125c.setup |  0.000 :  0.000 :  0 |  0.000 :  0.000 : 0 | -0.516 : -1341.729 : 3077 |       0.000 : 0 |      0.000 : 0 |       0.000 : 0 |
++---------------------------------------------+----------------------+---------------------+---------------------------+-----------------+----------------+-----------------+
+| func.tt0p8v.wcl.cworst_ccworst_t_m40c.setup |  0.000 :  0.000 :  0 |  0.000 :  0.000 : 0 | -0.477 : -1229.827 : 3077 |       0.000 : 0 |      0.000 : 0 |       0.000 : 0 |
++---------------------------------------------+----------------------+---------------------+---------------------------+-----------------+----------------+-----------------+
+| func.tt0p8v.wcz.cworst_ccworst_t_0c.setup   |  0.000 :  0.000 :  0 |  0.000 :  0.000 : 0 | -0.474 : -1227.724 : 3077 |       0.000 : 0 |      0.000 : 0 |       0.000 : 0 |
++---------------------------------------------+----------------------+---------------------+---------------------------+-----------------+----------------+-----------------+
+| func.tt0p8v.lt.cbest_ccbest_m40c.hold       | -0.002 : -0.006 : 10 |  0.000 :  0.000 : 0 |  0.000 :     0.000 :    0 |       0.000 : 0 |      0.000 : 0 |       0.000 : 0 |
++---------------------------------------------+----------------------+---------------------+---------------------------+-----------------+----------------+-----------------+
+| func.tt0p8v.ml.rcworst_ccworst_125c.hold    |  0.000 :  0.000 :  1 |  0.000 :  0.000 : 0 |  0.000 :     0.000 :    0 |       0.000 : 0 |      0.000 : 0 |       0.000 : 0 |
++---------------------------------------------+----------------------+---------------------+---------------------------+-----------------+----------------+-----------------+
+```
+
+## 20221227d_cf_pv
+
+- 20221221d_init_pv
+
+```text
+--- RULECHECK RESULTS STATISTICS
+RULECHECK G.4:M6 ................... TOTAL Result Count = 4  (4)
+RULECHECK G.4:M7 ................... TOTAL Result Count = 16 (16)
+RULECHECK VIA1.S.2 ................. TOTAL Result Count = 1  (1)
+RULECHECK M2.G0.1__M2.G0.2__M2.G0.3  TOTAL Result Count = 66 (66)
+RULECHECK M4.A.1 ................... TOTAL Result Count = 1  (1)
+RULECHECK M5.L.3.1 ................. TOTAL Result Count = 4  (4)
+RULECHECK M5.L.5 ................... TOTAL Result Count = 2  (2)
+RULECHECK M5.A.1 ................... TOTAL Result Count = 3  (3)
+RULECHECK M6.EN.10 ................. TOTAL Result Count = 1  (1)
+RULECHECK M6.EN.10.1 ............... TOTAL Result Count = 1  (1)
+RULECHECK M6.L.3 ................... TOTAL Result Count = 4  (4)
+RULECHECK M6.L.3.1 ................. TOTAL Result Count = 4  (4)
+RULECHECK M6.L.5 ................... TOTAL Result Count = 10 (10)
+RULECHECK M7.L.3 ................... TOTAL Result Count = 16 (16)
+RULECHECK M7.L.3.1 ................. TOTAL Result Count = 16 (16)
+RULECHECK M7.L.5 ................... TOTAL Result Count = 8  (8)
+```
+
+## 20221227c_cf_eco
+
+- 20221226a_cf_eco
+- 20221223b_ext_sta
+- 20221221d_init_pv
+
+```text
++---------------------------------------------+-----------------------+---------------------+---------------------------+-----------------+----------------+-----------------+
+| corner name                                 | Internal timing       | Input timing        | Output Timing             | Max capacitance | Max transition | Crosstalk noise |
+|                                             | (WNS:TNS:#)           | (WNS:TNS:#)         | (WNS:TNS:#)               | (WNS:#)         | (WNS:#)        | (WNS:#)         |
++=============================================+=======================+=====================+===========================+=================+================+=================+
+| func.tt0p8v.wc.rcworst_ccworst_t_125c.setup |  0.000 :  0.000 :   0 |  0.000 :  0.000 : 0 | -0.516 : -1341.740 : 3077 |       0.000 : 0 |      0.000 : 0 |       0.000 : 0 |
++---------------------------------------------+-----------------------+---------------------+---------------------------+-----------------+----------------+-----------------+
+| func.tt0p8v.wcl.cworst_ccworst_t_m40c.setup |  0.000 :  0.000 :   0 |  0.000 :  0.000 : 0 | -0.477 : -1229.830 : 3077 |       0.000 : 0 |      0.000 : 0 |       0.000 : 0 |
++---------------------------------------------+-----------------------+---------------------+---------------------------+-----------------+----------------+-----------------+
+| func.tt0p8v.wcz.cworst_ccworst_t_0c.setup   |  0.000 :  0.000 :   0 |  0.000 :  0.000 : 0 | -0.474 : -1227.753 : 3077 |       0.000 : 0 |      0.000 : 0 |       0.000 : 0 |
++---------------------------------------------+-----------------------+---------------------+---------------------------+-----------------+----------------+-----------------+
+| func.tt0p8v.lt.cbest_ccbest_m40c.hold       | -0.015 : -1.155 : 191 |  0.000 :  0.000 : 0 |  0.000 :     0.000 :    0 |       0.000 : 0 |      0.000 : 0 |       0.000 : 0 |
++---------------------------------------------+-----------------------+---------------------+---------------------------+-----------------+----------------+-----------------+
+| func.tt0p8v.ml.rcworst_ccworst_125c.hold    | -0.031 : -0.560 : 122 |  0.000 :  0.000 : 0 |  0.000 :     0.000 :    0 |       0.000 : 0 |      0.000 : 0 |       0.000 : 0 |
++---------------------------------------------+-----------------------+---------------------+---------------------------+-----------------+----------------+-----------------+
+```
+
+## 20221227b_PWR
+
+- [Power Analysis by Minato-san](https://teams.microsoft.com/l/message/19:8c4c9f2a08d84ccc9ac6caf50de9d527@thread.tacv2/1671609132590?tenantId=a1e4b33d-f103-4623-9640-0a4c38ee1426&groupId=9cb67331-36b1-4b67-b82a-3b7602799809&parentMessageId=1671609132590&teamName=JWG_Fresh2022&channelName=Chiptopia&createdTime=1671609132590&allowXTenantAccess=false)
+
+
+```text
+bash ./power_rpt.sh run/r_n20221207a/20221227b_PWR/
+
+#####################################################################################
+### static/static_power/power.rpt
+#####################################################################################
+Total Power 
+-----------------------------------------------------------------------------------------
+Total Internal Power:      168.26473826            52.9180%
+Total Switching Power:     143.65757744            45.1792%
+Total Leakage Power:         6.05016032             1.9027%
+Total Power:               317.97247956 
+-----------------------------------------------------------------------------------------
+
+#####################################################################################
+### static/static_power/part_0/power.missingdata.lib
+#####################################################################################
+Cell missing library information: 0
+
+#####################################################################################
+### static/static_power/part_0/power.missingdata.lefdef
+#####################################################################################
+Cell missing LEF/DEF:   0/586(0.00%)
+
+#####################################################################################
+### static/static_power/part_0/power.missingdata.pgnet
+#####################################################################################
+** No missing power/ground connection found **
+
+#####################################################################################
+### static/static_power/power.missingdata.lib
+#####################################################################################
+Cell missing library information: 0
+
+#####################################################################################
+### static/static_power/power.missingdata.lefdef
+#####################################################################################
+Cell missing LEF/DEF:   0/586(0.00%)
+
+#####################################################################################
+### static/static_power/power.missingdata.pgnet
+#####################################################################################
+** No missing power/ground connection found **
+
+#####################################################################################
+### static/static.IR.summary.sort.rpt
+#####################################################################################
+[OP INFO]: input iv file "/proj/SAGA_plus_JP21C02/WORK/kazuki_furukawa/FMAPWR_WRAP/run/r_n20221207a/20221227b_PWR/rpt/ele/static/rail/latest/reports/rail/domain/VDD_VSS.avg.iv"
+
+[CPT_INFO] Elapse Time: 0:00:00.186617
+
+[OP INFO] IR analysis summary
+-------------------------------------------------------
+   0% <   Static_IR =<    1%          5919 (100.00%)
+   1% <   Static_IR =<  1.5%             0 (  0.00%)
+ 1.5% <   Static_IR =<    2%             0 (  0.00%)
+   2% <   Static_IR =<  2.5%             0 (  0.00%)
+ 2.5% <   Static_IR =<    3%             0 (  0.00%)
+   3% <   Static_IR =<  100%             0 (  0.00%)
+
+#####################################################################################
+### static/rail/latest/reports/em/VDD.rj.avg.rpt
+#####################################################################################
+# EM Reporting Threshold: 0.1
+# Total Violations: 0
+#
+
+#####################################################################################
+### static/rail/latest/reports/em/VSS.rj.avg.rpt
+#####################################################################################
+# EM Reporting Threshold: 0.1
+# Total Violations: 0
+#
+
+#####################################################################################
+### dynamic_vectorless/dynamic_vectorless.IR.summary.sort.rpt
+#####################################################################################
+[OP INFO]: input iv file "/proj/SAGA_plus_JP21C02/WORK/kazuki_furukawa/FMAPWR_WRAP/run/r_n20221207a/20221227b_PWR/rpt/ele/dynamic_vectorless/rail/latest/reports/rail/domain/VDD_VSS.worstavg.iv"
+
+[CPT_INFO] Elapse Time: 0:00:00.700084
+
+[OP INFO] IR analysis summary
+-------------------------------------------------------
+   0% <   Dynamic_IR =<    5%          682 ( 93.94%)
+   5% <   Dynamic_IR =<    6%           19 (  2.62%)
+   6% <   Dynamic_IR =<    7%           20 (  2.75%)
+   7% <   Dynamic_IR =<    8%            0 (  0.00%)
+   8% <   Dynamic_IR =<    9%            3 (  0.41%)
+   9% <   Dynamic_IR =<   10%            2 (  0.28%)
+  10% <   Dynamic_IR =<   11%            0 (  0.00%)
+  11% <   Dynamic_IR =<   12%            0 (  0.00%)
+  12% <   Dynamic_IR =<   13%            0 (  0.00%)
+  13% <   Dynamic_IR =<   14%            0 (  0.00%)
+  14% <   Dynamic_IR =<   15%            0 (  0.00%)
+  15% <   Dynamic_IR =<   20%            0 (  0.00%)
+  20% <   Dynamic_IR =<   30%            0 (  0.00%)
+  30% <   Dynamic_IR =<  100%            0 (  0.00%)
+
+#####################################################################################
+### dynamic_vectorless/rail/latest/reports/em/VDD.rj.peak.rpt
+#####################################################################################
+# EM Reporting Threshold: 0.9
+# Total Violations: 0                       
+#
+
+#####################################################################################
+### dynamic_vectorless/rail/latest/reports/em/VSS.rj.peak.rpt
+#####################################################################################
+# EM Reporting Threshold: 0.9
+# Total Violations: 0                       
+#
+
+#####################################################################################
+### sem/sem.rpt
+#####################################################################################
+Total Nets in Design:              831157
+Total Selected Nets in Design:     831157
+Total Analyzed Nets:               725575
+Total Skipped Nets:                105582
+  Non top scope nets:                                                  0
+  Internal nets on boundary path:                                      0
+  Equivalent nets by Verilog Assign:                                  43
+  P/G nets:                                                            2
+  Constant nets:                                                    4732
+  User-defined skipped nets:                                           0
+  Nets below effective frequency threshold:                            0
+  Nets without driver:                                             99639
+  Nets without receiver:                                            1166
+  Physically broken nets:                                              0
+  Nets without loading capacitance annotation:                         0
+  Nets with SPEF back-annotation failures during simulation:           0
+  Nets failed in analysis:                                             0
+
+
+EM Violation Summary(Net Analyzed):
+#                        RMS           PEAK            AVG            ALL         DESIGN
+Nets                       0              0              0              0         725575
+Clock Nets                 0              0              0              0           2058
+Data Nets                  0              0              0              0         723517
+Wire Segments              0              0              0              0       18706391
+```
+
+### Intermediate 0
+
+```text
+Rule: M5.L.3 : Edge length with adjacent edge [length < 0.09 um] >= 0.08                      2 errors
+Rule: M5.L.3.1 : Edge length with adjacent edge [length < 0.04 um] >= 0.12                    5 errors
+Rule: M5.L.5 : Edge length [between 2 consecutive 90-270 degree corners] Except: At least one adjacent edge [between 2 consecutive 270-270 degree corners] >= 0.02                    2 errors
+Rule: M5.S.25 : Space to Mxe [width >= 0.201 um, PRL > -0.140 um] >= 0.14                    25 errors
+Rule: M7.EN.10 : Enclosure of square or rectangular VIAxe-1 by Mxe edge [between 2 consecutive 90-270 degree corners, length < 0.16 um] >= 0.03              18 errors
+Rule: M7.EN.10.1 : Enclosure of square or rectangular VIAxe-1 for 2 opposite sides with the other side enclosure < 0.04 um [edge length < 0.16 um between 2 consecutive 90-270 degree corners] >= 0.04                6 errors
+Rule: M7.L.3 : Edge length with adjacent edge [length < 0.09 um] >= 0.08                     17 errors
+Rule: M7.L.3.1 : Edge length with adjacent edge [length < 0.04 um] >= 0.12                   17 errors
+Rule: M7.L.5 : Edge length [between 2 consecutive 90-270 degree corners] Except: At least one adjacent edge [between 2 consecutive 270-270 degree corners] >= 0.02                   10 errors
+```
+
+### Script
+
+```tcl
+set_app_options -name signoff.check_drc.run_dir -value /proj/SAGA_plus_JP21C02/WORK/kazuki_furukawa/signoff_check_drc_run_7_check
+signoff_check_drc -select_rules {G.4:M6 G.4:M7 M5* M6* M7*}
+```
+
+
+## 20221226d_cf_pv
+
+
+```text
+--- RULECHECK RESULTS STATISTICS
+RULECHECK G.4:M6 ................... TOTAL Result Count = 2  (2)
+RULECHECK G.4:M7 ................... TOTAL Result Count = 2  (2)
+RULECHECK VIA1.S.2 ................. TOTAL Result Count = 1  (1)
+RULECHECK M2.G0.1__M2.G0.2__M2.G0.3  TOTAL Result Count = 66 (66)
+RULECHECK M5.S.25 .................. TOTAL Result Count = 7  (7)
+RULECHECK M5.L.3.1 ................. TOTAL Result Count = 48 (48)
+RULECHECK M6.L.3 ................... TOTAL Result Count = 2  (2)
+RULECHECK M6.L.3.1 ................. TOTAL Result Count = 2  (2)
+RULECHECK M6.L.5 ................... TOTAL Result Count = 10 (10)
+RULECHECK M7.L.3 ................... TOTAL Result Count = 9  (9)
+RULECHECK M7.L.3.1 ................. TOTAL Result Count = 8  (8)
+RULECHECK M7.L.5 ................... TOTAL Result Count = 1  (1)
+```
+
+## 20221226c
+
+- Macro position ver.1
+
+```text
++---------------------------------------------+----------------------+---------------------+---------------------------+-----------------+----------------+-----------------+
+| corner name                                 | Internal timing      | Input timing        | Output Timing             | Max capacitance | Max transition | Crosstalk noise |
+|                                             | (WNS:TNS:#)          | (WNS:TNS:#)         | (WNS:TNS:#)               | (WNS:#)         | (WNS:#)        | (WNS:#)         |
++=============================================+======================+=====================+===========================+=================+================+=================+
+| func.tt0p8v.wc.rcworst_ccworst_t_125c.setup |  0.000 :  0.000 :  0 |  0.000 :  0.000 : 0 | -0.470 : -1231.406 : 3077 |    -0.002 :  95 |      0.000 : 0 |      -0.018 : 2 |
++---------------------------------------------+----------------------+---------------------+---------------------------+-----------------+----------------+-----------------+
+| func.tt0p8v.wcl.cworst_ccworst_t_m40c.setup |  0.000 :  0.000 :  0 |  0.000 :  0.000 : 0 | -0.434 : -1130.670 : 3077 |    -0.001 :  60 |      0.000 : 0 |      -0.076 : 2 |
++---------------------------------------------+----------------------+---------------------+---------------------------+-----------------+----------------+-----------------+
+| func.tt0p8v.wcz.cworst_ccworst_t_0c.setup   |  0.000 :  0.000 :  0 |  0.000 :  0.000 : 0 | -0.431 : -1126.612 : 3077 |    -0.002 :  70 |      0.000 : 0 |      -0.058 : 1 |
++---------------------------------------------+----------------------+---------------------+---------------------------+-----------------+----------------+-----------------+
+| func.tt0p8v.lt.cbest_ccbest_m40c.hold       | -0.012 : -0.202 : 85 |  0.000 :  0.000 : 0 |  0.000 :     0.000 :    0 |    -0.002 :  93 |      0.000 : 0 |      -0.088 : 3 |
++---------------------------------------------+----------------------+---------------------+---------------------------+-----------------+----------------+-----------------+
+| func.tt0p8v.ml.rcworst_ccworst_125c.hold    | -0.008 : -0.136 : 72 |  0.000 :  0.000 : 0 |  0.000 :     0.000 :    0 |    -0.002 : 101 |      0.000 : 0 |      -0.079 : 4 |
++---------------------------------------------+----------------------+---------------------+---------------------------+-----------------+----------------+-----------------+
+```
+
+## 20221223e_dm_pv -(retry)-> 20221226d_cf_pv
+
+- Manually fixed 20221221d_init_pv's power nets errors
+
+## 20201213d (1223d) 
+
+
+- Only boundary cells and tap cells on innovus.
+
+## 20221226a_cf_eco
+
+- 20221223b_ext_sta
+- 20221221d_init_pv
+
+```text
++---------------------------------------------+-----------------------+---------------------+---------------------------+-----------------+----------------+-----------------+
+| corner name                                 | Internal timing       | Input timing        | Output Timing             | Max capacitance | Max transition | Crosstalk noise |
+|                                             | (WNS:TNS:#)           | (WNS:TNS:#)         | (WNS:TNS:#)               | (WNS:#)         | (WNS:#)        | (WNS:#)         |
++=============================================+=======================+=====================+===========================+=================+================+=================+
+| func.tt0p8v.wc.rcworst_ccworst_t_125c.setup |  0.000 :  0.000 :   0 |  0.000 :  0.000 : 0 | -0.465 : -1241.949 : 3077 |     -0.002 : 77 |      0.000 : 0 |     -0.059 :  4 |
++---------------------------------------------+-----------------------+---------------------+---------------------------+-----------------+----------------+-----------------+
+| func.tt0p8v.wcl.cworst_ccworst_t_m40c.setup |  0.000 :  0.000 :   0 |  0.000 :  0.000 : 0 | -0.424 : -1153.152 : 3077 |     -0.001 : 36 |      0.000 : 0 |     -0.053 :  6 |
++---------------------------------------------+-----------------------+---------------------+---------------------------+-----------------+----------------+-----------------+
+| func.tt0p8v.wcz.cworst_ccworst_t_0c.setup   |  0.000 :  0.000 :   0 |  0.000 :  0.000 : 0 | -0.423 : -1147.252 : 3077 |     -0.001 : 48 |      0.000 : 0 |     -0.056 :  6 |
++---------------------------------------------+-----------------------+---------------------+---------------------------+-----------------+----------------+-----------------+
+| func.tt0p8v.lt.cbest_ccbest_m40c.hold       | -0.010 : -0.407 : 144 |  0.000 :  0.000 : 0 |  0.000 :     0.000 :    0 |     -0.002 : 73 |      0.000 : 0 |     -0.106 :  8 |
++---------------------------------------------+-----------------------+---------------------+---------------------------+-----------------+----------------+-----------------+
+| func.tt0p8v.ml.rcworst_ccworst_125c.hold    | -0.012 : -0.146 :  73 |  0.000 :  0.000 : 0 |  0.000 :     0.000 :    0 |     -0.002 : 81 |      0.000 : 0 |     -0.090 : 12 |
++---------------------------------------------+-----------------------+---------------------+---------------------------+-----------------+----------------+-----------------+
+```
+
+## 20221223b_ext_sta
+
+- Noise
+
+&ref(./Screenshot 2022-12-26 103903.png,50%);
+
+- STA result of [20221221d_init_pv]
+
+```text
+cpt_show run/r_n20221207a/20221223b_ext_sta/rpt/sta                                                                                       
++---------------------------------------------+-----------------------+---------------------+---------------------------+-----------------+----------------+-----------------+
+| corner name                                 | Internal timing       | Input timing        | Output Timing             | Max capacitance | Max transition | Crosstalk noise |
+|                                             | (WNS:TNS:#)           | (WNS:TNS:#)         | (WNS:TNS:#)               | (WNS:#)         | (WNS:#)        | (WNS:#)         |
++=============================================+=======================+=====================+===========================+=================+================+=================+
+| func.tt0p8v.wc.rcworst_ccworst_t_125c.setup |  0.000 :  0.000 :   0 |  0.000 :  0.000 : 0 | -0.465 : -1241.949 : 3077 |     -0.002 : 77 |      0.000 : 0 |     -0.059 :  4 |
++---------------------------------------------+-----------------------+---------------------+---------------------------+-----------------+----------------+-----------------+
+| func.tt0p8v.wcl.cworst_ccworst_t_m40c.setup |  0.000 :  0.000 :   0 |  0.000 :  0.000 : 0 | -0.424 : -1153.152 : 3077 |     -0.001 : 36 |      0.000 : 0 |     -0.053 :  6 |
++---------------------------------------------+-----------------------+---------------------+---------------------------+-----------------+----------------+-----------------+
+| func.tt0p8v.wcz.cworst_ccworst_t_0c.setup   |  0.000 :  0.000 :   0 |  0.000 :  0.000 : 0 | -0.423 : -1147.252 : 3077 |     -0.001 : 48 |      0.000 : 0 |     -0.056 :  6 |
++---------------------------------------------+-----------------------+---------------------+---------------------------+-----------------+----------------+-----------------+
+| func.tt0p8v.lt.cbest_ccbest_m40c.hold       | -0.010 : -0.407 : 144 |  0.000 :  0.000 : 0 |  0.000 :     0.000 :    0 |     -0.002 : 73 |      0.000 : 0 |     -0.106 :  8 |
++---------------------------------------------+-----------------------+---------------------+---------------------------+-----------------+----------------+-----------------+
+| func.tt0p8v.ml.rcworst_ccworst_125c.hold    | -0.012 : -0.146 :  73 |  0.000 :  0.000 : 0 |  0.000 :     0.000 :    0 |     -0.002 : 81 |      0.000 : 0 |     -0.090 : 12 |
++---------------------------------------------+-----------------------+---------------------+---------------------------+-----------------+----------------+-----------------+
+```
+
+## 20221221d_init_pv
+
+### DRV
+
+| Rule                      | Num  | Location                                                            |
+|:--------------------------|:-----|:--------------------------------------------------------------------|
+| G.4:M6                    | 2    | FMAPWR_SKIP_MEM_EVEN                                                |
+| G.4:M7                    | 2    | FMAPWR_SKIP_MEM_EVEN                                                |
+| VIA1.S.2                  | 1    |                                                                     |
+| M2.G0.1__M2.G0.2__M2.G0.3 | 66   |                                                                     |
+| M5.EN.10                  | 728  | TOP/BOTTOM Power Rails                                              |
+| M5.EN.10.1                | 364  | TOP/BOTTOM Power Rails                                              |
+| M5.L.3                    | 1500 | TOP/BOTTOM Power Rails + FMAPWR_SKIP_MEM_EVEN + FMAPWR_SKIP_MEM_ODD |
+| M5.L.3.1                  | 798  | TOP/BOTTOM Power Rails + FMAPWR_SKIP_MEM_EVEN + FMAPWR_SKIP_MEM_ODD |
+| M6.L.3                    | 2    | FMAPWR_SKIP_MEM_EVEN                                                |
+| M6.L.3.1                  | 2    | FMAPWR_SKIP_MEM_EVEN                                                |
+| M6.L.5                    | 10   | FMAPWR_CACHEIF/OFMAP_MEM_ODD4                                       |
+| M7.L.3                    | 9    | FMAPWR_SKIP_MEM_EVEN + FMAPWR_SKIP_MEM_ODD                          |
+| M7.L.3.1                  | 8    | FMAPWR_SKIP_MEM_EVEN + FMAPWR_SKIP_MEM_ODD                          |
+| M7.L.5                    | 1    | FMAPWR_SKIP_MEM_EVEN                                                |

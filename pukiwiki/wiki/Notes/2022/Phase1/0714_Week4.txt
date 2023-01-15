@@ -1,0 +1,2557 @@
+#notemd
+# Create Skew Group
+
+  - `create_clock_skew_group` in ICC II Student Guide 8-12
+
+# DC rerun
+
+  - Ark 1.4GHz : 720ns
+    
+      - setup : jitter 0.05 + skew 0.08 + additional 0.05
+
+  - NNP 0.8GHz : 1250ns
+
+  - x1.2 =\> +10 ps +50
+
+<!-- end list -->
+
+``` tcl
+remove_clock_uncertainty [all_clocks]
+set uncertainty_budget 10
+# 49.2ps => 51ps
+set_clock_uncertainty -setup [expr (41+$uncertainty_budget)/1000] [all_clocks]
+# 58.8ps => 59ps
+set_clock_uncertainty -hold  [expr (49+$uncertainty_budget)/1000] [all_clocks]
+
+set max_trans_budget 50
+# 300ps => 200ps
+set_max_transition [expr (250-$max_trans_budget)/1000] [current_design]
+# 180ps => 100ps
+set_max_transition [expr (150-$max_trans_budget)/1000] -clock_path [all_clocks]
+```
+
+# ECO Evaluation
+
+## Timing Report with Clock
+
+``` text
+report_timing -delay_type max -path_type full_clock -crosstalk_delta -nosplit -significant_digits 3 -nets -slack_lesser_than 0 -nworst 1  -pba_mode path -derate -nets -input_pins -transition_time -capacitance
+Warning: duplicate option '-nets' overrides previous value. (CMD-018)
+Warning: Derate summary report is only shown for full_clock_expanded paths. (UITE-431)
+****************************************
+Report : timing
+        -path_type full_clock
+        -delay_type max
+        -input_pins
+        -nets
+        -slack_lesser_than 0.000
+        -max_paths 1
+        -transition_time
+        -capacitance
+        -crosstalk_delta
+        -derate
+        -pba_mode path
+        -sort_by slack
+Design : Bxb
+Version: M-2017.06-SP3
+Date   : Wed Jul 20 17:32:53 2022
+****************************************
+
+
+  Startpoint: a2f/pipeline/accumulationPipeline/pipeline_0/U_T_686_reg_1_
+               (rising edge-triggered flip-flop clocked by clock)
+  Endpoint: fmem/arbiterImpl/mem/mem_1/mem_0/bram_inst/inst4
+               (rising edge-triggered flip-flop clocked by clock)
+  Last common pin: cts_inv_799287791/ZN
+  Path Group: clock
+  Path Type: max  (recalculated)
+
+  Point                                                                                         Fanout   Cap   DTrans  Trans   Derate  Delta    Incr      Path
+  --------------------------------------------------------------------------------------------------------------------------------------------------------------
+  clock clock (rise edge)                                                                                                                     0.000     0.000
+  clock source latency                                                                                                                        0.000     0.000
+  clock (in)                                                                                                          0.000                   0.000 &   0.000 r
+  clock (net)                                                                                     1   0.005 
+  cts_inv_800287801/I (CKND16BWP6T16P96CPD)                                                                   0.000   0.001   1.070   0.000   0.001 &   0.001 r
+  cts_inv_800287801/ZN (CKND16BWP6T16P96CPD)                                                                          0.020   1.028           0.011 &   0.011 f
+  ctsbuf_net_88433401 (net)                                                                       2   0.021 
+  cts_inv_799787796/I (CKND16BWP6T16P96CPD)                                                                   0.000   0.022   1.070   0.000   0.007 &   0.018 f
+  cts_inv_799787796/ZN (CKND16BWP6T16P96CPD)                                                                          0.023   1.030           0.023 &   0.041 r
+  ctsbuf_net_88333400 (net)                                                                       1   0.018 
+  cts_inv_799287791/I (CKND16BWP6T16P96CPD)                                                                   0.000   0.024   1.070   0.000   0.005 &   0.047 r
+  cts_inv_799287791/ZN (CKND16BWP6T16P96CPD)                                                                          0.027   1.030           0.029 &   0.076 f
+  ctsbuf_net_88233399 (net)                                                                       2   0.023 
+  cto_inv_cln_87841/I (CKND16BWP6T16P96CPD)                                                                   0.000   0.030   1.070   0.000   0.007 &   0.083 f
+  cto_inv_cln_87841/ZN (CKND16BWP6T16P96CPD)                                                                          0.030   1.016           0.028 &   0.111 r
+  cts0 (net)                                                                                      2   0.026 
+  cts_inv_797687775/I (CKND14BWP6T16P96CPD)                                                                   0.000   0.033   1.070   0.000   0.007 &   0.118 r
+  cts_inv_797687775/ZN (CKND14BWP6T16P96CPD)                                                                          0.035   1.017           0.038 &   0.156 f
+  ctsbuf_net_87833395 (net)                                                                       3   0.026 
+  cto_inv_cln_87847/I (CKND16BWP6T16P96CPD)                                                                   0.000   0.038   1.070   0.000   0.006 &   0.163 f
+  cto_inv_cln_87847/ZN (CKND16BWP6T16P96CPD)                                                                          0.045   1.016           0.037 &   0.200 r
+  cts6 (net)                                                                                      3   0.045 
+  cts_inv_790487703/I (CKND16BWP6T16P96CPD)                                                                   0.000   0.052   1.070   0.000   0.015 &   0.215 r
+  cts_inv_790487703/ZN (CKND16BWP6T16P96CPD)                                                                          0.052   1.016           0.058 &   0.272 f
+  ctsbuf_net_85433371 (net)                                                                       4   0.044 
+  cts_inv_766287461/I (CKND14BWP6T16P96CPD)                                                                   0.001   0.055   1.070   0.000   0.010 &   0.282 f
+  cts_inv_766287461/ZN (CKND14BWP6T16P96CPD)                                                                          0.053   1.017           0.049 &   0.331 r
+  ctsbuf_net_74333260 (net)                                                                      13   0.051 
+  cts_inv_570185500/I (CKND12BWP6T16P96CPD)                                                                   0.000   0.055   1.070   0.000   0.003 &   0.334 r
+  cts_inv_570185500/ZN (CKND12BWP6T16P96CPD)                                                                          0.020   1.020           0.035 &   0.369 f
+  ctsbuf_net_71733234 (net)                                                                       2   0.006 
+  cto_inv_88352/I (CKND6BWP6T16P96CPD)                                                                        0.000   0.021   1.070   0.000   0.001 &   0.370 f
+  cto_inv_88352/ZN (CKND6BWP6T16P96CPD)                                                                               0.016   1.026           0.020 &   0.390 r
+  cts289 (net)                                                                                    1   0.006 
+  cto_inv_88351/I (CKND14BWP6T16P96CPD)                                                                       0.000   0.016   1.070   0.000   0.001 &   0.391 r
+  cto_inv_88351/ZN (CKND14BWP6T16P96CPD)                                                                              0.033   1.017           0.025 &   0.416 f
+  cts288 (net)                                                                                    8   0.035 
+  cts_inv_499384792/I (CKND6BWP6T16P96CPD)                                                                    0.000   0.037   1.070   0.000   0.009 &   0.424 f
+  cts_inv_499384792/ZN (CKND6BWP6T16P96CPD)                                                                           0.080   1.026           0.064 &   0.488 r
+  ctsbuf_net_21532732 (net)                                                                      32   0.031 
+  a2f/pipeline/accumulationPipeline/pipeline_0/U_T_686_reg_1_/CP (SDFQD1BWP6T16P96CPD)                        0.000   0.082   1.070   0.000   0.007 &   0.495 r
+  a2f/pipeline/accumulationPipeline/pipeline_0/U_T_686_reg_1_/Q (SDFQD1BWP6T16P96CPD)                                 0.033   1.060           0.155 &   0.650 f
+  a2f/pipeline/accumulationPipeline/pipeline_0/N_T_686_1_ (net)                                   2   0.002 
+  a2f/pipeline/accumulationPipeline/pipeline_0/alchip527_dc/A2 (OR2D2BWP6T16P96CPD)                           0.000   0.033   1.070   0.000   0.000 &   0.651 f
+  a2f/pipeline/accumulationPipeline/pipeline_0/alchip527_dc/Z (OR2D2BWP6T16P96CPD)                                    0.023   1.040           0.058 &   0.709 f
+  a2f/pipeline/accumulationPipeline/pipeline_0/n346 (net)                                         2   0.002 
+  a2f/pipeline/accumulationPipeline/pipeline_0/alchip1718_dc/A1 (AOI21D4BWP6T16P96CPD)                        0.000   0.023   1.070   0.000   0.000 &   0.709 f
+  a2f/pipeline/accumulationPipeline/pipeline_0/alchip1718_dc/ZN (AOI21D4BWP6T16P96CPD)                                0.026   1.032           0.031 &   0.741 r
+  a2f/pipeline/accumulationPipeline/pipeline_0/n1978 (net)                                        2   0.004 
+  a2f/pipeline/accumulationPipeline/pipeline_0/alchip1721_dc/A1 (OAI21D8BWP6T16P96CPD)                        0.000   0.026   1.070   0.000   0.000 &   0.741 r
+  a2f/pipeline/accumulationPipeline/pipeline_0/alchip1721_dc/ZN (OAI21D8BWP6T16P96CPD)                                0.019   1.020           0.031 &   0.772 f
+  a2f/pipeline/accumulationPipeline/pipeline_0/n1982 (net)                                        2   0.003 
+  a2f/pipeline/accumulationPipeline/pipeline_0/alchip1724_dc/A1 (AOI21D8BWP6T16P96CPD)                        0.000   0.019   1.070   0.000   0.000 &   0.772 f
+  a2f/pipeline/accumulationPipeline/pipeline_0/alchip1724_dc/ZN (AOI21D8BWP6T16P96CPD)                                0.017   1.020           0.024 &   0.796 r
+  a2f/pipeline/accumulationPipeline/pipeline_0/n1988 (net)                                        2   0.004 
+  a2f/pipeline/accumulationPipeline/pipeline_0/alchip1727_dc/A1 (OAI21D8BWP6T16P96CPD)                        0.000   0.017   1.070   0.000   0.000 &   0.796 r
+  a2f/pipeline/accumulationPipeline/pipeline_0/alchip1727_dc/ZN (OAI21D8BWP6T16P96CPD)                                0.015   1.020           0.024 &   0.820 f
+  a2f/pipeline/accumulationPipeline/pipeline_0/n1992 (net)                                        2   0.002 
+  a2f/pipeline/accumulationPipeline/pipeline_0/clock_opt_SGI53_143155/A1 (ND2D4BWP6T16P96CPD)                 0.000   0.015   1.070   0.000   0.000 &   0.820 f
+  a2f/pipeline/accumulationPipeline/pipeline_0/clock_opt_SGI53_143155/ZN (ND2D4BWP6T16P96CPD)                         0.009   1.032           0.013 &   0.834 r
+  a2f/pipeline/accumulationPipeline/pipeline_0/ropt_net_61624 (net)                               1   0.001 
+  a2f/pipeline/accumulationPipeline/pipeline_0/clock_opt_SGI54_143156/B1 (IND2D4BWP6T16P96CPD)                0.000   0.009   1.070   0.000   0.000 &   0.834 r
+  a2f/pipeline/accumulationPipeline/pipeline_0/clock_opt_SGI54_143156/ZN (IND2D4BWP6T16P96CPD)                        0.015   1.032           0.016 &   0.850 f
+  a2f/pipeline/accumulationPipeline/pipeline_0/n80 (net)                                          2   0.002 
+  a2f/pipeline/accumulationPipeline/pipeline_0/clock_opt_SGI42_143459/A (FCICOD2BWP6T16P96CPD)                0.000   0.015   1.070   0.000   0.000 &   0.850 f
+  a2f/pipeline/accumulationPipeline/pipeline_0/clock_opt_SGI42_143459/CO (FCICOD2BWP6T16P96CPD)                       0.017   1.040           0.051 &   0.901 f
+  a2f/pipeline/accumulationPipeline/pipeline_0/n1995 (net)                                        2   0.001 
+  a2f/pipeline/accumulationPipeline/pipeline_0/clock_opt_SGI51_142776/A (FCICOD2BWP6T16P96CPD)                0.000   0.017   1.070   0.000   0.000 &   0.901 f
+  a2f/pipeline/accumulationPipeline/pipeline_0/clock_opt_SGI51_142776/CO (FCICOD2BWP6T16P96CPD)                       0.019   1.040           0.053 &   0.954 f
+  a2f/pipeline/accumulationPipeline/pipeline_0/n1997 (net)                                        2   0.002 
+  a2f/pipeline/accumulationPipeline/pipeline_0/clock_opt_SGI56_143106/A (FCICOD2BWP6T16P96CPD)                0.000   0.019   1.070   0.000   0.000 &   0.954 f
+  a2f/pipeline/accumulationPipeline/pipeline_0/clock_opt_SGI56_143106/CO (FCICOD2BWP6T16P96CPD)                       0.019   1.040           0.054 &   1.008 f
+  a2f/pipeline/accumulationPipeline/pipeline_0/n1999 (net)                                        2   0.002 
+  a2f/pipeline/accumulationPipeline/pipeline_0/place_opt_SGI53_79187/A (FCICOD2BWP6T16P96CPD)                 0.000   0.019   1.070   0.000   0.000 &   1.008 f
+  a2f/pipeline/accumulationPipeline/pipeline_0/place_opt_SGI53_79187/CO (FCICOD2BWP6T16P96CPD)                        0.019   1.040           0.053 &   1.062 f
+  a2f/pipeline/accumulationPipeline/pipeline_0/n2001 (net)                                        1   0.002 
+  a2f/pipeline/accumulationPipeline/pipeline_0/alchip3316_dc/CI (FA1D4BWP6T16P96CPD)                          0.000   0.019   1.070   0.000   0.000 &   1.062 f
+  a2f/pipeline/accumulationPipeline/pipeline_0/alchip3316_dc/CO (FA1D4BWP6T16P96CPD)                                  0.016   1.036           0.056 &   1.118 f
+  a2f/pipeline/accumulationPipeline/pipeline_0/n2003 (net)                                        1   0.002 
+  a2f/pipeline/accumulationPipeline/pipeline_0/alchip3318_dc/CI (FA1D4BWP6T16P96CPD)                          0.000   0.016   1.070   0.000   0.000 &   1.118 f
+  a2f/pipeline/accumulationPipeline/pipeline_0/alchip3318_dc/CO (FA1D4BWP6T16P96CPD)                                  0.017   1.036           0.055 &   1.173 f
+  a2f/pipeline/accumulationPipeline/pipeline_0/n2005 (net)                                        1   0.002 
+  a2f/pipeline/accumulationPipeline/pipeline_0/alchip3320_dc/CI (FA1D4BWP6T16P96CPD)                          0.000   0.017   1.070   0.000   0.000 &   1.173 f
+  a2f/pipeline/accumulationPipeline/pipeline_0/alchip3320_dc/CO (FA1D4BWP6T16P96CPD)                                  0.017   1.036           0.055 &   1.228 f
+  a2f/pipeline/accumulationPipeline/pipeline_0/n2007 (net)                                        2   0.002 
+  a2f/pipeline/accumulationPipeline/pipeline_0/place_opt_SGI53_79206/A (FCICOD2BWP6T16P96CPD)                 0.000   0.017   1.070   0.000   0.000 &   1.228 f
+  a2f/pipeline/accumulationPipeline/pipeline_0/place_opt_SGI53_79206/CO (FCICOD2BWP6T16P96CPD)                        0.023   1.040           0.055 &   1.283 f
+  a2f/pipeline/accumulationPipeline/pipeline_0/n2009 (net)                                        2   0.002 
+  a2f/pipeline/accumulationPipeline/pipeline_0/clock_opt_SGI56_143330/A (FCICOD2BWP6T16P96CPD)                0.000   0.023   1.070   0.000   0.000 &   1.284 f
+  a2f/pipeline/accumulationPipeline/pipeline_0/clock_opt_SGI56_143330/CO (FCICOD2BWP6T16P96CPD)                       0.018   1.040           0.055 &   1.338 f
+  a2f/pipeline/accumulationPipeline/pipeline_0/n565 (net)                                         1   0.002 
+  a2f/pipeline/accumulationPipeline/pipeline_0/alchip81_dc/A1 (XOR2D8BWP6T16P96CPD)                           0.000   0.018   1.070   0.000   0.000 &   1.339 f
+  a2f/pipeline/accumulationPipeline/pipeline_0/alchip81_dc/Z (XOR2D8BWP6T16P96CPD)                                    0.017   1.019           0.052 &   1.390 f
+  a2f/pipeline/accumulationPipeline/pipeline_0/n566 (net)                                         1   0.003 
+  a2f/pipeline/accumulationPipeline/pipeline_0/clock_opt_SGI34_144206/A2 (ND2D8BWP6T16P96CPD)                 0.000   0.017   1.070   0.000   0.000 &   1.391 f
+  a2f/pipeline/accumulationPipeline/pipeline_0/clock_opt_SGI34_144206/ZN (ND2D8BWP6T16P96CPD)                         0.008   1.020           0.013 &   1.403 r
+  a2f/pipeline/accumulationPipeline/pipeline_0/ropt_net_62045 (net)                               1   0.002 
+  a2f/pipeline/accumulationPipeline/pipeline_0/clock_opt_SGI36_144208/A1 (ND2D6BWP6T16P96CPD)                 0.000   0.008   1.070   0.000   0.000 &   1.404 r
+  a2f/pipeline/accumulationPipeline/pipeline_0/clock_opt_SGI36_144208/ZN (ND2D6BWP6T16P96CPD)                         0.012   1.024           0.015 &   1.419 f
+  a2f/pipeline/accumulationPipeline/pipeline_0/io_ramWrite_data[575] (net)                        2   0.001 
+  fmem/arbiterImpl/alchip156_dc/A2 (AO22D6BWP6T16P96CPD)                                                      0.000   0.012   1.070   0.000   0.000 &   1.419 f
+  fmem/arbiterImpl/alchip156_dc/Z (AO22D6BWP6T16P96CPD)                                                               0.015   1.025           0.049 &   1.468 f
+  fmem/arbiterImpl/place_opt_HFSNET_11274 (net)                                                   1   0.002 
+  fmem/arbiterImpl/place_opt_BUFT_RR_21039/I (BUFFD16BWP6T16P96CPD)                                           0.000   0.015   1.070   0.000   0.000 &   1.468 f
+  fmem/arbiterImpl/place_opt_BUFT_RR_21039/Z (BUFFD16BWP6T16P96CPD)                                                   0.027   1.014           0.034 &   1.502 f
+  fmem/arbiterImpl/BUFT_net_1776 (net)                                                            1   0.031 
+  fmem/arbiterImpl/mem/mem_1/mem_0/bram_inst/clock_opt_ropt_inst_147116/I (INVD16BWP6T16P96CPD)               0.000   0.040   1.070   0.000   0.019 &   1.521 f
+  fmem/arbiterImpl/mem/mem_1/mem_0/bram_inst/clock_opt_ropt_inst_147116/ZN (INVD16BWP6T16P96CPD)                      0.037   1.014           0.037 &   1.558 r
+  fmem/arbiterImpl/mem/mem_1/mem_0/bram_inst/BUFT180 (net)                                        1   0.033 
+  fmem/arbiterImpl/mem/mem_1/mem_0/bram_inst/clock_opt_ropt_inst_147115/I (INVD16BWP6T16P96CPD)               0.001   0.041   1.070   0.000   0.011 &   1.569 r
+  fmem/arbiterImpl/mem/mem_1/mem_0/bram_inst/clock_opt_ropt_inst_147115/ZN (INVD16BWP6T16P96CPD)                      0.032   1.014           0.036 &   1.605 f
+  fmem/arbiterImpl/mem/mem_1/mem_0/bram_inst/BUFT174 (net)                                        1   0.024 
+  fmem/arbiterImpl/mem/mem_1/mem_0/bram_inst/inst4/D[63] (TS1N12FFCLLSBSVTD1024X128M4S)                       0.001   0.043   1.070   0.000   0.010 &   1.616 f
+  data arrival time                                                                                                                                     1.616
+
+  clock clock (rise edge)                                                                                                                     1.250     1.250
+  clock source latency                                                                                                                        0.000     1.250
+  clock (in)                                                                                                          0.000                   0.000 &   1.250 r
+  clock (net)                                                                                     1   0.005 
+  cts_inv_800287801/I (CKND16BWP6T16P96CPD)                                                                   0.000   0.001   0.930   0.000   0.001 &   1.251 r
+  cts_inv_800287801/ZN (CKND16BWP6T16P96CPD)                                                                          0.020   0.867           0.009 &   1.260 f
+  ctsbuf_net_88433401 (net)                                                                       2   0.021 
+  cts_inv_799787796/I (CKND16BWP6T16P96CPD)                                                                   0.000   0.022   0.930   0.000   0.006 &   1.266 f
+  cts_inv_799787796/ZN (CKND16BWP6T16P96CPD)                                                                          0.023   0.866           0.019 &   1.285 r
+  ctsbuf_net_88333400 (net)                                                                       1   0.018 
+  cts_inv_799287791/I (CKND16BWP6T16P96CPD)                                                                   0.000   0.024   0.930   0.000   0.005 &   1.290 r
+  cts_inv_799287791/ZN (CKND16BWP6T16P96CPD)                                                                          0.027   0.866           0.025 &   1.315 f
+  ctsbuf_net_88233399 (net)                                                                       2   0.023 
+  cts_inv_798787786/I (CKND16BWP6T16P96CPD)                                                                   0.000   0.030   0.930   0.000   0.004 &   1.319 f
+  cts_inv_798787786/ZN (CKND16BWP6T16P96CPD)                                                                          0.017   0.883           0.018 &   1.337 r
+  ctsbuf_net_88133398 (net)                                                                       2   0.011 
+  cto_inv_cln_87846/I (CKND4BWP6T16P96CPD)                                                                    0.000   0.017   0.930   0.000   0.001 &   1.338 r
+  cto_inv_cln_87846/ZN (CKND4BWP6T16P96CPD)                                                                           0.040   0.872           0.031 &   1.369 f
+  cts5 (net)                                                                                      2   0.011 
+  cts_inv_795887757/I (CKND4BWP6T16P96CPD)                                                                   -0.002   0.040   0.930  -0.000   0.002 &   1.371 f
+  cts_inv_795887757/ZN (CKND4BWP6T16P96CPD)                                                                           0.068   0.872           0.050 &   1.421 r
+  ctsbuf_net_87433391 (net)                                                                       2   0.022 
+  cts_inv_790987708/I (CKND4BWP6T16P96CPD)                                                                   -0.005   0.068   0.930  -0.001   0.004 &   1.425 r
+  cts_inv_790987708/ZN (CKND4BWP6T16P96CPD)                                                                           0.066   0.872           0.066 &   1.491 f
+  ctsbuf_net_85933376 (net)                                                                       1   0.016 
+  cts_inv_768787486/I (CKND4BWP6T16P96CPD)                                                                   -0.007   0.066   0.930  -0.005  -0.000 &   1.491 f
+  cts_inv_768787486/ZN (CKND4BWP6T16P96CPD)                                                                           0.070   0.872           0.056 &   1.547 r
+  ctsbuf_net_76833285 (net)                                                                       2   0.021 
+  fmem/arbiterImpl/mem/mem_1/mem_0/bram_inst/inst4/CLK (TS1N12FFCLLSBSVTD1024X128M4S)                         0.000   0.092   0.930   0.000   0.007 &   1.554 r
+  clock reconvergence pessimism                                                                                                               0.011     1.566
+  library setup time                                                                                                          1.000          -0.031     1.535
+  data required time                                                                                                                                    1.535
+  --------------------------------------------------------------------------------------------------------------------------------------------------------------
+  data required time                                                                                                                                    1.535
+  data arrival time                                                                                                                                    -1.616
+  --------------------------------------------------------------------------------------------------------------------------------------------------------------
+  slack (VIOLATED)                                                                                                                                     -0.081
+```
+
+## Clock Latency
+
+| clock Name | source Point | \#Endpoints |   Min |   Max |  Skew | Average |
+| ---------- | ------------ | ----------: | ----: | ----: | ----: | ------: |
+| clock      | clock        |       75914 | 0.424 | 0.750 | 0.326 |   0.555 |
+
+## Without IO
+
+### wcl_cworstccworsttm40cmax
+
+| eco  |    WNS (wo/w IO) |            TNS |     setup | trans | cap | noise |
+| ---- | ---------------: | -------------: | --------: | ----: | --: | ----: |
+| init | \-0.080 / -0.094 | 3.028 / 15.091 | 108 / 455 |  1899 |  14 |    12 |
+| 3rd  | \-0.081 / -0.116 | 3.138 / 13.260 | 106 / 409 |     0 |   0 |     4 |
+
+## report_globaltiming
+
+``` text
+****************************************
+Report : global_timing
+        -delay_type max
+        -format { narrow }
+        -separate_all_groups
+Design : Bxb
+Version: M-2017.06-SP3
+Date   : Wed Jul 20 14:13:03 2022
+****************************************
+
+Setup violations for paths in clock
+---------------------------------------------------------
+         Total  reg->reg   in->reg  reg->out   in->out
+---------------------------------------------------------
+WNS     -0.159    -0.159     0.000    -0.150     0.000
+TNS    -65.459   -45.726     0.000   -19.734     0.000
+NUM       1875      1506         0       369         0
+---------------------------------------------------------
+
+Setup violations for paths in **clock_gating_default**
+---------------------------------------------------------
+         Total  reg->reg   in->reg  reg->out   in->out
+---------------------------------------------------------
+WNS     -0.054    -0.054     0.000     0.000     0.000
+TNS     -1.065    -1.065     0.000     0.000     0.000
+NUM         62        62         0         0         0
+---------------------------------------------------------
+```
+
+# Incremental ECO
+
+  - ref:
+    <https://spdocs.synopsys.com/dow_retrieve/latest/dg/ptolh/Default.htm#ptug/ptug/eco_flow/incr/incremental_eco_flow_using_synopsys_tools.htm?Highlight=record_signoff_eco_changes>
+
+# Manual ECO
+
+## max_capacitance
+
+  - TIE cell can ignore timing constraint.
+  - Solution can be the layer change of wiring.
+
+## open/short Capacitance
+
+  - `remove_physical_objects`
+
+  - Quick Connect Tools
+
+  - Create Route Tools
+
+  - ****Diff net via-cut spacing****
+
+# Non-Incremental & Multiple ECO
+
+## Code
+
+### 1st
+
+``` tcl
+set dont_use_list {
+    *D20BWP* *D24BWP* *DCAP* *DF*CSN* *DFM* *EDF* *TIE* ANT* *AOI222* AOI33*
+    BUFF*D1BWP* CKBD* CKND* CKLH* DCCK* DEL* G* LH* LN* MUX4*
+    OAI21*D1BWP* OAI211*D1BWP* OAI22*D1BWP* OAI221*D1BWP* *OAI222* OAI31*D1BWP*
+    OAI32*D1BWP* OAI33*   
+    BUFT* DFN* *OPT*
+}
+
+foreach dont_use ${dont_use_list} {
+        echo "set_dont_use [get_lib_cells */${dont_use}]"
+        set_dont_use [get_lib_cells */$dont_use]
+}
+
+set BUFF_LIST {BUFFD1BWP6T16P96CPD BUFFD2BWP6T16P96CPD BUFFD3BWP6T16P96CPD BUFFD4BWP6T16P96CPD BUFFD8BWP6T16P96CPD BUFFD16BWP6T16P96CPD}
+
+set_app_var eco_alternative_area_ratio_threshold 4
+fix_eco_drc -type max_transition -cell_type clock -current_library -methods {size_cell insert_buffer} -buffer_list ${BUFF_LIST} -verbose
+fix_eco_drc -type max_cap        -current_library -methods {size_cell insert_buffer} -buffer_list ${BUFF_LIST} -verbose
+fix_eco_drc -type noise          -current_library -methods {size_cell insert_buffer} -buffer_list ${BUFF_LIST} -verbose
+
+fix_eco_timing -type setup -current_library -pba_mode path -slack_lesser_than 0.0
+```
+
+### 2nd
+
+``` tcl
+set_app_var eco_alternative_area_ratio_threshold 8
+```
+
+## Issues
+
+### EPL-002
+
+``` text
+place_eco_cells -unplaced_cells -no_legalize 
+Warning: There is no ECO cell to be placed. (EPL-002)
+0
+place_eco_cells -cells  [get_cells -phy -filter design_type==lib_cell&&is_physical_only==false] -legalize_only -legalize_mode minimum_physical_impact -displacement_threshold $PT_ECO_DISPLACEMENT_THRESHOLD                                                                                                  
+Warning: 3565 Cells are not supported for legalization and have been skipped silently! (EPL-024)
+```
+
+``` text
+EPL-024
+NAME
+EPL-024 (Warning) %d Cells are not supported for legalization and have
+been skipped silently!
+
+DESCRIPTION
+
+This warning means there are %d unsupported cells in input cell list
+for legalization. And they have been skipped silently.
+
+In general, we do not support the following cells to do eco
+legalization. hierarchical cell, fixed cell, macro cell, pad cell.
+```
+
+### 2nd ECO (19-Jul)
+
+``` text
+fix_eco_drc -type noise -current_library -methods {size_cell insert_buffer} -buffer_list ${BUFF_LIST} -verbose
+Unfixable violations:
+  A - There are available lib cells outside area limit
+  C - The violation is in clock network
+  I - Buffer insertion with given lib cells cannot fix the violation
+  P - Driver cell of the violation is a port
+  Q - Driver cell of the violation is a sequential cell
+  S - Cell sizing with alternative lib cells cannot fix the violation
+  T - Timing margin is too tight to fix the violation
+  V - Driver cell of the violation is dont_touched
+  U - UPF restricts fixing the violation
+
+  Violation                                                     Reasons
+  ---------------------------------------------------------------------
+  io_idmaAxi4_awlen[3]                                          I S               
+  fmem/arbiterImpl/mem/mem_0/mem_0/bram_inst/inst0/D[112]       I S               
+  io_csrSlave_arready                                           I S               
+  io_fdmaAxi4_wdata[19]                                         I S               
+
+Remaining Violations:
+Violation Type                                     Count
+--------------------------------------------------------
+Total remaining violations                             4
+Unfixable violations                                   4
+
+Inserted buffers:
+   Count Lib_cell               Area          Total_area
+--------------------------------------------------------
+       4 BUFFD16BWP6T16P96CPD   0.85                3.39
+--------------------------------------------------------
+       4 TOTAL                                      3.39
+
+Final ECO Summary:
+--------------------------------------------------------
+Number of insert_buffer commands                       4
+Total number of commands                               4
+Area increased by buffer insertion                  3.39
+Total area increased                                3.39
+
+Information: Elapsed time [                5 seconds ]
+Information: Completed at [ Tue Jul 19 15:14:37 2022 ]
+
+1
+```
+
+## Summary
+
+### init
+
+| corner                              | WNS     | TNS    | setup violation | transition error | capacitance error | noise |
+| ----------------------------------- | ------- | ------ | --------------- | ---------------- | ----------------- | ----- |
+| wcl_cworstccworsttm40cmax | \-0.094 | 15.091 | 455             | 1899             | 14                | 12    |
+
+### 1st
+
+| corner                              | WNS     | TNS    | setup violation | transition error | capacitance error | noise |
+| ----------------------------------- | ------- | ------ | --------------- | ---------------- | ----------------- | ----- |
+| wcl_cworstccworsttm40cmax | \-0.090 | 13.181 | 414             | 214              | 0                 | 5     |
+
+### 2nd
+
+| corner                              | WNS     | TNS    | setup violation | transition error | capacitance error | noise |
+| ----------------------------------- | ------- | ------ | --------------- | ---------------- | ----------------- | ----- |
+| wcl_cworstccworsttm40cmax | \-0.112 | 14.098 | 410             | 25               | 0                 | 4     |
+
+### 3rd
+
+| corner                              | WNS     | TNS    | setup violation | transition error | capacitance error | noise |
+| ----------------------------------- | ------- | ------ | --------------- | ---------------- | ----------------- | ----- |
+| wcl_cworstccworsttm40cmax | \-0.116 | 13.260 | 409             | 0                | 0                 | 4     |
+
+## Timing
+
+### 1st
+
+``` text
+violation range                      # of violations
+------------------------------  --------------------
+-0.000ns < -0.010ns                               38
+-0.010ns < -0.020ns                               82
+-0.020ns < -0.030ns                               79
+-0.030ns < -0.040ns                               95
+-0.040ns < -0.050ns                               63
+-0.050ns < -0.060ns                               24
+-0.060ns < -0.070ns                               10
+-0.070ns < -0.080ns                                7
+-0.080ns < -0.090ns                               15
+-0.090ns < -0.100ns                                1
+-0.100ns < -0.110ns                                0
+-0.110ns < -0.120ns                                0
+-0.120ns < -0.130ns                                0
+(...)
+------------------------------  --------------------
+total                                            414
+```
+
+### 2nd
+
+``` text
+
+violation range                      # of violations
+------------------------------  --------------------
+-0.000ns < -0.010ns                               42
+-0.010ns < -0.020ns                               66
+-0.020ns < -0.030ns                               79
+-0.030ns < -0.040ns                               82
+-0.040ns < -0.050ns                               61
+-0.050ns < -0.060ns                               41
+-0.060ns < -0.070ns                               12
+-0.070ns < -0.080ns                                4
+-0.080ns < -0.090ns                                5
+-0.090ns < -0.100ns                                3
+-0.100ns < -0.110ns                               12
+-0.110ns < -0.120ns                                3
+-0.120ns < -0.130ns                                0
+(...)
+------------------------------  --------------------
+total                                            410
+```
+
+### Timing Report after 2nd ECO
+
+  - Violations occur on the wdata nets
+
+<!-- end list -->
+
+``` text
+****************************************
+Report : timing
+        -path_type full
+        -delay_type max
+        -input_pins
+        -nets
+        -slack_lesser_than 0.000
+        -max_paths 2000000
+        -crosstalk_delta
+        -derate
+        -pba_mode path
+        -sort_by slack
+Design : Bxb
+Version: M-2017.06-SP3
+Date   : Tue Jul 19 16:25:40 2022
+****************************************
+
+
+  Startpoint: fdmaAdapter/writeDataDeq/impl/U_T_105_reg
+               (rising edge-triggered flip-flop clocked by clock)
+  Endpoint: io_fdmaAxi4_wdata[12]
+               (output port clocked by clock)
+  Path Group: clock
+  Path Type: max  (recalculated)
+
+  Point                                                                                 Fanout  Derate  Delta    Incr      Path
+  -------------------------------------------------------------------------------------------------------------------------------
+  clock clock (rise edge)                                                                                      0.000     0.000
+  clock network delay (propagated)                                                                             0.479     0.479
+  fdmaAdapter/writeDataDeq/impl/U_T_105_reg/CP (SDFQD4BWP6T16P96CPD)                                           0.000     0.479 r
+  fdmaAdapter/writeDataDeq/impl/U_T_105_reg/Q (SDFQD4BWP6T16P96CPD)                            1.059           0.176 &   0.656 r
+  fdmaAdapter/writeDataDeq/impl/N_T_105 (net)                                            17 
+  fdmaAdapter/writeDataDeq/impl/place_opt_HFSINV_5796_12129/I (INVEEQVZD2BWP6T16P96CPD)        1.070   0.000   0.005 &   0.660 r
+  fdmaAdapter/writeDataDeq/impl/place_opt_HFSINV_5796_12129/ZN (INVEEQVZD2BWP6T16P96CPD)       1.074           0.176 &   0.837 f
+  fdmaAdapter/writeDataDeq/impl/place_opt_HFSNET_1704 (net)                              25 
+  fdmaAdapter/writeDataDeq/impl/alchip188_dc/B1 (AO22D4BWP6T16P96CPD)                          1.070   0.004   0.006 &   0.843 f
+  fdmaAdapter/writeDataDeq/impl/alchip188_dc/Z (AO22D4BWP6T16P96CPD)                           1.059           0.175 &   1.018 f
+  fdmaAdapter/writeDataDeq/impl/io_deq_bits[29] (net)                                     1 
+  io_fdmaAxi4_wdata[12] (out)                                                                  1.070   0.011   0.020 &   1.037 f
+  io_fdmaAxi4_wdata[12] (net)                                                             1 
+  data arrival time                                                                                                      1.037
+
+  clock clock (rise edge)                                                                                      1.250     1.250
+  clock network delay (propagated)                                                                             0.000     1.250
+  clock reconvergence pessimism                                                                                0.000     1.250
+  output external delay                                                                                       -0.325     0.925
+  data required time                                                                                                     0.925
+  -------------------------------------------------------------------------------------------------------------------------------
+  data required time                                                                                                     0.925
+  data arrival time                                                                                                     -1.037
+  -------------------------------------------------------------------------------------------------------------------------------
+  slack (VIOLATED)                                                                                                      -0.112
+```
+
+# Issue : No Violation found in PT ECO
+
+## PT ECO : No Effect fix_ecodrc
+
+``` text
+fix_eco_drc -type max_fanout -current_library -methods {size_cell insert_buffer} -buffer_list ${BUFF_LIST} -verbose
+Information: Starting DRC fix iteration 1 at [Fri Jul 15 16:14:12 2022]...
+Information: The library cell 'BUFFD1BWP6T16P96CPD' in the buffer list has 'dont_use' attribute set to true. (PTECO-031)
+
+Available buffers:
+Lib_cell               Area
+--------------------------------------------------------
+BUFFD16BWP6T16P96CPD   0.85
+BUFFD8BWP6T16P96CPD    0.44
+BUFFD4BWP6T16P96CPD    0.22
+BUFFD3BWP6T16P96CPD    0.18
+BUFFD2BWP6T16P96CPD    0.15
+BUFFD1BWP6T16P96CPD    0.15
+
+Information: Detected 0 max fanout violations.
+Information: Fixing violations...
+Information: No more fixes are available.
+Information: The DRC violation fixing process is complete.
+
+
+Unfixable violations:
+  A - There are available lib cells outside area limit
+  C - The violation is in clock network
+  I - Buffer insertion with given lib cells cannot fix the violation
+  P - Driver cell of the violation is a port
+  Q - Driver cell of the violation is a sequential cell
+  S - Cell sizing with alternative lib cells cannot fix the violation
+  T - Timing margin is too tight to fix the violation
+  V - Driver cell of the violation is dont_touched
+  U - UPF restricts fixing the violation
+
+  Violation                                                     Reasons
+  ---------------------------------------------------------------------
+  None
+
+Remaining Violations:
+Violation Type                                     Count
+--------------------------------------------------------
+Total remaining violations                             0
+Unfixable violations                                   0
+
+Inserted buffers:
+   Count Lib_cell               Area          Total_area
+--------------------------------------------------------
+         No buffer           
+--------------------------------------------------------
+       0 TOTAL                                      0.00
+
+Final ECO Summary:
+--------------------------------------------------------
+Total number of commands                               0
+Total area increased                                0.00
+
+Information: Elapsed time [                0 seconds ]
+Information: Completed at [ Fri Jul 15 16:14:12 2022 ]
+
+0
+```
+
+## PT report Post ECO
+
+``` text
+     slack  max_transition  transition  pin
+----------  --------------  ----------  ----------
+    -0.048           0.200       0.248  storeFdma/fmemReader/fmemData_2_reg_48_/CP (TOP)
+    -0.048           0.200       0.248  storeFdma/fmemReader/fmemData_2_reg_52_/CP (TOP)
+    -0.048           0.200       0.248  storeFdma/fmemReader/fmemData_2_reg_60_/CP (TOP)
+    -0.048           0.200       0.248  storeFdma/fmemReader/fmemData_2_reg_49_/CP (TOP)
+    -0.047           0.200       0.247  storeFdma/fmemReader/fmemData_2_reg_63_/CP (TOP)
+    -0.047           0.200       0.247  storeFdma/fmemReader/fmemData_2_reg_35_/CP (TOP)
+    -0.047           0.200       0.247  storeFdma/fmemReader/fmemData_2_reg_59_/CP (TOP)
+    -0.047           0.200       0.247  storeFdma/fmemReader/fmemData_2_reg_36_/CP (TOP)
+    -0.047           0.200       0.247  storeFdma/fmemReader/fmemData_2_reg_33_/CP (TOP)
+    -0.047           0.200       0.247  storeFdma/fmemReader/fmemData_2_reg_62_/CP (TOP)
+    -0.047           0.200       0.247  storeFdma/fmemReader/fmemData_2_reg_55_/CP (TOP)
+    -0.047           0.200       0.247  storeFdma/fmemReader/fmemData_2_reg_40_/CP (TOP)
+    -0.047           0.200       0.247  storeFdma/fmemReader/fmemData_2_reg_50_/CP (TOP)
+    -0.047           0.200       0.247  storeFdma/fmemReader/fmemData_2_reg_46_/CP (TOP)
+    -0.047           0.200       0.247  storeFdma/fmemReader/fmemData_2_reg_39_/CP (TOP)
+    -0.047           0.200       0.247  storeFdma/fmemReader/fmemData_2_reg_61_/CP (TOP)
+    -0.047           0.200       0.247  storeFdma/fmemReader/fmemData_2_reg_54_/CP (TOP)
+    -0.047           0.200       0.247  storeFdma/fmemReader/fmemData_2_reg_34_/CP (TOP)
+    -0.047           0.200       0.247  storeFdma/fmemReader/fmemData_2_reg_58_/CP (TOP)
+    -0.047           0.200       0.247  storeFdma/fmemReader/fmemData_2_reg_57_/CP (TOP)
+```
+
+## Post PT ECO
+
+  - I can see violation in max_transition file, but not in
+    report_constraint after restore_session
+
+<!-- end list -->
+
+``` text
+pt_shell> report_constraint
+****************************************
+Report : constraint
+Design : Bxb
+Version: M-2017.06-SP3
+Date   : Fri Jul 15 16:16:12 2022
+****************************************
+
+                                                   Weighted
+    Group (max_delay/setup)      Cost     Weight     Cost
+    -----------------------------------------------------
+    clock_gating_default        0.053     1.000     0.053
+    clock                       0.159     1.000     0.159
+    -----------------------------------------------------
+    max_delay/setup                                 0.212
+
+                                                   Weighted
+    Group (min_delay/hold)       Cost     Weight     Cost
+    -----------------------------------------------------
+    clock_gating_default        0.000     1.000     0.000
+    clock                     302.360     1.000   302.360
+    -----------------------------------------------------
+    min_delay/hold                                302.360
+
+    Constraint                                       Cost
+    -----------------------------------------------------
+    max_delay/setup                                 0.212  (VIOLATED)
+    min_delay/hold                                302.360  (VIOLATED)
+    clock_gating_setup                              0.053  (VIOLATED)
+    clock_gating_hold                               0.000  (MET)
+    sequential_clock_pulse_width                    0.000  (MET)
+    clock_tree_pulse_width                          0.000  (MET)
+    sequential_clock_min_period                     0.000  (MET)
+    max_capacitance                                 0.000  (MET)
+    min_capacitance                                 0.000  (VIOLATED: increase significant d
+igits)                                                                                     
+    max_transition                                  0.000  (MET)
+    max_fanout                                      0.000  (MET)
+```
+
+## Solution (19-Jul)
+
+  - set_maxtransition after restore_session
+
+## Result
+
+### Before
+
+``` text
+Information: Detected 0 max transition violations.
+Information: Fixing violations...
+Information: No more fixes are available.
+Information: The DRC violation fixing process is complete.
+```
+
+### After
+
+``` text
+Information: Detected 1900 max transition violations.
+Information: 1900 violations are in a clock network and not fixable.
+Information: Fixing violations...
+Information: No more fixes are available.
+Information: The DRC violation fixing process is complete.
+
+
+Unfixable violations:
+  A - There are available lib cells outside area limit
+  C - The violation is in clock network
+  I - Buffer insertion with given lib cells cannot fix the violation
+  P - Driver cell of the violation is a port
+  Q - Driver cell of the violation is a sequential cell
+  S - Cell sizing with alternative lib cells cannot fix the violation
+  T - Timing margin is too tight to fix the violation
+  V - Driver cell of the violation is dont_touched
+  U - UPF restricts fixing the violation
+
+  Violation                                                     Reasons
+  ---------------------------------------------------------------------
+  storeFdma/fmemReader/fmemData_2_reg_48_/CP                    C                 
+  storeFdma/fmemReader/fmemData_2_reg_60_/CP                    C                 
+  storeFdma/fmemReader/fmemData_2_reg_49_/CP                    C                 
+  storeFdma/fmemReader/fmemData_2_reg_52_/CP                    C                 
+  storeFdma/fmemReader/fmemData_2_reg_50_/CP                    C                 
+  storeFdma/fmemReader/fmemData_2_reg_33_/CP                    C                 
+  storeFdma/fmemReader/fmemData_2_reg_32_/CP                    C                 
+  storeFdma/fmemReader/fmemData_2_reg_44_/CP                    C                 
+  storeFdma/fmemReader/fmemData_2_reg_34_/CP                    C                 
+  storeFdma/fmemReader/fmemData_2_reg_45_/CP                    C                 
+  storeFdma/fmemReader/fmemData_2_reg_35_/CP                    C                 
+  storeFdma/fmemReader/fmemData_2_reg_46_/CP                    C                 
+  storeFdma/fmemReader/fmemData_2_reg_54_/CP                    C
+  (...)
+```
+
+### QOR
+
+``` text
+****************************************
+Report : qor
+        -summary
+Design : Bxb
+Version: N-2017.09-SP4
+Date   : Tue Jul 19 08:46:21 2022
+****************************************
+Information: Timer using 'SI, AWP, AOCV, CRPR'. (TIM-050)
+
+Timing
+---------------------------------------------------------------------------
+Context                                 WNS            TNS            NVE
+---------------------------------------------------------------------------
+func::ss72_cworst_CCworst_T_m40c (Setup)        -0.1797       -35.2180           125
+2                                                                                  
+Design             (Setup)          -0.1797       -35.2180           1252
+
+Design             (Hold)                --         0.0000              0
+---------------------------------------------------------------------------
+
+Miscellaneous
+---------------------------------------------------------------------------
+Cell Area (netlist):                        385783.6961
+Cell Area (netlist and physical only):      385783.6970
+Nets with DRC Violations:       84
+1
+```
+
+### Max Transition
+
+  - before
+
+<!-- end list -->
+
+``` text
+Summary
+-------
+Transition error count over 0.200 =       1925
+Total transition error            =       1925
+
+Summary by block
+----------------
+TOP                       =       1925 (      1925)
+Total                     =       1925 (      1925)
+
+Slack range       Count
+----------------  -----
+ 0.000 < -0.100    1925
+-0.100 < -0.200       0
+-0.200 < -0.300       0
+-0.300 < -0.400       0
+-0.400 < -0.500       0
+-0.500 < -0.600       0
+-0.600 < -0.700       0
+-0.700 < -0.800       0
+-0.800 < -0.900       0
+-0.900 < -1.000       0
+-1.000 < -1.100       0
+-1.100 < -1.200       0
+-1.200 < -1.300       0
+-1.300 < -1.400       0
+-1.400 < -1.500       0
+-1.500 <              0
+----------------  -----
+Total              1925
+
+Transition range  Count
+----------------  -----
+ 0.000 <  0.100       0
+ 0.100 <  0.200      64
+ 0.200 <  0.300    1861
+ 0.300 <  0.400       0
+ 0.400 <  0.500       0
+ 0.500 <  0.600       0
+ 0.600 <  0.700       0
+ 0.700 <  0.800       0
+ 0.800 <  0.900       0
+ 0.900 <  1.000       0
+ 1.000 <  1.100       0
+ 1.100 <  1.200       0
+ 1.200 <  1.300       0
+ 1.300 <  1.400       0
+ 1.400 <  1.500       0
+ 1.500 <              0
+----------------  -----
+Total              1925
+```
+
+  - After
+
+<!-- end list -->
+
+``` text
+Summary
+-------
+Transition error count over 0.200 =       1927
+Total transition error            =       1927
+
+Summary by block
+----------------
+TOP                       =       1927 (      1927)
+Total                     =       1927 (      1927)
+
+Slack range       Count
+----------------  -----
+ 0.000 < -0.100    1927
+-0.100 < -0.200       0
+-0.200 < -0.300       0
+-0.300 < -0.400       0
+-0.400 < -0.500       0
+-0.500 < -0.600       0
+-0.600 < -0.700       0
+-0.700 < -0.800       0
+-0.800 < -0.900       0
+-0.900 < -1.000       0
+-1.000 < -1.100       0
+-1.100 < -1.200       0
+-1.200 < -1.300       0
+-1.300 < -1.400       0
+-1.400 < -1.500       0
+-1.500 <              0
+----------------  -----
+Total              1927
+
+Transition range  Count
+----------------  -----
+ 0.000 <  0.100       0
+ 0.100 <  0.200      59
+ 0.200 <  0.300    1868
+ 0.300 <  0.400       0
+ 0.400 <  0.500       0
+ 0.500 <  0.600       0
+ 0.600 <  0.700       0
+ 0.700 <  0.800       0
+ 0.800 <  0.900       0
+ 0.900 <  1.000       0
+ 1.000 <  1.100       0
+ 1.100 <  1.200       0
+ 1.200 <  1.300       0
+ 1.300 <  1.400       0
+ 1.400 <  1.500       0
+ 1.500 <              0
+----------------  -----
+Total              1927
+```
+
+### Timing
+
+## CCS noise model Warning
+
+  - RC-201
+
+<!-- end list -->
+
+``` text
+RC-201
+NAME
+RC-201 (warning) Timing arc %s->%s does not have CCS noise model for accurate waveform analysis.
+
+DESCRIPTION
+
+When waveform propagation analysis is enabled, it is required that the
+stage driver cell has CCS noise model(s) for its timing arcs in terms
+of either arc-based or pin-based CCS noise model(s). When such CCS
+noise model(s) are not present in the library, analysis with desired
+accuracy cannot be performed.
+
+WHAT NEXT
+Fix the library to ensure that all library cell timing arcs have either arc-based or pin-based CCS noise models.
+```
+
+## Unfixable violations
+
+### A - There are available lib cells outside area limit
+
+  - Library cells that might have been used to fix the violation
+    exceeded the area limit
+
+### C - The violation is in clock network
+
+  - The violation is in a clock network. By default, the command does
+    not attempt to fix violations in clock networks because doing so can
+    change the clock tree timing and possibly create new violations.
+
+### Codes
+
+``` tcl
+set eco_alternative_area_ratio_threshold 4
+fix_eco_drc -type max_transition -cell_type clock -current_library -methods {size_cell insert_buffer} -buffer_list ${BUFF_LIST} -verbose
+```
+
+### Result
+
+``` text
+Summary
+-------
+Transition error count over 0.200 =        207
+Total transition error            =        207
+
+Summary by block
+----------------
+TOP                       =        207 (       207)
+Total                     =        207 (       207)
+
+Slack range       Count
+----------------  -----
+ 0.000 < -0.100     207
+-0.100 < -0.200       0
+-0.200 < -0.300       0
+-0.300 < -0.400       0
+-0.400 < -0.500       0
+-0.500 < -0.600       0
+-0.600 < -0.700       0
+-0.700 < -0.800       0
+-0.800 < -0.900       0
+-0.900 < -1.000       0
+-1.000 < -1.100       0
+-1.100 < -1.200       0
+-1.200 < -1.300       0
+-1.300 < -1.400       0
+-1.400 < -1.500       0
+-1.500 <              0
+----------------  -----
+Total               207
+
+Transition range  Count
+----------------  -----
+ 0.000 <  0.100       0
+ 0.100 <  0.200      26
+ 0.200 <  0.300     181
+ 0.300 <  0.400       0
+ 0.400 <  0.500       0
+ 0.500 <  0.600       0
+ 0.600 <  0.700       0
+ 0.700 <  0.800       0
+ 0.800 <  0.900       0
+ 0.900 <  1.000       0
+ 1.000 <  1.100       0
+ 1.100 <  1.200       0
+ 1.200 <  1.300       0
+ 1.300 <  1.400       0
+ 1.400 <  1.500       0
+ 1.500 <              0
+----------------  -----
+Total               207
+```
+
+# Result : Post Re-Rerun ECO
+
+## Evaluation
+
+  - See legalisation results in ICC2
+  - Do ECO multiple times to determine issues
+
+## ICC2 (pt_eco)
+
+### ECO Large Displacement Cell Report
+
+``` text
+================ Displacement Report =================
+Area: placed=2770128, unplaced=0, fixed=54167, blocked=7839292, total=12254400
+Density = 2824295/4415108 sites = 63.97%
+Inbound cells: 0; 2-row cells: 0; >2-row cells: 24
+Total cell instance count: 221784 (218004 placed, 0 unplaced, 3780 fixed)
+    Number of cells moved: 18 (0.01%)
+Average cell displacement: 0.0001 um (AW: 0.0001 um = 0.0002 rh)
+    RMS cell displacement: 0.0094 um (AW: 0.0083 um = 0.0216 rh)
+    Max cell displacement: 3.0735 um = 8.0039 rh
+       Max displaced cell: clock_opt_optlc_110664 (294.72 347.136)
+======================================================
+****************************************
+Report : ECO Large Displacement Cell
+Design : Bxb
+Version: N-2017.09-SP4
+Date   : Fri Jul 15 13:43:01 2022
+****************************************
+
+Large displacement cells:
+  Cell: fmem/arbiterImpl/U_PTECO_DRC_BUF17 (BUFFD16BWP6T16P96CPD)
+    Pre-legalization location:  (347.6680 411.4560)
+    Post-legalization location: (337.9200 412.0320)
+    Displacement: 9.765 um, e.g. 25.43 row height.
+  Cell: a2f/pipeline/accumulationPipeline/pipeline_0/alchip4310_dc (FA1D4BWP6T16P96CPD)
+    Pre-legalization location:  (285.6960 326.0160)
+    Post-legalization location: (276.1920 326.4000)
+    Displacement: 9.512 um, e.g. 24.77 row height.
+  Cell: fdmaAdapter/writeDataDeq/impl/alchip178_dc (AO22D6BWP6T16P96CPD)
+    Pre-legalization location:  (433.4400 117.8880)
+    Post-legalization location: (428.8320 109.8240)
+    Displacement: 9.288 um, e.g. 24.19 row height.
+  Cell: admaAdapter/writeAddrDeq/impl/U_PTECO_DRC_BUF18 (BUFFD16BWP6T16P96CPD)
+    Pre-legalization location:  (547.3440 11.3125)
+    Post-legalization location: (542.4000 3.8400)
+    Displacement: 8.960 um, e.g. 23.33 row height.
+  Cell: fdmaAdapter/writeDataDeq/impl/alchip181_dc (AO22D6BWP6T16P96CPD)
+    Pre-legalization location:  (434.0160 120.9600)
+    Post-legalization location: (426.3360 118.2720)
+    Displacement: 8.137 um, e.g. 21.19 row height.
+  Cell: fdmaAdapter/writeDataDeq/impl/alchip223_dc (AO22D6BWP6T16P96CPD)
+    Pre-legalization location:  (420.0960 123.2640)
+    Post-legalization location: (427.8720 124.8000)
+    Displacement: 7.926 um, e.g. 20.64 row height.
+  Cell: fdmaAdapter/writeDataDeq/impl/alchip184_dc (AO22D6BWP6T16P96CPD)
+    Pre-legalization location:  (430.0800 122.8800)
+    Post-legalization location: (428.8320 115.2000)
+    Displacement: 7.781 um, e.g. 20.26 row height.
+  Cell: U_PTECO_DRC_BUF9 (BUFFD2BWP6T16P96CPD)
+    Pre-legalization location:  (73.1990 3.6580)
+    Post-legalization location: (66.5280 4.6080)
+    Displacement: 6.738 um, e.g. 17.55 row height.
+  Cell: fdmaAdapter/writeDataDeq/impl/U_PTECO_DRC_BUF22 (BUFFD16BWP6T16P96CPD)
+    Pre-legalization location:  (402.3880 117.6960)
+    Post-legalization location: (402.2400 124.4160)
+    Displacement: 6.722 um, e.g. 17.50 row height.
+  Cell: fdmaAdapter/writeDataDeq/impl/alchip179_dc (AO22D6BWP6T16P96CPD)
+    Pre-legalization location:  (434.4960 124.0320)
+    Post-legalization location: (428.5440 125.5680)
+    Displacement: 6.147 um, e.g. 16.01 row height.
+
+Total 44 cells have large displacement (e.g. > 1.920 um or 5 row height)
+
+****************************************
+Report : ECO Legalize Displacement
+Design : Bxb
+Version: N-2017.09-SP4
+Date   : Fri Jul 15 13:43:01 2022
+****************************************
+
+avg cell displacement:    2.113 um ( 5.50 row height)
+max cell displacement:    9.765 um (25.43 row height)
+std deviation:            2.452 um ( 6.39 row height)
+number of cell moved:       121 cells (out of 194 cells)
+```
+
+## PT
+
+### Setup Timing
+
+``` text
+violation range                      # of violations
+------------------------------  --------------------
+-0.000ns < -0.010ns                               66
+-0.010ns < -0.020ns                               89
+-0.020ns < -0.030ns                               72
+-0.030ns < -0.040ns                               73
+-0.040ns < -0.050ns                               53
+-0.050ns < -0.060ns                               23
+-0.060ns < -0.070ns                                6
+-0.070ns < -0.080ns                                5
+-0.080ns < -0.090ns                                5
+-0.090ns < -0.100ns                                1
+-0.100ns < -0.110ns                               13
+-0.110ns < -0.120ns                                5
+-0.120ns < -0.130ns                                0
+-0.130ns < -0.140ns                                0
+-0.140ns < -0.150ns                                0
+-0.150ns < -0.160ns                                0
+-0.160ns < -0.170ns                                0
+-0.170ns < -0.180ns                                0
+-0.180ns < -0.190ns                                0
+-0.190ns < -0.200ns                                0
+-0.200ns < -0.300ns                                0
+-0.300ns < -0.400ns                                0
+-0.400ns < -0.500ns                                0
+-0.500ns < -1.000ns                                0
+-1.000ns < -2.000ns                                0
+-2.000ns < -5.000ns                                0
+-5.000ns <                                         0
+------------------------------  --------------------
+total                                            411
+```
+
+### Transition
+
+``` text
+     slack  max_transition  transition  pin
+----------  --------------  ----------  ----------
+    -0.048           0.200       0.248  storeFdma/fmemReader/fmemData_2_reg_48_/CP (TOP)
+    -0.048           0.200       0.248  storeFdma/fmemReader/fmemData_2_reg_52_/CP (TOP)
+    -0.048           0.200       0.248  storeFdma/fmemReader/fmemData_2_reg_60_/CP (TOP)
+    -0.048           0.200       0.248  storeFdma/fmemReader/fmemData_2_reg_49_/CP (TOP)
+    -0.047           0.200       0.247  storeFdma/fmemReader/fmemData_2_reg_63_/CP (TOP)
+    -0.047           0.200       0.247  storeFdma/fmemReader/fmemData_2_reg_35_/CP (TOP)
+    -0.047           0.200       0.247  storeFdma/fmemReader/fmemData_2_reg_59_/CP (TOP)
+    -0.047           0.200       0.247  storeFdma/fmemReader/fmemData_2_reg_36_/CP (TOP)
+    -0.047           0.200       0.247  storeFdma/fmemReader/fmemData_2_reg_33_/CP (TOP)
+    -0.047           0.200       0.247  storeFdma/fmemReader/fmemData_2_reg_62_/CP (TOP)
+    -0.047           0.200       0.247  storeFdma/fmemReader/fmemData_2_reg_55_/CP (TOP)
+    -0.047           0.200       0.247  storeFdma/fmemReader/fmemData_2_reg_40_/CP (TOP)
+    -0.047           0.200       0.247  storeFdma/fmemReader/fmemData_2_reg_50_/CP (TOP)
+    -0.047           0.200       0.247  storeFdma/fmemReader/fmemData_2_reg_46_/CP (TOP)
+    -0.047           0.200       0.247  storeFdma/fmemReader/fmemData_2_reg_39_/CP (TOP)
+    -0.047           0.200       0.247  storeFdma/fmemReader/fmemData_2_reg_61_/CP (TOP)
+    -0.047           0.200       0.247  storeFdma/fmemReader/fmemData_2_reg_54_/CP (TOP)
+    -0.047           0.200       0.247  storeFdma/fmemReader/fmemData_2_reg_34_/CP (TOP)
+    -0.047           0.200       0.247  storeFdma/fmemReader/fmemData_2_reg_58_/CP (TOP)
+    -0.047           0.200       0.247  storeFdma/fmemReader/fmemData_2_reg_57_/CP (TOP)
+    -0.047           0.200       0.247  storeFdma/fmemReader/fmemData_2_reg_47_/CP (TOP)
+    -0.047           0.200       0.247  storeFdma/fmemReader/fmemData_2_reg_32_/CP (TOP)
+    -0.047           0.200       0.247  storeFdma/fmemReader/fmemData_2_reg_41_/CP (TOP)
+    -0.047           0.200       0.247  storeFdma/fmemReader/fmemData_2_reg_44_/CP (TOP)
+    -0.047           0.200       0.247  storeFdma/fmemReader/fmemData_2_reg_45_/CP (TOP)
+    -0.046           0.200       0.246  storeFdma/fmemReader/fmemData_2_reg_43_/CP (TOP)
+    -0.046           0.200       0.246  storeFdma/fmemReader/fmemData_2_reg_38_/CP (TOP)
+    -0.046           0.200       0.246  storeFdma/fmemReader/fmemData_2_reg_56_/CP (TOP)
+    -0.046           0.200       0.246  storeFdma/fmemReader/fmemData_2_reg_53_/CP (TOP)
+    -0.046           0.200       0.246  storeFdma/fmemReader/fmemData_2_reg_51_/CP (TOP)
+    -0.046           0.200       0.246  storeFdma/fmemReader/fmemData_2_reg_37_/CP (TOP)
+    -0.046           0.200       0.246  storeFdma/fmemReader/fmemData_2_reg_42_/CP (TOP)
+    -0.045           0.200       0.245  macArray/adders_25/m_62_0_reg/CP (TOP)
+    -0.045           0.200       0.245  macArray/adders_25/m_60_0_reg/CP (TOP)
+    -0.045           0.200       0.245  macArray/adders_25/m_63_0_reg/CP (TOP)
+    -0.045           0.200       0.245  macArray/adders_25/m_58_0_reg/CP (TOP)
+    -0.045           0.200       0.245  macArray/adders_25/m_61_0_reg/CP (TOP)
+    -0.045           0.200       0.245  macArray/adders_25/m_59_0_reg/CP (TOP)
+    -0.044           0.200       0.244  macArray/adders_25/m_32_0_reg/CP (TOP)
+    -0.044           0.200       0.244  macArray/adders_25/m_33_0_reg/CP (TOP)
+    -0.043           0.200       0.243  macArray/adders_25/minusPopCountMx3_0_reg_3_/CP (TOP)
+    -0.043           0.200       0.243  macArray/adders_25/minusPopCountMx3_0_reg_7_/CP (TOP)
+    -0.043           0.200       0.243  macArray/adders_25/minusPopCountMx3_0_reg_8_/CP (TOP)
+    -0.043           0.200       0.243  macArray/adders_25/minusPopCountMx3_0_reg_6_/CP (TOP)
+    -0.043           0.200       0.243  macArray/adders_25/minusPopCountMx3_0_reg_4_/CP (TOP)
+    -0.043           0.200       0.243  macArray/adders_25/minusPopCountMx3_0_reg_1_/CP (TOP)
+    -0.043           0.200       0.243  macArray/adders_25/minusPopCountMx3_0_reg_0_/CP (TOP)
+    -0.043           0.200       0.243  macArray/adders_25/minusPopCountMx3_0_reg_2_/CP (TOP)
+    -0.043           0.200       0.243  macArray/adders_25/minusPopCountMx3_0_reg_5_/CP (TOP)
+    -0.042           0.200       0.242  storeFdma/fmemReader/pckg_clock_midfix_18_suffix/latch/Q (TOP)
+    -0.041           0.200       0.241  macArray/adders_25/m_0_0_reg/CP (TOP)
+    (...)
+
+  Summary
+  -------
+  Transition error count over 0.200 =       1925
+  Total transition error            =       1925
+
+  Summary by block
+  ----------------
+  TOP                       =       1925 (      1925)
+  Total                     =       1925 (      1925)
+
+  Slack range       Count
+  ----------------  -----
+   0.000 < -0.100    1925
+  -0.100 < -0.200       0
+  -0.200 < -0.300       0
+  -0.300 < -0.400       0
+  -0.400 < -0.500       0
+  -0.500 < -0.600       0
+  -0.600 < -0.700       0
+  -0.700 < -0.800       0
+  -0.800 < -0.900       0
+  -0.900 < -1.000       0
+  -1.000 < -1.100       0
+  -1.100 < -1.200       0
+  -1.200 < -1.300       0
+  -1.300 < -1.400       0
+  -1.400 < -1.500       0
+  -1.500 <              0
+  ----------------  -----
+  Total              1925
+
+  Transition range  Count
+  ----------------  -----
+   0.000 <  0.100       0
+   0.100 <  0.200      64
+   0.200 <  0.300    1861
+   0.300 <  0.400       0
+   0.400 <  0.500       0
+   0.500 <  0.600       0
+   0.600 <  0.700       0
+   0.700 <  0.800       0
+   0.800 <  0.900       0
+   0.900 <  1.000       0
+   1.000 <  1.100       0
+   1.100 <  1.200       0
+   1.200 <  1.300       0
+   1.300 <  1.400       0
+   1.400 <  1.500       0
+   1.500 <              0
+  ----------------  -----
+  Total              1925
+
+```
+
+### Capacitance
+
+``` text
+     slack  max_capacitance  capacitance  pin
+----------  ---------------  -----------  ----------
+
+Summary
+-------
+Total capacitance error            =          0
+
+Summary by block
+----------------
+TOP                       =          0 (         0)
+Total                     =          0 (         0)
+
+Slack range        Count
+-----------------  -----
+ 0.000 < -0.100        0
+-0.100 < -0.200        0
+-0.200 < -0.300        0
+-0.300 < -0.400        0
+-0.400 < -0.500        0
+-0.500 < -0.600        0
+-0.600 < -0.700        0
+-0.700 < -0.800        0
+-0.800 < -0.900        0
+-0.900 < -1.000        0
+-1.000 < -1.100        0
+-1.100 < -1.200        0
+-1.200 < -1.300        0
+-1.300 < -1.400        0
+-1.400 < -1.500        0
+-1.500 <               0
+-----------------  -----
+Total                  0
+
+Capacitance range  Count
+-----------------  -----
+ 0.000 <  0.100        0
+ 0.100 <  0.200        0
+ 0.200 <  0.300        0
+ 0.300 <  0.400        0
+ 0.400 <  0.500        0
+ 0.500 <  0.600        0
+ 0.600 <  0.700        0
+ 0.700 <  0.800        0
+ 0.800 <  0.900        0
+ 0.900 <  1.000        0
+ 1.000 <  1.100        0
+ 1.100 <  1.200        0
+ 1.200 <  1.300        0
+ 1.300 <  1.400        0
+ 1.400 <  1.500        0
+ 1.500 <               0
+-----------------  -----
+Total                  0
+```
+
+### Noise
+
+``` text
+slack pin(net)
+-0.085    io_idmaAxi4_awlen[3](io_idmaAxi4_awlen[3])
+-0.052    fmem/arbiterImpl/mem/mem_0/mem_0/bram_inst/inst0/D[112](fmem/arbiterImpl/net_PTECO_DRC_NET17)
+-0.040    io_idmaAxi4_awid[1](io_idmaAxi4_awid[1])
+-0.037    io_csrSlave_arready(io_csrSlave_arready)
+-0.005    io_fdmaAxi4_wdata[19](io_fdmaAxi4_wdata[19])
+```
+
+# Result : Post Rerun ECO
+
+## Evaluation
+
+  - fix_ecodrc is ok to use `insert_buffer`
+
+## ICC2 (pt_eco)
+
+### Transition / Capacitance
+
+``` text
+****************************************
+Report : constraint
+        -all_violators
+        -max_transition
+        -max_capacitance
+Design : Bxb
+Version: N-2017.09-SP4
+Date   : Fri Jul 15 09:05:06 2022
+****************************************
+
+
+
+   Mode: func Corner: ss72_cworst_CCworst_T_m40c
+   Scenario: func::ss72_cworst_CCworst_T_m40c
+   max_transition                                                              
+                             Required        Actual                            
+   Net                      Transition     Transition        Slack  Violation  
+  ---------------------------------------------------------------------------
+   storeAdma/amemReader/axi4WriteUnalignedAdapter/writeDataQueue/impl/pckg_net_clock_suffix_21   0.1650   0.2009  -0.0359 (VIOLATED)
+     PIN : storeAdma/amemReader/axi4WriteUnalignedAdapter/writeDataQueue/impl/_T_94_reg_4__107_/CP   0.1650   0.2009  -0.0359 (VIOLATED)
+     PIN : storeAdma/amemReader/axi4WriteUnalignedAdapter/writeDataQueue/impl/_T_94_reg_4__103_/CP   0.1650   0.2009  -0.0359 (VIOLATED)
+     PIN : storeAdma/amemReader/axi4WriteUnalignedAdapter/writeDataQueue/impl/_T_94_reg_4__97_/CP   0.1650   0.2009  -0.0359 (VIOLATED)
+     PIN : storeAdma/amemReader/axi4WriteUnalignedAdapter/writeDataQueue/impl/_T_94_reg_4__102_/CP   0.1650   0.2008  -0.0358 (VIOLATED)
+     PIN : storeAdma/amemReader/axi4WriteUnalignedAdapter/writeDataQueue/impl/_T_94_reg_4__101_/CP   0.1650   0.2008  -0.0358 (VIOLATED)
+     PIN : storeAdma/amemReader/axi4WriteUnalignedAdapter/writeDataQueue/impl/_T_94_reg_4__98_/CP   0.1650   0.2008  -0.0358 (VIOLATED)
+     PIN : storeAdma/amemReader/axi4WriteUnalignedAdapter/writeDataQueue/impl/_T_94_reg_4__108_/CP   0.1650   0.2008  -0.0358 (VIOLATED)
+     PIN : storeAdma/amemReader/axi4WriteUnalignedAdapter/writeDataQueue/impl/_T_94_reg_4__106_/CP   0.1650   0.2008  -0.0358 (VIOLATED)
+     PIN : storeAdma/amemReader/axi4WriteUnalignedAdapter/writeDataQueue/impl/_T_94_reg_4__105_/CP   0.1650   0.2008  -0.0358 (VIOLATED)
+     PIN : storeAdma/amemReader/axi4WriteUnalignedAdapter/writeDataQueue/impl/_T_94_reg_4__104_/CP   0.1650   0.2008  -0.0358 (VIOLATED)
+     PIN : storeAdma/amemReader/axi4WriteUnalignedAdapter/writeDataQueue/impl/_T_94_reg_4__90_/CP   0.1650   0.2006  -0.0356 (VIOLATED)
+     PIN : storeAdma/amemReader/axi4WriteUnalignedAdapter/writeDataQueue/impl/_T_94_reg_4__94_/CP   0.1650   0.2006  -0.0356 (VIOLATED)
+     PIN : storeAdma/amemReader/axi4WriteUnalignedAdapter/writeDataQueue/impl/_T_94_reg_4__95_/CP   0.1650   0.2006  -0.0356 (VIOLATED)
+     PIN : storeAdma/amemReader/axi4WriteUnalignedAdapter/writeDataQueue/impl/_T_94_reg_4__88_/CP   0.1650   0.2006  -0.0356 (VIOLATED)
+     PIN : storeAdma/amemReader/axi4WriteUnalignedAdapter/writeDataQueue/impl/_T_94_reg_4__92_/CP   0.1650   0.2006  -0.0356 (VIOLATED)
+     PIN : storeAdma/amemReader/axi4WriteUnalignedAdapter/writeDataQueue/impl/_T_94_reg_4__110_/CP   0.1650   0.2005  -0.0355 (VIOLATED)
+     PIN : storeAdma/amemReader/axi4WriteUnalignedAdapter/writeDataQueue/impl/_T_94_reg_4__111_/CP   0.1650   0.2005  -0.0355 (VIOLATED)
+     PIN : storeAdma/amemReader/axi4WriteUnalignedAdapter/writeDataQueue/impl/_T_94_reg_4__112_/CP   0.1650   0.2005  -0.0355 (VIOLATED)
+     PIN : storeAdma/amemReader/axi4WriteUnalignedAdapter/writeDataQueue/impl/_T_94_reg_4__109_/CP   0.1650   0.2005  -0.0355 (VIOLATED)
+     PIN : storeAdma/amemReader/axi4WriteUnalignedAdapter/writeDataQueue/impl/_T_94_reg_4__113_/CP   0.1650   0.2005  -0.0355 (VIOLATED)
+     PIN : storeAdma/amemReader/axi4WriteUnalignedAdapter/writeDataQueue/impl/_T_94_reg_4__115_/CP   0.1650   0.2005  -0.0355 (VIOLATED)
+     PIN : storeAdma/amemReader/axi4WriteUnalignedAdapter/writeDataQueue/impl/_T_94_reg_4__114_/CP   0.1650   0.2005  -0.0355 (VIOLATED)
+     PIN : storeAdma/amemReader/axi4WriteUnalignedAdapter/writeDataQueue/impl/_T_94_reg_4__91_/CP   0.1650   0.2005  -0.0355 (VIOLATED)
+     PIN : storeAdma/amemReader/axi4WriteUnalignedAdapter/writeDataQueue/impl/_T_94_reg_4__100_/CP   0.1650   0.2004  -0.0354 (VIOLATED)
+     PIN : storeAdma/amemReader/axi4WriteUnalignedAdapter/writeDataQueue/impl/_T_94_reg_4__99_/CP   0.1650   0.2004  -0.0354 (VIOLATED)
+     PIN : storeAdma/amemReader/axi4WriteUnalignedAdapter/writeDataQueue/impl/_T_94_reg_4__96_/CP   0.1650   0.2004  -0.0354 (VIOLATED)
+     PIN : storeAdma/amemReader/axi4WriteUnalignedAdapter/writeDataQueue/impl/_T_94_reg_4__93_/CP   0.1650   0.2004  -0.0354 (VIOLATED)
+     PIN : storeAdma/amemReader/axi4WriteUnalignedAdapter/writeDataQueue/impl/_T_94_reg_4__87_/CP   0.1650   0.2004  -0.0354 (VIOLATED)
+     PIN : storeAdma/amemReader/axi4WriteUnalignedAdapter/writeDataQueue/impl/_T_94_reg_4__89_/CP   0.1650   0.2004  -0.0354 (VIOLATED)
+     PIN : storeAdma/amemReader/axi4WriteUnalignedAdapter/writeDataQueue/impl/pckg_clock_midfix_21_suffix/latch/Q   0.1650   0.1996  -0.0346 (VIOLATED)
+
+   storeAdma/amemReader/axi4WriteUnalignedAdapter/writeDataQueue/impl/pckg_net_clock_suffix_443   0.1650   0.2005  -0.0355 (VIOLATED)
+     PIN : storeAdma/amemReader/axi4WriteUnalignedAdapter/writeDataQueue/impl/_T_94_reg_88__39_/CP   0.1650   0.2005  -0.0355 (VIOLATED)
+     PIN : storeAdma/amemReader/axi4WriteUnalignedAdapter/writeDataQueue/impl/_T_94_reg_88__40_/CP   0.1650   0.2005  -0.0355 (VIOLATED)
+     PIN : storeAdma/amemReader/axi4WriteUnalignedAdapter/writeDataQueue/impl/_T_94_reg_88__44_/CP   0.1650   0.2005  -0.0355 (VIOLATED)
+     PIN : storeAdma/amemReader/axi4WriteUnalignedAdapter/writeDataQueue/impl/_T_94_reg_88__47_/CP   0.1650   0.2005  -0.0355 (VIOLATED)
+     PIN : storeAdma/amemReader/axi4WriteUnalignedAdapter/writeDataQueue/impl/_T_94_reg_88__37_/CP   0.1650   0.2005  -0.0355 (VIOLATED)
+     PIN : storeAdma/amemReader/axi4WriteUnalignedAdapter/writeDataQueue/impl/_T_94_reg_88__48_/CP   0.1650   0.2005  -0.0355 (VIOLATED)
+     PIN : storeAdma/amemReader/axi4WriteUnalignedAdapter/writeDataQueue/impl/_T_94_reg_88__35_/CP   0.1650   0.2005  -0.0355 (VIOLATED)
+     PIN : storeAdma/amemReader/axi4WriteUnalignedAdapter/writeDataQueue/impl/_T_94_reg_88__43_/CP   0.1650   0.2005  -0.0355 (VIOLATED)
+     PIN : storeAdma/amemReader/axi4WriteUnalignedAdapter/writeDataQueue/impl/_T_94_reg_88__30_/CP   0.1650   0.2005  -0.0355 (VIOLATED)
+     PIN : storeAdma/amemReader/axi4WriteUnalignedAdapter/writeDataQueue/impl/_T_94_reg_88__36_/CP   0.1650   0.2004  -0.0354 (VIOLATED)
+     PIN : storeAdma/amemReader/axi4WriteUnalignedAdapter/writeDataQueue/impl/_T_94_reg_88__33_/CP   0.1650   0.2002  -0.0352 (VIOLATED)
+     PIN : storeAdma/amemReader/axi4WriteUnalignedAdapter/writeDataQueue/impl/_T_94_reg_88__54_/CP   0.1650   0.2002  -0.0352 (VIOLATED)
+     PIN : storeAdma/amemReader/axi4WriteUnalignedAdapter/writeDataQueue/impl/_T_94_reg_88__52_/CP   0.1650   0.2001  -0.0351 (VIOLATED)
+     PIN : storeAdma/amemReader/axi4WriteUnalignedAdapter/writeDataQueue/impl/_T_94_reg_88__41_/CP   0.1650   0.2001  -0.0351 (VIOLATED)
+     PIN : storeAdma/amemReader/axi4WriteUnalignedAdapter/writeDataQueue/impl/_T_94_reg_88__42_/CP   0.1650   0.2001  -0.0351 (VIOLATED)
+     PIN : storeAdma/amemReader/axi4WriteUnalignedAdapter/writeDataQueue/impl/_T_94_reg_88__34_/CP   0.1650   0.2001  -0.0351 (VIOLATED)
+     PIN : storeAdma/amemReader/axi4WriteUnalignedAdapter/writeDataQueue/impl/_T_94_reg_88__57_/CP   0.1650   0.2000  -0.0350 (VIOLATED)
+     PIN : storeAdma/amemReader/axi4WriteUnalignedAdapter/writeDataQueue/impl/_T_94_reg_88__53_/CP   0.1650   0.1999  -0.0349 (VIOLATED)
+     PIN : storeAdma/amemReader/axi4WriteUnalignedAdapter/writeDataQueue/impl/_T_94_reg_88__45_/CP   0.1650   0.1998  -0.0348 (VIOLATED)
+     PIN : storeAdma/amemReader/axi4WriteUnalignedAdapter/writeDataQueue/impl/_T_94_reg_88__32_/CP   0.1650   0.1997  -0.0347 (VIOLATED)
+     PIN : storeAdma/amemReader/axi4WriteUnalignedAdapter/writeDataQueue/impl/_T_94_reg_88__38_/CP   0.1650   0.1997  -0.0347 (VIOLATED)
+     PIN : storeAdma/amemReader/axi4WriteUnalignedAdapter/writeDataQueue/impl/_T_94_reg_88__31_/CP   0.1650   0.1997  -0.0347 (VIOLATED)
+     PIN : storeAdma/amemReader/axi4WriteUnalignedAdapter/writeDataQueue/impl/_T_94_reg_88__29_/CP   0.1650   0.1997  -0.0347 (VIOLATED)
+     PIN : storeAdma/amemReader/axi4WriteUnalignedAdapter/writeDataQueue/impl/_T_94_reg_88__55_/CP   0.1650   0.1997  -0.0347 (VIOLATED)
+     PIN : storeAdma/amemReader/axi4WriteUnalignedAdapter/writeDataQueue/impl/_T_94_reg_88__46_/CP   0.1650   0.1997  -0.0347 (VIOLATED)
+     PIN : storeAdma/amemReader/axi4WriteUnalignedAdapter/writeDataQueue/impl/_T_94_reg_88__49_/CP   0.1650   0.1995  -0.0345 (VIOLATED)
+     PIN : storeAdma/amemReader/axi4WriteUnalignedAdapter/writeDataQueue/impl/_T_94_reg_88__56_/CP   0.1650   0.1995  -0.0345 (VIOLATED)
+     PIN : storeAdma/amemReader/axi4WriteUnalignedAdapter/writeDataQueue/impl/_T_94_reg_88__51_/CP   0.1650   0.1995  -0.0345 (VIOLATED)
+     PIN : storeAdma/amemReader/axi4WriteUnalignedAdapter/writeDataQueue/impl/_T_94_reg_88__50_/CP   0.1650   0.1992  -0.0342 (VIOLATED)
+     PIN : storeAdma/amemReader/axi4WriteUnalignedAdapter/writeDataQueue/impl/pckg_clock_midfix_443_suffix/latch/Q   0.1650   0.1986  -0.0336 (VIOLATED)
+
+     (...)
+
+  ---------------------------------------------------------------------------
+   Number of max_transition violation(s): 83
+
+   Mode: func Corner: ss72_cworst_CCworst_T_m40c
+   Scenario: func::ss72_cworst_CCworst_T_m40c
+  ---------------------------------------------------------------------------
+   Number of max_capacitance violation(s): 0
+
+   Total number of violation(s): 83
+1
+```
+
+## PT STA
+
+### Timing
+
+``` text
+violation range                      # of violations
+------------------------------  --------------------
+-0.000ns < -0.010ns                               51
+-0.010ns < -0.020ns                               69
+-0.020ns < -0.030ns                               97
+-0.030ns < -0.040ns                               84
+-0.040ns < -0.050ns                               47
+-0.050ns < -0.060ns                               27
+-0.060ns < -0.070ns                               10
+-0.070ns < -0.080ns                                2
+-0.080ns < -0.090ns                               14
+-0.090ns < -0.100ns                                5
+-0.100ns < -0.110ns                                0
+-0.110ns < -0.120ns                                0
+-0.120ns < -0.130ns                                0
+-0.130ns < -0.140ns                                0
+-0.140ns < -0.150ns                                0
+-0.150ns < -0.160ns                                0
+-0.160ns < -0.170ns                                0
+-0.170ns < -0.180ns                                0
+-0.180ns < -0.190ns                                0
+-0.190ns < -0.200ns                                0
+-0.200ns < -0.300ns                                0
+-0.300ns < -0.400ns                                0
+-0.400ns < -0.500ns                                0
+-0.500ns < -1.000ns                                0
+-1.000ns < -2.000ns                                0
+-2.000ns < -5.000ns                                0
+-5.000ns <                                         0
+------------------------------  --------------------
+total                                            406
+```
+
+### Transition
+
+``` text
+     slack  max_transition  transition  pin
+----------  --------------  ----------  ----------
+    -0.048           0.200       0.248  storeFdma/fmemReader/fmemData_2_reg_48_/CP (TOP)
+    -0.048           0.200       0.248  storeFdma/fmemReader/fmemData_2_reg_52_/CP (TOP)
+    -0.048           0.200       0.248  storeFdma/fmemReader/fmemData_2_reg_60_/CP (TOP)
+    -0.048           0.200       0.248  storeFdma/fmemReader/fmemData_2_reg_49_/CP (TOP)
+    -0.047           0.200       0.247  storeFdma/fmemReader/fmemData_2_reg_63_/CP (TOP)
+    -0.047           0.200       0.247  storeFdma/fmemReader/fmemData_2_reg_35_/CP (TOP)
+    -0.047           0.200       0.247  storeFdma/fmemReader/fmemData_2_reg_59_/CP (TOP)
+    -0.047           0.200       0.247  storeFdma/fmemReader/fmemData_2_reg_36_/CP (TOP)
+    -0.047           0.200       0.247  storeFdma/fmemReader/fmemData_2_reg_33_/CP (TOP)
+    -0.047           0.200       0.247  storeFdma/fmemReader/fmemData_2_reg_62_/CP (TOP)
+    -0.047           0.200       0.247  storeFdma/fmemReader/fmemData_2_reg_55_/CP (TOP)
+    -0.047           0.200       0.247  storeFdma/fmemReader/fmemData_2_reg_40_/CP (TOP)
+    -0.047           0.200       0.247  storeFdma/fmemReader/fmemData_2_reg_50_/CP (TOP)
+    -0.047           0.200       0.247  storeFdma/fmemReader/fmemData_2_reg_46_/CP (TOP)
+    -0.047           0.200       0.247  storeFdma/fmemReader/fmemData_2_reg_39_/CP (TOP)
+    -0.047           0.200       0.247  storeFdma/fmemReader/fmemData_2_reg_61_/CP (TOP)
+    -0.047           0.200       0.247  storeFdma/fmemReader/fmemData_2_reg_54_/CP (TOP)
+    -0.047           0.200       0.247  storeFdma/fmemReader/fmemData_2_reg_34_/CP (TOP)
+    -0.047           0.200       0.247  storeFdma/fmemReader/fmemData_2_reg_58_/CP (TOP)
+    -0.047           0.200       0.247  storeFdma/fmemReader/fmemData_2_reg_57_/CP (TOP)
+    -0.047           0.200       0.247  storeFdma/fmemReader/fmemData_2_reg_47_/CP (TOP)
+    -0.047           0.200       0.247  storeFdma/fmemReader/fmemData_2_reg_32_/CP (TOP)
+    -0.047           0.200       0.247  storeFdma/fmemReader/fmemData_2_reg_41_/CP (TOP)
+    -0.047           0.200       0.247  storeFdma/fmemReader/fmemData_2_reg_44_/CP (TOP)
+    -0.047           0.200       0.247  storeFdma/fmemReader/fmemData_2_reg_45_/CP (TOP)
+    -0.046           0.200       0.246  storeFdma/fmemReader/fmemData_2_reg_43_/CP (TOP)
+    -0.046           0.200       0.246  storeFdma/fmemReader/fmemData_2_reg_38_/CP (TOP)
+    -0.046           0.200       0.246  storeFdma/fmemReader/fmemData_2_reg_56_/CP (TOP)
+    -0.046           0.200       0.246  storeFdma/fmemReader/fmemData_2_reg_53_/CP (TOP)
+    -0.046           0.200       0.246  storeFdma/fmemReader/fmemData_2_reg_51_/CP (TOP)
+    -0.046           0.200       0.246  storeFdma/fmemReader/fmemData_2_reg_37_/CP (TOP)
+    -0.046           0.200       0.246  storeFdma/fmemReader/fmemData_2_reg_42_/CP (TOP)
+    -0.045           0.200       0.245  macArray/adders_25/m_62_0_reg/CP (TOP)
+    -0.045           0.200       0.245  macArray/adders_25/m_60_0_reg/CP (TOP)
+    -0.045           0.200       0.245  macArray/adders_25/m_63_0_reg/CP (TOP)
+    -0.045           0.200       0.245  macArray/adders_25/m_58_0_reg/CP (TOP)
+    -0.045           0.200       0.245  macArray/adders_25/m_61_0_reg/CP (TOP)
+    -0.045           0.200       0.245  macArray/adders_25/m_59_0_reg/CP (TOP)
+    -0.044           0.200       0.244  macArray/adders_25/m_32_0_reg/CP (TOP)
+    -0.044           0.200       0.244  macArray/adders_25/m_33_0_reg/CP (TOP)
+    -0.043           0.200       0.243  macArray/adders_25/minusPopCountMx3_0_reg_3_/CP (TOP)
+    -0.043           0.200       0.243  macArray/adders_25/minusPopCountMx3_0_reg_7_/CP (TOP)
+    -0.043           0.200       0.243  macArray/adders_25/minusPopCountMx3_0_reg_8_/CP (TOP)
+    -0.043           0.200       0.243  macArray/adders_25/minusPopCountMx3_0_reg_6_/CP (TOP)
+
+(...)
+
+Summary
+-------
+Transition error count over 0.200 =       1930
+Total transition error            =       1930
+
+Summary by block
+----------------
+TOP                       =       1930 (      1930)
+Total                     =       1930 (      1930)
+
+Slack range       Count
+----------------  -----
+ 0.000 < -0.100    1930
+-0.100 < -0.200       0
+-0.200 < -0.300       0
+-0.300 < -0.400       0
+-0.400 < -0.500       0
+-0.500 < -0.600       0
+-0.600 < -0.700       0
+-0.700 < -0.800       0
+-0.800 < -0.900       0
+-0.900 < -1.000       0
+-1.000 < -1.100       0
+-1.100 < -1.200       0
+-1.200 < -1.300       0
+-1.300 < -1.400       0
+-1.400 < -1.500       0
+-1.500 <              0
+----------------  -----
+Total              1930
+
+Transition range  Count
+----------------  -----
+ 0.000 <  0.100       0
+ 0.100 <  0.200      65
+ 0.200 <  0.300    1865
+ 0.300 <  0.400       0
+ 0.400 <  0.500       0
+ 0.500 <  0.600       0
+ 0.600 <  0.700       0
+ 0.700 <  0.800       0
+ 0.800 <  0.900       0
+ 0.900 <  1.000       0
+ 1.000 <  1.100       0
+ 1.100 <  1.200       0
+ 1.200 <  1.300       0
+ 1.300 <  1.400       0
+ 1.400 <  1.500       0
+ 1.500 <              0
+----------------  -----
+Total              1930
+```
+
+### Noise
+
+``` text
+slack pin(net)
+-0.117    io_idmaAxi4_awlen[3](io_idmaAxi4_awlen[3])
+-0.081    fmem/arbiterImpl/mem/mem_0/mem_0/bram_inst/inst0/D[112](fmem/arbiterImpl/place_opt_HFSNET_8494)
+-0.060    io_idmaAxi4_awid[1](io_idmaAxi4_awid[1])
+-0.034    io_csrSlave_arready(io_csrSlave_arready)
+-0.027    io_fdmaAxi4_wdata[19](io_fdmaAxi4_wdata[19])
+-0.018    fmem/arbiterImpl/mem/mem_0/mem_0/bram_inst/inst1/D[87](fmem/arbiterImpl/place_opt_HFSNET_8592)
+-0.007    io_idmaAxi4_awid[6](io_idmaAxi4_awid[6])
+```
+
+### Capacitance
+
+``` text
+     slack  max_capacitance  capacitance  pin
+----------  ---------------  -----------  ----------
+    -0.002            0.011        0.013  clock_opt_optlc_146391/ZN (TOP)
+    -0.001            0.011        0.012  clock_opt_optlc_146025/ZN (TOP)
+    -0.001            0.011        0.012  clock_opt_optlc_146010/ZN (TOP)
+    -0.001            0.011        0.012  clock_opt_optlc_146383/ZN (TOP)
+    -0.001            0.011        0.012  clock_opt_optlc_146423/ZN (TOP)
+    -0.001            0.011        0.012  clock_opt_optlc_146371/ZN (TOP)
+    -0.001            0.011        0.012  clock_opt_optlc_146013/ZN (TOP)
+    -0.001            0.011        0.012  clock_opt_optlc_146029/ZN (TOP)
+     0.000            0.011        0.011  clock_opt_optlc_146416/ZN (TOP)
+     0.000            0.011        0.011  clock_opt_optlc_146369/ZN (TOP)
+     0.000            0.011        0.011  clock_opt_optlc_146436/ZN (TOP)
+     0.000            0.011        0.011  clock_opt_optlc_146384/ZN (TOP)
+     0.000            0.011        0.011  clock_opt_optlc_146370/ZN (TOP)
+     0.000            0.011        0.011  clock_opt_optlc_146386/ZN (TOP)
+
+Summary
+-------
+Capacitance error count over 0.011 =         14
+Total capacitance error            =         14
+
+Summary by block
+----------------
+TOP                       =         14 (        14)
+Total                     =         14 (        14)
+
+Slack range        Count
+-----------------  -----
+ 0.000 < -0.100       14
+-0.100 < -0.200        0
+-0.200 < -0.300        0
+-0.300 < -0.400        0
+-0.400 < -0.500        0
+-0.500 < -0.600        0
+-0.600 < -0.700        0
+-0.700 < -0.800        0
+-0.800 < -0.900        0
+-0.900 < -1.000        0
+-1.000 < -1.100        0
+-1.100 < -1.200        0
+-1.200 < -1.300        0
+-1.300 < -1.400        0
+-1.400 < -1.500        0
+-1.500 <               0
+-----------------  -----
+Total                 14
+
+Capacitance range  Count
+-----------------  -----
+ 0.000 <  0.100       14
+ 0.100 <  0.200        0
+ 0.200 <  0.300        0
+ 0.300 <  0.400        0
+ 0.400 <  0.500        0
+ 0.500 <  0.600        0
+ 0.600 <  0.700        0
+ 0.700 <  0.800        0
+ 0.800 <  0.900        0
+ 0.900 <  1.000        0
+ 1.000 <  1.100        0
+ 1.100 <  1.200        0
+ 1.200 <  1.300        0
+ 1.300 <  1.400        0
+ 1.400 <  1.500        0
+ 1.500 <               0
+-----------------  -----
+Total                 14
+
+```
+
+# Result : Pre Rerun ECO
+
+## DC
+
+## ICC2
+
+### Open (Route Opt)
+
+``` text
+DRC-SUMMARY:
+        @@@@@@@ TOTAL VIOLATIONS =    1204
+
+[REVISIT DRC] Elapsed real time: 0:00:00 
+[REVISIT DRC] Elapsed cpu  time: sys=0:00:00 usr=0:00:01 total=0:00:02
+[REVISIT DRC] Stage (MB): Used    0  Alloctr    0  Proc    0 
+[REVISIT DRC] Total (MB): Used  581  Alloctr  644  Proc 12348 
+[DR] Elapsed real time: 0:09:19 
+[DR] Elapsed cpu  time: sys=0:04:16 usr=2:04:53 total=2:09:09
+[DR] Stage (MB): Used   54  Alloctr   62  Proc    0 
+[DR] Total (MB): Used  551  Alloctr  614  Proc 12348 
+
+Redundant via insertion finished with 0 open nets, of which 0 are frozen
+Information: Merged away 350 aligned/redundant DRCs. (ZRT-305)
+
+Redundant via insertion finished with 854 violations
+
+DRC-SUMMARY:
+        @@@@@@@ TOTAL VIOLATIONS =    854
+        Concave convex edge enclosure : 3
+        Diff net spacing : 91
+        Diff net via-cut spacing : 3
+        End of line spacing : 14
+        Illegal dimension route : 132
+        Illegal width route : 1
+        Less than minimum area : 8
+        Less than minimum edge length : 14
+        Less than minimum length : 3
+        Less than minimum width : 2
+        Metal corner keepout : 2
+        Metal corner preferred-direction keepout : 1
+        Needs fat contact : 2
+        Non-preferred direction route : 104
+        Off-grid : 58
+        Polygon not rectangle : 178
+        Same net spacing : 235
+        Same net via-cut spacing : 1
+        Short : 2
+
+
+
+Total Wire Length =                    4345826 micron
+Total Number of Contacts =             2655643
+Total Number of Wires =                1854686
+Total Number of PtConns =              789533
+Total Number of Routed Wires =       1854686
+Total Routed Wire Length =           4244123 micron
+Total Number of Routed Contacts =       2655643
+        Layer                          M0 :          0 micron
+        Layer                          M1 :          0 micron
+        Layer                          M2 :     334080 micron
+        Layer                          M3 :     393804 micron
+        Layer                          M4 :     613122 micron
+        Layer                          M5 :     902702 micron
+        Layer                          M6 :     677437 micron
+        Layer                          M7 :     827892 micron
+        Layer                          M8 :     596790 micron
+        Layer                          M9 :          0 micron
+        Layer                         M10 :          0 micron
+        Layer                         M11 :          0 micron
+        Layer                          AP :          0 micron
+        Via                    VIA78_1cut :      11028
+        Via                VIA78_1cut_2x1 :       7342
+        Via                    VIA67_1cut :      69032
+        Via                 VIA67_1cut_AS :        259
+        Via                 VIA67_1cut_W3 :        152
+        Via                VIA67_1cut_W3A :          3
+        Via                 VIA67_1cut_W4 :        271
+        Via                VIA67_1cut_W4B :        127
+        Via                VIA67_1cut_W4C :       3407
+        Via                  VIA67_LONG_H :          2
+        Via                   VIA67_FBR20 :          4
+        Via                   VIA67_PBR20 :        379
+        Via                    VIA56_1cut :     132632
+        Via                 VIA56_1cut_AS :         38
+        Via                VIA56_1cut_W2A :          2
+        Via                VIA56_1cut_W2B :          1
+        Via                 VIA56_1cut_W3 :          3
+        Via                VIA56_1cut_W3A :          7
+        Via                VIA56_1cut_W4A :          4
+        Via                VIA56_1cut_W4B :          9
+        Via                VIA56_1cut_W4C :         56
+        Via                   VIA56_FBR20 :          5
+        Via                   VIA56_PBR20 :          1
+        Via                    VIA45_1cut :     324178
+        Via                 VIA45_1cut_AS :         36
+        Via                VIA45_1cut_W2B :          1
+        Via                 VIA45_1cut_W3 :          9
+        Via                VIA45_1cut_W3A :         92
+        Via                 VIA45_1cut_W4 :          7
+        Via                VIA45_1cut_W4A :         49
+        Via                VIA45_1cut_W4B :          5
+        Via                VIA45_1cut_W4C :         23
+        Via                  VIA45_LONG_H :          1
+        Via                  VIA45_LONG_V :          2
+        Via               VIA45_LONG_V_W1 :          6
+        Via                   VIA45_PBR20 :          2
+        Via                  VIA45_PBR20B :          6
+        Via                VIA34_1cut_P48 :     547826
+        Via           VIA34_1cut_BW48_P48 :          1
+        Via           VIA34_1cut_UW60_P48 :          2
+        Via           VIA34_1cut_UW80_P48 :        323
+        Via      VIA34_1cut_BW48_UW80_P48 :          8
+        Via   VIA34_LONG_V_BW24_UW112_P48 :         54
+        Via            VIA34_1cut_P48_1x2 :          1
+        Via                VIA23_1cut_P48 :    1009069
+        Via           VIA23_1cut_BW72_P48 :       2097
+        Via      VIA23_1cut_BW72_UW48_P48 :          1
+        Via                    VIA12_1cut :     366404
+        Via             VIA12_1cut_HH_P48 :      59275
+        Via           VIA12_1cut_UW48_P48 :          4
+        Via      VIA12_1cut_UW48_P48(rot) :          1
+        Via        VIA12_1cut_EN12_12_P48 :      41447
+        Via         VIA12_1cut_EN20_4_P48 :      50418
+        Via         VIA12_1cut_EN18_5_P48 :       1343
+        Via         VIA12_1cut_EN10_6_P48 :       1739
+        Via       VIA12_1cut_EN18_5_R_P48 :      20161
+        Via       VIA12_1cut_EN20_4_R_P48 :       5950
+        Via      VIA12_1cut_HH_EN4_20_P48 :        327
+        Via      VIA12_1cut_HH_EN5_18_P48 :         11
+
+
+Redundant via conversion report:
+--------------------------------
+
+  Total optimized via conversion rate =  0.28% (7343 / 2655643 vias)
+
+    Layer VIA1       =  0.00% (0      / 547080  vias)
+        Un-optimized =  0.00% (0       vias)
+        Un-mapped    = 100.00% (547080  vias)
+    Layer VIA2       =  0.00% (0      / 1011167 vias)
+        Un-optimized =  0.00% (0       vias)
+        Un-mapped    = 100.00% (1011167 vias)
+    Layer VIA3       =  0.00% (1      / 548215  vias)
+        Weight 1     =  0.00% (1       vias)
+        Un-optimized =  0.00% (0       vias)
+        Un-mapped    = 100.00% (548214  vias)
+    Layer VIA4       =  0.00% (0      / 324417  vias)
+        Un-optimized =  0.00% (0       vias)
+        Un-mapped    = 100.00% (324417  vias)
+    Layer VIA5       =  0.00% (0      / 132758  vias)
+        Un-optimized =  0.00% (0       vias)
+        Un-mapped    = 100.00% (132758  vias)
+    Layer VIA6       =  0.00% (0      / 73636   vias)
+        Un-optimized =  0.00% (0       vias)
+        Un-mapped    = 100.00% (73636   vias)
+    Layer VIA7       = 39.97% (7342   / 18370   vias)
+        Weight 1     = 39.97% (7342    vias)
+        Un-optimized =  0.00% (0       vias)
+        Un-mapped    = 60.03% (11028   vias)
+
+  Total double via conversion rate    =  0.28% (7343 / 2655643 vias)
+
+    Layer VIA1       =  0.00% (0      / 547080  vias)
+    Layer VIA2       =  0.00% (0      / 1011167 vias)
+    Layer VIA3       =  0.00% (1      / 548215  vias)
+    Layer VIA4       =  0.00% (0      / 324417  vias)
+    Layer VIA5       =  0.00% (0      / 132758  vias)
+    Layer VIA6       =  0.00% (0      / 73636   vias)
+    Layer VIA7       = 39.97% (7342   / 18370   vias)
+
+  The optimized via conversion rate based on total routed via count =  0.28% (7343 / 2655643 vias)
+
+    Layer VIA1       =  0.00% (0      / 547080  vias)
+        Un-optimized =  0.00% (0       vias)
+        Un-mapped    = 100.00% (547080  vias)
+    Layer VIA2       =  0.00% (0      / 1011167 vias)
+        Un-optimized =  0.00% (0       vias)
+        Un-mapped    = 100.00% (1011167 vias)
+    Layer VIA3       =  0.00% (1      / 548215  vias)
+        Weight 1     =  0.00% (1       vias)
+        Un-optimized =  0.00% (0       vias)
+        Un-mapped    = 100.00% (548214  vias)
+    Layer VIA4       =  0.00% (0      / 324417  vias)
+        Un-optimized =  0.00% (0       vias)
+        Un-mapped    = 100.00% (324417  vias)
+    Layer VIA5       =  0.00% (0      / 132758  vias)
+        Un-optimized =  0.00% (0       vias)
+        Un-mapped    = 100.00% (132758  vias)
+    Layer VIA6       =  0.00% (0      / 73636   vias)
+        Un-optimized =  0.00% (0       vias)
+        Un-mapped    = 100.00% (73636   vias)
+    Layer VIA7       = 39.97% (7342   / 18370   vias)
+        Weight 1     = 39.97% (7342    vias)
+        Un-optimized =  0.00% (0       vias)
+        Un-mapped    = 60.03% (11028   vias)
+
+
+Total number of nets = 232150
+0 open nets, of which 0 are frozen
+```
+
+### Timing (Signoff DRC)
+
+``` text
+****************************************
+Report : timing
+        -path_type full
+        -delay_type max
+        -max_paths 1
+        -report_by group
+        -nosplit
+        -input_pins
+        -nets
+        -transition_time
+        -capacitance
+        -derate
+        -attributes
+        -physical
+Design : Bxb
+Version: N-2017.09-SP4
+Date   : Thu Jul 14 04:39:39 2022
+****************************************
+Information: Timer using 'SI, AWP, AOCV, CRPR'. (TIM-050)
+
+  Startpoint: a2f/pipeline/accumulationPipeline/pipeline_0/_T_686_reg_1_ (rising edge-triggered flip-flop clocked by clock)
+  Endpoint: fmem/arbiterImpl/mem/mem_1/mem_0/bram_inst/inst4 (rising edge-triggered flip-flop clocked by clock)
+  Mode: func
+  Corner: ss72_cworst_CCworst_T_m40c
+  Scenario: func::ss72_cworst_CCworst_T_m40c
+  Path Group: clock
+  Path Type: max
+
+
+Attributes
+    b - black-box (unknown)
+    s - size_only
+    d - dont_touch
+    u - dont_use
+    g - generic
+    h - hierarchical
+    i - ideal
+    n - noncombinational
+    E - extracted timing model
+    Q - Quick timing model
+
+
+  Point                                                                                           Fanout     Cap        Trans      Derate      Incr        Path           Location       Attributes
+  -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+  clock clock (rise edge)                                                                                                                     0.0000      0.0000
+  clock network delay (propagated)                                                                                                            0.4986      0.4986
+
+  a2f/pipeline/accumulationPipeline/pipeline_0/_T_686_reg_1_/CP (SDFQD1BWP6T16P96CPD)                                   0.0768      1.0700    0.0000      0.4986 r    (328.07,369.60)   s, n
+  a2f/pipeline/accumulationPipeline/pipeline_0/_T_686_reg_1_/Q (SDFQD1BWP6T16P96CPD)                                    0.0329      1.0430    0.1519      0.6505 f    (328.26,369.60)   s, n
+  a2f/pipeline/accumulationPipeline/pipeline_0/_T_686_1_ (net)                                       2      0.0019
+  a2f/pipeline/accumulationPipeline/pipeline_0/alchip527_dc/A2 (OR2D2BWP6T16P96CPD)                                     0.0329      1.0700    0.0001      0.6506 f    (324.78,369.97)
+  a2f/pipeline/accumulationPipeline/pipeline_0/alchip527_dc/Z (OR2D2BWP6T16P96CPD)                                      0.0244      1.0430    0.0581      0.7087 f    (324.59,369.98)
+  a2f/pipeline/accumulationPipeline/pipeline_0/n346 (net)                                            2      0.0024
+  a2f/pipeline/accumulationPipeline/pipeline_0/alchip1718_dc/A1 (AOI21D4BWP6T16P96CPD)                                  0.0244      1.0700    0.0002      0.7089 f    (325.30,369.22)
+  a2f/pipeline/accumulationPipeline/pipeline_0/alchip1718_dc/ZN (AOI21D4BWP6T16P96CPD)                                  0.0289      1.0430    0.0321      0.7410 r    (325.08,369.26)
+  a2f/pipeline/accumulationPipeline/pipeline_0/n1978 (net)                                           2      0.0035
+  a2f/pipeline/accumulationPipeline/pipeline_0/alchip1721_dc/A1 (OAI21D8BWP6T16P96CPD)                                  0.0286      1.0700    0.0001      0.7411 r    (323.95,369.60)
+  a2f/pipeline/accumulationPipeline/pipeline_0/alchip1721_dc/ZN (OAI21D8BWP6T16P96CPD)                                  0.0288      1.0430    0.0321      0.7732 f    (324.07,369.65)
+  a2f/pipeline/accumulationPipeline/pipeline_0/n1982 (net)                                           2      0.0034
+  a2f/pipeline/accumulationPipeline/pipeline_0/alchip1724_dc/A1 (AOI21D8BWP6T16P96CPD)                                  0.0288      1.0700    0.0001      0.7734 f    (325.30,370.37)
+  a2f/pipeline/accumulationPipeline/pipeline_0/alchip1724_dc/ZN (AOI21D8BWP6T16P96CPD)                                  0.0271      1.0430    0.0279      0.8013 r    (325.17,370.32)
+  a2f/pipeline/accumulationPipeline/pipeline_0/n1988 (net)                                           2      0.0036
+  a2f/pipeline/accumulationPipeline/pipeline_0/alchip1727_dc/A1 (OAI21D8BWP6T16P96CPD)                                  0.0269      1.0700    0.0002      0.8014 r    (325.68,371.14)
+  a2f/pipeline/accumulationPipeline/pipeline_0/alchip1727_dc/ZN (OAI21D8BWP6T16P96CPD)                                  0.0308      1.0430    0.0286      0.8300 f    (325.80,371.18)
+  a2f/pipeline/accumulationPipeline/pipeline_0/n1992 (net)                                           2      0.0025
+  a2f/pipeline/accumulationPipeline/pipeline_0/clock_opt_SGI53_143155/A1 (ND2D4BWP6T16P96CPD)                           0.0308      1.0700    0.0001      0.8302 f    (323.47,371.52)
+  a2f/pipeline/accumulationPipeline/pipeline_0/clock_opt_SGI53_143155/ZN (ND2D4BWP6T16P96CPD)                           0.0170      1.0430    0.0187      0.8489 r    (323.66,371.50)
+  a2f/pipeline/accumulationPipeline/pipeline_0/ropt_net_61624 (net)                                  1      0.0014
+  a2f/pipeline/accumulationPipeline/pipeline_0/clock_opt_SGI54_143156/B1 (IND2D4BWP6T16P96CPD)                          0.0170      1.0700    0.0001      0.8490 r    (324.32,371.90)
+  a2f/pipeline/accumulationPipeline/pipeline_0/clock_opt_SGI54_143156/ZN (IND2D4BWP6T16P96CPD)                          0.0174      1.0430    0.0197      0.8687 f    (324.34,371.92)
+  a2f/pipeline/accumulationPipeline/pipeline_0/n80 (net)                                             2      0.0015
+  a2f/pipeline/accumulationPipeline/pipeline_0/clock_opt_SGI42_143459/A (FCICOD2BWP6T16P96CPD)                          0.0174      1.0700    0.0001      0.8688 f    (322.41,372.29)
+  a2f/pipeline/accumulationPipeline/pipeline_0/clock_opt_SGI42_143459/CO (FCICOD2BWP6T16P96CPD)                         0.0189      1.0430    0.0522      0.9210 f    (322.01,372.29)
+  a2f/pipeline/accumulationPipeline/pipeline_0/n1995 (net)                                           2      0.0015
+  a2f/pipeline/accumulationPipeline/pipeline_0/clock_opt_SGI51_142776/A (FCICOD2BWP6T16P96CPD)                          0.0189      1.0700    0.0001      0.9210 f    (321.64,373.44)
+  a2f/pipeline/accumulationPipeline/pipeline_0/clock_opt_SGI51_142776/CO (FCICOD2BWP6T16P96CPD)                         0.0203      1.0430    0.0536      0.9746 f    (321.24,373.44)
+  a2f/pipeline/accumulationPipeline/pipeline_0/n1997 (net)                                           2      0.0017
+  a2f/pipeline/accumulationPipeline/pipeline_0/clock_opt_SGI56_143106/A (FCICOD2BWP6T16P96CPD)                          0.0203      1.0700    0.0001      0.9747 f    (323.57,372.29)
+  a2f/pipeline/accumulationPipeline/pipeline_0/clock_opt_SGI56_143106/CO (FCICOD2BWP6T16P96CPD)                         0.0201      1.0430    0.0538      1.0286 f    (323.97,372.29)
+  a2f/pipeline/accumulationPipeline/pipeline_0/n1999 (net)                                           2      0.0017
+  a2f/pipeline/accumulationPipeline/pipeline_0/place_opt_SGI53_79187/A (FCICOD2BWP6T16P96CPD)                           0.0201      1.0700    0.0001      1.0287 f    (323.56,374.21)
+  a2f/pipeline/accumulationPipeline/pipeline_0/place_opt_SGI53_79187/CO (FCICOD2BWP6T16P96CPD)                          0.0196      1.0430    0.0536      1.0823 f    (323.16,374.21)
+  a2f/pipeline/accumulationPipeline/pipeline_0/n2001 (net)                                           1      0.0016
+  a2f/pipeline/accumulationPipeline/pipeline_0/alchip3316_dc/CI (FA1D4BWP6T16P96CPD)                                    0.0196      1.0700    0.0001      1.0824 f    (323.90,374.59)
+  a2f/pipeline/accumulationPipeline/pipeline_0/alchip3316_dc/CO (FA1D4BWP6T16P96CPD)                                    0.0217      1.0430    0.0571      1.1395 f    (325.22,374.59)
+  a2f/pipeline/accumulationPipeline/pipeline_0/n2003 (net)                                           1      0.0019
+  a2f/pipeline/accumulationPipeline/pipeline_0/alchip3318_dc/CI (FA1D4BWP6T16P96CPD)                                    0.0217      1.0700    0.0002      1.1397 f    (322.37,374.98)
+  a2f/pipeline/accumulationPipeline/pipeline_0/alchip3318_dc/CO (FA1D4BWP6T16P96CPD)                                    0.0221      1.0430    0.0559      1.1956 f    (323.68,374.98)
+  a2f/pipeline/accumulationPipeline/pipeline_0/n2005 (net)                                           1      0.0021
+  a2f/pipeline/accumulationPipeline/pipeline_0/alchip3320_dc/CI (FA1D4BWP6T16P96CPD)                                    0.0221      1.0700    0.0002      1.1958 f    (320.45,374.59)
+  a2f/pipeline/accumulationPipeline/pipeline_0/alchip3320_dc/CO (FA1D4BWP6T16P96CPD)                                    0.0223      1.0430    0.0561      1.2519 f    (321.76,374.59)
+  a2f/pipeline/accumulationPipeline/pipeline_0/n2007 (net)                                           2      0.0021
+  a2f/pipeline/accumulationPipeline/pipeline_0/place_opt_SGI53_79206/A (FCICOD2BWP6T16P96CPD)                           0.0223      1.0700    0.0002      1.2521 f    (318.19,374.59)
+  a2f/pipeline/accumulationPipeline/pipeline_0/place_opt_SGI53_79206/CO (FCICOD2BWP6T16P96CPD)                          0.0236      1.0430    0.0563      1.3083 f    (317.79,374.59)
+  a2f/pipeline/accumulationPipeline/pipeline_0/n2009 (net)                                           2      0.0023
+  a2f/pipeline/accumulationPipeline/pipeline_0/clock_opt_SGI56_143330/A (FCICOD2BWP6T16P96CPD)                          0.0236      1.0700    0.0002      1.3085 f    (320.11,374.98)
+  a2f/pipeline/accumulationPipeline/pipeline_0/clock_opt_SGI56_143330/CO (FCICOD2BWP6T16P96CPD)                         0.0189      1.0430    0.0547      1.3632 f    (319.71,374.97)
+  a2f/pipeline/accumulationPipeline/pipeline_0/n565 (net)                                            1      0.0015
+  a2f/pipeline/accumulationPipeline/pipeline_0/alchip81_dc/A1 (XOR2D8BWP6T16P96CPD)                                     0.0190      1.0700    0.0001      1.3633 f    (319.51,375.74)
+  a2f/pipeline/accumulationPipeline/pipeline_0/alchip81_dc/Z (XOR2D8BWP6T16P96CPD)                                      0.0181      1.0430    0.0530      1.4163 f    (321.07,375.74)
+  a2f/pipeline/accumulationPipeline/pipeline_0/n566 (net)                                            1      0.0030
+  a2f/pipeline/accumulationPipeline/pipeline_0/clock_opt_SGI34_144206/A2 (ND2D8BWP6T16P96CPD)                           0.0181      1.0700    0.0003      1.4166 f    (324.62,374.95)
+  a2f/pipeline/accumulationPipeline/pipeline_0/clock_opt_SGI34_144206/ZN (ND2D8BWP6T16P96CPD)                           0.0300      1.0430    0.0129      1.4295 r    (325.01,374.99)
+  a2f/pipeline/accumulationPipeline/pipeline_0/ropt_net_62045 (net)                                  1      0.0024
+  a2f/pipeline/accumulationPipeline/pipeline_0/clock_opt_SGI36_144208/A1 (ND2D6BWP6T16P96CPD)                           0.0300      1.0700    0.0002      1.4297 r    (322.41,375.74)
+  a2f/pipeline/accumulationPipeline/pipeline_0/clock_opt_SGI36_144208/ZN (ND2D6BWP6T16P96CPD)                           0.0172      1.0430    0.0230      1.4527 f    (322.70,375.76)
+  a2f/pipeline/accumulationPipeline/pipeline_0/io_ramWrite_data[575] (net)                           2      0.0015
+  fmem/arbiterImpl/alchip156_dc/A2 (AO22D6BWP6T16P96CPD)                                                                0.0172      1.0700    0.0001      1.4527 f    (321.74,376.18)
+  fmem/arbiterImpl/alchip156_dc/Z (AO22D6BWP6T16P96CPD)                                                                 0.0194      1.0430    0.0508      1.5035 f    (322.32,376.13)
+  fmem/arbiterImpl/place_opt_HFSNET_11274 (net)                                                      1      0.0019
+  fmem/arbiterImpl/place_opt_BUFT_RR_21039/I (BUFFD16BWP6T16P96CPD)                                                     0.0193      1.0700    0.0001      1.5037 f    (322.90,375.36)
+  fmem/arbiterImpl/place_opt_BUFT_RR_21039/Z (BUFFD16BWP6T16P96CPD)                                                     0.0270      1.0430    0.0347      1.5384 f    (321.84,375.36)
+  fmem/arbiterImpl/BUFT_net_1776 (net)                                                               1      0.0298
+  fmem/arbiterImpl/mem/mem_1/mem_0/bram_inst/clock_opt_ropt_inst_147116/I (INVD16BWP6T16P96CPD)                         0.0393      1.0700    0.0192      1.5576 f    (315.70,238.66)
+  fmem/arbiterImpl/mem/mem_1/mem_0/bram_inst/clock_opt_ropt_inst_147116/ZN (INVD16BWP6T16P96CPD)                        0.0367      1.0430    0.0358      1.5934 r    (315.70,238.66)
+  fmem/arbiterImpl/mem/mem_1/mem_0/bram_inst/BUFT180 (net)                                           1      0.0319
+  fmem/arbiterImpl/mem/mem_1/mem_0/bram_inst/clock_opt_ropt_inst_147115/I (INVD16BWP6T16P96CPD)                         0.0403      1.0700    0.0156      1.6091 r    (157.68,215.62)
+  fmem/arbiterImpl/mem/mem_1/mem_0/bram_inst/clock_opt_ropt_inst_147115/ZN (INVD16BWP6T16P96CPD)                        0.0301      1.0430    0.0354      1.6445 f    (157.68,215.62)
+  fmem/arbiterImpl/mem/mem_1/mem_0/bram_inst/BUFT174 (net)                                           1      0.0226
+  fmem/arbiterImpl/mem/mem_1/mem_0/bram_inst/inst4/D[63] (TS1N12FFCLLSBSVTD1024X128M4S)                                 0.0408      1.0700    0.0166      1.6611 f    (64.96,100.99)    s, d, n, E
+  data arrival time                                                                                                                                       1.6611
+
+  clock clock (rise edge)                                                                                                                     1.2500      1.2500
+  clock network delay (propagated)                                                                                                            0.3197      1.5697
+  clock reconvergence pessimism                                                                                                               0.0107      1.5804
+  fmem/arbiterImpl/mem/mem_1/mem_0/bram_inst/inst4/CLK (TS1N12FFCLLSBSVTD1024X128M4S)                                   0.0866      0.9300    0.0000      1.5804 r    (64.96,114.67)    s, d, n, E
+  clock uncertainty                                                                                                                          -0.0430      1.5373
+  library setup time                                                                                                                1.0000   -0.0305      1.5068
+  data required time                                                                                                                                      1.5068
+  -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+  data required time                                                                                                                                      1.5068
+  data arrival time                                                                                                                                      -1.6611
+  -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+  slack (VIOLATED)                                                                                                                                       -0.1542
+
+
+
+  Startpoint: reset (input port clocked by clock)
+  Endpoint: idma/loadFdmaQueue/instQueue/impl/count_reg_3_ (rising edge-triggered flip-flop clocked by clock)
+  Mode: func
+  Corner: ss72_cworst_CCworst_T_m40c
+  Scenario: func::ss72_cworst_CCworst_T_m40c
+  Path Group: AC_IN
+  Path Type: max
+
+
+Attributes
+    b - black-box (unknown)
+    s - size_only
+    d - dont_touch
+    u - dont_use
+    g - generic
+    h - hierarchical
+    i - ideal
+    n - noncombinational
+    E - extracted timing model
+    Q - Quick timing model
+
+
+  Point                                                                                           Fanout     Cap        Trans      Derate      Incr        Path           Location       Attributes
+  -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+  clock clock (rise edge)                                                                                                                     0.0000      0.0000
+  clock network delay (ideal)                                                                                                                 0.4954      0.4954
+  input external delay                                                                                                                        0.6250      1.1204
+
+  reset (in)                                                                                                            0.0173      1.0430    0.0076      1.1280 f    (355.65,0.10)
+  reset (net)                                                                                        2      0.0068
+  place_opt_BINV_R_20731/I (INVD16BWP6T16P96CPD)                                                                        0.0158      1.0700    0.0008      1.1287 f    (356.98,3.65)
+  place_opt_BINV_R_20731/ZN (INVD16BWP6T16P96CPD)                                                                       0.0184      1.0430    0.0156      1.1444 r    (356.98,3.65)
+  BUFT_net_1468 (net)                                                                                2      0.0228
+  place_opt_BINV_R_20730/I (INVD16BWP6T16P96CPD)                                                                        0.0261      1.0700    0.0147      1.1591 r    (356.21,108.48)
+  place_opt_BINV_R_20730/ZN (INVD16BWP6T16P96CPD)                                                                       0.0284      1.0430    0.0303      1.1894 f    (356.21,108.48)
+  BUFT_net_1467 (net)                                                                                3      0.0201
+  place_opt_HFSINV_6305_16766/I (INVD6BWP6T16P96CPD)                                                                    0.0302      1.0700    0.0062      1.1956 f    (355.48,140.35)
+  place_opt_HFSINV_6305_16766/ZN (INVD6BWP6T16P96CPD)                                                                   0.0116      1.0430    0.0182      1.2138 r    (355.56,140.35)
+  place_opt_HFSNET_6757 (net)                                                                        1      0.0021
+  place_opt_HFSBUF_6133_16765/I (BUFFD16BWP6T16P96CPD)                                                                  0.0116      1.0700    0.0002      1.2140 r    (357.84,139.97)
+  place_opt_HFSBUF_6133_16765/Z (BUFFD16BWP6T16P96CPD)                                                                  0.0288      1.0430    0.0357      1.2497 r    (356.78,139.97)
+  place_opt_HFSNET_6756 (net)                                                                       12      0.0316
+  place_opt_HFSINV_1987_16749/I (INVD16BWP6T16P96CPD)                                                                   0.0304      1.0700    0.0055      1.2552 r    (371.76,136.90)
+  place_opt_HFSINV_1987_16749/ZN (INVD16BWP6T16P96CPD)                                                                  0.0305      1.0430    0.0337      1.2889 f    (371.76,136.90)
+  place_opt_HFSNET_6745 (net)                                                                       34      0.0276
+  place_opt_HFSBUF_1450_16748/I (BUFFD16BWP6T16P96CPD)                                                                  0.0321      1.0700    0.0046      1.2935 f    (379.15,137.28)
+  place_opt_HFSBUF_1450_16748/Z (BUFFD16BWP6T16P96CPD)                                                                  0.0321      1.0430    0.0465      1.3400 f    (378.10,137.28)
+  place_opt_HFSNET_6744 (net)                                                                       23      0.0318
+  idma/loadFdmaQueue/instQueue/impl/alchip48_dc/A1 (IND2D12BWP6T16P96CPD)                                               0.0357      1.0700    0.0104      1.3504 f    (414.36,160.70)
+  idma/loadFdmaQueue/instQueue/impl/alchip48_dc/ZN (IND2D12BWP6T16P96CPD)                                               0.0284      1.0430    0.0558      1.4062 f    (413.04,160.72)
+  idma/loadFdmaQueue/instQueue/impl/n653 (net)                                                       2      0.0059
+  idma/loadFdmaQueue/instQueue/impl/alchip6_dc/A1 (NR2D6BWP6T16P96CPD)                                                  0.0285      1.0700    0.0011      1.4074 f    (418.41,161.09)
+  idma/loadFdmaQueue/instQueue/impl/alchip6_dc/ZN (NR2D6BWP6T16P96CPD)                                                  0.0443      1.0430    0.0337      1.4411 r    (418.70,161.10)
+  idma/loadFdmaQueue/instQueue/impl/n717 (net)                                                       5      0.0071
+  idma/loadFdmaQueue/instQueue/impl/alchip197_dc/I (INVD4BWP6T16P96CPD)                                                 0.0442      1.0700    0.0020      1.4431 r    (403.92,158.78)
+  idma/loadFdmaQueue/instQueue/impl/alchip197_dc/ZN (INVD4BWP6T16P96CPD)                                                0.0175      1.0430    0.0305      1.4736 f    (404.04,158.78)
+  idma/loadFdmaQueue/instQueue/impl/n76 (net)                                                        2      0.0023
+  idma/loadFdmaQueue/instQueue/impl/alchip198_dc/A1 (NR2D4BWP6T16P96CPD)                                                0.0175      1.0700    0.0001      1.4737 f    (403.15,158.78)
+  idma/loadFdmaQueue/instQueue/impl/alchip198_dc/ZN (NR2D4BWP6T16P96CPD)                                                0.0349      1.0430    0.0200      1.4937 r    (403.34,158.80)
+  idma/loadFdmaQueue/instQueue/impl/n75 (net)                                                        2      0.0020
+  idma/loadFdmaQueue/instQueue/impl/alchip200_dc/A2 (AOI22D2BWP6T16P96CPD)                                              0.0348      1.0700    0.0001      1.4939 r    (402.01,157.58)
+  idma/loadFdmaQueue/instQueue/impl/alchip200_dc/ZN (AOI22D2BWP6T16P96CPD)                                              0.0820      1.0430    0.0327      1.5266 f    (402.18,157.54)
+  idma/loadFdmaQueue/instQueue/impl/n67 (net)                                                        1      0.0009
+  idma/loadFdmaQueue/instQueue/impl/alchip201_dc/C (AOAI211D2BWP6T16P96CPD)                                             0.0828      1.0700    0.0000      1.5266 f    (402.62,158.02)
+  idma/loadFdmaQueue/instQueue/impl/alchip201_dc/ZN (AOAI211D2BWP6T16P96CPD)                                            0.0307      1.0430    0.0396      1.5662 r    (402.85,157.97)
+  idma/loadFdmaQueue/instQueue/impl/N75 (net)                                                        1      0.0013
+  idma/loadFdmaQueue/instQueue/impl/count_reg_3_/D (SDFQD1BWP6T16P96CPD)                                                0.0307      1.0700    0.0008      1.5671 r    (399.42,155.33)   s, n
+  data arrival time                                                                                                                                       1.5671
+
+  clock clock (rise edge)                                                                                                                     1.2500      1.2500
+  clock network delay (propagated)                                                                                                            0.3852      1.6352
+  clock reconvergence pessimism                                                                                                               0.0000      1.6352
+  idma/loadFdmaQueue/instQueue/impl/count_reg_3_/CP (SDFQD1BWP6T16P96CPD)                                               0.0292      0.9300    0.0000      1.6352 r    (401.41,155.33)   s, n
+  clock uncertainty                                                                                                                          -0.0430      1.5921
+  library setup time                                                                                                                1.0000   -0.0591      1.5331
+  data required time                                                                                                                                      1.5331
+  -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+  data required time                                                                                                                                      1.5331
+  data arrival time                                                                                                                                      -1.5671
+  -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+  slack (VIOLATED)                                                                                                                                       -0.0340
+
+
+
+  Startpoint: fdmaAdapter/writeDataDeq/impl/_T_105_reg (rising edge-triggered flip-flop clocked by clock)
+  Endpoint: io_fdmaAxi4_wdata[1] (output port clocked by clock)
+  Mode: func
+  Corner: ss72_cworst_CCworst_T_m40c
+  Scenario: func::ss72_cworst_CCworst_T_m40c
+  Path Group: AC_OUT
+  Path Type: max
+
+
+Attributes
+    b - black-box (unknown)
+    s - size_only
+    d - dont_touch
+    u - dont_use
+    g - generic
+    h - hierarchical
+    i - ideal
+    n - noncombinational
+    E - extracted timing model
+    Q - Quick timing model
+
+
+  Point                                                                                           Fanout     Cap        Trans      Derate      Incr        Path           Location       Attributes
+  -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+  clock clock (rise edge)                                                                                                                     0.0000      0.0000
+  clock network delay (propagated)                                                                                                            0.4750      0.4750
+
+  fdmaAdapter/writeDataDeq/impl/_T_105_reg/CP (SDFQD4BWP6T16P96CPD)                                                     0.0886      1.0700    0.0000      0.4750 r    (430.27,118.08)   s, n
+  fdmaAdapter/writeDataDeq/impl/_T_105_reg/Q (SDFQD4BWP6T16P96CPD)                                                      0.0436      1.0430    0.1769      0.6519 f    (429.84,118.08)   s, n
+  fdmaAdapter/writeDataDeq/impl/_T_105 (net)                                                        17      0.0135
+  fdmaAdapter/writeDataDeq/impl/place_opt_HFSINV_5281_12125/I (INVD6BWP6T16P96CPD)                                      0.0439      1.0700    0.0016      0.6535 f    (432.66,118.46)
+  fdmaAdapter/writeDataDeq/impl/place_opt_HFSINV_5281_12125/ZN (INVD6BWP6T16P96CPD)                                     0.0575      1.0430    0.0545      0.7080 r    (432.74,118.46)
+  fdmaAdapter/writeDataDeq/impl/place_opt_HFSNET_1700 (net)                                         21      0.0242
+  fdmaAdapter/writeDataDeq/impl/place_opt_HFSINV_4656_12124/I (INVD6BWP6T16P96CPD)                                      0.0577      1.0700    0.0023      0.7103 r    (433.43,111.55)
+  fdmaAdapter/writeDataDeq/impl/place_opt_HFSINV_4656_12124/ZN (INVD6BWP6T16P96CPD)                                     0.0619      1.0430    0.0660      0.7763 f    (433.51,111.55)
+  fdmaAdapter/writeDataDeq/impl/place_opt_HFSNET_1699 (net)                                         37      0.0235
+  fdmaAdapter/writeDataDeq/impl/alchip177_dc/A1 (AO22D2BWP6T16P96CPD)                                                   0.0642      1.0700    0.0087      0.7850 f    (438.68,114.62)
+  fdmaAdapter/writeDataDeq/impl/alchip177_dc/Z (AO22D2BWP6T16P96CPD)                                                    0.1505      1.0430    0.1577      0.9427 f    (439.05,114.64)
+  fdmaAdapter/writeDataDeq/impl/io_deq_bits[18] (net)                                                1      0.0216
+  io_fdmaAxi4_wdata[1] (out)                                                                                            0.1510      1.0700    0.0610      1.0037 f    (457.90,0.10)
+  data arrival time                                                                                                                                       1.0037
+
+  clock clock (rise edge)                                                                                                                     1.2500      1.2500
+  clock network delay (ideal)                                                                                                                 0.4295      1.6795
+  clock reconvergence pessimism                                                                                                               0.0000      1.6795
+  clock uncertainty                                                                                                                          -0.0430      1.6364
+  output external delay                                                                                                                      -0.6250      1.0114
+  data required time                                                                                                                                      1.0114
+  -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+  data required time                                                                                                                                      1.0114
+  data arrival time                                                                                                                                      -1.0037
+  -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+  slack (MET)                                                                                                                                             0.0077
+
+
+1
+```
+
+### Transition / Capacitance (Signoff DRC)
+
+``` text
+****************************************
+Report : constraint
+        -all_violators
+        -max_transition
+        -max_capacitance
+Design : Bxb
+Version: N-2017.09-SP4
+Date   : Thu Jul 14 04:39:39 2022
+****************************************
+
+
+
+   Mode: func Corner: ss72_cworst_CCworst_T_m40c
+   Scenario: func::ss72_cworst_CCworst_T_m40c
+   max_transition                                                              
+                             Required        Actual                            
+   Net                      Transition     Transition        Slack  Violation  
+  ---------------------------------------------------------------------------
+   storeAdma/amemReader/axi4WriteUnalignedAdapter/writeDataQueue/impl/pckg_net_clock_suffix_21   0.1575   0.2009  -0.0434 (VIOLATED)
+     PIN : storeAdma/amemReader/axi4WriteUnalignedAdapter/writeDataQueue/impl/_T_94_reg_4__107_/CP   0.1575   0.2009  -0.0434 (VIOLATED)
+     PIN : storeAdma/amemReader/axi4WriteUnalignedAdapter/writeDataQueue/impl/_T_94_reg_4__103_/CP   0.1575   0.2009  -0.0434 (VIOLATED)
+     PIN : storeAdma/amemReader/axi4WriteUnalignedAdapter/writeDataQueue/impl/_T_94_reg_4__97_/CP   0.1575   0.2009  -0.0434 (VIOLATED)
+     PIN : storeAdma/amemReader/axi4WriteUnalignedAdapter/writeDataQueue/impl/_T_94_reg_4__102_/CP   0.1575   0.2008  -0.0433 (VIOLATED)
+     PIN : storeAdma/amemReader/axi4WriteUnalignedAdapter/writeDataQueue/impl/_T_94_reg_4__101_/CP   0.1575   0.2008  -0.0433 (VIOLATED)
+     PIN : storeAdma/amemReader/axi4WriteUnalignedAdapter/writeDataQueue/impl/_T_94_reg_4__98_/CP   0.1575   0.2008  -0.0433 (VIOLATED)
+     PIN : storeAdma/amemReader/axi4WriteUnalignedAdapter/writeDataQueue/impl/_T_94_reg_4__108_/CP   0.1575   0.2008  -0.0433 (VIOLATED)
+     PIN : storeAdma/amemReader/axi4WriteUnalignedAdapter/writeDataQueue/impl/_T_94_reg_4__106_/CP   0.1575   0.2008  -0.0433 (VIOLATED)
+     PIN : storeAdma/amemReader/axi4WriteUnalignedAdapter/writeDataQueue/impl/_T_94_reg_4__105_/CP   0.1575   0.2008  -0.0433 (VIOLATED)
+     PIN : storeAdma/amemReader/axi4WriteUnalignedAdapter/writeDataQueue/impl/_T_94_reg_4__104_/CP   0.1575   0.2008  -0.0433 (VIOLATED)
+     PIN : storeAdma/amemReader/axi4WriteUnalignedAdapter/writeDataQueue/impl/_T_94_reg_4__90_/CP   0.1575   0.2006  -0.0431 (VIOLATED)
+     PIN : storeAdma/amemReader/axi4WriteUnalignedAdapter/writeDataQueue/impl/_T_94_reg_4__94_/CP   0.1575   0.2006  -0.0431 (VIOLATED)
+     PIN : storeAdma/amemReader/axi4WriteUnalignedAdapter/writeDataQueue/impl/_T_94_reg_4__95_/CP   0.1575   0.2006  -0.0431 (VIOLATED)
+     PIN : storeAdma/amemReader/axi4WriteUnalignedAdapter/writeDataQueue/impl/_T_94_reg_4__88_/CP   0.1575   0.2006  -0.0431 (VIOLATED)
+     PIN : storeAdma/amemReader/axi4WriteUnalignedAdapter/writeDataQueue/impl/_T_94_reg_4__92_/CP   0.1575   0.2006  -0.0431 (VIOLATED)
+     PIN : storeAdma/amemReader/axi4WriteUnalignedAdapter/writeDataQueue/impl/_T_94_reg_4__110_/CP   0.1575   0.2005  -0.0430 (VIOLATED)
+     PIN : storeAdma/amemReader/axi4WriteUnalignedAdapter/writeDataQueue/impl/_T_94_reg_4__111_/CP   0.1575   0.2005  -0.0430 (VIOLATED)
+     PIN : storeAdma/amemReader/axi4WriteUnalignedAdapter/writeDataQueue/impl/_T_94_reg_4__112_/CP   0.1575   0.2005  -0.0430 (VIOLATED)
+     PIN : storeAdma/amemReader/axi4WriteUnalignedAdapter/writeDataQueue/impl/_T_94_reg_4__109_/CP   0.1575   0.2005  -0.0430 (VIOLATED)
+     PIN : storeAdma/amemReader/axi4WriteUnalignedAdapter/writeDataQueue/impl/_T_94_reg_4__113_/CP   0.1575   0.2005  -0.0430 (VIOLATED)
+     PIN : storeAdma/amemReader/axi4WriteUnalignedAdapter/writeDataQueue/impl/_T_94_reg_4__115_/CP   0.1575   0.2005  -0.0430 (VIOLATED)
+     PIN : storeAdma/amemReader/axi4WriteUnalignedAdapter/writeDataQueue/impl/_T_94_reg_4__114_/CP   0.1575   0.2005  -0.0430 (VIOLATED)
+     PIN : storeAdma/amemReader/axi4WriteUnalignedAdapter/writeDataQueue/impl/_T_94_reg_4__91_/CP   0.1575   0.2005  -0.0430 (VIOLATED)
+     PIN : storeAdma/amemReader/axi4WriteUnalignedAdapter/writeDataQueue/impl/_T_94_reg_4__100_/CP   0.1575   0.2004  -0.0429 (VIOLATED)
+     PIN : storeAdma/amemReader/axi4WriteUnalignedAdapter/writeDataQueue/impl/_T_94_reg_4__99_/CP   0.1575   0.2004  -0.0429 (VIOLATED)
+     PIN : storeAdma/amemReader/axi4WriteUnalignedAdapter/writeDataQueue/impl/_T_94_reg_4__96_/CP   0.1575   0.2004  -0.0429 (VIOLATED)
+     PIN : storeAdma/amemReader/axi4WriteUnalignedAdapter/writeDataQueue/impl/_T_94_reg_4__93_/CP   0.1575   0.2004  -0.0429 (VIOLATED)
+     PIN : storeAdma/amemReader/axi4WriteUnalignedAdapter/writeDataQueue/impl/_T_94_reg_4__87_/CP   0.1575   0.2004  -0.0429 (VIOLATED)
+     PIN : storeAdma/amemReader/axi4WriteUnalignedAdapter/writeDataQueue/impl/_T_94_reg_4__89_/CP   0.1575   0.2004  -0.0429 (VIOLATED)
+     PIN : storeAdma/amemReader/axi4WriteUnalignedAdapter/writeDataQueue/impl/pckg_clock_midfix_21_suffix/latch/Q   0.1575   0.1996  -0.0421 (VIOLATED)
+
+   storeAdma/amemReader/axi4WriteUnalignedAdapter/writeDataQueue/impl/pckg_net_clock_suffix_443   0.1575   0.2005  -0.0430 (VIOLATED)
+     PIN : storeAdma/amemReader/axi4WriteUnalignedAdapter/writeDataQueue/impl/_T_94_reg_88__39_/CP   0.1575   0.2005  -0.0430 (VIOLATED)
+     PIN : storeAdma/amemReader/axi4WriteUnalignedAdapter/writeDataQueue/impl/_T_94_reg_88__40_/CP   0.1575   0.2005  -0.0430 (VIOLATED)
+     PIN : storeAdma/amemReader/axi4WriteUnalignedAdapter/writeDataQueue/impl/_T_94_reg_88__44_/CP   0.1575   0.2005  -0.0430 (VIOLATED)
+     PIN : storeAdma/amemReader/axi4WriteUnalignedAdapter/writeDataQueue/impl/_T_94_reg_88__47_/CP   0.1575   0.2005  -0.0430 (VIOLATED)
+     PIN : storeAdma/amemReader/axi4WriteUnalignedAdapter/writeDataQueue/impl/_T_94_reg_88__37_/CP   0.1575   0.2005  -0.0430 (VIOLATED)
+     PIN : storeAdma/amemReader/axi4WriteUnalignedAdapter/writeDataQueue/impl/_T_94_reg_88__48_/CP   0.1575   0.2005  -0.0430 (VIOLATED)
+     PIN : storeAdma/amemReader/axi4WriteUnalignedAdapter/writeDataQueue/impl/_T_94_reg_88__35_/CP   0.1575   0.2005  -0.0430 (VIOLATED)
+     PIN : storeAdma/amemReader/axi4WriteUnalignedAdapter/writeDataQueue/impl/_T_94_reg_88__43_/CP   0.1575   0.2005  -0.0430 (VIOLATED)
+     PIN : storeAdma/amemReader/axi4WriteUnalignedAdapter/writeDataQueue/impl/_T_94_reg_88__30_/CP   0.1575   0.2005  -0.0430 (VIOLATED)
+     PIN : storeAdma/amemReader/axi4WriteUnalignedAdapter/writeDataQueue/impl/_T_94_reg_88__36_/CP   0.1575   0.2004  -0.0429 (VIOLATED)
+     PIN : storeAdma/amemReader/axi4WriteUnalignedAdapter/writeDataQueue/impl/_T_94_reg_88__33_/CP   0.1575   0.2002  -0.0427 (VIOLATED)
+     PIN : storeAdma/amemReader/axi4WriteUnalignedAdapter/writeDataQueue/impl/_T_94_reg_88__54_/CP   0.1575   0.2002  -0.0426 (VIOLATED)
+     PIN : storeAdma/amemReader/axi4WriteUnalignedAdapter/writeDataQueue/impl/_T_94_reg_88__52_/CP   0.1575   0.2001  -0.0426 (VIOLATED)
+     PIN : storeAdma/amemReader/axi4WriteUnalignedAdapter/writeDataQueue/impl/_T_94_reg_88__41_/CP   0.1575   0.2001  -0.0426 (VIOLATED)
+     PIN : storeAdma/amemReader/axi4WriteUnalignedAdapter/writeDataQueue/impl/_T_94_reg_88__42_/CP   0.1575   0.2001  -0.0426 (VIOLATED)
+     PIN : storeAdma/amemReader/axi4WriteUnalignedAdapter/writeDataQueue/impl/_T_94_reg_88__34_/CP   0.1575   0.2001  -0.0426 (VIOLATED)
+     PIN : storeAdma/amemReader/axi4WriteUnalignedAdapter/writeDataQueue/impl/_T_94_reg_88__57_/CP   0.1575   0.2000  -0.0425 (VIOLATED)
+     PIN : storeAdma/amemReader/axi4WriteUnalignedAdapter/writeDataQueue/impl/_T_94_reg_88__53_/CP   0.1575   0.1999  -0.0424 (VIOLATED)
+     PIN : storeAdma/amemReader/axi4WriteUnalignedAdapter/writeDataQueue/impl/_T_94_reg_88__45_/CP   0.1575   0.1998  -0.0423 (VIOLATED)
+     PIN : storeAdma/amemReader/axi4WriteUnalignedAdapter/writeDataQueue/impl/_T_94_reg_88__32_/CP   0.1575   0.1997  -0.0422 (VIOLATED)
+     PIN : storeAdma/amemReader/axi4WriteUnalignedAdapter/writeDataQueue/impl/_T_94_reg_88__38_/CP   0.1575   0.1997  -0.0422 (VIOLATED)
+     PIN : storeAdma/amemReader/axi4WriteUnalignedAdapter/writeDataQueue/impl/_T_94_reg_88__31_/CP   0.1575   0.1997  -0.0422 (VIOLATED)
+     PIN : storeAdma/amemReader/axi4WriteUnalignedAdapter/writeDataQueue/impl/_T_94_reg_88__29_/CP   0.1575   0.1997  -0.0422 (VIOLATED)
+     PIN : storeAdma/amemReader/axi4WriteUnalignedAdapter/writeDataQueue/impl/_T_94_reg_88__55_/CP   0.1575   0.1997  -0.0422 (VIOLATED)
+     PIN : storeAdma/amemReader/axi4WriteUnalignedAdapter/writeDataQueue/impl/_T_94_reg_88__46_/CP   0.1575   0.1997  -0.0422 (VIOLATED)
+     PIN : storeAdma/amemReader/axi4WriteUnalignedAdapter/writeDataQueue/impl/_T_94_reg_88__49_/CP   0.1575   0.1995  -0.0420 (VIOLATED)
+     PIN : storeAdma/amemReader/axi4WriteUnalignedAdapter/writeDataQueue/impl/_T_94_reg_88__56_/CP   0.1575   0.1995  -0.0420 (VIOLATED)
+     PIN : storeAdma/amemReader/axi4WriteUnalignedAdapter/writeDataQueue/impl/_T_94_reg_88__51_/CP   0.1575   0.1995  -0.0420 (VIOLATED)
+     PIN : storeAdma/amemReader/axi4WriteUnalignedAdapter/writeDataQueue/impl/_T_94_reg_88__50_/CP   0.1575   0.1992  -0.0417 (VIOLATED)
+     PIN : storeAdma/amemReader/axi4WriteUnalignedAdapter/writeDataQueue/impl/pckg_clock_midfix_443_suffix/latch/Q   0.1575   0.1986  -0.0411 (VIOLATED)
+
+   storeAdma/amemReader/axi4WriteUnalignedAdapter/writeDataQueue/impl/pckg_net_clock_suffix_593   0.1575   0.2001  -0.0426 (VIOLATED)
+     PIN : storeAdma/amemReader/axi4WriteUnalignedAdapter/writeDataQueue/impl/_T_94_reg_118__37_/CP   0.1575   0.2001  -0.0426 (VIOLATED)
+     PIN : storeAdma/amemReader/axi4WriteUnalignedAdapter/writeDataQueue/impl/_T_94_reg_118__44_/CP   0.1575   0.2001  -0.0426 (VIOLATED)
+     PIN : storeAdma/amemReader/axi4WriteUnalignedAdapter/writeDataQueue/impl/_T_94_reg_118__35_/CP   0.1575   0.2001  -0.0426 (VIOLATED)
+     PIN : storeAdma/amemReader/axi4WriteUnalignedAdapter/writeDataQueue/impl/_T_94_reg_118__43_/CP   0.1575   0.2001  -0.0426 (VIOLATED)
+     PIN : storeAdma/amemReader/axi4WriteUnalignedAdapter/writeDataQueue/impl/_T_94_reg_118__30_/CP   0.1575   0.2001  -0.0426 (VIOLATED)
+     PIN : storeAdma/amemReader/axi4WriteUnalignedAdapter/writeDataQueue/impl/_T_94_reg_118__36_/CP   0.1575   0.2000  -0.0425 (VIOLATED)
+     PIN : storeAdma/amemReader/axi4WriteUnalignedAdapter/writeDataQueue/impl/_T_94_reg_118__33_/CP   0.1575   0.2000  -0.0425 (VIOLATED)
+     PIN : storeAdma/amemReader/axi4WriteUnalignedAdapter/writeDataQueue/impl/_T_94_reg_118__34_/CP   0.1575   0.1999  -0.0424 (VIOLATED)
+     PIN : storeAdma/amemReader/axi4WriteUnalignedAdapter/writeDataQueue/impl/_T_94_reg_118__29_/CP   0.1575   0.1998  -0.0423 (VIOLATED)
+     PIN : storeAdma/amemReader/axi4WriteUnalignedAdapter/writeDataQueue/impl/_T_94_reg_118__50_/CP   0.1575   0.1997  -0.0422 (VIOLATED)
+     PIN : storeAdma/amemReader/axi4WriteUnalignedAdapter/writeDataQueue/impl/_T_94_reg_118__38_/CP   0.1575   0.1996  -0.0421 (VIOLATED)
+     PIN : storeAdma/amemReader/axi4WriteUnalignedAdapter/writeDataQueue/impl/_T_94_reg_118__32_/CP   0.1575   0.1995  -0.0420 (VIOLATED)
+     PIN : storeAdma/amemReader/axi4WriteUnalignedAdapter/writeDataQueue/impl/_T_94_reg_118__31_/CP   0.1575   0.1995  -0.0420 (VIOLATED)
+     PIN : storeAdma/amemReader/axi4WriteUnalignedAdapter/writeDataQueue/impl/_T_94_reg_118__56_/CP   0.1575   0.1992  -0.0417 (VIOLATED)
+     PIN : storeAdma/amemReader/axi4WriteUnalignedAdapter/writeDataQueue/impl/_T_94_reg_118__49_/CP   0.1575   0.1992  -0.0417 (VIOLATED)
+     PIN : storeAdma/amemReader/axi4WriteUnalignedAdapter/writeDataQueue/impl/_T_94_reg_118__45_/CP   0.1575   0.1991  -0.0416 (VIOLATED)
+     PIN : storeAdma/amemReader/axi4WriteUnalignedAdapter/writeDataQueue/impl/_T_94_reg_118__51_/CP   0.1575   0.1991  -0.0416 (VIOLATED)
+     PIN : storeAdma/amemReader/axi4WriteUnalignedAdapter/writeDataQueue/impl/_T_94_reg_118__55_/CP   0.1575   0.1991  -0.0416 (VIOLATED)
+     PIN : storeAdma/amemReader/axi4WriteUnalignedAdapter/writeDataQueue/impl/_T_94_reg_118__46_/CP   0.1575   0.1991  -0.0416 (VIOLATED)
+     PIN : storeAdma/amemReader/axi4WriteUnalignedAdapter/writeDataQueue/impl/_T_94_reg_118__39_/CP   0.1575   0.1988  -0.0413 (VIOLATED)
+     PIN : storeAdma/amemReader/axi4WriteUnalignedAdapter/writeDataQueue/impl/_T_94_reg_118__47_/CP   0.1575   0.1988  -0.0413 (VIOLATED)
+     PIN : storeAdma/amemReader/axi4WriteUnalignedAdapter/writeDataQueue/impl/_T_94_reg_118__48_/CP   0.1575   0.1988  -0.0413 (VIOLATED)
+     PIN : storeAdma/amemReader/axi4WriteUnalignedAdapter/writeDataQueue/impl/_T_94_reg_118__40_/CP   0.1575   0.1987  -0.0412 (VIOLATED)
+     PIN : storeAdma/amemReader/axi4WriteUnalignedAdapter/writeDataQueue/impl/_T_94_reg_118__54_/CP   0.1575   0.1987  -0.0412 (VIOLATED)
+     PIN : storeAdma/amemReader/axi4WriteUnalignedAdapter/writeDataQueue/impl/_T_94_reg_118__41_/CP   0.1575   0.1986  -0.0411 (VIOLATED)
+     PIN : storeAdma/amemReader/axi4WriteUnalignedAdapter/writeDataQueue/impl/_T_94_reg_118__52_/CP   0.1575   0.1986  -0.0411 (VIOLATED)
+     PIN : storeAdma/amemReader/axi4WriteUnalignedAdapter/writeDataQueue/impl/_T_94_reg_118__42_/CP   0.1575   0.1984  -0.0409 (VIOLATED)
+     PIN : storeAdma/amemReader/axi4WriteUnalignedAdapter/writeDataQueue/impl/_T_94_reg_118__53_/CP   0.1575   0.1984  -0.0409 (VIOLATED)
+     PIN : storeAdma/amemReader/axi4WriteUnalignedAdapter/writeDataQueue/impl/_T_94_reg_118__57_/CP   0.1575   0.1984  -0.0409 (VIOLATED)
+     PIN : storeAdma/amemReader/axi4WriteUnalignedAdapter/writeDataQueue/impl/pckg_clock_midfix_593_suffix/latch/Q   0.1575   0.1970  -0.0394 (VIOLATED)
+     (...)
+  ---------------------------------------------------------------------------
+   Number of max_transition violation(s): 249
+
+   Mode: func Corner: ss72_cworst_CCworst_T_m40c
+   Scenario: func::ss72_cworst_CCworst_T_m40c
+  ---------------------------------------------------------------------------
+   Number of max_capacitance violation(s): 0
+
+   Total number of violation(s): 249
+1
+```
+
+## StarRC
+
+### Short
+
+``` text
+Short between net fmem/arbiterImpl/mem/mem_1/mem_0/bram_inst/n1 and net optlc_net_61205 Layer = M2 BBox=(82.0200,323.5760),(82.0440,323.5800)
+Short between net fmem/arbiterImpl/mem/mem_1/mem_0/bram_inst/n1 and net optlc_net_61205 Layer = M2 BBox=(81.8800,323.5760),(82.0840,323.5800)
+Short between net f2a/pipeline/quantizer/pipeline_62/n8 and net f2a/pipeline/quantizer/pipeline_62/n99 Layer = M2 BBox=(317.0730,426.8520),(317.0920,426.8760)
+```
+
+## PT STA
+
+### Timing
+
+``` text
+violation range                      # of violations
+------------------------------  --------------------
+-0.000ns < -0.010ns                               46
+-0.010ns < -0.020ns                               79
+-0.020ns < -0.030ns                               83
+-0.030ns < -0.040ns                               84
+-0.040ns < -0.050ns                               77
+-0.050ns < -0.060ns                               48
+-0.060ns < -0.070ns                               19
+-0.070ns < -0.080ns                               10
+-0.080ns < -0.090ns                                8
+-0.090ns < -0.100ns                                1
+-0.100ns < -0.110ns                                0
+-0.110ns < -0.120ns                                0
+-0.120ns < -0.130ns                                0
+-0.130ns < -0.140ns                                0
+-0.140ns < -0.150ns                                0
+-0.150ns < -0.160ns                                0
+-0.160ns < -0.170ns                                0
+-0.170ns < -0.180ns                                0
+-0.180ns < -0.190ns                                0
+-0.190ns < -0.200ns                                0
+-0.200ns < -0.300ns                                0
+-0.300ns < -0.400ns                                0
+-0.400ns < -0.500ns                                0
+-0.500ns < -1.000ns                                0
+-1.000ns < -2.000ns                                0
+-2.000ns < -5.000ns                                0
+-5.000ns <                                         0
+------------------------------  --------------------
+total                                            455
+```
+
+### Transition
+
+``` text
+     slack  max_transition  transition  pin
+----------  --------------  ----------  ----------
+    -0.048           0.200       0.248  storeFdma/fmemReader/fmemData_2_reg_48_/CP (TOP)
+    -0.048           0.200       0.248  storeFdma/fmemReader/fmemData_2_reg_52_/CP (TOP)
+    -0.048           0.200       0.248  storeFdma/fmemReader/fmemData_2_reg_60_/CP (TOP)
+    -0.048           0.200       0.248  storeFdma/fmemReader/fmemData_2_reg_49_/CP (TOP)
+    -0.047           0.200       0.247  storeFdma/fmemReader/fmemData_2_reg_63_/CP (TOP)
+    -0.047           0.200       0.247  storeFdma/fmemReader/fmemData_2_reg_35_/CP (TOP)
+    -0.047           0.200       0.247  storeFdma/fmemReader/fmemData_2_reg_59_/CP (TOP)
+    -0.047           0.200       0.247  storeFdma/fmemReader/fmemData_2_reg_36_/CP (TOP)
+    -0.047           0.200       0.247  storeFdma/fmemReader/fmemData_2_reg_33_/CP (TOP)
+    -0.047           0.200       0.247  storeFdma/fmemReader/fmemData_2_reg_62_/CP (TOP)
+    -0.047           0.200       0.247  storeFdma/fmemReader/fmemData_2_reg_55_/CP (TOP)
+    -0.047           0.200       0.247  storeFdma/fmemReader/fmemData_2_reg_40_/CP (TOP)
+    -0.047           0.200       0.247  storeFdma/fmemReader/fmemData_2_reg_50_/CP (TOP)
+    -0.047           0.200       0.247  storeFdma/fmemReader/fmemData_2_reg_46_/CP (TOP)
+    -0.047           0.200       0.247  storeFdma/fmemReader/fmemData_2_reg_39_/CP (TOP)
+    -0.047           0.200       0.247  storeFdma/fmemReader/fmemData_2_reg_61_/CP (TOP)
+    -0.047           0.200       0.247  storeFdma/fmemReader/fmemData_2_reg_54_/CP (TOP)
+    -0.047           0.200       0.247  storeFdma/fmemReader/fmemData_2_reg_34_/CP (TOP)
+    -0.047           0.200       0.247  storeFdma/fmemReader/fmemData_2_reg_58_/CP (TOP)
+    -0.047           0.200       0.247  storeFdma/fmemReader/fmemData_2_reg_57_/CP (TOP)
+    -0.047           0.200       0.247  storeFdma/fmemReader/fmemData_2_reg_47_/CP (TOP)
+    -0.047           0.200       0.247  storeFdma/fmemReader/fmemData_2_reg_32_/CP (TOP)
+    -0.047           0.200       0.247  storeFdma/fmemReader/fmemData_2_reg_41_/CP (TOP)
+    -0.047           0.200       0.247  storeFdma/fmemReader/fmemData_2_reg_44_/CP (TOP)
+    -0.047           0.200       0.247  storeFdma/fmemReader/fmemData_2_reg_45_/CP (TOP)
+    -0.046           0.200       0.246  storeFdma/fmemReader/fmemData_2_reg_43_/CP (TOP)
+    -0.046           0.200       0.246  storeFdma/fmemReader/fmemData_2_reg_38_/CP (TOP)
+    -0.046           0.200       0.246  storeFdma/fmemReader/fmemData_2_reg_56_/CP (TOP)
+    -0.046           0.200       0.246  storeFdma/fmemReader/fmemData_2_reg_53_/CP (TOP)
+    -0.046           0.200       0.246  storeFdma/fmemReader/fmemData_2_reg_51_/CP (TOP)
+    -0.046           0.200       0.246  storeFdma/fmemReader/fmemData_2_reg_37_/CP (TOP)
+    -0.046           0.200       0.246  storeFdma/fmemReader/fmemData_2_reg_42_/CP (TOP)
+    -0.045           0.200       0.245  macArray/adders_25/m_62_0_reg/CP (TOP)
+    -0.045           0.200       0.245  macArray/adders_25/m_60_0_reg/CP (TOP)
+    -0.045           0.200       0.245  macArray/adders_25/m_63_0_reg/CP (TOP)
+    -0.045           0.200       0.245  macArray/adders_25/m_58_0_reg/CP (TOP)
+    -0.045           0.200       0.245  macArray/adders_25/m_61_0_reg/CP (TOP)
+    -0.045           0.200       0.245  macArray/adders_25/m_59_0_reg/CP (TOP)
+    -0.044           0.200       0.244  macArray/adders_25/m_32_0_reg/CP (TOP)
+    -0.044           0.200       0.244  macArray/adders_25/m_33_0_reg/CP (TOP)
+    -0.043           0.200       0.243  macArray/adders_25/minusPopCountMx3_0_reg_3_/CP (TOP)
+    -0.043           0.200       0.243  macArray/adders_25/minusPopCountMx3_0_reg_7_/CP (TOP)
+    -0.043           0.200       0.243  macArray/adders_25/minusPopCountMx3_0_reg_8_/CP (TOP)
+    -0.043           0.200       0.243  macArray/adders_25/minusPopCountMx3_0_reg_6_/CP (TOP)
+    -0.043           0.200       0.243  macArray/adders_25/minusPopCountMx3_0_reg_4_/CP (TOP)
+    -0.043           0.200       0.243  macArray/adders_25/minusPopCountMx3_0_reg_1_/CP (TOP)
+    -0.043           0.200       0.243  macArray/adders_25/minusPopCountMx3_0_reg_0_/CP (TOP)
+    -0.043           0.200       0.243  macArray/adders_25/minusPopCountMx3_0_reg_2_/CP (TOP)
+    -0.043           0.200       0.243  macArray/adders_25/minusPopCountMx3_0_reg_5_/CP (TOP)
+    -0.042           0.200       0.242  storeFdma/fmemReader/pckg_clock_midfix_18_suffix/latch/Q (TOP)
+    -0.041           0.200       0.241  macArray/adders_25/m_0_0_reg/CP (TOP)
+    -0.041           0.200       0.241  macArray/adders_25/m_28_0_reg/CP (TOP)
+    -0.041           0.200       0.241  macArray/adders_25/m_31_0_reg/CP (TOP)
+    -0.041           0.200       0.241  macArray/adders_25/m_29_0_reg/CP (TOP)
+    -0.041           0.200       0.241  macArray/adders_25/m_30_0_reg/CP (TOP)
+    -0.041           0.200       0.241  macArray/adders_25/m_23_0_reg/CP (TOP)
+    -0.041           0.200       0.241  macArray/adders_25/m_27_0_reg/CP (TOP)
+    -0.040           0.200       0.240  macArray/adders_16/m_5_0_reg/CP (TOP)
+    -0.040           0.200       0.240  macArray/adders_16/m_15_0_reg/CP (TOP)
+    (...)
+Summary
+-------
+Transition error count over 0.200 =       1899
+Total transition error            =       1899
+
+Summary by block
+----------------
+TOP                       =       1899 (      1899)
+Total                     =       1899 (      1899)
+
+Slack range       Count
+----------------  -----
+ 0.000 < -0.100    1899
+-0.100 < -0.200       0
+-0.200 < -0.300       0
+-0.300 < -0.400       0
+-0.400 < -0.500       0
+-0.500 < -0.600       0
+-0.600 < -0.700       0
+-0.700 < -0.800       0
+-0.800 < -0.900       0
+-0.900 < -1.000       0
+-1.000 < -1.100       0
+-1.100 < -1.200       0
+-1.200 < -1.300       0
+-1.300 < -1.400       0
+-1.400 < -1.500       0
+-1.500 <              0
+----------------  -----
+Total              1899
+
+Transition range  Count
+----------------  -----
+ 0.000 <  0.100       0
+ 0.100 <  0.200      55
+ 0.200 <  0.300    1844
+ 0.300 <  0.400       0
+ 0.400 <  0.500       0
+ 0.500 <  0.600       0
+ 0.600 <  0.700       0
+ 0.700 <  0.800       0
+ 0.800 <  0.900       0
+ 0.900 <  1.000       0
+ 1.000 <  1.100       0
+ 1.100 <  1.200       0
+ 1.200 <  1.300       0
+ 1.300 <  1.400       0
+ 1.400 <  1.500       0
+ 1.500 <              0
+----------------  -----
+Total              1899
+
+```
+
+### Noise
+
+``` text
+slack pin(net)
+-0.125    io_admaAxi4_awaddr[7](io_admaAxi4_awaddr[7])
+-0.117    io_idmaAxi4_awlen[3](io_idmaAxi4_awlen[3])
+-0.091    fmem/arbiterImpl/mem/mem_0/mem_0/bram_inst/inst0/D[112](fmem/arbiterImpl/place_opt_HFSNET_8494)
+-0.088    io_admaAxi4_awaddr[4](io_admaAxi4_awaddr[4])
+-0.060    io_idmaAxi4_awid[1](io_idmaAxi4_awid[1])
+-0.056    io_csrSlave_arready(io_csrSlave_arready)
+-0.028    fmem/arbiterImpl/mem/mem_0/mem_0/bram_inst/inst1/D[87](fmem/arbiterImpl/place_opt_HFSNET_8592)
+-0.025    io_fdmaAxi4_wdata[19](io_fdmaAxi4_wdata[19])
+-0.012    fmem/arbiterImpl/mem/mem_0/mem_0/bram_inst/inst6/D[96](fmem/arbiterImpl/mem_io_port_0_0_data_864_)
+-0.010    fmem/arbiterImpl/mem/mem_0/mem_0/bram_inst/inst3/D[83](fmem/arbiterImpl/net_net_33931)
+-0.010    fmem/arbiterImpl/mem/mem_0/mem_0/bram_inst/inst6/D[116](fmem/arbiterImpl/mem_io_port_0_0_data_884_)
+-0.007    io_idmaAxi4_awid[6](io_idmaAxi4_awid[6])
+```
+
+### Capacitance
+
+``` text
+     slack  max_capacitance  capacitance  pin
+----------  ---------------  -----------  ----------
+    -0.002            0.011        0.013  clock_opt_optlc_146391/ZN (TOP)
+    -0.001            0.011        0.012  clock_opt_optlc_146025/ZN (TOP)
+    -0.001            0.011        0.012  clock_opt_optlc_146010/ZN (TOP)
+    -0.001            0.011        0.012  clock_opt_optlc_146383/ZN (TOP)
+    -0.001            0.011        0.012  clock_opt_optlc_146423/ZN (TOP)
+    -0.001            0.011        0.012  clock_opt_optlc_146371/ZN (TOP)
+    -0.001            0.011        0.012  clock_opt_optlc_146013/ZN (TOP)
+    -0.001            0.011        0.012  clock_opt_optlc_146029/ZN (TOP)
+     0.000            0.011        0.011  clock_opt_optlc_146416/ZN (TOP)
+     0.000            0.011        0.011  clock_opt_optlc_146369/ZN (TOP)
+     0.000            0.011        0.011  clock_opt_optlc_146436/ZN (TOP)
+     0.000            0.011        0.011  clock_opt_optlc_146384/ZN (TOP)
+     0.000            0.011        0.011  clock_opt_optlc_146370/ZN (TOP)
+     0.000            0.011        0.011  clock_opt_optlc_146386/ZN (TOP)
+
+Summary
+-------
+Capacitance error count over 0.011 =         14
+Total capacitance error            =         14
+
+Summary by block
+----------------
+TOP                       =         14 (        14)
+Total                     =         14 (        14)
+
+Slack range        Count
+-----------------  -----
+ 0.000 < -0.100       14
+-0.100 < -0.200        0
+-0.200 < -0.300        0
+-0.300 < -0.400        0
+-0.400 < -0.500        0
+-0.500 < -0.600        0
+-0.600 < -0.700        0
+-0.700 < -0.800        0
+-0.800 < -0.900        0
+-0.900 < -1.000        0
+-1.000 < -1.100        0
+-1.100 < -1.200        0
+-1.200 < -1.300        0
+-1.300 < -1.400        0
+-1.400 < -1.500        0
+-1.500 <               0
+-----------------  -----
+Total                 14
+
+Capacitance range  Count
+-----------------  -----
+ 0.000 <  0.100       14
+ 0.100 <  0.200        0
+ 0.200 <  0.300        0
+ 0.300 <  0.400        0
+ 0.400 <  0.500        0
+ 0.500 <  0.600        0
+ 0.600 <  0.700        0
+ 0.700 <  0.800        0
+ 0.800 <  0.900        0
+ 0.900 <  1.000        0
+ 1.000 <  1.100        0
+ 1.100 <  1.200        0
+ 1.200 <  1.300        0
+ 1.300 <  1.400        0
+ 1.400 <  1.500        0
+ 1.500 <               0
+-----------------  -----
+Total                 14
+
+```
+
+# Rerun PT ECO
+
+  - set_dontuse
+
+<!-- end list -->
+
+``` tcl
+set dont_use_list {
+        *D20BWP* *D24BWP* *DCAP* *DF*CSN* *DFM* *EDF* *TIE* ANT* *AOI222* AOI33*
+        BUFF*D1BWP* CKBD* CKND* CKLH* DCCK* DEL* G* LH* LN* MUX4*
+        OAI21*D1BWP* OAI211*D1BWP* OAI22*D1BWP* OAI221*D1BWP* *OAI222* OAI31*D1BWP*
+ OAI32*D1BWP* OAI33*                                                              
+        BUFT* DFN* *OPT*
+}
+
+foreach dont_use ${dont_use_list} {
+        echo "set_dont_use [get_lib_cells */${dont_use}]"
+        set_dont_use [get_lib_cells */$dont_use]
+}
+```
+
+## Flow
+
+1.  write_data
+2.  starrc
+3.  pt_sta
+4.  pt_eco
+5.  spef
+
+<!-- end list -->
+
+  - how many write_change.tcl ?
+
+# NNP Report Meeting
+
+  - correlation ?
+
+  - pt_eco
+    
+      - physical aware
+
+  - Buffer Insertion for Capacitance
+    
+      - Physical Aware is necessary
+
+  - Sizeup is good for ECO
+    
+      - \> buffer insertion
+
+  - fanout violation ?
+
+  - Legalize location ? 100 micron
+
+  - .lib :: max_capacitance -\> influence to STA
+
+  - See Noise
+
+  - Otsuji-san : fix_eco\*\* use ICC2's dont_use
+
+  - 0.01

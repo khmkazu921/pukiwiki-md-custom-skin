@@ -1,0 +1,667 @@
+#author("2022-11-30T06:04:58+00:00","","")
+#notemd
+
+[[Tools/CCD]]
+
+# Concurrent Clock and Data (CCD) Optimization Flow Application Note  (IC COMPILER II)
+
+
+
+## Contents 
+
+- Introduction 
+
+- Concurrent Clock and Data Flow 
+
+- Flow Details 
+
+- Concurrent Clock and Data UI Controls 
+
+- Optimizations in Concurrent Clock and Data Flow 
+
+- Flow Setup Requirements 
+
+- Recommended Flow Settings 
+
+- Checking Design Readiness for Concurrent Clock and Data Optimization 
+
+- Example Script 
+
+- Compatibility With Other Features 
+
+- Debugging Tips 
+
+- Results from High Performance Designs 
+
+### Introduction 
+
+- To achieve the maximum frequency for a high-performance design, it is necessary to use all     possible optimization techniques 
+
+- Useful skew optimization is essential technique, but it must work together with datapath     optimization for the most benefit 
+
+- Starting in version J-2014.12-1, the concurrent clock and data (CCD) optimization flow was     introduced in the IC Compiler II tool for meeting the frequency requirements of high     performance designs 
+
+- This application note introduces the CCD optimization flow and its components. It also     provides details on its user interface and flow setup considerations 
+
+
+### Contents 
+
+- Introduction 
+
+- Concurrent Clock and Data Flow 
+
+- Flow Details 
+
+- Concurrent Clock and Data UI Controls 
+
+- Optimizations in Concurrent Clock and Data Flow 
+
+- Flow Setup Requirements 
+
+- Recommended Flow Settings 
+
+- Checking Design Readiness for Concurrent Clock and Data Optimization 
+
+- Example Script 
+
+- Compatibility With Other Features 
+
+- Debugging Tips 
+
+- Results from High Performance Designs 
+
+
+**clock_opt – from build_clock \** 
+
+**- to route_clock route_group – all_clock_nets clock_opt.flow.enable_ccd true** Apply all post-clock-tree-synthesis settings before **clock_opt clock_opt – from final_opto** UI for enabling CCD in **clock_opt** 
+
+- CCD in clock_opt can be enabled by setting this app_option to true     before running clock_opt 
+
+- Ensure that all post-CTS settings are applied before clock_opt so     that timing seen by CCD is accurate        CCD in **build_clock** 
+
+- Performs timing driven clock tree building and optimization based on     the balance points/offsets derived by the tool (setup and hold) 
+
+- Finally clock nets are detail routed during the route_clock stage     similar to the non-CCD flow        CCD in **clock_opt – from final_opto** 
+
+- More iterations of clock and data optimizations are done to further     improve the timing QoR (setup and hold) 
+
+### Concurrent Clock and Data Optimization 
+
+Flow Overview (1/2) _– clock_opt_ 
+
+- Similar to non-CCD flow, run clock detail routing to patch up the     broken clock nets 
+
+
+ route_opt.flow.enable_ccd true route_opt.flow.enable_cto true (optional) route_opt route_auto CCD in route_opt 
+
+- Performs iterations of clock and data optimizations for timing     QoR improvement 
+
+### Concurrent Clock and Data Optimization 
+
+Flow Overview (2/2) _– route_opt_ 
+
+- All signal nets are detail routed during route_auto     UI for enabling CCD in **route_opt** 
+
+- CCD in route_opt can be enabled by setting first app_option to     true before running route_opt 
+
+- To clean up logical DRCs on clock tree during route_opt. the     second app_option can be enabled in CCD flow 
+
+- The flow and CCD settings mentioned in these slides are applicable for 15.06-SP5 and 16.03 releases 
+
+- If using any older release, these might change slightly 
+
+
+### Contents 
+
+- Introduction 
+
+- Concurrent Clock and Data Flow 
+
+- Flow Details 
+
+- Concurrent Clock and Data UI Controls 
+
+- Optimizations in Concurrent Clock and Data Flow 
+
+- Flow Setup Requirements 
+
+- Recommended Flow Settings 
+
+- Checking Design Readiness for Concurrent Clock and Data Optimization 
+
+- Example Script 
+
+- Compatibility With Other Features 
+
+- Debugging Tips 
+
+- Results from High Performance Designs 
+
+
+### Concurrent Clock and Data Optimization 
+
+- UI controls introduced in version K-2015.06 
+
+- These IC Compiler II application options are persistent and get saved when you use the     save_block command UI Controls - Overview     IC Compiler Command IC Compiler II Application Option Default set_concurrent_clock_and_data_strategy \ 
+
+- adjust_boundary_registers     ccd.optimize_boundary_timing True set_concurrent_clock_and_data_strategy \ 
+
+- ignore_ports_for_boundary_identification     ccd.ignore_ports_for_boundary_identification - set_concurrent_clock_and_data_strategy \ 
+
+- ignore_path_groups     ccd.skip_path_groups - 
+
+
+### Concurrent Clock and Data Optimization 
+
+- When set to false, CCD optimization does not adjust latency of boundary flops 
+
+- Default is true 
+
+- Boundary registers are registers that are in the 
+
+- Fanout of data input ports (or) 
+
+- Fanin of data output ports 
+
+- Log file messages when the app_option is set to false: 
+
+- CCD works on 40 internal sinks in this case UI Controls - _ccd.optimize_boundary_timing_ CCD app option: ccd.optimize_boundary_timing: false Identify boundary sinks: 3 sinks are boundary, 40 sinks are internal. 
+
+
+### Concurrent Clock and Data Optimization 
+
+- Use this application option when you also set the ccd.optimize_boundary_timing application option to     false 
+
+- Provide a list of ports to exclude when identifying boundary registers 
+
+- Ports such as scan enable, reset, and so on are directly connected to many registers 
+
+- When boundary registers are excluded from latency adjustment, if a large number of registers connected to such     high-fanout ports are not considered for CCD optimization, it limits the scope of the CCD optimization 
+
+- To prevent the registers connected to these high-fanout ports from being treated as boundary registers and     excluded from latency adjustment, use the ccd.ignore_ports_for_boundary_identification application     option 
+
+- Log file messages when the app_option is set: UI Controls - _ccd.ignore_ports_for_boundary_identification_     CCD app options: ccd.ignore_ports_for_boundary_identification: DIN1     Ignore port DIN1 for boundary identification 
+
+
+### Concurrent Clock and Data Optimization 
+
+- Use this application option to skip the endpoints of specific path groups during CCD optimization 
+
+- Clock pins belonging to these path groups are skipped during CCD clock optimization 
+
+- Data optimization still works on these path groups 
+
+- Provide a composite list of path groups and scenarios to be skipped, as shown in the following example: 
+
+- set_app_options – name ccd.skip_path_groups – value {pg1 {scenarioA pg2}} 
+
+- If you specify a path group name without a scenario name, all path groups with the specified name from all     scenarios are skipped 
+
+- If you specify a path group name with a scenario name, the path group with the specified name from the specified     scenario is skipped 
+
+- Log file messages when the app_option is set: UI Controls - _ccd.skip_path_groups_     CCD app option: ccd.skip_path_groups: INPUTS OUTPUTS     Skip path group: scenario func_1s pathgroup INPUTS     Skip path group: scenario func_1s pathgroup OUTPUTS 
+
+
+### Contents 
+
+- Introduction 
+
+- Concurrent Clock and Data Flow 
+
+- Flow Details 
+
+- Concurrent Clock and Data UI Controls 
+
+- Optimizations in Concurrent Clock and Data Flow 
+
+- Flow Setup Requirements 
+
+- Recommended Flow Settings 
+
+- Checking Design Readiness for Concurrent Clock and Data Optimization 
+
+- Example Script 
+
+- Compatibility With Other Features 
+
+- Debugging Tips 
+
+- Results from High Performance Designs 
+
+
+### Concurrent Clock and Data Optimization 
+
+_clock_opt – to build_clock_ CCD: Details **synthesize_clock_trees (** Trial CTS **)** 
+
+- Does CTS and CTO; Local skew based optimizations for setup and hold are on-by-default during CTS     and CTO in CCD flow 
+
+- Local skew based CTS and CTO optimizes local skew of setup and hold critical endpoints in addition     to the global skew optimization (Refer to L-2016.03 CTS training for details on this)        **balance_clock_groups + compute_clock_latency** 
+
+- Tool performs inter clock delay balancing and I/O clock latency update     Early light weight data optimization 
+
+- Does light weight data-optimization to address easy-to-fix timing violations     Useful Skew Computation + **remove_clock_trees** 
+
+- Derives balance points based on the timing QoR. Considers both setup and hold timing for fixing 
+
+- The existing clock tree is then removed by remove_clock_trees     **synthesize_clock_trees + balance_clock_groups + compute_clock_latency** 
+
+- Rebuilds the clock tree by honoring the balance points from the useful skew computation. CTS and     CTO does local skew based optimizations 
+
+- Tool performs inter clock delay balancing and I/O clock latency update 
+
+
+### Concurrent Clock and Data Optimization 
+
+_clock_opt – from final_opto_ CCD: Details Post-CTS placement + DRC fixing on Data + Light weight data-optimization 
+
+- These are similar to the optimizations done in the non-CCD flow as well 
+
+- Tool performs incremental clock aware placement, logical DRC fixing on data and data path optimization     Clock optimization 
+
+- The clock tree is optimized for better timing and better area/power with awareness of impact on data     paths. Optimization focuses on down-sizing and redundant delay cell removal. 
+
+- This is followed by ECO routing of the clock nets     Data optimization 
+
+- Data path optimization works on the setup violating paths followed by the hold violating paths     Clock optimization 
+
+- Critical paths in each path group are optimized. Both setup and hold optimization is done here 
+
+- Optimizations include sizing of clock tree cells, sizing of flops, re-parenting, buffer removal and buffering.     Data optimization 
+
+- Finally more hold fixing is done on the data paths 
+
+
+### Concurrent Clock and Data Optimization 
+
+_route_opt_ CCD: Details Setup and hold data path optimization 
+
+- route_opt performs setup and hold optimization on the data-paths     Clock optimization 
+
+- CCD works on the top violating paths per path group, while minimizing the impact on hold     timing 
+
+- Optimizations include sizing of clock tree cells, sizing of flops and buffering     Data optimization 
+
+- Finally more data-path optimization is done for both setup and hold violating paths 
+
+
+### Concurrent Clock and Data Optimization 
+
+Hold Fixing in the _final_opto_ Stage of the _clock_opt_ Command 
+
+- Hold fixing from clock side is available with the CCD flow 
+
+- Identifies cases where fixing hold violations from the clock side reduces the number of     hold buffers on data paths        More data path hold buffers           Hold fixing on data paths Hold fixing on clock tree during CCD              Single clock buffer replaces multiple data                 hold buffers 
+
+
+### Contents 
+
+- Introduction 
+
+- Concurrent Clock and Data Flow 
+
+- Flow Details 
+
+- Concurrent Clock and Data UI Controls 
+
+- Optimizations in Concurrent Clock and Data Flow 
+
+- Flow Setup Requirements 
+
+- Recommended Flow Settings 
+
+- Checking Design Readiness for Concurrent Clock and Data Optimization 
+
+- Example Script 
+
+- Compatibility With Other Features 
+
+- Debugging Tips 
+
+- Results from High Performance Designs 
+
+
+### Recommended Settings 
+
+- Better clock-gating cell placement from the place_opt command provides better starting point     for CCD optimization 
+
+- Use one of the following two features available for handling clock-gating cell placement in the     place_opt command: 
+
+- Specify automatic bounds for clock-gating cells by using the following application options: 
+
+- place.coarse.icg_auto_bound 
+
+- place.coarse.icg_auto_bound_fanout_limit 
+
+- Enable clock aware placement by using the following application options: 
+
+- place_opt.flow.clock_aware_placement 
+
+- refine_opt.flow.clock_aware_placement 
+
+- Users can also enable trial clock tree synthesis based place_opt flow by using the following     application option which helps with clock-gating cell placement: 
+
+- place_opt.flow.trial_clock_tree Clock-Gating Cell Placement Settings 
+
+
+### Recommended Settings 
+
+- All clock tree synthesis settings in the regular flow are honored by the CCD flow as well. 
+
+- These clock tree synthesis settings include: 
+
+- Library cell (clock tree reference) settings 
+
+- Maximum transition and capacitance settings 
+
+- Nondefault routing rule and layer list settings 
+
+- Clock tree exceptions 
+
+- Ensure that all these settings are applied prior running the clock_opt command in the CCD     flow Clock Tree Synthesis Settings 
+
+
+### Recommended Settings 
+
+- Inter clock timing paths also contribute to timing QoR and CCD optimization work on these     paths also 
+
+- Therefore, to provide a better inter clock QoR for CCD optimization to work on, specify the     correct inter clock delay balancing settings before you run the clock_opt command in the     CCD flow 
+
+- You can specify inter clock delay balancing settings by using one of the following methods: 
+
+- Automatically derive the constraints by using the derive_clock_balance_constraints command 
+
+- Manually specify the constraints by using the create_clock_balance_group command Inter clock Delay Balancing Settings 
+
+
+### Recommended Settings 
+
+- If you use virtual clocks to constrain I/O ports, after clock tree synthesis, you must update the     latencies of the virtual clock so that the timing of the I/O path is accurate. 
+
+- This is done by the compute_clock_latency command 
+
+- When you run the clock_opt command with CCD enabled, the tool automatically updates the     clock latencies. However, you must specify the latency adjustment options for the virtual     clocks by using the set_latency_adjustment_options command. 
+
+- If you do not have accurate timing constraints available for the I/O timing paths, you can     exclude these paths from CCD optimization by using the ccd.skip_path_groups application     option I/O Path Related Settings 
+
+
+### Recommended Settings 
+
+- To ensure that the tool see the correct timing QoR, apply all timer related settings before you     run the clock_opt command, including: 
+
+- Applying post-clock-tree-synthesis clock uncertainties 
+
+- Enabling CRPR 
+
+- Specifying hold buffers Timing Settings 
+
+
+### Recommended Settings 
+
+- During the clock_opt command, gate relocation can disturb enable timing and impact useful     skew computation during the build_clock stage. 
+
+- Disable gate relocation before you run the clock_opt command by using the following setting: 
+
+- set_app_options – list {cts.compile.enable_cell_relocation none} 
+
+- This recommendation is only for releases prior to K-2015.06-SP5 
+
+- Starting from K-2015.06-SP5 and L-2016.03 releases, gate relocation can be enabled in CCD flow as     well 
+
+- Application option can be left to its default value Gate Relocation Settings 
+
+
+### Recommended Settings 
+
+- During default clock tree synthesis, the tool does not resize flip-flops 
+
+- However, during CCD optimization, the tool can resize flip-flops, if it improves timing QoR 
+
+- Therefore, the reference cells specified for clock tree synthesis should include flip-flops 
+
+- Reference cells are specified for clock tree synthesis by using the “set_lib_cell_purpose –     include cts”command Clock Tree Reference Cell Settings for Resizing Flip-Flops 
+
+
+### Contents 
+
+- Introduction 
+
+- Concurrent Clock and Data Flow 
+
+- Flow Details 
+
+- Concurrent Clock and Data UI Controls 
+
+- Optimizations in Concurrent Clock and Data Flow 
+
+- Flow Setup Requirements 
+
+- Recommended Flow Settings 
+
+- Checking Design Readiness for Concurrent Clock and Data Optimization 
+
+- Example Script 
+
+- Compatibility With Other Features 
+
+- Debugging Tips 
+
+- Results from High Performance Designs 
+
+
+### Checking Readiness for CCD Optimization 
+
+- Run the following flow to ensure that a block is ready for CCD optimization: 
+
+- Timing QoR measured at the end of the sanity check flow is the timing seen by CCD 
+
+- During CCD optimization, the tool tries to skew the clock paths to improve the timing violations 
+
+- Ensure that the WNS seen is reasonable to avoid overskewing the clock tree 
+
+- If the QoR is reasonable, your design is ready for CCD optimization     **#Open post place_opt done block with the recommended settings**     open_block place_opt_done     **#Apply all CTS and timer settings mentioned in previous slides.**     **#Run regular CTS flow (sanity check)**     synthesize_clock_trees     balance_clock_groups     compute_clock_latency     **#Measure Timing QoR** 
+
+
+### Contents 
+
+- Introduction 
+
+- Concurrent Clock and Data Flow 
+
+- Flow Details 
+
+- Concurrent Clock and Data UI Controls 
+
+- Optimizations in Concurrent Clock and Data Flow 
+
+- Flow Setup Requirements 
+
+- Recommended Flow Settings 
+
+- Checking Design Readiness for Concurrent Clock and Data Optimization 
+
+- Example Script 
+
+- Compatibility With Other Features 
+
+- Debugging Tips 
+
+- Results from High Performance Designs 
+
+
+### Example Script – clock_opt CCD 
+
+open_lib design.nlib open_block place_opt_done #Specify the cells used on clock tree (Add flip-flop references as CTS purpose to enable flip-flop sizing during CCD) source cts_cell.tcl #Specify the exceptions on the clock tree (Specify any user dont_touch or size_only like in non-CCD flow if required) source user_exceptions.tcl #Specify the clock DRC constraints (Similar to non-CCD flow) source clock_constraints.tcl #Specify the clock nondefault routing rule and layer list (Similar to non-CCD flow) source clock_routing_rules.tcl #Specify the inter clock delay balancing constraints and latency adjustment options (Similar to non-CCD flow but source this before clock_opt) source clock_balance_constraints.tcl # Source Post Clock Tree Synthesis Options (Source these before **clock_opt** in CCD flow) source common_post_cts_timing_settings.tcl source -echo $ICC_UNCERTAINTY_POSTCTS_FILE set_app_options – name timer.remove_clock_reconvergence_pessimism – value true report_clock_settings report_clock_qor – type area report_scenarios #Enable CCD with the app_option and run clock_opt set_app_options – name clock_opt.flow.enable_ccd – value true clock_opt route_group – all_clock_nets 
+
+
+### Example Script – route_opt CCD 
+
+open_lib design.nlib open_block route_auto_done #Source route_opt related settings similar to non-CCD flow source route_opt.settings.tcl #Enable post-route CTO in route_opt for max-transition violations fixing on clock trees (Optional) set_app_options – name route_opt.flow.enable_cto – value true #Enable post-route CCD set_app_options – name route_opt.flow.enable_ccd – value true route_opt #Disable post-route CTO after the first route_opt set_app_options – name route_opt.flow.enable_cto – value false #Disable CCD for second route_opt. You can enable it if you see scope of further improving timing set_app_options – name route_opt.flow.enable_ccd – value false route_opt 
+
+
+### Contents 
+
+- Introduction 
+
+- Concurrent Clock and Data Flow 
+
+- Flow Details 
+
+- Concurrent Clock and Data UI Controls 
+
+- Optimizations in Concurrent Clock and Data Flow 
+
+- Flow Setup Requirements 
+
+- Recommended Flow Settings 
+
+- Checking Design Readiness for Concurrent Clock and Data Optimization 
+
+- Example Script 
+
+- Compatibility With Other Features 
+
+- Debugging Tips 
+
+- Results from High Performance Designs 
+
+
+### Compatibility With Other Features 
+
+ Feature Compatible Logical DRC constraint  Clock Routing Rules and Layer List  Clock Reference List  Exclude/Balance Point  Auto Exception feature  
+
+derive_clock_balance_points (^)  Exclusive Move Bound  Feature Compatible Clock Cell Spacing  Target library subset  Global Route in compile_clock_tree  Post-route CTO  Skew Groups  Multisource CTS  
+
+
+### Compatibility With Other Features 
+
+- Post-route CTO: 
+
+- Skew optimization in post-route CTO should be disabled when used with CCD flow 
+
+- Tool automatically disables it when post-route CTO in route_opt is enabled in CCD flow 
+
+- Users need to disable it when using post-route CTO with synthesize_clock_trees in CCD flow 
+
+- Skew Groups: 
+
+- Ensure that the skew groups are created for the sinks with timing related sinks belonging to the same     skew group 
+
+- In case, timing critical endpoints are defined in different skew groups by the users, it can negatively impact the     timing QoR in both CCD and non-CCD flows 
+
+- Multisource CTS (MS-CTS): 
+
+- Regular MS-CTS and CCD is fully supported 
+
+- CCD in final_opto and route_opt CCD are fully supported with structural MS-CTS 
+
+- Structural MS-CTS and CCD in build_clock is work in progress Things to Note 
+
+
+### Compatibility With Other Features 
+
+- User specified balance points: 
+
+- These are respected and honored by CCD 
+
+- CCD, however can modify the user specified balance points if there is further scope of timing QoR     improvement Things to Note 
+
+
+### Contents 
+
+- Introduction 
+
+- Concurrent Clock and Data Flow 
+
+- Flow Details 
+
+- Concurrent Clock and Data UI Controls 
+
+- Optimizations in Concurrent Clock and Data Flow 
+
+- Flow Setup Requirements 
+
+- Recommended Flow Settings 
+
+- Checking Design Readiness for Concurrent Clock and Data Optimization 
+
+- Example Script 
+
+- Compatibility With Other Features 
+
+- Debugging Tips 
+
+- Results from High Performance Designs 
+
+
+### Debugging Tips 
+
+Degraded QoR After CCD Optimization 
+
+1. Check the initial QoR reported in the log file during the build_clock stage of the     clock_opt command 
+
+- If there is a very large initial setup WNS, CCD optimization tries to fix this violation by skewing clock     tree, and results in overall QoR degradation 
+
+2. Before you run the clock_opt command with CCD optimization enabled, run the CCD     readiness flow described previously and identify and address any large timing violations. Initial QoR     WNS(setup)=-2.474 TNS(setup)=-4968.875 WEIGHTED_TNS(setup)=-7258.393 SetupCost(setup)=-13.292     Scenario func@WC WNS = 2.473, WEIGHTED_GROUP_SLACK = 13.2923, TNS = 4968.875, NVP = 41555        In this case, input to CCD has large setup WNS 
+
+
+### Debugging Tips 
+
+Minimal Timing QoR Improvement After CCD Optimization 
+
+1. Check if boundary register optimization is not allowed. If so, check the number of     optimizable sinks identified during CCD optimization, which is reported in the clock_opt     log file 
+
+- If boundary register optimization is not allowed and a majority of the sinks are boundary     registers, the scope of CCD optimization is limited 
+
+2. Before you run the clock_opt command with CCD optimization enabled, use one of the     following methods to modify the boundary register optimization or identification: 
+
+- Enable boundary register optimization by setting the ccd.optimize_boundary_timing     application option to true (default is true) 
+
+- Control the registers treated as boundary registers by using the     ccd.ignore_ports_for_boundary_identification application option CCD app option: ccd.optimize_boundary_timing: false Identify boundary sinks: 31921 sinks are boundary, 1000 sinks are internal. 
+
+
+### Debugging Tips 
+
+Increased Clock Buffer Area or Enable Timing Violations in CCD Flow 
+
+1. Check the clock tree structure beyond the leaf level clock-gating cells 
+
+2. Before you run the place_opt command, 
+
+- Enable the trial clock tree synthesis based place_opt flow by using the place_opt.flow.trial_clock_tree     application option 
+
+- Use one of the following methods to control clock-gating cell placement and downstream sink distribution : 
+
+- Specify automatic bounds for clock-gating cells by using the following application options: 
+
+- place.coarse.icg_auto_bound 
+
+- place.coarse.icg_auto_bound_fanout_limit 
+
+- Enable clock aware placement by using the place_opt.flow.clock_aware_placement application option     Leaf level clock gate driving sinks that are widely     spread out is bad for clock tree area and enable     timing 
+
+
+### Contents 
+
+- Introduction 
+
+- Concurrent Clock and Data Flow 
+
+- Flow Details 
+
+- Concurrent Clock and Data UI Controls 
+
+- Optimizations in Concurrent Clock and Data Flow 
+
+- Flow Setup Requirements 
+
+- Recommended Flow Settings 
+
+- Checking Design Readiness for Concurrent Clock and Data Optimization 
+
+- Example Script 
+
+- Compatibility With Other Features 
+
+- Debugging Tips 
+
+- Results from High Performance Designs

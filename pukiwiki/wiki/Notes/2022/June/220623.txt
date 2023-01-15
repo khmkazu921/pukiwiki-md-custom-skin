@@ -1,0 +1,93 @@
+#notemd
+# Low Power
+
+## Day1
+
+  - Body Biasing
+  - Retention Registers
+  - UPF Power Domain
+  - Power Domain Hierarchical Block
+
+### Second UPF Examples
+
+  - `create_power_switch` `create_power_domain`
+  - `set_level_shifter`
+  - `set_isolation` `set_isolation_control`
+  - power state table definition
+  - `connec_supply_net`
+  - Aolow
+
+# Training
+
+## DC Warning
+
+``` text
+Warning:  /proj/ATEPairChip/RELEASE/Training_Phase1/Data/rtl_mem_b64/Bxb.v:128323: signed to unsigned assignment occurs. (VER-318)
+
+Warning: Found 380 PWR-763 messages. Please run check_mv_design -clock_gating_style for more information.  
+Warning: Found 1448 PWR-763 messages. Please run check_mv_design -clock_gating_style for more information.
+Warning: The trip points for the library named ts1n12ffcllsbsvtd1024x128m4s_ssgnp0p72vm40c differ from those in the library named tcbn12ffcllbwp6t16p96cpdssgnp0p72vm40c_ccs. (TIM-164)
+
+Warning: Design 'Bxb' contains 23 high-fanout nets. A fanout number of 1000 will be used for delay calculations involving these nets. (TIM-134)
+Warning: Design has unannotated black box outputs. (PWR-428)
+Warning: In the design Bxb, net 'io_admaAxi4_awlen[6]' is connecting multiple ports. (UCN-1)
+Warning: In the design Axi4ReadMasterAdapter_2, net 'io_slave_addr_bits_addr[31]' is connecting multiple ports. (UCN-1)
+```
+
+## FM Warning
+
+  - read_verilog
+    
+      - \-r  
+        Sets the default reference container as the current container
+        and reads the Verilog designs or cell descriptions into it.
+      - \-i  
+        Sets the default implementation container as the current
+        container and reads the Verilog designs or cell descriptions
+        into it.
+
+<!-- end list -->
+
+``` text
+************** Library Checking Summary ************
+Warning:  337 unlinked power cell(s) with no power down function on an ff or latch.
+Use 'report_libraries -defects all' for more details.
+****************************************************
+--
+
+************** Library Checking Summary ************
+Warning:  337 unlinked power cell(s) with no power down function on an ff or latch.
+Use 'report_libraries -defects all' for more details.
+****************************************************
+--
+Implementation design is 'i:/WORK/Bxb'
+Status:  Checking designs...
+
+Warning: Design r:/TS1N12FFCLLSBSVTD1024X128M4S_SSGNP0P72VM40C/TS1N12FFCLLSBSVTD1024X128M4S
+is a black box and there are cells referencing it (FM-160)
+
+Warning: 0 (5704) undriven nets found in reference (implementation) design; see formality.log for list (FM-399)
+Warning: 11 (24) black-box references found in reference (implementation) design; see formality.log for list (FM-182)
+Status:  Building verification models...
+Status:  Processing Guide Commands...
+```
+
+## ICC II Settings
+
+``` tcl
+## Populate scenario constraints
+foreach s [array name scenario_constraints] {
+    current_scenario $s
+    echo "RM-info : current_scenario $s"
+    echo "RM-info : source $scenario_constraints($s)"
+
+    source $scenario_constraints($s)
+    #source ./rm_user_scripts/set_setup_uncertainty.tcl -e
+    #foreach_in_collection clk [all_clocks] {
+    #    set clk_name [get_attribute $clk full_name]
+    #    set_setup_uncertainty $clk_name
+    #}
+    set_driving_cell -lib_cell BUFFD8BWP6T16P96CPDULVT [all_inputs]
+    set_load [get_attribute [index_collection [get_lib_pins */BUFFD8BWP6T16P96CPDULVT/I] 0] pin_capacitance] [all_outputs]
+}
+```

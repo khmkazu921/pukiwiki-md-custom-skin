@@ -1,0 +1,21 @@
+#notemd
+
+[[Tools]]
+
+
+# PrimeTime SI
+
+- Stuck at `$env(CPT_EXEC) report`
+
+```tcl
+exec /bin/csh -c "$env(CPT_EXEC) parse -timing -tool ptsi -src ${blk_rpt_dir} -dst ${blk_rpt_dir}"
+```
+
+## Fast Output ?
+
+```tcl
+set mypipeline [open |[list /bin/csh -c {echo "aa\nbb"}]]; 
+while {[gets $mypipeline line] >= 0} { puts $line }
+```
+
+## 

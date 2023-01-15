@@ -1,0 +1,66 @@
+#notemd
+# LM NNP Meeting
+
+## Presentation Issues
+
+  - Clock Routing
+  - Need to present Warning/Error Numbers
+
+# <span class="todo TODO">TODO</span> 
+
+  - derate
+
+# Warning
+
+## Place Opt
+
+``` tcl
+set DONT_USE_FILE /proj/ATEPairChip/RELEASE/Training_Phase1/Data/dont_use/set_dont_use.tcl
+source -e -v $DONT_USE_FILE
+(...)
+set_dont_use -power [get_lib_cells */*D20BWP*]
+Warning: 'set_dont_use' command option '-power' is not supported. (UIC-039)
+1
+```
+
+``` text
+Warning: Ignore pin (cell BUFFD4BWP6T16P96CPD, pin VBB) on layer PW. (ZRT-030)
+Warning: Ignore pin (cell BUFFD4BWP6T16P96CPD, pin VPP) on layer NW. (ZRT-030)
+Warning: Ignore pin (cell BUFFD2BWP6T16P96CPD, pin VBB) on layer PW. (ZRT-030)
+Warning: Ignore pin (cell BUFFD2BWP6T16P96CPD, pin VPP) on layer NW. (ZRT-030)
+```
+
+``` text
+Warning: The global router sees net a2f/pipeline/accumulationPipeline/pipeline_0/n2532 having 1/2 blocked pins. (ZRT-127)
+Warning: The global router sees the pin (a2f/pipeline/accumulationPipeline/pipeline_0/alchip132_dc Z) of net a2f/pipeline/accumulationPipeline/pipeline_0/n2534 as blocked and might route the net through the blockages. (ZRT-110)
+```
+
+``` text
+Warning: Layer M0 pitch 0.084 may be too small: wire/via-down 0.084, wire/via-up 0.098. (ZRT-026)
+Via on layer (VIA7) needs more than one tracks
+Warning: Layer M7 pitch 0.080 may be too small: wire/via-down 0.080, wire/via-up 0.120. (ZRT-026)
+Via on layer (VIA9) needs more than one tracks
+```
+
+## CTS
+
+  - DC  
+    decoupling clk
+    
+      - capacitance
+
+## Route_opt
+
+``` text
+Warning: The Bxb block contains invalid active fill. (NEX-058)
+
+NEX-058
+NAME
+NEX-058 (warning) The %s block contains invalid active fill.
+
+DESCRIPTION
+This message occurs when RC extraction detects invalid active fill in a block. Invalid active fill can cause inaccurate RC extraction results.  
+
+WHAT NEXT
+None.
+```

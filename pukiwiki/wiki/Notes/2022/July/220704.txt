@@ -1,0 +1,31 @@
+#notemd
+# All Hands Forum
+
+## Furuzono-san
+
+  - EETimes
+  - TSMC Symposium
+
+## Acceptance Check List, Ishii-san
+
+  - パクられないように
+
+# DE Meeting
+
+## Takashima-san
+
+  - ZBT4
+
+## Nakai-san
+
+  - ES  
+    Engineering Sample
+
+<!-- end list -->
+
+  - Parity Error Checking
+
+## Tsuji-san
+
+  - KPI
+  - 1-on-1 meeting

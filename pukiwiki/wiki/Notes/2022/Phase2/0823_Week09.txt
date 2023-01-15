@@ -1,0 +1,306 @@
+#notemd
+# 220901a_FIRSTNEWFP (New FP)
+
+  - original die size  
+    (712.760 645.840)
+  - soft blockage  
+    17.3
+
+# 220830a_FIRSTSTA (Insert PG, Bound, ISO Buff)
+
+## STA
+
+| corner                               | WNS (wo/w IO)  | TNS (wo/w IO)    | NVP        | Trans | Cap | Noise |
+| ------------------------------------ | -------------- | ---------------- | ---------- | ----- | --- | ----- |
+| lt_cbestccbestm40cmin      | \-0.015/-0.015 | 0.156/0.156      | 36/36      | 0     | 916 | 0     |
+| lt_cworstccworstm40cmin    | \-0.020/-0.020 | 0.257/0.257      | 38/38      | 0     | 921 | 0     |
+| lt_rcbestccbestm40cmin     | \-0.016/-0.016 | 0.130/0.130      | 27/27      | 0     | 920 | 0     |
+| lt_rcworstccworstm40cmin   | \-0.019/-0.019 | 0.275/0.275      | 38/38      | 0     | 917 | 0     |
+| ml_cbestccbest125cmin      | \-0.017/-0.017 | 0.160/0.160      | 33/33      | 0     | 916 | 0     |
+| ml_cworstccworst125cmin    | \-0.019/-0.019 | 0.230/0.230      | 29/29      | 0     | 919 | 0     |
+| ml_rcbestccbest125cmin     | \-0.015/-0.015 | 0.102/0.102      | 25/25      | 0     | 918 | 0     |
+| ml_rcworstccworst125cmin   | \-0.022/-0.022 | 0.288/0.288      | 29/29      | 0     | 916 | 0     |
+| wc_cworstccworst125cmin    | \-0.030/-0.030 | 0.108/0.108      | 12/12      | 245   | 920 | 0     |
+| wc_cworstccworstt125cmax   | \-0.406/-1.004 | 31.780/3134.161  | 379/8441   | 205   | 918 | 2     |
+| wcl_cworstccworstm40cmin   | \-0.050/-0.050 | 0.403/0.403      | 28/28      | 68    | 917 | 5     |
+| wcl_cworstccworsttm40cmax  | \-0.626/-1.177 | 146.209/4164.824 | 2423/10752 | 51    | 917 | 4     |
+| wcl_rcworstccworstm40cmin  | \-0.046/-0.046 | 0.347/0.347      | 31/31      | 49    | 916 | 0     |
+| wcl_rcworstccworsttm40cmax | \-0.618/-1.139 | 114.286/3915.354 | 1423/9770  | 49    | 915 | 3     |
+| wc_rcworstccworst125cmin   | \-0.027/-0.027 | 0.094/0.094      | 14/14      | 78    | 917 | 0     |
+| wc_rcworstccworstt125cmax  | \-0.401/-0.972 | 27.928/2971.692  | 349/8287   | 79    | 917 | 0     |
+
+## ICC2
+
+220831 : still on going
+
+| STEP: place_opt            | WNS      | TNS         | NVP   | Std. Cell   |
+| ------------------------------------ | -------- | ----------- | ----- | ----------- |
+| ss72_cworstCCworstTm40c(S) | \-0.0507 | \-0.6727    | 66    | \-          |
+| Design(S)                            | \-0.0507 | \-0.6727    | 66    | 101646.3606 |
+| ff88_rcworstCCworst125c(H) | \-0.3523 | \-2385.5046 | 42332 | \-          |
+| Design(H)                            | \-0.3523 | \-2385.5046 | 42332 | 101646.3606 |
+
+| STEP: clock_optcts         | WNS      | TNS        | NVP   | Std. Cell   |
+| ------------------------------------ | -------- | ---------- | ----- | ----------- |
+| ss72_cworstCCworstTm40c(S) | \-0.7888 | \-122.2764 | 1296  | \-          |
+| Design(S)                            | \-0.7888 | \-122.2764 | 1296  | 102148.4114 |
+| ff88_rcworstCCworst125c(H) | \-0.0934 | \-791.0912 | 28414 | \-          |
+| Design(H)                            | \-0.0934 | \-791.0912 | 28414 | 102148.4114 |
+
+| STEP: clock_optopto        | WNS      | TNS      | NVP  | Std. Cell   |
+| ------------------------------------ | -------- | -------- | ---- | ----------- |
+| ss72_cworstCCworstTm40c(S) | \-0.0507 | \-0.5250 | 69   | \-          |
+| Design(S)                            | \-0.0507 | \-0.5250 | 69   | 120799.0518 |
+| ff88_rcworstCCworst125c(H) | \-0.0471 | \-1.5976 | 1737 | \-          |
+| Design(H)                            | \-0.0471 | \-1.5976 | 1737 | 120799.0518 |
+
+| STEP: route_opt            | WNS      | TNS      | NVP  | Std. Cell   |
+| ------------------------------------ | -------- | -------- | ---- | ----------- |
+| ss72_cworstCCworstTm40c(S) | \-0.0220 | \-0.3533 | 124  | \-          |
+| Design(S)                            | \-0.0220 | \-0.3533 | 124  | 119057.4858 |
+| ff88_rcworstCCworst125c(H) | \-0.0283 | \-2.2958 | 2138 | \-          |
+| Design(H)                            | \-0.0283 | \-2.2958 | 2138 | 119057.4858 |
+
+# 220829b_TMPCORRWRITEDEF \> 220830a_FIRSTSTA
+
+## STA
+
+| corner                               | WNS (wo/w IO)  | TNS (wo/w IO)    | NVP        | Trans | Cap | Noise |
+| ------------------------------------ | -------------- | ---------------- | ---------- | ----- | --- | ----- |
+| wcl_cworstccworsttm40cmax  | \-0.625/-1.175 | 140.284/4144.037 | 2228/10546 | 50    | 917 | 4     |
+| wc_rcworstccworstt125cmax  | \-0.400/-0.968 | 27.407/2959.795  | 341/8260   | 88    | 918 | 0     |
+| wc_cworstccworst125cmin    | \-0.030/-0.030 | 0.113/0.113      | 12/12      | 214   | 921 | 0     |
+| wc_rcworstccworst125cmin   | \-0.027/-0.027 | 0.089/0.089      | 11/11      | 89    | 918 | 0     |
+| ml_rcworstccworst125cmin   | \-0.022/-0.022 | 0.285/0.285      | 29/29      | 0     | 919 | 0     |
+| lt_cbestccbestm40cmin      | \-0.016/-0.016 | 0.152/0.152      | 36/36      | 0     | 917 | 0     |
+| lt_cworstccworstm40cmin    | \-0.020/-0.020 | 0.259/0.259      | 40/40      | 0     | 922 | 0     |
+| lt_rcbestccbestm40cmin     | \-0.017/-0.017 | 0.129/0.129      | 27/27      | 0     | 921 | 0     |
+| lt_rcworstccworstm40cmin   | \-0.018/-0.018 | 0.274/0.274      | 37/37      | 0     | 918 | 0     |
+| ml_cbestccbest125cmin      | \-0.017/-0.017 | 0.169/0.169      | 32/32      | 0     | 917 | 0     |
+| ml_cworstccworst125cmin    | \-0.019/-0.019 | 0.229/0.229      | 29/29      | 0     | 922 | 0     |
+| ml_rcbestccbest125cmin     | \-0.014/-0.014 | 0.098/0.098      | 24/24      | 0     | 921 | 0     |
+| wc_cworstccworstt125cmax   | \-0.406/-1.003 | 31.274/3135.980  | 375/8420   | 207   | 919 | 2     |
+| wcl_cworstccworstm40cmin   | \-0.050/-0.050 | 0.403/0.403      | 29/29      | 65    | 917 | 5     |
+| wcl_rcworstccworstm40cmin  | \-0.046/-0.046 | 0.339/0.339      | 31/31      | 49    | 916 | 1     |
+| wcl_rcworstccworsttm40cmax | \-0.617/-1.137 | 112.075/3902.719 | 1314/9653  | 49    | 916 | 3     |
+
+## ICC2
+
+  - Aligned def  
+    Bxb_mem
+
+| STEP: place_opt            | WNS      | TNS         | NVP   | Std. Cell  |
+| ------------------------------------ | -------- | ----------- | ----- | ---------- |
+| ss72_cworstCCworstTm40c(S) | \-0.7191 | \-213.4890  | 3008  | \-         |
+| Design(S)                            | \-0.7191 | \-213.4890  | 3008  | 106136.470 |
+| ff88_rcworstCCworst125c(H) | \-0.3587 | \-2407.9173 | 43507 | \-         |
+| Design(H)                            | \-0.3587 | \-2407.9173 | 43507 | 106136.470 |
+
+| STEP: clock_optcts         | WNS      | TNS        | NVP   | Std. Cell  |
+| ------------------------------------ | -------- | ---------- | ----- | ---------- |
+| ss72_cworstCCworstTm40c(S) | \-0.7818 | \-286.1501 | 1761  | \-         |
+| Design(S)                            | \-0.7818 | \-286.1501 | 1761  | 106648.584 |
+| ff88_rcworstCCworst125c(H) | \-0.1264 | \-876.1186 | 30608 | \-         |
+| Design(H)                            | \-0.1264 | \-876.1186 | 30608 | 106648.584 |
+
+| STEP: clock_optopto        | WNS      | TNS       | NVP  | Std. Cell  |
+| ------------------------------------ | -------- | --------- | ---- | ---------- |
+| ss72_cworstCCworstTm40c(S) | \-0.6825 | \-99.7985 | 1004 | \-         |
+| Design(S)                            | \-0.6825 | \-99.7985 | 1004 | 117436.133 |
+| ff88_rcworstCCworst125c(H) | \-0.1145 | \-24.7161 | 1182 | \-         |
+| Design(H)                            | \-0.1145 | \-24.7161 | 1182 | 117436.133 |
+
+| STEP: route_opt            | WNS      | TNS        | NVP  | Std. Cell  |
+| ------------------------------------ | -------- | ---------- | ---- | ---------- |
+| ss72_cworstCCworstTm40c(S) | \-0.6945 | \-185.4983 | 2260 | \-         |
+| Design(S)                            | \-0.6945 | \-185.4983 | 2260 | 119332.676 |
+| ff88_rcworstCCworst125c(H) | \-0.0775 | \-10.5510  | 1147 | \-         |
+| Design(H)                            | \-0.0775 | \-10.5510  | 1147 | 119332.676 |
+
+| STEP: signoff_drc          | WNS      | TNS        | NVP  | Std. Cell  |
+| ------------------------------------ | -------- | ---------- | ---- | ---------- |
+| ss72_cworstCCworstTm40c(S) | \-0.6945 | \-185.4983 | 2260 | \-         |
+| Design(S)                            | \-0.6945 | \-185.4983 | 2260 | 119332.676 |
+| ff88_rcworstCCworst125c(H) | \-0.0775 | \-10.5510  | 1147 | \-         |
+| Design(H)                            | \-0.0775 | \-10.5510  | 1147 | 119332.676 |
+
+| STEP: chip_finish          | WNS      | TNS        | NVP  | Std. Cell  |
+| ------------------------------------ | -------- | ---------- | ---- | ---------- |
+| ss72_cworstCCworstTm40c(S) | \-0.6945 | \-185.4983 | 2260 | \-         |
+| Design(S)                            | \-0.6945 | \-185.4983 | 2260 | 119332.676 |
+| ff88_rcworstCCworst125c(H) | \-0.0775 | \-10.5510  | 1147 | \-         |
+| Design(H)                            | \-0.0775 | \-10.5510  | 1147 | 119332.676 |
+
+# 220829a_IGNOREHOLD (ignore_hold/0829)
+
+  - Phase1 original def
+
+| STEP: place_opt            | WNS      | TNS        | NVP  | Std. Cell  |
+| ------------------------------------ | -------- | ---------- | ---- | ---------- |
+| ss72_cworstCCworstTm40c(S) | \-0.6679 | \-383.4777 | 7562 | \-         |
+| Design(S)                            | \-0.6679 | \-383.4777 | 7562 | 108057.932 |
+| Design(H)                            | –        | 0.0000     | 0    | 108057.932 |
+
+| STEP: clock_optcts         | WNS      | TNS        | NVP  | Std. Cell  |
+| ------------------------------------ | -------- | ---------- | ---- | ---------- |
+| ss72_cworstCCworstTm40c(S) | \-0.7596 | \-330.1798 | 2505 | \-         |
+| Design(S)                            | \-0.7596 | \-330.1798 | 2505 | 108542.804 |
+| Design(H)                            | –        | 0.0000     | 0    | 108542.804 |
+
+| STEP: clock_optopto        | WNS      | TNS       | NVP  | Std. Cell  |
+| ------------------------------------ | -------- | --------- | ---- | ---------- |
+| ss72_cworstCCworstTm40c(S) | \-0.5997 | \-78.9465 | 2011 | \-         |
+| Design(S)                            | \-0.5997 | \-78.9465 | 2011 | 105151.758 |
+| Design(H)                            | –        | 0.0000    | 0    | 105151.758 |
+
+| STEP: route_opt            | WNS      | TNS        | NVP  | Std. Cell  |
+| ------------------------------------ | -------- | ---------- | ---- | ---------- |
+| ss72_cworstCCworstTm40c(S) | \-0.5962 | \-124.2042 | 1709 | \-         |
+| Design(S)                            | \-0.5962 | \-124.2042 | 1709 | 105496.363 |
+| Design(H)                            | –        | 0.0000     | 0    | 105496.363 |
+
+| STEP: signoff_drc          | WNS      | TNS        | NVP  | Std. Cell  |
+| ------------------------------------ | -------- | ---------- | ---- | ---------- |
+| ss72_cworstCCworstTm40c(S) | \-0.5962 | \-124.2043 | 1709 | \-         |
+| Design(S)                            | \-0.5962 | \-124.2043 | 1709 | 105496.363 |
+| Design(H)                            | –        | 0.0000     | 0    | 105496.363 |
+
+| STEP: chip_finish          | WNS      | TNS        | NVP  | Std. Cell  |
+| ------------------------------------ | -------- | ---------- | ---- | ---------- |
+| ss72_cworstCCworstTm40c(S) | \-0.5962 | \-124.2043 | 1709 | \-         |
+| Design(S)                            | \-0.5962 | \-124.2043 | 1709 | 105496.363 |
+| Design(H)                            | –        | 0.0000     | 0    | 105496.363 |
+
+# 220823b_INITIAL (initial/0823)
+
+  - no aligned def
+
+| STEP: place_opt            | WNS      | TNS         | NVP   | Std. Cell   |
+| ------------------------------------ | -------- | ----------- | ----- | ----------- |
+| ss72_cworstCCworstTm40c(S) | \-0.8187 | \-257.8816  | 3295  | \-          |
+| Design(S)                            | \-0.8187 | \-257.8816  | 3295  | 106223.6160 |
+| ff88_rcworstCCworst125c(H) | \-0.3596 | \-2455.4101 | 42696 | \-          |
+| Design(H)                            | \-0.3596 | \-2455.4101 | 42696 | 106223.6160 |
+
+| STEP: clock_optcts         | WNS      | TNS        | NVP   | Std. Cell   |
+| ------------------------------------ | -------- | ---------- | ----- | ----------- |
+| ss72_cworstCCworstTm40c(S) | \-0.8152 | \-237.3258 | 2517  | \-          |
+| Design(S)                            | \-0.8152 | \-237.3258 | 2517  | 106768.9820 |
+| ff88_rcworstCCworst125c(H) | \-0.1306 | \-856.8471 | 29398 | \-          |
+| Design(H)                            | \-0.1306 | \-856.8471 | 29398 | 106768.9820 |
+
+| STEP: clock_optopto        | WNS      | TNS       | NVP | Std. Cell   |
+| ------------------------------------ | -------- | --------- | --- | ----------- |
+| ss72_cworstCCworstTm40c(S) | \-0.7260 | \-85.6476 | 720 | \-          |
+| Design(S)                            | \-0.7260 | \-85.6476 | 720 | 117836.6607 |
+| ff88_rcworstCCworst125c(H) | \-0.0603 | \-0.6452  | 561 | \-          |
+| Design(H)                            | \-0.0603 | \-0.6452  | 561 | 117836.6607 |
+
+| STEP: route_opt            | WNS      | TNS        | NVP  | Std. Cell   |
+| ------------------------------------ | -------- | ---------- | ---- | ----------- |
+| ss72_cworstCCworstTm40c(S) | \-0.7445 | \-129.3640 | 1693 | \-          |
+| Design(S)                            | \-0.7445 | \-129.3640 | 1693 | 118446.6493 |
+| ff88_rcworstCCworst125c(H) | \-0.0984 | \-3.7091   | 1302 | \-          |
+| Design(H)                            | \-0.0984 | \-3.7091   | 1302 | 118446.6493 |
+
+| STEP: signoff_drc          | WNS      | TNS        | NVP  | Std. Cell   |
+| ------------------------------------ | -------- | ---------- | ---- | ----------- |
+| ss72_cworstCCworstTm40c(S) | \-0.7445 | \-129.3640 | 1693 | \-          |
+| Design(S)                            | \-0.7445 | \-129.3640 | 1693 | 118446.6493 |
+| ff88_rcworstCCworst125c(H) | \-0.0984 | \-3.7091   | 1302 | \-          |
+| Design(H)                            | \-0.0984 | \-3.7091   | 1302 | 118446.6493 |
+
+| STEP: chip_finish          | WNS      | TNS        | NVP  | Std. Cell   |
+| ------------------------------------ | -------- | ---------- | ---- | ----------- |
+| ss72_cworstCCworstTm40c(S) | \-0.7445 | \-129.3640 | 1693 | \-          |
+| Design(S)                            | \-0.7445 | \-129.3640 | 1693 | 118446.6493 |
+| ff88_rcworstCCworst125c(H) | \-0.0984 | \-3.7091   | 1302 | \-          |
+| Design(H)                            | \-0.0984 | \-3.7091   | 1302 | 118446.6493 |
+
+# Fixed First Error
+
+| STEP: place_opt            | WNS      | TNS         | NVP   | Std. Cell   |
+| ------------------------------------ | -------- | ----------- | ----- | ----------- |
+| ss72_cworstCCworstTm40c(S) | \-0.8796 | \-249.5074  | 3278  | \-          |
+| Design(S)                            | \-0.8796 | \-249.5074  | 3278  | 106557.3827 |
+| ff88_rcworstCCworst125c(H) | \-0.3622 | \-2463.2310 | 42944 | \-          |
+| Design(H)                            | \-0.3622 | \-2463.2310 | 42944 | 106557.3827 |
+
+``` text
+Error: There are non-fixed macros in design. Use the -floorplan option to place macros or fix all macros. (DPUI-083)
+```
+
+# Floorplan Generation
+
+Generated larger flooplan for test run. Forgot fixing.
+
+## How to ignore moving fixing cells
+
+move cell \> gear mark \> ignore fixed
+
+## write_def
+
+``` tcl
+write_def -include {rows_tracks bounds pins macros blockages} 
+```
+
+# Place_opt
+
+``` text
+Scenario func::ss72_cworst_CCworst_T_125c  WNS = 1.267688, TNS = 809.422913, NVP = 4714
+Scenario func::ss72_rcworst_CCworst_125c  WNS = invalid, TNS = invalid (DRC only), NVP = 0
+Scenario func::ss72_rcworst_CCworst_T_125c  WNS = invalid, TNS = invalid (DRC only), NVP = 0
+Scenario func::ss72_rcworst_CCworst_m40c  WNS = invalid, TNS = invalid (DRC only), NVP = 0
+```
+
+# First Meeting
+
+Power line = for 障害物
+
+Place Macro's back without margin is ok.
+
+## Generate Floorplan
+
+  - Change Floorplan
+
+  - DEF = Fixed
+
+  - Ports on vertical M3 M5 M7
+
+  - Ping guide
+
+  - `set_individual_pin_constraints`
+
+  - caution that tap / boundary cells are not on floorplan
+
+## MCMM
+
+clock quality
+
+  - 1.  SS/0.72V/-40C + Cworst_CcworstT ( for setup )
+
+  - 1.  SS/0.72V/125C + Rcworst_CcworstT ( for setup )
+
+  - 1.  SS/0.72V/125C (wc)+ Cworst_Ccworst ( for hold )
+
+  - 1.  SS/0.72V/125C (wc)+ Rcworst_Ccworst ( for hold )
+
+  - 1.  FF/0.88V/125C (ml)+ Rcworst_Ccworst ( for hold )
+
+  - "wcl" {ssgnp0p72vm40c_hmccs}
+
+  - "wc" {ssgnp0p72v125c_hmccs}
+
+  - "wcz {ssgnp0p72v0c_hmccs}
+
+  - "lt" {ffgnp0p88vm40c_hmccs}
+
+  - "ml" {ffgnp0p88v125c_hmccs}
+
+  - "bc" {ffgnp0p88v0c_hmccs}
+
+  - "tt" {tt0p8v25c_hmccs}
+
+# Plan to Automatic Best Settings Determine
+
+## Iteration

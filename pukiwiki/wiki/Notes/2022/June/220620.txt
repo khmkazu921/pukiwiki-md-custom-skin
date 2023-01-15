@@ -1,0 +1,170 @@
+#notemd
+# Status Meeting
+
+# All-hands Forum
+
+## Furuzono-san
+
+  - Number of Employee 3 times as many as 10 years ago.
+  - Ark SSIO debug, Saga+, MPU3, PEZY
+  - Renesas
+
+## D-chip Lower Power Issue, Takashima-san
+
+  - PMC
+  - en0 : 0, \!en0 : 1
+  - `!NSLEEPIN`
+  - ソニーにお願いせず、insert two inverters for ECO in our design
+
+# Regular Meeting
+
+  - Takashima-san
+      - FIB  
+        Focused Ion Beam system
+    <!-- end list -->
+      - ZBT4
+      - phoenix
+  - Sakata-san
+      - partitioning block
+
+# LM_NNP
+
+## run_flow.tcl
+
+``` tcl numberLines
+#===================================================================
+#=================== setting =======================================
+#===================================================================
+
+set TOP "wrapper"
+set SDC "/proj/ATEPairChip/RELEASE/Training_Phase1/Data/sdc/Bxb.sdc"
+
+proc read_list {filename} {
+    set f [open $filename r]
+    set tmp_list [split [read $f] "\n"]
+    set result [regsub -all \{|\} $tmp_list ""]
+    return $result
+    close $filename
+}
+
+set LIST_FILE "/proj/ATEPairChip/RELEASE/Training_Phase1/Data/rtl_mem_b64/rtl_list"
+set RTL_LIST [read_list $LIST_FILE]
+unset LIST_FILE
+
+set DONT_USE "/proj/ATEPairChip/RELEASE/Training_Phase1/Data/dont_use/set_dont_use.tcl"
+
+#set RTL_LIST {
+#    /proj/ATEPairChip/WORK/nakayama/dc/v/20190924_final2/v/wrapper.v
+#}
+
+# puts $RTL_LIST
+```
+
+## 02_compile.tcl
+
+``` tcl
+#source ./scr/scripts/set_dont_use.tcl
+source $DONT_USE
+```
+
+## 00_des.tcl
+
+``` tcl
+#===================================================================
+#=================== common setting ================================
+#===================================================================
+
+#===================================================================
+#=================== set library ===================================
+#===================================================================
+#-- timing lib -------------------------
+source /proj/ATEPairChip/TEMPLATES/PT/timing_lib.tcl
+
+#-- dc setting -------------------------
+set LIB_DIR ${BASE_DIR}/Library
+
+set SC_NDM \
+    "${LIB_DIR}/ndm/tcbn12ffcllbwp6t16p96cpd_c_ccs.ndm"
+
+set SC_LIB \
+    "${LIB_DIR}/sc/6T/*16p*/120c/TSMCHOME/digital/Front_End/timing_power_noise/CCS/*/*cpdssgnp0p72v*hm_ccs.db
+${LIB_DIR}/sc/6T/*16p*/120c/TSMCHOME/digital/Front_End/timing_power_noise/CCS/*/*cpdlvtssgnp0p72v*hm_ccs.db"
+
+set MEM_NDM \
+    "${LIB_DIR}/ndm/sram_macros.ndm"
+
+set MEM_LIB \
+    "${LIB_DIR}/mem/shdspsb/ts1n12ffcll*/CCS/*.db​"
+
+set DW_PATH /apps/synopsys/syn_vM-2016.12-SP5/libraries/syn
+
+set search_path [regsub -all "\n" \
+                     ". $search_path $DW_PATH" ""]; 
+
+# $SC_NDM $SC_LIB $MEM_LIB" ""];
+# ". $search_path $DW_PATH $SC_NDM $MEM_NDM $SC_LIB $MEM_LIB" ""]
+
+echo "search_path => $search_path"
+
+#$SC_NDM $MEM_NDM 
+set target_library "$target_library $SC_LIB $MEM_LIB"
+
+set synthetic_library dw_foundation.sldb
+set link_library "$link_library $synthetic_library"
+```
+
+``` text
+4602:Warning: Cannot find the design 'TS1N12FFCLLSBSVTD1024X128M4S' in the library 'WORK'. (LBR-1)
+4604:Warning: Cannot find the design 'TS1N12FFCLLSBSVTD1024X64M4S' in the library 'WORK'. (LBR-1)
+4606:Warning: Cannot find the design 'TS1N12FFCLLSBSVTD512X40M4S' in the library 'WORK'. (LBR-1)
+4607:Warning: Unable to resolve reference 'TS1N12FFCLLSBSVTD1024X128M4S' in 'single_port_ram_1024x128_NonBIST_NonBWEB_NonSLP_NonSD_NonRED_wrap_0'. (LINK-5)
+4608:Warning: Unable to resolve reference 'TS1N12FFCLLSBSVTD1024X128M4S' in 'single_port_ram_1024x1024_NonBIST_NonBWEB_NonSLP_NonSD_NonRED_wrap_0'. (LINK-5)
+4609:Warning: Unable to resolve reference 'TS1N12FFCLLSBSVTD1024X64M4S' in 'single_port_ram_1024x64_NonBIST_NonBWEB_NonSLP_NonSD_NonRED_wrap_0'. (LINK-5)
+4610:Warning: Unable to resolve reference 'TS1N12FFCLLSBSVTD512X40M4S' in 'single_port_ram_512x40_NonBIST_NonBWEB_NonSLP_NonSD_NonRED_wrap_0'. (LINK-5)
+4613:Warning: Cannot find the design 'TS1N12FFCLLSBSVTD1024X128M4S' in the library 'WORK'. (LBR-1)
+4615:Warning: Cannot find the design 'TS1N12FFCLLSBSVTD1024X64M4S' in the library 'WORK'. (LBR-1)
+4617:Warning: Cannot find the design 'TS1N12FFCLLSBSVTD512X40M4S' in the library 'WORK'. (LBR-1)
+4618:Warning: Unable to resolve reference 'TS1N12FFCLLSBSVTD1024X128M4S' in 'single_port_ram_1024x128_NonBIST_NonBWEB_NonSLP_NonSD_NonRED_wrap_0'. (LINK-5)
+4619:Warning: Unable to resolve reference 'TS1N12FFCLLSBSVTD1024X128M4S' in 'single_port_ram_1024x1024_NonBIST_NonBWEB_NonSLP_NonSD_NonRED_wrap_0'. (LINK-5)
+4620:Warning: Unable to resolve reference 'TS1N12FFCLLSBSVTD1024X64M4S' in 'single_port_ram_1024x64_NonBIST_NonBWEB_NonSLP_NonSD_NonRED_wrap_0'. (LINK-5)
+4621:Warning: Unable to resolve reference 'TS1N12FFCLLSBSVTD512X40M4S' in 'single_port_ram_512x40_NonBIST_NonBWEB_NonSLP_NonSD_NonRED_wrap_0'. (LINK-5)
+5708:Warning: Cannot find the design 'TS1N12FFCLLSBSVTD1024X128M4S' in the library 'WORK'. (LBR-1)
+5710:Warning: Cannot find the design 'TS1N12FFCLLSBSVTD1024X64M4S' in the library 'WORK'. (LBR-1)
+5712:Warning: Cannot find the design 'TS1N12FFCLLSBSVTD512X40M4S' in the library 'WORK'. (LBR-1)
+5713:Warning: Unable to resolve reference 'TS1N12FFCLLSBSVTD1024X128M4S' in 'single_port_ram_1024x128_NonBIST_NonBWEB_NonSLP_NonSD_NonRED_wrap_0'. (LINK-5)
+5714:Warning: Unable to resolve reference 'TS1N12FFCLLSBSVTD1024X128M4S' in 'single_port_ram_1024x1024_NonBIST_NonBWEB_NonSLP_NonSD_NonRED_wrap_0'. (LINK-5)
+5715:Warning: Unable to resolve reference 'TS1N12FFCLLSBSVTD1024X64M4S' in 'single_port_ram_1024x64_NonBIST_NonBWEB_NonSLP_NonSD_NonRED_wrap_0'. (LINK-5)
+5716:Warning: Unable to resolve reference 'TS1N12FFCLLSBSVTD512X40M4S' in 'single_port_ram_512x40_NonBIST_NonBWEB_NonSLP_NonSD_NonRED_wrap_0'. (LINK-5)
+5730:Warning: Found 1448 PWR-763 messages. Please run check_mv_design -clock_gating_style for more information.
+9106:Warning: Cannot find the design 'TS1N12FFCLLSBSVTD1024X128M4S' in the library 'WORK'. (LBR-1)
+9108:Warning: Cannot find the design 'TS1N12FFCLLSBSVTD1024X64M4S' in the library 'WORK'. (LBR-1)
+9110:Warning: Cannot find the design 'TS1N12FFCLLSBSVTD512X40M4S' in the library 'WORK'. (LBR-1)
+9111:Warning: Unable to resolve reference 'TS1N12FFCLLSBSVTD1024X128M4S' in 'single_port_ram_1024x128_NonBIST_NonBWEB_NonSLP_NonSD_NonRED_wrap_3'. (LINK-5)
+9112:Warning: Unable to resolve reference 'TS1N12FFCLLSBSVTD1024X128M4S' in 'single_port_ram_1024x128_NonBIST_NonBWEB_NonSLP_NonSD_NonRED_wrap_2'. (LINK-5)
+9113:Warning: Unable to resolve reference 'TS1N12FFCLLSBSVTD1024X128M4S' in 'single_port_ram_1024x128_NonBIST_NonBWEB_NonSLP_NonSD_NonRED_wrap_1'. (LINK-5)
+9114:Warning: Unable to resolve reference 'TS1N12FFCLLSBSVTD1024X128M4S' in 'single_port_ram_1024x128_NonBIST_NonBWEB_NonSLP_NonSD_NonRED_wrap_0'. (LINK-5)
+9115:Warning: Unable to resolve reference 'TS1N12FFCLLSBSVTD1024X128M4S' in 'single_port_ram_1024x1024_NonBIST_NonBWEB_NonSLP_NonSD_NonRED_wrap_1'. (LINK-5)
+9116:Warning: Unable to resolve reference 'TS1N12FFCLLSBSVTD1024X128M4S' in 'single_port_ram_1024x1024_NonBIST_NonBWEB_NonSLP_NonSD_NonRED_wrap_0'. (LINK-5)
+9117:Warning: Unable to resolve reference 'TS1N12FFCLLSBSVTD1024X64M4S' in 'single_port_ram_1024x64_NonBIST_NonBWEB_NonSLP_NonSD_NonRED_wrap_1'. (LINK-5)
+9118:Warning: Unable to resolve reference 'TS1N12FFCLLSBSVTD1024X64M4S' in 'single_port_ram_1024x64_NonBIST_NonBWEB_NonSLP_NonSD_NonRED_wrap_0'. (LINK-5)
+9119:Warning: Unable to resolve reference 'TS1N12FFCLLSBSVTD512X40M4S' in 'single_port_ram_512x40_NonBIST_NonBWEB_NonSLP_NonSD_NonRED_wrap_1'. (LINK-5)
+9120:Warning: Unable to resolve reference 'TS1N12FFCLLSBSVTD512X40M4S' in 'single_port_ram_512x40_NonBIST_NonBWEB_NonSLP_NonSD_NonRED_wrap_0'. (LINK-5)
+9588:Warning: Design 'Bxb' contains 23 high-fanout nets. A fanout number of 1000 will be used for delay calculations involving these nets. (TIM-134)
+9613:Warning: Cannot find the design 'TS1N12FFCLLSBSVTD1024X128M4S' in the library 'WORK'. (LBR-1)
+9615:Warning: Cannot find the design 'TS1N12FFCLLSBSVTD1024X64M4S' in the library 'WORK'. (LBR-1)
+9617:Warning: Cannot find the design 'TS1N12FFCLLSBSVTD512X40M4S' in the library 'WORK'. (LBR-1)
+9618:Warning: Unable to resolve reference 'TS1N12FFCLLSBSVTD1024X128M4S' in 'single_port_ram_1024x128_NonBIST_NonBWEB_NonSLP_NonSD_NonRED_wrap_3'. (LINK-5)
+9619:Warning: Unable to resolve reference 'TS1N12FFCLLSBSVTD1024X128M4S' in 'single_port_ram_1024x128_NonBIST_NonBWEB_NonSLP_NonSD_NonRED_wrap_2'. (LINK-5)
+9620:Warning: Unable to resolve reference 'TS1N12FFCLLSBSVTD1024X128M4S' in 'single_port_ram_1024x128_NonBIST_NonBWEB_NonSLP_NonSD_NonRED_wrap_1'. (LINK-5)
+9621:Warning: Unable to resolve reference 'TS1N12FFCLLSBSVTD1024X128M4S' in 'single_port_ram_1024x128_NonBIST_NonBWEB_NonSLP_NonSD_NonRED_wrap_0'. (LINK-5)
+9622:Warning: Unable to resolve reference 'TS1N12FFCLLSBSVTD1024X128M4S' in 'single_port_ram_1024x1024_NonBIST_NonBWEB_NonSLP_NonSD_NonRED_wrap_1'. (LINK-5)
+9623:Warning: Unable to resolve reference 'TS1N12FFCLLSBSVTD1024X128M4S' in 'single_port_ram_1024x1024_NonBIST_NonBWEB_NonSLP_NonSD_NonRED_wrap_0'. (LINK-5)
+9624:Warning: Unable to resolve reference 'TS1N12FFCLLSBSVTD1024X64M4S' in 'single_port_ram_1024x64_NonBIST_NonBWEB_NonSLP_NonSD_NonRED_wrap_1'. (LINK-5)
+9625:Warning: Unable to resolve reference 'TS1N12FFCLLSBSVTD1024X64M4S' in 'single_port_ram_1024x64_NonBIST_NonBWEB_NonSLP_NonSD_NonRED_wrap_0'. (LINK-5)
+9626:Warning: Unable to resolve reference 'TS1N12FFCLLSBSVTD512X40M4S' in 'single_port_ram_512x40_NonBIST_NonBWEB_NonSLP_NonSD_NonRED_wrap_1'. (LINK-5)
+9627:Warning: Unable to resolve reference 'TS1N12FFCLLSBSVTD512X40M4S' in 'single_port_ram_512x40_NonBIST_NonBWEB_NonSLP_NonSD_NonRED_wrap_0'. (LINK-5)
+9630:Warning: Design has unannotated black box outputs. (PWR-428)
+9632:Warning: Cannot find the design 'TS1N12FFCLLSBSVTD1024X128M4S' in the library 'WORK'. (LBR-1)
+9634:Warning: Cannot find the design 'TS1N12FFCLLSBSVTD1024X64M4S' in the library 'WORK'. (LBR-1)
+9636:Warning: Cannot find the design 'TS1N12FFCLLSBSVTD512X40M4S' in the library 'WORK'. (LBR-1)
+```

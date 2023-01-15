@@ -1,0 +1,504 @@
+#notemd
+# Status Meeting
+
+  - clock structure  
+    sink points
+
+<!-- end list -->
+
+  - Sakata-san, power scenario設定の不備
+
+# Self Study
+
+## Unit 11 Physically Aware ECO
+
+### Physically Aware ECO
+
+  - Buffer insertion and cell sizing allowed
+      - Open site mode  
+        when open sites available
+      - Occupied site mode  
+        to overlap existing cells
+
+<!-- end list -->
+
+``` tcl
+fix_eco_drc -physical_mode open_site|occupied_site
+fix_eco_timing -physical_mode open_site|occupied_site
+```
+
+  - `set_eco_options`
+    
+    ``` tcl
+    set_eco_options -physical_lib_path <LEF_file_name_list> \
+        -physical_design_path <DEF_file_name> \
+        -log_file <my_log_file> \
+        -physical_constraint_file <file_name>
+    ```
+
+### Physically Aware ECO Flow
+
+``` tcl
+read_verilog ORCA_TOP.v; link_design ORCA_TOP
+set_app_var read_parasitics_load_locations true
+read_parasitics -format SPEF -keep_capacitive_coupling test.SPEF
+load_upf design.upf
+read_sdc design.scd
+
+# Update timing with pin slack and arrival info
+set_app_var timing_save_pin_arrival_and_slack true
+update_timing -full
+
+# Configure Physical Information needed for ECO along with Voltage Areas
+set_eco_options -physical_tech_lib_path tech,lef \
+    -physical_lib_path $lef_files \
+    -physical_lib_constraint_file lib_spacing_rules.tcl.enc \
+    -physical_design_path ./design.def.gz \
+    -physical_constraint_file va.tcl \
+    -log_file ./lef_def.log
+
+# (begin optional)
+# If the design contains filler cells, you can have PrimeTime ignore
+# them. Makesure youfirst identify the filler cell masters:
+set_eco_options -filler_cell_names "FILLER1 FILLER2 FILLER4 ..."
+# Then set the following variable:
+set_app_var eco_allow_filler_cells_as_open_sites true
+# (end optional)
+
+# Identify violations
+report_constraints -all -max_cap -max_tran
+report_noise; report_timing; report_power;
+
+# Power Revocery
+fix_eco_power -methods {size_cell | remove_buffer}
+
+# DRC fixing
+set buffer_list "BUF_1 BUF_2 _ BUF_N"
+fix_eco_drc -type max_tran -physical_mode open_site -buffer_list $buffer_list
+fix_eco_drc -type max_cap  -physical_mode open_site -buffer_list $buffer_list 
+
+# Noise Fixing
+fix_eco_drc -type noise ...
+
+# Timing Fixing
+fix_eco_timing -type setup
+fix_eco_timing -type hold -buffer_list $buffer_list
+
+# Write changes
+write_changes -format icctcl -output pt_eco.tcl
+...
+
+# Implement PT ECOs in ICC II; Repeat above steps as necessary
+fix_eco_power ...
+write_changes -format icctcl -output pt_eco_fslr.tcl
+```
+
+## Unit 11 Appendix
+
+``` tcl
+# Limit the cell size increase for better closure with P&R
+set eco_alternative_area_ratio_threshold <float>
+# Default = 0 (unlimited area increase)
+# 1 = in-place optimization (change cell within existing area limit)
+# 2 = good value in general. It allows area increase by 2X the original
+# cell size
+set eco_alternativecell_attribute_restrictions
+# Specifies lib_cell attributes used to restrict cell sizing
+```
+
+### Example Manual ECO
+
+### Fixing a select path: Hold|Setup
+
+``` tcl
+# To identify problem cells
+report_timing -delay_type min|max
+# fast, no timing update
+estimate_eco -max s4_mul_189_mult_mult_U1070AST___ -sort_by slack
+```
+
+### Crosstalk
+
+``` tcl
+set_coupling_separation -pairwise [get_nets n1] [get_nets n2]
+remove_coupling_separation
+```
+
+### Optional Tailoring
+
+  - Library Names
+      - To handle cases where ICC II links against different logical
+        library names than PrimeTime
+  - Buffer Names
+  - Sizing Cells
+      - Require alternative cell
+        
+        ``` tcl
+        set eco_alternative_cell_attribute_restrictions "cell_footprint"
+        get_alternative_lib_cells slow/BUFX1IVT
+        ```
+
+### User Interface for Leakage Recovery
+
+# Unit 12 DMSA and Hyperscale Analysis
+
+  - DMSA  
+    Distributed Multi-Scenario Analysis
+    
+      - **allow easy multiple analysis**
+      - master process :: `pt_shell -multi_scenario`
+
+<!-- end list -->
+
+  - To define scenarios, following data must be provided:
+    
+      - global data  
+        common data to all scenarios
+    
+      - common data  
+        data used to group
+    
+      - specific data  
+        scenario specific data
+        
+        ``` tcl
+        # Specifying Common Data and Specific Data
+        foreach corner {bc te wc} {
+            foreach mode {func jtag atpg_capture atpg_shift} {
+                create_scenario \
+                    -name ${mode}_${corner} \
+                    -common_data "lib_${corner}.tcl read_${corner}_spef.tcl" \
+                    -specific_data "cons_${mode}.tcl"
+            }
+        }
+        ```
+
+  - `remote_execute`
+    
+    ``` tcl
+    remote_execute {set_false_path -from [all_inputs]}
+    remote_execute {
+        set si_xtalk_delay_analysis_mode all_path_edges
+        update_timing
+    }
+    report_timing -slack_lesser_than 0
+    # verbose mode
+    remote_execute -verbose
+    ```
+
+  - merged `report_timing` `report_constraint`
+    `report_analysis_coverage`
+    
+      - DMSA automatically merges the results across all scenarios.
+        
+        ``` tcl
+        # Shows coverage of timing checks
+        report_analysis_coverage
+        # Report clock timing info
+        report_clock_timing
+        # Report constraint evaluations
+        report_constraint
+        # Show toplevel timing summary
+        report_global_timing
+        # Display power report
+        report_power
+        # Report crosstalk bottleneck nets
+        report_si_bottleneck
+        # Report timing paths
+        report_timing
+        ```
+
+### \<Important\> Hyperscale Analysis
+
+  - the block-level and top-level using **separate runs**
+
+  - HyperScale context captures **actual timing information at block
+    boundary**
+    
+      - Context ??
+
+  - MIM Analysis :: Multiply Instantiated Model Analysis
+    
+      - one analysis of the module and use the sameresults for multiple
+        instances of that block at the top level
+
+  - Hyperscale Block Model :: more accurate than Interface Logic Model
+    (ILM) = ETM/ILM flow
+    
+      - Register to register paths are removed
+          - but, <span class="underline">retains FF paths related to the
+            first stage</span>:
+            1.  Side input path
+            2.  Internal stub pin
+                  - stub  
+                    切り株、半券、（何かが減ったり短くなった）残り
+      - [Wikipedia](https://en.wikipedia.org/wiki/Interface_Logic_Model)
+    
+    ![](../img/Flat_ilm_block.png)
+
+  - Example of a Hyperscale model creation
+    
+    ``` tcl
+    # Enable hierarchical analysis
+    set_app_var hierenable analysis true 
+    # Read in the block
+    read_verilog block_A.v 
+    link_design BLK_A
+    ...
+    # Run timing analysis
+    update_timing
+    # Run noise analysis if applicable
+    update_noise
+    ...
+    # Write out hierarchical data
+    write_hier_data $blkModel
+    ```
+
+<!-- end list -->
+
+1.  Flow 1: Flat Context flow
+    
+      - context characterization
+        
+        ``` tcl
+        read_verilog ...
+        link_design
+        read_parasitics ...
+        read_sdc ...
+        characterize_context —block {BLKA}
+        
+        update_timing
+        report_context -nosplit [get_cells BLKA_I1]
+        write_context -format gbc {BLKA} \
+            -output BLKAcontext
+        write_context -format ptsh {BLKA} \
+            -output BLKA_cons.tcl
+        ```
+    
+      - block level analysis with characrized context ??
+        
+        ``` tcl
+        read_verilog ...
+        link_design
+        read_parasitics ...
+        # Apply block-level constraints before read_context
+        source BLKA_cons.tcl
+        # Optional: prevent read_context from overriding
+        set_dont_override [get_ports input_[1]]
+        # Read binary context before update_timing
+        read_context ./BLKA_context
+        update_timing
+        # Report context info
+        report_context -nosplit
+        # Check if context loaded successfully
+        get_attribute [current_design] is_context_loaded
+        # Check if user-specified override is set on port
+        get_attribute [get_port input_[1]] is_user_dont_override
+        # Print context creation time
+        get_attribute [current_design] context_timestamp
+        ```
+
+2.  Flow 2: Bottom Up Flow with Hyperscale Models
+    
+      - ``` tcl
+        # Block level Hyperscale setup
+        set hier_enable_analysis true
+        # regular PrimeTime setup
+        read_verilog BLOCK_A.v
+        link
+        read_parasitics BLOCK_A.spef
+        source BLOCK_A.sdc
+        # optional: Read HyperScale Context if available
+        read_context $topDir
+        update_timing -full
+        ...
+        write_hier_data $blkModel
+        save_session $blkSession
+        ```
+    
+      - Issue in Clock Mapping for Hyperscale Analysis
+        
+        1.  full chip analysis
+        2.  clock mapping between top and block
+              - `report_clock -map|-cells`
+        3.  The top level context cannot be annotated at the port of the
+            block, causing <span class="underline">unconstrained</span>
+        
+        <!-- end list -->
+        
+          - Solution
+              - a virtual clock named the same as the block level
+                analysis
+                
+                ``` tcl
+                create_clock -period 10 -name clkx
+                ```
+
+3.  Flow 3: Top Down Flow with Coustraint Extraction
+    
+      - recommended when full chip constraints are available
+    
+    <!-- end list -->
+    
+    1.  Rum Constraint Extractor with full chip constriant
+    
+    2.  Block level HyperScale
+    
+    3.  Top level HyperScale
+        
+        ``` tcl
+        ###
+        ### Step-1: Run HyperScale Constraint Extractor
+        ###
+        
+        set_app_var hier_characterize_context_mode constraints_only
+        # Provide configuration of sub-blocks for constraint extraction,
+        set_hier_config -block low -path bikbir
+        
+        ### Existing full chip STA script
+        read_verilog TOP.v
+        read_verilog low.v
+        link
+        read_parasitics TOP.spef
+        read_parasitics -path low_1 low.spef
+        source flat_constraints.tcl
+        ### End
+        
+        characterize_context -block Low
+        update_timing
+        ...
+        # Write out block constraint
+        write_context -format ptsh low -output cstrDir
+        
+        
+        ###
+        ### Step-2: Initial Block Level Analysis
+        ###
+        
+        # Enable HyperScale flow
+        set hier_enable_analysis true
+        
+        # Source variable file from Constraint Extractor
+        source cstxDir/CONSTRAINT/low/HyperScale default/variables.pt
+        update_timing -full
+        write_hier_data blkDir
+        save_session
+        
+        
+        ###
+        ### Step-3: Top Level Analysis
+        ###
+        
+        set hier_enable_analysis true
+        set_hier_config -block low -path blkDir
+        
+        ### Full chip STA script
+        read_verilog TOP.v 
+        read_verilog low.v
+        link
+        read_parasitics TOP.spef
+        read_parasitics -path low_1 low.spef
+        source flat_constraints.tcl
+        update_timing -full
+        ### End
+        ...
+        
+        # Generate context data
+        write_hier_data topDir
+        save_session
+        
+        
+        ###
+        ### Step-4: Finalize Block Level Analysis
+        ###
+        
+        # Enable HyperScale flow
+        set hier_enable_analysis true
+        
+        # Source variable frile from Constraint Extractor
+        source cstrDir/CONSTRAINI/low/HyperScale_default/variables.pt
+        
+        # Load top level context
+        read_context topDir
+        update_timing -full
+        ...
+        write_hier_data blkDir2
+        save_session
+        ```
+
+4.  Timing Report
+    
+      - HyperScale annotations added at `@` sign
+
+## Lab 12 Appendix
+
+  - Image  
+    a special save_session formatfor scenarios
+
+<!-- end list -->
+
+  - Licences
+  - Setting Up DMSA
+      - Switch Description
+        
+        ``` tcl
+        switch $corner {
+            bc {set_operating_conditions FAST -analysis_type on_chip_variation}
+            wc {set_operating_conditions SLOW -analysis_type on_chip_variation}
+        }
+        read_parasitics design.sbpf
+        switch $mode {
+            func {
+                ...functional constraints...
+            }
+            test {
+                ...test constraints...
+            }
+        }
+        ```
+    
+      - Setting Variables
+        
+        ``` tcl
+        foreach corner {bc wc} {
+            foreach mode {func test} {
+                create_scenario \
+                    -name ${mode} ${corner} \
+                    ### Remote pt_shell :
+                    # set corner {wc}; set mode {func};
+                    ### env (f00) array:
+                    # represents environmental variable foo
+                    -specific_variables {mode corner env(DESIGNDIR)} \
+                    ### Remote pt_shell 
+                    # source pt_analysis.tcl
+                    -specific_data {pt_analysis.tcl}
+            }
+        }
+        ```
+  - DMSA Flow for ECOs
+      - Different scenarios can be individually run into *saved
+        sessions*
+        
+        ``` tcl
+        foreach corner {bc wc} {
+            foreach mode {func test} {
+                create_scenario -image <scenario>
+            }
+        }
+        report_global_timing
+        fix_eco_timing
+        report_global_timing
+        ```
+
+## Unit 13
+
+  - `all_path_edges` window alignment mode ?
+
+## Questions
+
+  - Top-down vs Bottom-up Flow
+      - [Link to source of
+        Takemoto-san](https://alfresco.alchip.com/share/page/document-details?nodeRef=workspace://SpacesStore/c2774c97-6109-470f-8e48-a91685fadc47)
+        1.  Block owners make the block FPs
+        2.  Top owner assemble the top FP from the block FPs
+  - `all_path_edge` ??

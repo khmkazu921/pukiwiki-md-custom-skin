@@ -1,0 +1,122 @@
+#notemd
+# Study
+
+Timing Margin: TSMC, Timing constraint
+
+## Memory
+
+  - Basically SRAM
+
+# Special Lecture, PM DPM, 中井さん
+
+## Nakai-san
+
+  - MIRAXIA
+  - P\&R \> PM \> DE Team
+
+## Carrer in Alchip
+
+  - Ganesha  
+    working at Shanghai
+
+<!-- end list -->
+
+  - Role of PM
+      - GPFN3 + H-Chip + Gifu
+      - managable because different phases
+  - ES :: Engineering Sample (delivery)
+  - CS :: Commercial Sample
+
+## DPM, Design Project Manager
+
+## GPFN2
+
+  - layout repeats iterating operation
+  - layout of blocks can be modified ??
+  - **substrate manufacturing needs longer time than wafer
+    manufacturing**
+  - capacitance :: the ratio of the amount of electric charge stored on
+    a conductor to a difference in electric potentia
+  - PO :: Purchase Order
+
+# Self Study
+
+## [Virtual Clock](https://www.quora.com/Why-do-we-need-virtual-clock-in-VLSI-during-timing-analysis)
+
+  - During timing analysis, you need to check timing on IO ports as well
+    as they actually come from a flop in some other block to current
+    block in which you are analyzing timing. So **to model the clock
+    latency and clock relationship in other block** we need virtual
+    clock.
+
+  - SI :: Signal Integrity, 電気信号が伝播する際に生じる波形のひずみなど， 信号の品質を指す言葉
+    [link](http://mix.kumikomi.net/index.php/%E3%82%B7%E3%82%B0%E3%83%8A%E3%83%AB%E3%83%BB%E3%82%A4%E3%83%B3%E3%83%86%E3%82%B0%E3%83%AA%E3%83%86%E3%82%A3)
+
+  - Crosstalk :: 隣接しているケーブル同士が相互に影響を受ける現象です。 「漏話」「混線」「混信」と呼ばれることもあります。
+
+## Unit 3 & Lab 3
+
+## Application
+
+# Tech Forum
+
+## Full-chip UPF (Minato-san)
+
+### what do UPF define?
+
+  - Logic
+      - power domain, power state, isolation rule & level shifter rule
+  - Physical
+      - Power Connection
+
+### advantages
+
+  - easy debug for PG connection
+
+## Genus (Takemoto-san)
+
+  - MMMC  
+    Multi-Mode, Multi-Corner ECO Closure
+  - VCG  
+    control-gate bias
+  - VBL  
+    BL bias
+  - BL  
+    Bit Line
+    ([source](https://picture.iczhiku.com/resource/ieee/syisTzreYzArjMmv.pdf))
+  - Vpass  
+    pass bias
+
+## Low Power Design (Ishii-san)
+
+  - SDC  
+    Synopsys Design Constraint
+  - AON  
+    Always-on, area of always power on
+  - PG  
+    P/G, Power and Ground
+
+<!-- end list -->
+
+  - intention?
+
+## VCLP (ke-san)
+
+  - VC  
+    Synopsys Verification Continuum Platform
+
+  - VCLP  
+    VC Low Power
+
+  - ISO  
+    isolation, 絶縁体
+    
+      - [Power
+        Isolation](https://semiengineering.com/knowledge_centers/low-power/techniques/power-isolation/)
+
+  - AON buffer  
+    Always-on buffer
+
+<!-- end list -->
+
+  - waive, wave?

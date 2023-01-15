@@ -1,0 +1,103 @@
+#notemd
+# Status meeting
+
+  - ESD  
+    Clamp cell
+
+<!-- end list -->
+
+  - ERC vs PERC
+  - PERC :: Programmable Electrical Rules Checking (PERC) is a method
+    for checking reliability issues of integrated circuit (IC) designs
+    that cannot be checked with design rule checking (DRC) or layout
+    versus schematic (LVS).
+      - Netlist Checks  
+        Checks that can be done entirely on a netlist; no layout data is
+        necessary.
+      - Netlist Driven Layout Checks  
+        Checks that are done on the layout, but a preceding analysis of
+        a netlist is done to determine the area of interest for the
+        layout check.
+      - Current Density Checks  
+        Checks done on the layout to determine the current carrying
+        capability of the layout in the ESD discharge path.
+      - Point-to-Point (P2P) Resistance Checks  
+        Checks done on the layout to determine the resistance of the ESD
+        discharge path, to verify that it is low resistance ensuring the
+        current will choose that path.
+
+# All-hands Forum
+
+## Furuzono-san
+
+  - 中居さんに情報を共有してほしい
+  - OEA
+  - 採用活動は進んでいる。毎年5-6人
+  - D-chip
+      - ES2
+  - Saga+
+  - ZKD2
+  - Structured ASIC
+
+## BEIGE:SCAN VDDmax Failure Analysis, Nakajima-san
+
+  - high voltage yields fault
+  - SHMOO
+      - Y:VDD, X:Perild
+  - Not Power Noise
+      - because random failure in SHMOO test
+  - Bump test
+      - input high voltage pulse
+  - DCSCAN patterna
+  - Laser Probing
+      - 内部をプローブする方法
+  - Poly connection in CLK
+      - poly has more registance than metal (MG)
+      - Hold margin
+          - GDS vs LEF
+  - MB4 :: multibit 4bit?
+  - LPE :: layout parasitic extraction
+  - Donuts Phenomena
+  - GDS text ?
+      - GDSが楽観的
+
+# Weekly Meeting
+
+## Takashima-san
+
+  - NABU project
+  - ZSR1 :: difficult 4GHz by PI/IR/EM
+  - parameter passing
+  - Chiptopia
+  - Sceptre :: 3D IC software, copeer to copper
+
+## Nakai-san
+
+  - H-chip  
+    Sony
+    
+      - ea
+
+## Minato-san
+
+  - Voltus
+    
+      - Early Rail Analysis
+      - ESD Analysis
+
+  - Pseudo Error
+
+  - OCC :: On-chip Clock Controllers are also known as Scan Clock
+    Controllers (SCC). OCC is the logic inserted on the SOC for
+    controlling clocks during silicon testing on ATE (Automatic test
+    Equipment).
+
+# Self Study
+
+  - Edit Wiki of Power management
+
+  - Placement & CTS
+
+  - SPG :: Synopsys Physical Guidance
+
+  - NDRs :: for double width or double spacing

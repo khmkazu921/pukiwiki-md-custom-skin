@@ -1,0 +1,169 @@
+#notemd
+# Status Meeting
+
+## Unateness: 極性
+
+  - Positive unate  
+    Rising input - Rising output OR No change in output
+    
+      - E.g. buffer, AND gate, OR gate
+
+  - Negative unate  
+    Rising input - Falling output OR No change in output
+    
+      - E.g. inverter, NAND gate, NOR gate
+
+  - Non-unate
+    
+      - E.g. XOR gate, XNOR gate
+
+<!-- end list -->
+
+  - Unateness:
+
+# DE tech forum
+
+## 古園さん
+
+  - DE US trip plan
+  - WW market
+  - UCIe
+  - TSMC 2022 Symposium
+  - PD2?
+
+## 堀池さん KYARY RMA
+
+### RMA
+
+  - RMA  
+    Return Merchandise Authorization, 返品保証, a numbered authorization
+    provided by a merchant to permit the return of a product
+    
+      - Test House
+          - FT \> EQC \> OQC
+      - SMT line
+          - IQC \> Function check \> OQC
+      - Market
+          - in use \> aging
+
+  - EQC  
+    External Quality Control
+
+  - IQC  
+    Internal Quality Control
+    
+      - Box Damage  
+        card-board damage while shipment
+      - Ball Drop  
+        peel off chip from PCB base
+      - Discoloration  
+        変色
+
+  - OQC  
+    Outgoing Quality Control, the shipment inspection carried out by the
+    supplier in accordance with the standards agreed by the contract or
+    order between the supply and demand parties before the finished
+    product is shipped
+
+  - AQC  
+    Alternative Quality Control
+
+### RMA Handling
+
+  - 8D (Dicipline) Report
+  - difficult to find out the cause of faults
+
+### FA Flow, Failure Analysis Flow
+
+  - SAT  
+    Scanning Acoustic Tomography, 超音波
+
+<!-- end list -->
+
+  - dead line is basically up to 2 weeks
+
+  - aim at 100 ppm, automotive 0 ppm (50 ppm)
+    
+      - strong point of Alchip
+
+  - OBIRCH, OMMI, Decap, Delayer, X-section
+
+  - OM :: Optical Microscope
+
+  - SEM :: Scanning Electron Microscopy
+    ([link](https://www.element.com/nucleus/2017/sem-as-a-failure-analysis-tool))
+
+  - TLP (Transmission Line Pulse) :: パルスをトランジスターや集積回路に
+    印加し、ESD保護素子やESD保護回路の電圧（V）／電流（I）特性のデータを
+    取得することです ([link](https://www.oeg.co.jp/esd/tlp.html))
+
+  - TDR (Time-Domain-Reflection) :: TDR-TLP測定法は、測定素子（DUT）に矩
+    形波を印加し、その時のDUTからの反射波をオシロスコープで観測し解析す
+    ることにより、素子のESD-Event時の動作特性を得る方法です。
+
+### KYARY RMA Report
+
+  - package wafer cut \> spill mold (wire slip)
+  - wire sag :: wind bonding wires, short adjacent wires
+  - TDDB :: Time Dependent Dielectric Breakdown, 劣化
+  - Wire Bonding machine
+  - capillary :: a very thin tube, especially one of the smaller tubes
+    that carry blood around the body
+  - daily meeting with sony/alchip, mail with ase
+
+# Self Study
+
+## Status of ICC2
+
+  - Unit0-2, Lab0, GUI study
+
+## global value
+
+  - all blocks loaded in the current tool session,
+
+## design library is a directory
+
+  - Blocksare directoriesin the library directory, one block per
+    directory
+  - Blocks saved with a user-specified label are stored in a
+    subdirectory named design_label.label_name under
+    the block directory
+  - You should never manually remove/change anything under the library
+    directory by system commands, it will cause library corruption.
+
+## Floorplanning
+
+  - P/G  
+    power / ground
+
+  - PNS  
+    Power Network Synthesis
+    
+    1.  define PG Regions
+    2.  define pattern: structure
+          - metal layers, spacing width, …
+    3.  define strategy: P/G topology
+          - For a PG network, you may need to create rings, meshesand
+            std cell rails.
+    4.  compile power network
+
+  - VA  
+    Voltage Area, DEFAULT_VA
+
+<!-- end list -->
+
+  - Congestion calculation calculates the track usage for each layer and
+    displays it in the GUI.
+  - congestion :: Routing to standard cells can often be difficult near
+    high pin-count edges or corners of macro cells
+      - Solution: Apply **placement blockages around macros, or use
+        keepout margins**
+  - DEF file ???
+
+# DE meeting
+
+  - CA/CB Density
+      - <https://www.researchgate.net/figure/Contact-architecture-for-7nm-node_fig8_313449750>
+      - M1 double patterning :: CA/CB pattern
+      - SRAM density
+  - Out-sourcing

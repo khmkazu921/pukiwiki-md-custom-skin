@@ -1,0 +1,164 @@
+#notemd
+
+[[Tools]]
+
+# Signoff Check Live DRC
+
+```tcl
+set_host_options -target ICV -num_processes 8
+set_app_options -name signoff.check_drc_live.runset -value {/proj_lib/tsmc/12FFC/TECHFILE/EDA/synopsys/icv/drc/TN12CLDR001J1/1_3A/LOGIC_TopMr_DRC/ICVN12FFC_11M_2Xa1Xd3Xe2Y2R_001.13a.encrypt}
+set_app_options -name signoff.physical.layer_map_file -value {/proj/SAGA_plus_JP21C02/LIB/TECH/EDA/synopsys/pr_techfile/tn12clpr001s1/1_2a/PRTF_ICC2_12nm_001_Syn_V12a/ICC2_N12_gdsout_2Xa1Xd_h_3Xe_vhv_2Y2R.12a.map}
+```
+
+# Script
+
+```tcl
+save_block -as FMAPWR_WRAP/PRE_FIX_150ERR.design
+ 
+date ;# Fri Dec 23 09:34:18 2022
+set_host_options -target ICV -num_processes 8
+set_app_options -name signoff.check_drc.runset -value {/proj_lib/tsmc/12FFC/TECHFILE/EDA/synopsys/icv/drc/TN12CLDR001J1/1_3A/LOGIC_TopMr_DRC/ICVN12FFC_11M_2Xa1Xd3Xe2Y2R_001.13a.encrypt}
+set_app_options -name signoff.fix_drc.custom_guidance -value dpt
+set_app_options -name signoff.check_drc.run_dir         -value /proj/SAGA_plus_JP21C02/WORK/kazuki_furukawa/signoff_check_drc_run_5_150err
+signoff_check_drc -select_rules {M*G0*}
+date ;# Fri Dec 23 09:46:19 2022
+ 
+set_app_options -name signoff.fix_drc.run_dir -value /proj/SAGA_plus_JP21C02/WORK/kazuki_furukawa/signoff_fix_drc_run_5_150err
+set_app_options -name signoff.fix_drc.init_drc_error_db -value /proj/SAGA_plus_JP21C02/WORK/kazuki_furukawa/signoff_check_drc_run_5_150err
+signoff_fix_drc -select_rules {M*G0*}
+# first fix end: about 10:03
+##
+## SIGNOFF AUTOFIX DRC SUMMARY:
+## 
+##         DRC NAME        :   TOTAL DRC   : PROCESSED DRC :  TARGETED DRC : REMAINING TARGETED DRC :   FIX RATE   : COMMENT
+## M2.G0.1__M2.G0.2__M2.G0 :          153  :          153  :          152  :               1        :        99.3% : 1 ignored: <#1>
+## TOTAL                   :               :               :          152  :               1        :        99.3% :
+##
+## NOTE:
+## Reasons : Detail Info
+##      #1 : shapes associated with error are not Zroute modifiable
+##
+date ;# second fix end: Fri Dec 23 10:32:31 2022
+save_block -as FMAPWR_WRAP/POST_FIX.design
+ 
+route_eco
+date ;# Fri Dec 23 11:09:09 2022
+```
+
+```tcl
+# The signoff_fix_drc command automaticcaly save the design.
+# e.g. `Information: Saving 'FMAPWR_WRAP.nlib:FMAPWR_WRAP.design' to 'FMAPWR_WRAP.nlib:FMAPWR_WRAP_ADR.design'. (DES-028)`
+save_block -as FMAPWR_WRAP/FMAPWR_WRAP_PREMOD.design
+date ;#Thu Dec 22 09:01:59 CST 2022
+ 
+# Specify C++-based "runset" for "IC Velidator"
+set_app_options -name signoff.check_drc.runset -value {/proj_lib/tsmc/12FFC/TECHFILE/EDA/synopsys/icv/drc/TN12CLDR001J1/1_3A/LOGIC_TopMr_DRC/ICVN12FFC_11M_2Xa1Xd3Xe2Y2R_001.13a.encrypt}
+set_host_options -target ICV -num_processes 8
+# Specify an output directory for "IC Velidator"
+set_app_options -name signoff.check_drc.run_dir -value /proj/SAGA_plus_JP21C02/WORK/kazuki_furukawa/signoff_check_drc_run_1
+# Default unselect role when custom_guidance is off : "*GRMx.C.2_M1*", "*GRMx.C.2_M2*", "*GRMx.C.2_M3*", "*GRMx.C.2_M4*", "*GRV1.C.6*", "*GRVx.C.6_V2*", "*GRVx.C.6_V3*", "*M1.G0.1__M1.G0.2__M1.G0.3*", "*M2.G0.1__M2.G0.2__M2.G0.3*", "*M3.G0.1__M3.G0.2__M3.G0.3*", "*M4.G0.1__M4.G0.2__M4.G0.3*", "*M5.G0.1__M5.G0.2__M5.G0.3*", "*M6.G0.1__M6.G0.2__M6.G0.3*"
+signoff_check_drc -unselect_rules {*G0*}
+##
+## IC Validator Run: Time=0:42:04
+## 
+## IC Validator Machine Memory Report
+## TWIDC-R640-37 : Average = 8.032 GB, Peak = 12.452 GB
+##
+## Overall Disk Usage Disk=4.015 GB
+## Network Disk Usage Peak=1.370 GB (no group)
+## Group File Disk Usage Peak=3.996 GB
+## Overall Design Hierarchy Mem=0.032 GB
+## Overall engine Time=0:42:04 Highest command Mem=4.675 GB
+## 
+## Overall Master Mem=8.551 GB
+## IC Validator is done.
+## IC Validator is done.
+##
+date ;#Thu Dec 22 10:06:00 2022
+ 
+# default is 5
+set_app_options -name signoff.fix_drc.max_detail_route_iterations -value {5}
+set_app_options -name signoff.fix_drc.custom_guidance -value off
+# Specify an output directory to run "Generate_Route_Guidance"
+set_app_options -name signoff.fix_drc.run_dir -value /proj/SAGA_plus_JP21C02/WORK/kazuki_furukawa/signoff_fix_drc_run_3
+# Specify a directory to get DRC errors from "IC Velidator"
+set_app_options -name signoff.fix_drc.init_drc_error_db -value /proj/SAGA_plus_JP21C02/WORK/kazuki_furukawa/signoff_check_drc_run_1
+signoff_fix_drc  -unselect_rules {*G0*}
+date ;#Thu Dec 22 10:15:43 2022
+ 
+set_app_options -name signoff.fix_drc.custom_guidance -value dpt
+set_app_options -name signoff.check_drc.run_dir         -value /proj/SAGA_plus_JP21C02/WORK/kazuki_furukawa/signoff_check_drc_run_2
+# Default unselect rule when custom_guidance is dpt: { USER_GUIDE.M* USER_GUIDE.VIA* *:*Density*of* M*.DN.*:* VIA*.DN.*:* CSR*:* DM*:* Rule*DEN*:* Rule:.*USER_GUIDE.M* Rule:.*USER_GUIDE.VIA* Rule:.*:*Density*of* Rule:.*M*.DN.*:* Rule:.*VIA*.DN.*:* Rule:.*CSR*:* Rule:.*DM*:* *M*.R.14* *USER_GUIDE* *:WARNING* *:LOGO* *NW.[A-Z].* *NWRSTI.[A-Z].* *NWROD.[A-Z].* *OD[0-1].[A-Z].* *OD.[A-Z].* *Gate *PP.[A-Z].* *NP.[A-Z].* *SSD.[A-Z].* *DIODMY.[A-Z].* *RH_OD.[A-Z].* *RH_TN.[A-Z].* *HV_N.[A-Z].* *SR.[A-Z].* *:*Density*of* *ESD.[A-Z].* *SRAM.[A-Z].[0-9]* *ROM.[A-Z].[0-9]* *LUP.[A-Z][0-9].* *[0-9][A-Z]:HIADMY *[A-Z][0-9]:BJTDMY* *[A-Z][0-9]:BJTHDMY* *AN.R.[0-9]* *DOD.[A-Z].[0-9]* *DIODMY.[A-Z].[0-9]* *DTCD.[A-Z].[0-9]*}
+signoff_check_drc -select_rules {*G0*}
+## 
+## IC Validator Run: Time=0:11:24
+## 
+## IC Validator Machine Memory Report
+## TWIDC-R640-37 : Average = 6.059 GB, Peak = 9.540 GB
+## 
+## Overall Disk Usage Disk=2.138 GB
+## Network Disk Usage Peak=1.495 GB (no group)
+## Group File Disk Usage Peak=2.128 GB
+## Overall Design Hierarchy Mem=0.032 GB
+## Overall engine Time=0:11:24 Highest command Mem=4.623 GB
+## 
+## Overall Master Mem=7.232 GB
+## IC Validator is done.
+## IC Validator is done.
+## 
+date ;#Thu Dec 22 10:31:31 2022
+ 
+set_app_options -name signoff.fix_drc.run_dir -value /proj/SAGA_plus_JP21C02/WORK/kazuki_furukawa/signoff_fix_drc_run_4
+set_app_options -name signoff.fix_drc.init_drc_error_db -value /proj/SAGA_plus_JP21C02/WORK/kazuki_furukawa/signoff_check_drc_run_2
+signoff_fix_drc -select_rules {*G0*}
+# end of first DRC fix: Thu Dec 22 10:45:47 2022
+# end of second ICV: Thu Dec 22 10:59:03 2022
+date ;#Thu Dec 22 10:59:03 2022
+ 
+date ;#Thu Dec 22 11:48:03 2022
+redirect -tee route_eco.log {route_eco}
+## 
+## Topology ECO not run, no qualifying violations or in frozen nets.
+## Updating the database ...
+## ...updated 2006 nets
+## [ECO: End] Elapsed real time: 0:20:33 
+## [ECO: End] Elapsed cpu  time: sys=0:02:11 usr=2:30:17 total=2:32:29
+## [ECO: End] Stage (MB): Used    8  Alloctr    8  Proc 7056 
+## [ECO: End] Total (MB): Used   11  Alloctr   12  Proc 33709
+##
+date ;#Thu Dec 22 12:27:52 2022
+```
+
+
+# Automatically Fixing Double-Patterning Odd-Cycle Violations
+
+If your block uses double-patterning technology, you must perform separate signoff DRC fixing runs for the non-double-patterning routing rules and the double-patterning routing rules.
+
+To perform automatic fixing of the signoff DRC violations for a block that uses double-patterning technology,
+
+Perform automatic fixing for the non-double-patterning signoff DRC violations by using the process described in Automatically Fixing Signoff DRC Violations.
+
+When you run the signoff_check_drc and signoff_fix_drc commands, use the -unselect_rules option to ignore the double-patterning rules during signoff design rule checking.
+
+```
+fc_shell> signoff_check_drc -unselect_rules {list_of_dpt_rules}
+```
+
+Note:
+To determine the double-patterning rules for your technology, see the design rule manual (DRM) provided by your vendor.
+
+Perform automatic fixing for the double-patterning odd-cycle violations by using the process described in Automatically Fixing Signoff DRC Violations.
+
+Before you run the signoff_fix_drc command, set the signoff.fix_drc.custom_guidance application option to dpt.
+
+```
+fc_shell> set_app_options -name signoff.fix_drc.custom_guidance -value dpt
+```
+
+When you run the signoff_check_drc and signoff_fix_drc commands, use the -select_rules option to consider only the double-patterning rules during signoff design rule checking.
+
+```
+fc_shell> signoff_check_drc -select_rules {list_of_dpt_rules}
+```
+
+Perform signoff design rule checking to verify the results by using the process desc

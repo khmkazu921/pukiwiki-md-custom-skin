@@ -1,0 +1,162 @@
+#notemd
+# Webinar: PrimeShield
+
+  - ばらつき & 堅牢性解析
+      - 設計マージン量が増え、悲観的な設計が多くなっている
+  - モンテカルロ・シミュレーションは時間がかかりすぎる
+  - Fast Monte-Carlo
+  - ICC2 \> PrimeTime STA \> PrimeShield \> Tweaker/PT ECO
+  - Higher Demand
+      - HPC
+      - Low Power HPC
+      - Ultra Low Power
+      - Automotive Hi-Volume
+  - Voltage-scaling
+
+<!-- end list -->
+
+1.  Voltage Slack Analysis
+2.  High Sigma Analysis
+
+# Tech knowledge Sharing
+
+## SDC Ishii-san
+
+  - SpyGlass vs PrimeTime Constraint Consistency
+  - Colored Excel File
+
+<!-- end list -->
+
+1.  Block vs Top constraints
+2.  `set_clock_groups`
+3.  `set_false_path -from clkA -to clkA`
+      - use `get_pins get_clock`
+
+## New DFT, Miura-san
+
+### New Features
+
+  - Scan Shift Clock
+  - TDR
+  - IJTAG
+
+### DFT dedicated ports
+
+  - `AlcpDftMode[15:0]`
+
+### Clock for MBIST
+
+  - Switching clocks for MBIST
+
+### Scan Compression
+
+  - Keywords  
+    Function Clock, Function Mode, Compression Chains
+
+<!-- end list -->
+
+  - Use ICG in DOM
+
+## New DFT Flow, Yamauchi-san
+
+### At-speed scan
+
+  - delay analysis
+
+### OCC On-chip Clock
+
+  - Generate Pulse for Scan
+
+### Boundary Scan
+
+  - Originally PCB-PCB InOut test
+
+## DOM Shrink Trial
+
+### Shrink C Block, Sakata-san
+
+  - **Hold has many WNS**
+      - Memory pins ??
+  - Max Capacitance violation SLP SD pins ??
+  - Vt margin shrink 122% \> 98%
+  - このレベルで報告できるというのはなかなか難しい
+
+### Shrink D Block, Otsuji-san
+
+  - Pin Name ??
+
+### Shrink E Block, Yabuuchi-san
+
+## Power Estimation, Sassa-san
+
+## Takemeot-san
+
+  - memory placement
+  - misspecifying file
+
+# Training
+
+``` text
+3960:Warning:  /proj/ATEPairChip/RELEASE/Training_Phase1/Data/rtl_mem_b64/Bxb.v:128333: signed to unsigned assignment occurs. (VER-318)
+4358:Warning: Main library 'dw_foundation.sldb' has no time units specified, but library 'ts1n12ffcllsbsvtd1024x128m4s_ffgnp0p88v0c' does. (TIM-107)
+4359:Warning: Main library 'dw_foundation.sldb' has no capacitance units specified, but library 'ts1n12ffcllsbsvtd1024x128m4s_ffgnp0p88v0c' does. (TIM-108)
+4360:Warning: The trip points for the library named ts1n12ffcllsbsvtd1024x128m4s_ffgnp0p88v0c differ from those in the library named dw_foundation.sldb. (TIM-164)
+4391:Warning: Found 380 PWR-763 messages. Please run check_mv_design -clock_gating_style for more information.
+4398:Warning: Operating condition ssgnp0p72vm40c set on design Bxb has different process,
+5497:Warning: Found 1448 PWR-763 messages. Please run check_mv_design -clock_gating_style for more information.
+8872:Warning: The trip points for the library named ts1n12ffcllsbsvtd1024x64m4s_ffgnp0p88v0c differ from those in the library named tcbn12ffcllbwp6t16p96cpdssgnp0p72vm40c_ccs. (TIM-164)
+8873:Warning: The trip points for the library named ts1n12ffcllsbsvtd512x40m4s_ffgnp0p88v0c differ from those in the library named tcbn12ffcllbwp6t16p96cpdssgnp0p72vm40c_ccs. (TIM-164)
+9436:Warning: Design 'Bxb' contains 23 high-fanout nets. A fanout number of 1000 will be used for delay calculations involving these nets. (TIM-134)
+9462:Warning: Unable to resolve reference 'BUFFD2BWP6T16P96CPD' in 'Bxb'. (LINK-5)
+```
+
+``` tcl
+proc print_file_list { items } {
+    foreach item $items {
+        echo [regsub -all ^.*/ $item ""]
+    }
+}
+regexp -all {^(\s*)([a-z]*)(\s*)([0-9]*)} $var whole_match match1 match2 \
+match3 match4
+```
+
+<https://stackoverflow.com/questions/35569898/multiple-capture-group-in-regexp-tcl>
+
+``` text
+(.*/)(\w+.\w+$)
+/proj/ATEPairChip/RELEASE/Training_Phase1/Library/mem/shdspsb/ts1n12ffcllsbsvtd1024x1.28m4s_130a/CCS/ts1n12ffcllsbsvtd1024x128m4s_130a_ffgnp0p88v0c.db
+> ts1n12ffcllsbsvtd1024x128m4s_130a_ffgnp0p88v0c.db
+```
+
+``` text
+proc print_file_list { items } {
+    foreach item $items {
+        echo [regsub -all ^.*/ $item ""]
+    }
+}
+
+print_file_list $target_library
+tcbn12ffcllbwp6t16p96cpdssgnp0p72vm40c_hm_ccs.db
+set synthetic_library dw_foundation.sldb
+dw_foundation.sldb
+
+print_file_list $link_library
+*
+tcbn12ffcllbwp16p90cpdtt0p8v85c_ccs.db
+tcbn12ffcllbwp16p90cpdlvttt0p8v85c_ccs.db
+tcbn12ffcllbwp16p90cpdmbtt0p8v85c_ccs.db
+tcbn12ffcllbwp16p90cpdmblvttt0p8v85c_ccs.db
+tcbn12ffcllbwp16p90cpdmbulvttt0p8v85c_ccs.db
+tcbn12ffcllbwp16p90cpdpmtt0p8v85c_ccs.db
+tcbn12ffcllbwp16p90cpdpmlvttt0p8v85c_ccs.db
+tcbn12ffcllbwp16p90cpdpmulvttt0p8v85c_ccs.db
+tcbn12ffcllbwp16p90cpdulvttt0p8v85c_ccs.db
+tphn12ffcllgv18ett0p8v1p8v85c.db
+PLLTS12FFCLAINTB_TT_0P8V_85C.db
+tcbn12ffcllbwp6t16p96cpdssgnp0p72vm40c_hm_ccs.db
+dw_foundation.sldb
+ts1n12ffcllsbsvtd1024x128m4s_130a_ssgnp0p72vm40c.db
+ts1n12ffcllsbsvtd1024x64m4s_130a_ssgnp0p72vm40c.db
+ts1n12ffcllsbsvtd512x40m4s_130a_ssgnp0p72vm40c.db
+ts1n12ffcllsbsvtd256x40m4s_130a_ssgnp0p72vm40c.db
+```

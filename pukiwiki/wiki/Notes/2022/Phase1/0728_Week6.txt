@@ -1,0 +1,306 @@
+#notemd
+# Settings
+
+## Path Margin
+
+| Directory Name      | DC  | Place Opt | Clock CTS | Clock Opt | Route |
+| ------------------- | --- | --------- | --------- | --------- | ----- |
+| CK\* Settings       | 250 | 250       | 0         | 0         | 0     |
+| LOOSE PATH MARGIN   | 100 | 100       | 0         | 0         | 0     |
+| LOOSER PATH MARGIN  | 20  | 20        | 0         | 0         | 0     |
+| REMOVE CLK TRANS    | 100 | 100       | 0         | 0         | 0     |
+| LOOSE PATH MARGIN 2 | 100 | 100       | 0         | 0         | 0     |
+
+# Tight Path Margin around FMEM
+
+## Settings
+
+|                      | DC  | Place   | CTS     | Route   |
+| -------------------- | --- | ------- | ------- | ------- |
+| Uncertainty          | 100 | 91      | 51      | 51      |
+| Data Max Trans       | 200 | 230     | 240     | 240     |
+| Clock Max Trans      | 80  | 80      | 100     | 100     |
+| Derate               | 10% | signoff | signoff | signoff |
+| IO Path Group Weight | 0.1 | 1.0     | 1.0     | 1.0     |
+| Mem To Path Margin   | 160 | 160     | 0       | 0       |
+| Mem From Path Margin | 80  | 80      | 0       | 0       |
+| IO To Path Margin    | 100 | 100     | 100     | 100     |
+| IO From Path Margin  | 50  | 50      | 50      | 50      |
+
+## ICC2 Report
+
+| STEP: place_opt          | WNS      | TNS       | NVE  | AREA       |
+| ---------------------------------- | -------- | --------- | ---- | ---------- |
+| ss72_cworstCCworstT125c  | \-0.0084 | \-0.0749  | 35   | \-         |
+| ss72_cworstCCworstTm40c  | \-0.0972 | \-65.4382 | 2072 | \-         |
+| ss72_rcworstCCworstT125c | \-0.0163 | \-0.2682  | 55   | \-         |
+| ss72_rcworstCCworstTm40c | \-0.0993 | \-68.9405 | 2010 | \-         |
+| Design                             | \-0.0993 | \-70.2830 | 2141 | 386532.588 |
+
+| STEP: clock_optopto      | WNS      | TNS      | NVE | AREA       |
+| ---------------------------------- | -------- | -------- | --- | ---------- |
+| ss72_cworstCCworstT125c  | \-0.0010 | \-0.0021 | 3   | \-         |
+| ss72_cworstCCworstTm40c  | \-0.0024 | \-0.0043 | 7   | \-         |
+| ss72_rcworstCCworstT125c | 0.0694   | 0.0000   | 0   | \-         |
+| ss72_rcworstCCworstTm40c | 0.0007   | 0.0000   | 0   | \-         |
+| Design                             | \-0.0024 | \-0.0064 | 10  | 384914.001 |
+
+| STEP: route_opt          | WNS      | TNS       | NVE  | AREA       |
+| ---------------------------------- | -------- | --------- | ---- | ---------- |
+| ss72_cworstCCworstT125c  | \-0.0536 | \-6.9118  | 732  | \-         |
+| ss72_cworstCCworstTm40c  | \-0.0971 | \-15.4467 | 901  | \-         |
+| ss72_rcworstCCworstT125c | 0.0382   | 0.0000    | 0    | \-         |
+| ss72_rcworstCCworstTm40c | \-0.0851 | \-5.5571  | 241  | \-         |
+| Design                             | \-0.0971 | \-22.2804 | 1629 | 385385.196 |
+
+| STEP: signoff_drc        | WNS      | TNS       | NVE | AREA       |
+| ---------------------------------- | -------- | --------- | --- | ---------- |
+| ss72_cworstCCworstT125c  | \-0.0436 | \-2.4895  | 263 | \-         |
+| ss72_cworstCCworstTm40c  | \-0.0871 | \-8.8882  | 458 | \-         |
+| ss72_rcworstCCworstT125c | 0.0482   | 0.0000    | 0   | \-         |
+| ss72_rcworstCCworstTm40c | \-0.0751 | \-3.6213  | 159 | \-         |
+| Design                             | \-0.0871 | \-11.3402 | 716 | 385385.196 |
+
+| STEP: chip_finish        | WNS      | TNS       | NVE | AREA       |
+| ---------------------------------- | -------- | --------- | --- | ---------- |
+| ss72_cworstCCworstT125c  | \-0.0436 | \-2.4898  | 263 | \-         |
+| ss72_cworstCCworstTm40c  | \-0.0871 | \-8.8864  | 458 | \-         |
+| ss72_rcworstCCworstT125c | 0.0482   | 0.0000    | 0   | \-         |
+| ss72_rcworstCCworstTm40c | \-0.0751 | \-3.6213  | 159 | \-         |
+| Design                             | \-0.0871 | \-11.3388 | 716 | 385385.196 |
+
+## Pre ECO
+
+| corner                               | WNS (wo/w IO)  | TNS (wo/w IO) | NVE (wo/w IO) | Trans | Cap | Noise |
+| ------------------------------------ | -------------- | ------------- | ------------- | ----- | --- | ----- |
+| wcl_cworstccworsttm40cmax  | \-0.047/-0.068 | 0.077/1.975   | 6/141         | 0     | 27  | 6     |
+| wcl_rcworstccworsttm40cmax | \-0.012/-0.053 | 0.013/1.064   | 2/95          | 0     | 2   | 5     |
+| wc_cworstccworstt125cmax   | 0.000/0.000    | 0.000/0.000   | 0/0           | 0     | 19  | 5     |
+| wc_rcworstccworstt125cmax  | 0.000/0.000    | 0.000/0.000   | 0/0           | 0     | 0   | 3     |
+
+## ECO1
+
+| corner                               | WNS (wo/w IO) | TNS (wo/w IO) | NVE (wo/w IO) | Trans | Cap | Noise |
+| ------------------------------------ | ------------- | ------------- | ------------- | ----- | --- | ----- |
+| wcl_cworstccworsttm40cmax  | 0.000/-0.034  | 0.000/0.834   | 0/95          | 0     | 27  | 2     |
+| wcl_rcworstccworsttm40cmax | 0.000/-0.028  | 0.000/0.403   | 0/56          | 0     | 2   | 1     |
+| wc_cworstccworstt125cmax   | 0.000/0.000   | 0.000/0.000   | 0/0           | 0     | 19  | 1     |
+| wc_rcworstccworstt125cmax  | 0.000/0.000   | 0.000/0.000   | 0/0           | 0     | 0   | 1     |
+
+## ECO2
+
+| corner                               | WNS (wo/w IO) | TNS (wo/w IO) | NVE (wo/w IO) | Trans | Cap | Noise |
+| ------------------------------------ | ------------- | ------------- | ------------- | ----- | --- | ----- |
+| wcl_cworstccworsttm40cmax  | 0.000/-0.034  | 0.000/0.782   | 0/89          | 0     | 27  | 3     |
+| wcl_rcworstccworsttm40cmax | 0.000/-0.028  | 0.000/0.394   | 0/58          | 0     | 2   | 3     |
+| wc_cworstccworstt125cmax   | 0.000/0.000   | 0.000/0.000   | 0/0           | 0     | 19  | 2     |
+| wc_rcworstccworstt125cmax  | 0.000/0.000   | 0.000/0.000   | 0/0           | 0     | 0   | 2     |
+
+## ECO3
+
+| corner                               | WNS (wo/w IO) | TNS (wo/w IO) | NVP (wo/w IO) | Trans | Cap | Noise |
+| ------------------------------------ | ------------- | ------------- | ------------- | ----- | --- | ----- |
+| wcl_cworstccworsttm40cmax  | 0.000/-0.028  | 0.000/0.754   | 0/84          | 0     | 27  | 2     |
+| wcl_rcworstccworsttm40cmax | 0.000/-0.024  | 0.000/0.625   | 0/72          | 0     | 2   | 3     |
+| wc_cworstccworstt125cmax   | 0.000/0.000   | 0.000/0.000   | 0/0           | 0     | 19  | 2     |
+| wc_rcworstccworstt125cmax  | 0.000/0.000   | 0.000/0.000   | 0/0           | 0     | 0   | 2     |
+
+# Re-setting Path Margin on MEM/IO
+
+## Settings
+
+|                      | DC  | Place   | CTS     | Route   |
+| -------------------- | --- | ------- | ------- | ------- |
+| Uncertainty          | 100 | 91      | 51      | 51      |
+| Data Max Trans       | 200 | 230     | 240     | 240     |
+| Clock Max Trans      | 80  | 80      | 100     | 100     |
+| Derate               | 10% | signoff | signoff | signoff |
+| IO Path Group Weight | 0.1 | 0.1     | 0.1     | 0.1     |
+| Mem Path Margin      | 100 | 100     | 0       | 0       |
+| IO Path Margin       | 50  | 50      | 0       | 0       |
+
+## DC
+
+``` text
+
+Path Group                  WNS        TNS     NVE      FREQ      WNS(H)     TNS(H)  NVE(H)
+-------------------------------------------------------------------------------------------
+clock                     0.000        0.0       0     800MHz     -0.330    -1729.6   27631
+AC_IN                     0.000        0.0       0     800MHz      0.000        0.0       0
+AC_OUT                    0.020        0.0       0     813MHz      0.000        0.0       0
+-------------------------------------------------------------------------------------------
+Summary                   0.000        0.0       0     800MHz     -0.330     1729.3   27631
+-------------------------------------------------------------------------------------------
+    CAP  FANOUT    TRAN    TDRC      CELLA    BUFS     LEAFS       TNETS      CTBUF    REGS
+-------------------------------------------------------------------------------------------
+      0      18       0      18     377031     15K      191K        202K          0   78115
+-------------------------------------------------------------------------------------------
+```
+
+| STEP: chip_finish        | WNS      | TNS      | NVE | AREA       |
+| ---------------------------------- | -------- | -------- | --- | ---------- |
+| ss72_cworstCCworstT125c  | \-0.2543 | \-1.1396 | 29  | \-         |
+| ss72_cworstCCworstTm40c  | \-0.1217 | \-7.4369 | 308 | \-         |
+| ss72_rcworstCCworstT125c | 0.0245   | 0.0000   | 0   | \-         |
+| ss72_rcworstCCworstTm40c | \-0.1054 | \-4.2737 | 126 | \-         |
+| Design                             | \-0.2543 | \-8.5768 | 337 | 385194.941 |
+
+| STEP: clock_optcts       | WNS      | TNS       | NVE | AREA       |
+| ---------------------------------- | -------- | --------- | --- | ---------- |
+| ss72_cworstCCworstT125c  | \-0.3988 | \-4.6933  | 111 | \-         |
+| ss72_cworstCCworstTm40c  | \-0.1952 | \-35.5348 | 770 | \-         |
+| ss72_rcworstCCworstT125c | 0.0270   | 0.0000    | 0   | \-         |
+| ss72_rcworstCCworstTm40c | \-0.1488 | \-14.6205 | 468 | \-         |
+| Design                             | \-0.3988 | \-40.1797 | 878 | 387503.107 |
+
+| STEP: clock_optopto      | WNS      | TNS      | NVE | AREA       |
+| ---------------------------------- | -------- | -------- | --- | ---------- |
+| ss72_cworstCCworstT125c  | \-0.3097 | \-1.1175 | 15  | \-         |
+| ss72_cworstCCworstTm40c  | \-0.0030 | \-0.0111 | 12  | \-         |
+| ss72_rcworstCCworstT125c | 0.0856   | 0.0000   | 0   | \-         |
+| ss72_rcworstCCworstTm40c | 0.0011   | 0.0000   | 0   | \-         |
+| Design                             | \-0.3097 | \-1.1286 | 27  | 384961.002 |
+
+| STEP: place_opt          | WNS      | TNS        | NVE  | AREA       |
+| ---------------------------------- | -------- | ---------- | ---- | ---------- |
+| ss72_cworstCCworstT125c  | \-0.0452 | \-1.9879   | 319  | \-         |
+| ss72_cworstCCworstTm40c  | \-0.1024 | \-104.6357 | 2469 | \-         |
+| ss72_rcworstCCworstT125c | \-0.0264 | \-2.1062   | 315  | \-         |
+| ss72_rcworstCCworstTm40c | \-0.1055 | \-108.5454 | 2461 | \-         |
+| Design                             | \-0.1055 | \-111.7475 | 2770 | 386739.875 |
+
+| STEP: pt_eco             | WNS      | TNS       | NVE | AREA       |
+| ---------------------------------- | -------- | --------- | --- | ---------- |
+| ss72_cworstCCworstT125c  | \-0.2645 | \-1.7038  | 108 | \-         |
+| ss72_cworstCCworstTm40c  | \-0.1378 | \-12.7746 | 660 | \-         |
+| ss72_rcworstCCworstT125c | 0.0115   | 0.0000    | 0   | \-         |
+| ss72_rcworstCCworstTm40c | \-0.1214 | \-6.2898  | 197 | \-         |
+| Design                             | \-0.2645 | \-14.4629 | 765 | 385204.083 |
+
+| STEP: pt_eco2            | WNS      | TNS       | NVE | AREA       |
+| ---------------------------------- | -------- | --------- | --- | ---------- |
+| ss72_cworstCCworstT125c  | \-0.2643 | \-1.6511  | 98  | \-         |
+| ss72_cworstCCworstTm40c  | \-0.1338 | \-12.1631 | 647 | \-         |
+| ss72_rcworstCCworstT125c | 0.0144   | 0.0000    | 0   | \-         |
+| ss72_rcworstCCworstTm40c | \-0.1176 | \-5.9471  | 195 | \-         |
+| Design                             | \-0.2643 | \-13.8045 | 741 | 385207.954 |
+
+| STEP: route_opt          | WNS      | TNS       | NVE | AREA       |
+| ---------------------------------- | -------- | --------- | --- | ---------- |
+| ss72_cworstCCworstT125c  | \-0.2643 | \-1.6996  | 112 | \-         |
+| ss72_cworstCCworstTm40c  | \-0.1317 | \-11.9331 | 631 | \-         |
+| ss72_rcworstCCworstT125c | 0.0145   | 0.0000    | 0   | \-         |
+| ss72_rcworstCCworstTm40c | \-0.1154 | \-5.7931  | 187 | \-         |
+| Design                             | \-0.2643 | \-13.6168 | 738 | 385194.941 |
+
+| STEP: signoff_drc        | WNS      | TNS      | NVE | AREA       |
+| ---------------------------------- | -------- | -------- | --- | ---------- |
+| ss72_cworstCCworstT125c  | \-0.2543 | \-1.1396 | 29  | \-         |
+| ss72_cworstCCworstTm40c  | \-0.1217 | \-7.4369 | 308 | \-         |
+| ss72_rcworstCCworstT125c | 0.0245   | 0.0000   | 0   | \-         |
+| ss72_rcworstCCworstTm40c | \-0.1054 | \-4.2737 | 126 | \-         |
+| Design                             | \-0.2543 | \-8.5768 | 337 | 385194.941 |
+
+## Pre ECO
+
+| corner                               | WNS (wo/w IO)  | TNS (wo/w IO) | NVE (wo/w IO) | Trans | Cap | Noise |
+| ------------------------------------ | -------------- | ------------- | ------------- | ----- | --- | ----- |
+| wcl_cworstccworsttm40cmax  | \-0.052/-0.153 | 0.218/30.442  | 20/371        | 2     | 15  | 5     |
+| wcl_rcworstccworsttm40cmax | \-0.003/-0.142 | 0.007/27.288  | 3/346         | 2     | 0   | 3     |
+| wc_cworstccworstt125cmax   | 0.000/-0.047   | 0.000/2.916   | 0/150         | 2     | 12  | 2     |
+| wc_rcworstccworstt125cmax  | 0.000/-0.043   | 0.000/2.642   | 0/136         | 2     | 0   | 2     |
+
+## ECO1
+
+| corner                               | WNS (wo/w IO)  | TNS (wo/w IO) | NVE (wo/w IO) | Trans | Cap | Noise |
+| ------------------------------------ | -------------- | ------------- | ------------- | ----- | --- | ----- |
+| wcl_cworstccworsttm40cmax  | \-0.027/-0.145 | 0.145/26.985  | 15/367        | 0     | 15  | 3     |
+| wcl_rcworstccworsttm40cmax | \-0.008/-0.136 | 0.013/23.956  | 3/347         | 0     | 0   | 2     |
+| wc_cworstccworstt125cmax   | 0.000/-0.048   | 0.000/2.438   | 0/117         | 0     | 12  | 1     |
+| wc_rcworstccworstt125cmax  | 0.000/-0.044   | 0.000/2.252   | 0/113         | 0     | 0   | 1     |
+
+## ECO2
+
+| corner                               | WNS (wo/w IO)  | TNS (wo/w IO) | NVE (wo/w IO) | Trans | Cap | Noise |
+| ------------------------------------ | -------------- | ------------- | ------------- | ----- | --- | ----- |
+| wcl_cworstccworsttm40cmax  | \-0.024/-0.142 | 0.093/21.388  | 11/342        | 0     | 15  | 2     |
+| wcl_rcworstccworsttm40cmax | \-0.006/-0.136 | 0.008/19.104  | 2/325         | 0     | 0   | 1     |
+| wc_cworstccworstt125cmax   | 0.000/-0.048   | 0.000/2.137   | 0/102         | 0     | 12  | 1     |
+| wc_rcworstccworstt125cmax  | 0.000/-0.044   | 0.000/2.030   | 0/101         | 0     | 0   | 1     |
+
+## Cap
+
+S: Cell sizing with alternative lib cells cannot fix the violation
+
+``` tcl
+set list_bram_inst [get_attribute fmem/arbiterImpl/mem/mem_*/mem_*/bram_inst/inst* full_name]
+set_path_margin 0.100 -to $list_bram_inst
+set_path_margin 0.100 -from $list_bram_inst
+
+set_path_margin 0.050 -to   [all_outputs]
+set_path_margin 0.050 -from [all_inputs]
+```
+
+# CK\* Settings
+
+## Settings
+
+|                      | DC  | Place   | CTS     | Route   |
+| -------------------- | --- | ------- | ------- | ------- |
+| Uncertainty          | 100 | 91      | 51      | 51      |
+| Data Max Trans       | 200 | 230     | 240     | 240     |
+| Clock Max Trans      | 80  | 80      | 100     | 100     |
+| Derate               | 10% | signoff | signoff | signoff |
+| IO Path Group Weight | 0.1 | 1.0     | 1.0     | 1.0     |
+| Mem Path Margin      | 100 | 100     | 0       | 0       |
+| IO Path Margin       | 0   | 0       | 0       | 0       |
+
+### Pre ECO
+
+### ECO1
+
+### ECO2
+
+``` tcl
+set u_budget 50
+set_clock_uncertainty -setup   [expr (41+$u_budget)/1000.0] [all_clocks]
+set_clock_uncertainty -hold    [expr (49+$u_budget)/1000.0] [all_clocks]
+set t_budget 50
+set_max_transition             [expr (250-$t_budget)/1000.0] [current_design]
+set_max_transition -clock_path 0.08 [all_clocks]
+
+set list_bram_inst [get_attribute fmem/arbiterImpl/mem/mem_*/mem_*/bram_inst/inst* full_name]
+set_path_margin 0.100 -to $list_bram_inst
+set_path_margin 0.100 -from $list_bram_inst
+
+group_path -name AC_OUT -to   [all_outputs]  -weight 1.0
+group_path -name AC_IN  -from [all_inputs]   -weight 1.0
+```
+
+# Useful Scripts
+
+``` shell
+tcsh simple_sta_summary.tcsh | column -t -s '|' -o '|'
+```
+
+# Last Week Summary
+
+| Case                     | Path Margin (ns)        | Max Trans | WNS (wo/w IO)  | TNS (wo/w IO) | NVE (wo/w IO)   | Trans       | Cap        | Noise     |
+| ------------------------ | ----------------------- | --------- | -------------- | ------------- | --------------- | ----------- | ---------- | --------- |
+| Init                     | 0.0 (Note: clk net ECO) | 0.10-0.14 | \-0.081/-0.116 | 3.138/13.260  | ****106/409**** | 0           | 0          | 4         |
+| LOOSE PATH MARGIN Result | mem:0.10                | 0.10-0.14 | 0.000/-0.055   | 0.000/4.684   | 0/182           | ****272**** | 9          | 0         |
+| LOOSER PATH MARGIN       | mem:0.02                | 0.10-0.14 | \-0.002/-0.127 | 0.004/26.037  | 2/345           | 145         | 15         | 3         |
+| REMOVE CLK TRANS         | mem:0.10                | 0.08-0.10 | 0.000/-0.031   | 0.000/1.145   | ****0/108****   | ****0****   | ****16**** | 4         |
+| LOOSE PATH MARGIN 2      | mem:0.10 o:0.06 i:0.02  | 0.08-0.10 | \-0.033/-0.147 | 0.092/25.911  | 3/367           | 0           | 0          | ****4**** |
+
+# Progress Report Meeting
+
+## Watanabe-kun
+
+  - clock early
+
+## <span class="todo TODO">TODO</span> Manual ECO: check_lvs
+
+## <span class="todo TODO">TODO</span> change_name
+
+## <span class="todo TODO">TODO</span> set_pathmargin

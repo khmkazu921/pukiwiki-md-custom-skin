@@ -1,0 +1,893 @@
+#notemd
+# Analysis on Violation Clean Design
+
+``` text
+                                  Internal  Switching  Leakage    Total
+Power Group             Power     Power      Power      Power   (     %)  Attrs
+--------------------------------------------------------------------------------
+clock_network           8.584e-03    0.0360 8.244e-04    0.0454 (12.56%)  
+register                   0.1396 9.032e-03 2.152e-03    0.1508 (41.70%)  i
+combinational              0.0150    0.0327 1.713e-03    0.0493 (13.64%)  
+sequential                 0.0000    0.0000    0.0000    0.0000 ( 0.00%)  
+memory                     0.1071 1.736e-03 7.209e-03    0.1161 (32.10%)  
+io_pad                     0.0000    0.0000    0.0000    0.0000 ( 0.00%)  
+black_box                  0.0000    0.0000    0.0000    0.0000 ( 0.00%)  
+
+  Net Switching Power  =    0.0794   (21.97%)
+  Cell Internal Power  =    0.2703   (74.74%)
+  Cell Leakage Power   =    0.0119   ( 3.29%)
+                         ---------
+Total Power            =    0.3616  (100.00%)
+```
+
+# Path Margin 20
+
+## ECO11
+
+| corner                       | WNS (wo/w IO) | TNS (wo/w IO) | NVP  | Tran | Cap | Nois |
+| ---------------------------- | ------------- | ------------- | ---- | ---- | --- | ---- |
+| wcl_cwst_ccwstt (S) | 0.000/ 0.000  | 0.000/ 0.000  | 0/ 0 | 0    | 0   | 0    |
+| wcl_rcwst_ccwstt(S) | 0.000/ 0.000  | 0.000/ 0.000  | 0/ 0 | 0    | 0   | 0    |
+| wc_cwst_ccwstt (S)  | 0.000/ 0.000  | 0.000/ 0.000  | 0/ 0 | 0    | 0   | 0    |
+| wc_rcwst_ccwstt (S) | 0.000/ 0.000  | 0.000/ 0.000  | 0/ 0 | 0    | 0   | 0    |
+| lt_cwst_ccwst (H)   | 0.000/ 0.000  | 0.000/ 0.000  | 0/ 0 | 0    | 0   | 0    |
+| lt_cbst_ccbst (H)   | 0.000/ 0.000  | 0.000/ 0.000  | 0/ 0 | 0    | 0   | 0    |
+| ml_cbst_ccbst (H)   | 0.000/ 0.000  | 0.000/ 0.000  | 0/ 0 | 0    | 0   | 0    |
+| wcl_cwst_ccwst (H)  | 0.000/ 0.000  | 0.000/ 0.000  | 0/ 0 | 0    | 0   | 0    |
+| wcl_rcwst_ccwst (H) | 0.000/ 0.000  | 0.000/ 0.000  | 0/ 0 | 0    | 0   | 0    |
+| wc_cwst_ccwst (H)   | 0.000/ 0.000  | 0.000/ 0.000  | 0/ 0 | 0    | 0   | 0    |
+| wc_rcwst_ccwst (H)  | 0.000/ 0.000  | 0.000/ 0.000  | 0/ 0 | 0    | 0   | 0    |
+| lt_rcwst_ccwst (H)  | 0.000/ 0.000  | 0.000/ 0.000  | 0/ 0 | 0    | 0   | 0    |
+| lt_rcbst_ccbst (H)  | 0.000/ 0.000  | 0.000/ 0.000  | 0/ 0 | 0    | 0   | 0    |
+| ml_rcwst_ccwst (H)  | 0.000/ 0.000  | 0.000/ 0.000  | 0/ 0 | 0    | 0   | 0    |
+| ml_cwst_ccwst (H)   | 0.000/ 0.000  | 0.000/ 0.000  | 0/ 0 | 0    | 0   | 0    |
+| ml_rcbst_ccbst (H)  | 0.000/ 0.000  | 0.000/ 0.000  | 0/ 0 | 0    | 0   | 0    |
+
+``` text
+  Standard cells           267851   99  110528.7045    28 unit:2998283  
+  Filler cells                  0    0       0.0000     0 
+  Diode cells                   0    0       0.0000     0 
+  Hard macro cells             24    0  281668.2586    71 unit:7646624  
+  Soft macro cells              0    0       0.0000     0 
+    Black box cells             0    0       0.0000     0 
+  Analog block cells            0    0       0.0000     0 
+  Pad cells                     0    0       0.0000     0 
+    Flip-chip pad cells         0    0       0.0000     0 
+  Cover cells                   0    0       0.0000     0 
+  Flip-chip driver cells        0    0       0.0000     0 
+  Corner pad cells              0    0       0.0000     0 
+  Pad spacer cells              0    0       0.0000     0 
+  Others                        0    0       0.0000     0 
+
+Special cells               27010   10    3982.7866     1 unit:108040  
+  Level shifter                 0    0       0.0000     0 
+  Isolation                     0    0       0.0000     0 
+  Switch                        0    0       0.0000     0 
+  Always on                     0    0       0.0000     0 
+  Retention                     0    0       0.0000     0 
+  Tie off                   27010   10    3982.7866     1 unit:108040  
+
+LVT                          9226    3    4188.9300     1 unit:113632  
+HVT                             0    0       0.0000     0 
+Normal VT                  258625   96  106339.7745    27 unit:2884651  
+Others                         24    0  281668.2586    71 unit:7646624  
+
+Netlist cells              240094   89  386432.9818    98 unit:10488549  
+Physical only               27781   10    5763.9813     1 unit:156358  
+
+Fixed cells                 29953   11  287907.5643    73 unit:7815876  
+Moveable cells             237922   88  104289.3988    26 unit:2829031  
+
+Combinational              189760   70   41837.5066    10 unit:1134915  
+Sequential                  78115   29  350359.4565    89 unit:9509992  
+Others                          0    0       0.0000     0 
+
+Buffer                      24309    9    4248.7235     1 unit:115254  
+Inverter                    13683    5    1558.3519     0 unit:42273  
+Buffer/inverter             37992   14    5807.0753     1 unit:157527  
+```
+
+  - Buffers  
+    ECO0: 5444.8865 -\> ECO11: 5807.0753
+
+| Misc.     | Areas        |
+| --------- | ------------ |
+| Buff/Inv  | 5807.0753    |
+| LVT       | 4188.9300    |
+| Std. cell | 110528.7045  |
+| Core      | 443748.2250  |
+| Chip      | 451787.7450  |
+| Wire      | 3289638.8500 |
+
+## ECO10- Aggressors
+
+place_optHFSNET4112 place_optHFSNET4070
+place_optHFSNET3999 place_optHFSNET4111
+fmem/arbiterImpl/mem/mem_0/mem_0/bram_inst/ropt_net53322
+fmem/arbiterImpl/mem_ioport00q957\_
+fmem/arbiterImpl/place_optHFSNET1070
+fmem/arbiterImpl/mem_ioport00q970\_ route_optropt1
+fmem/arbiterImpl/place_optHFSNET577
+fmem/arbiterImpl/clock_optZINV379
+
+``` text
+   noise_region: above_low
+ pin name (net name)       width    height     slack
+ -----------------------------------------------------
+ fmem/arbiterImpl/mem/mem_0/mem_0/bram_inst/inst7/D[21] (fmem/arbiterImpl/net_PTECO_DRC_NET1)
+ Aggressors:
+ place_opt_HFSNET_4112     0.257     0.143
+ place_opt_HFSNET_4070     0.252     0.140
+ place_opt_HFSNET_3999     0.327     0.051
+ place_opt_HFSNET_4111     0.308     0.042
+ fmem/arbiterImpl/mem/mem_0/mem_0/bram_inst/ropt_net_53322
+                           0.360     0.013
+ fmem/arbiterImpl/mem_io_port_0_0_q_957_
+                           0.185     0.023
+ fmem/arbiterImpl/place_opt_HFSNET_1070
+                           0.241     0.008
+ fmem/arbiterImpl/mem_io_port_0_0_q_970_
+                           0.233     0.008
+ route_opt_ropt_1          0.332     0.002
+ fmem/arbiterImpl/place_opt_HFSNET_577
+                           0.210     0.002
+ fmem/arbiterImpl/clock_opt_ZINV_379
+                           0.210     0.005
+ Total:                    0.266     0.380    -0.116
+
+
+ noise_region: below_high
+ pin name (net name)       width    height     slack
+ -----------------------------------------------------
+ fmem/arbiterImpl/mem/mem_0/mem_0/bram_inst/inst7/D[21] (fmem/arbiterImpl/net_PTECO_DRC_NET1)
+ Aggressors:
+ place_opt_HFSNET_4112     0.263     0.142
+ place_opt_HFSNET_4070     0.258     0.140
+ place_opt_HFSNET_3999     0.330     0.052
+ place_opt_HFSNET_4111     0.312     0.042
+ fmem/arbiterImpl/mem/mem_0/mem_0/bram_inst/ropt_net_53322
+                           0.361     0.013
+ fmem/arbiterImpl/mem_io_port_0_0_q_957_
+                           0.187     0.023
+ fmem/arbiterImpl/place_opt_HFSNET_1070
+                           0.244     0.009
+ fmem/arbiterImpl/mem_io_port_0_0_q_970_
+                           0.236     0.008
+ route_opt_ropt_1          0.337     0.003
+ fmem/arbiterImpl/place_opt_HFSNET_577
+                           0.213     0.002
+ fmem/arbiterImpl/clock_opt_ZINV_379
+                           0.213     0.005
+ Total:                    0.260     0.396    -0.132
+
+
+1
+```
+
+## ECO10
+
+| corner                       | WNS (wo/w IO) | TNS (wo/w IO) | NVP  | Tran | Cap | Nois |
+| ---------------------------- | ------------- | ------------- | ---- | ---- | --- | ---- |
+| wcl_cwst_ccwstt (S) | 0.000/ 0.000  | 0.000/ 0.000  | 0/ 0 | 0    | 0   | 0    |
+| wcl_rcwst_ccwstt(S) | 0.000/ 0.000  | 0.000/ 0.000  | 0/ 0 | 0    | 0   | 0    |
+| wc_cwst_ccwstt (S)  | 0.000/ 0.000  | 0.000/ 0.000  | 0/ 0 | 0    | 0   | 0    |
+| wc_rcwst_ccwstt (S) | 0.000/ 0.000  | 0.000/ 0.000  | 0/ 0 | 0    | 0   | 0    |
+| lt_cwst_ccwst (H)   | 0.000/ 0.000  | 0.000/ 0.000  | 1/ 1 | 0    | 0   | 0    |
+| lt_cbst_ccbst (H)   | 0.000/ 0.000  | 0.000/ 0.000  | 0/ 0 | 0    | 0   | 0    |
+| ml_cbst_ccbst (H)   | 0.000/ 0.000  | 0.000/ 0.000  | 0/ 0 | 0    | 0   | 1    |
+| wcl_cwst_ccwst (H)  | 0.000/ 0.000  | 0.000/ 0.000  | 0/ 0 | 0    | 0   | 0    |
+| wcl_rcwst_ccwst (H) | 0.000/ 0.000  | 0.000/ 0.000  | 0/ 0 | 0    | 0   | 0    |
+| wc_cwst_ccwst (H)   | 0.000/ 0.000  | 0.000/ 0.000  | 0/ 0 | 0    | 0   | 0    |
+| wc_rcwst_ccwst (H)  | 0.000/ 0.000  | 0.000/ 0.000  | 0/ 0 | 0    | 0   | 0    |
+| lt_rcwst_ccwst (H)  | 0.000/ 0.000  | 0.000/ 0.000  | 0/ 0 | 0    | 0   | 1    |
+| lt_rcbst_ccbst (H)  | 0.000/ 0.000  | 0.000/ 0.000  | 0/ 0 | 0    | 0   | 0    |
+| ml_rcwst_ccwst (H)  | 0.000/ 0.000  | 0.000/ 0.000  | 0/ 0 | 0    | 0   | 1    |
+| ml_cwst_ccwst (H)   | 0.000/ 0.000  | 0.000/ 0.000  | 0/ 0 | 0    | 0   | 0    |
+| ml_rcbst_ccbst (H)  | 0.000/ 0.000  | 0.000/ 0.000  | 0/ 0 | 0    | 0   | 0    |
+
+| Misc.     | Areas        |
+| --------- | ------------ |
+| Buff/Inv  | 5807.0753    |
+| LVT       | 4188.9300    |
+| Std. cell | 110528.7045  |
+| Core      | 443748.2250  |
+| Chip      | 451787.7450  |
+| Wire len  | 3289638.8500 |
+
+## ECO9
+
+| corner                       | WNS (wo/w IO)  | TNS (wo/w IO) | NVP  | Tran | Cap | Nois |
+| ---------------------------- | -------------- | ------------- | ---- | ---- | --- | ---- |
+| wcl_cwst_ccwstt (S) | 0.000/ 0.000   | 0.000/ 0.000  | 0/ 0 | 0    | 0   | 0    |
+| wcl_rcwst_ccwstt(S) | 0.000/ 0.000   | 0.000/ 0.000  | 0/ 0 | 0    | 0   | 0    |
+| wc_cwst_ccwstt (S)  | 0.000/ 0.000   | 0.000/ 0.000  | 0/ 0 | 0    | 0   | 0    |
+| wc_rcwst_ccwstt (S) | 0.000/ 0.000   | 0.000/ 0.000  | 0/ 0 | 0    | 0   | 0    |
+| lt_cwst_ccwst (H)   | \-0.002/-0.002 | 0.002/ 0.002  | 1/ 1 | 0    | 0   | 0    |
+| lt_cbst_ccbst (H)   | 0.000/ 0.000   | 0.000/ 0.000  | 0/ 0 | 0    | 0   | 0    |
+| ml_cbst_ccbst (H)   | 0.000/ 0.000   | 0.000/ 0.000  | 0/ 0 | 0    | 0   | 1    |
+| wcl_cwst_ccwst (H)  | 0.000/ 0.000   | 0.000/ 0.000  | 0/ 0 | 0    | 0   | 0    |
+| wcl_rcwst_ccwst (H) | 0.000/ 0.000   | 0.000/ 0.000  | 0/ 0 | 0    | 0   | 0    |
+| wc_cwst_ccwst (H)   | 0.000/ 0.000   | 0.000/ 0.000  | 0/ 0 | 0    | 0   | 0    |
+| wc_rcwst_ccwst (H)  | 0.000/ 0.000   | 0.000/ 0.000  | 0/ 0 | 0    | 0   | 0    |
+| lt_rcwst_ccwst (H)  | \-0.002/-0.002 | 0.002/ 0.002  | 1/ 1 | 0    | 0   | 1    |
+| lt_rcbst_ccbst (H)  | 0.000/ 0.000   | 0.000/ 0.000  | 0/ 0 | 0    | 0   | 0    |
+| ml_rcwst_ccwst (H)  | \-0.005/-0.005 | 0.005/ 0.005  | 2/ 2 | 0    | 0   | 1    |
+| ml_cwst_ccwst (H)   | \-0.004/-0.004 | 0.004/ 0.004  | 1/ 1 | 0    | 0   | 0    |
+| ml_rcbst_ccbst (H)  | 0.000/ 0.000   | 0.000/ 0.000  | 0/ 0 | 0    | 0   | 0    |
+
+| \# 1: pt_eco9             | WNS      | TNS      | NVP |
+| ----------------------------------- | -------- | -------- | --- |
+| ss72_cworstCCworstTm40c S | \-0.0148 | \-0.0365 | 8   |
+| Design S                            | \-0.0148 | \-0.0365 | 8   |
+| ff88_cbestCCbestm40c H    | \-0.0304 | \-1.3306 | 491 |
+| ss72_cworstCCworst125c H  | 0.0306   | 0.0000   | 0   |
+| ss72_cworstCCworstm40c H  | 0.0235   | 0.0000   | 0   |
+| ss72_rcworstCCworst125c H | 0.0287   | 0.0000   | 0   |
+| Design H                            | \-0.0304 | \-1.3306 | 491 |
+
+| Misc.     | Areas        |
+| --------- | ------------ |
+| Buff/Inv  | 5806.3749    |
+| LVT       | 4189.1512    |
+| Std. cell | 110528.0041  |
+| Core      | 443748.2250  |
+| Chip      | 451787.7450  |
+| Wire len  | 3289685.1580 |
+
+## ECO8
+
+``` tcl
+set CLOCK_BUFF_LIST {
+    CKBCTD2BWP6T16P96CPDLVT  \
+    CKBCTD3BWP6T16P96CPDLVT  \
+    CKBCTD4BWP6T16P96CPDLVT  \
+    CKBCTD6BWP6T16P96CPDLVT  \
+    CKBCTD8BWP6T16P96CPDLVT  \
+    CKBCTD10BWP6T16P96CPDLVT \
+    CKBCTD12BWP6T16P96CPDLVT \
+    CKBCTD14BWP6T16P96CPDLVT \
+    CKBCTD16BWP6T16P96CPDLVT \
+    }
+
+fix_eco_drc -type max_transition -current_library -cell_type clock_network -buffer_list ${CLOCK_BUFF_LIST} -verbose
+```
+
+``` text
+Inserted buffers:
+   Count Lib_cell               Area          Total_area
+--------------------------------------------------------
+       2 CKBCTD3BWP6T16P96CPDLVT   0.22                0.44
+--------------------------------------------------------
+       2 TOTAL                                      0.44
+
+Final ECO Summary:
+--------------------------------------------------------
+Number of insert_buffer commands                       2
+Total number of commands                               2
+Area increased by buffer insertion                  0.44
+Total area increased                                0.44
+
+Information: Elapsed time [              905 seconds ]
+Information: Completed at [ Wed Sep 28 14:31:49 2022 ]
+
+1 
+```
+
+| corner                       | WNS (wo/w IO)  | TNS (wo/w IO) | NVP  | Tran | Cap | Nois |
+| ---------------------------- | -------------- | ------------- | ---- | ---- | --- | ---- |
+| wcl_cwst_ccwstt (S) | \-0.001/-0.001 | 0.001/ 0.001  | 1/ 1 | 0    | 0   | 0    |
+| wcl_rcwst_ccwstt(S) | 0.000/ 0.000   | 0.000/ 0.000  | 0/ 0 | 0    | 0   | 0    |
+| wc_cwst_ccwstt (S)  | 0.000/ 0.000   | 0.000/ 0.000  | 0/ 0 | 65   | 0   | 0    |
+| wc_rcwst_ccwstt (S) | 0.000/ 0.000   | 0.000/ 0.000  | 0/ 0 | 0    | 0   | 0    |
+| lt_cwst_ccwst (H)   | \-0.002/-0.002 | 0.002/ 0.002  | 3/ 3 | 0    | 0   | 0    |
+| lt_cbst_ccbst (H)   | 0.000/ 0.000   | 0.000/ 0.000  | 0/ 0 | 0    | 0   | 0    |
+| ml_cbst_ccbst (H)   | 0.000/ 0.000   | 0.000/ 0.000  | 0/ 0 | 0    | 0   | 1    |
+| wcl_cwst_ccwst (H)  | 0.000/ 0.000   | 0.000/ 0.000  | 0/ 0 | 0    | 0   | 0    |
+| wcl_rcwst_ccwst (H) | 0.000/ 0.000   | 0.000/ 0.000  | 0/ 0 | 0    | 0   | 0    |
+| wc_cwst_ccwst (H)   | 0.000/ 0.000   | 0.000/ 0.000  | 0/ 0 | 66   | 0   | 0    |
+| wc_rcwst_ccwst (H)  | 0.000/ 0.000   | 0.000/ 0.000  | 0/ 0 | 0    | 0   | 0    |
+| lt_rcwst_ccwst (H)  | \-0.002/-0.002 | 0.002/ 0.002  | 1/ 1 | 0    | 0   | 1    |
+| lt_rcbst_ccbst (H)  | 0.000/ 0.000   | 0.000/ 0.000  | 1/ 1 | 0    | 0   | 0    |
+| ml_rcwst_ccwst (H)  | \-0.005/-0.005 | 0.005/ 0.005  | 2/ 2 | 0    | 0   | 1    |
+| ml_cwst_ccwst (H)   | \-0.004/-0.004 | 0.004/ 0.004  | 1/ 1 | 0    | 0   | 0    |
+| ml_rcbst_ccbst (H)  | 0.000/ 0.000   | 0.000/ 0.000  | 2/ 2 | 0    | 0   | 0    |
+
+## ECO7
+
+| corner                       | WNS (wo/w IO)  | TNS (wo/w IO) | NVP  | Tran | Cap | Nois |
+| ---------------------------- | -------------- | ------------- | ---- | ---- | --- | ---- |
+| wcl_cwst_ccwstt (S) | 0.000/ 0.000   | 0.000/ 0.000  | 0/ 0 | 0    | 0   | 0    |
+| wcl_rcwst_ccwstt(S) | 0.000/ 0.000   | 0.000/ 0.000  | 0/ 0 | 0    | 0   | 0    |
+| wc_cwst_ccwstt (S)  | 0.000/ 0.000   | 0.000/ 0.000  | 0/ 0 | 65   | 0   | 0    |
+| wc_rcwst_ccwstt (S) | 0.000/ 0.000   | 0.000/ 0.000  | 0/ 0 | 0    | 0   | 0    |
+| lt_cwst_ccwst (H)   | \-0.002/-0.002 | 0.002/ 0.002  | 3/ 3 | 0    | 0   | 0    |
+| lt_cbst_ccbst (H)   | 0.000/ 0.000   | 0.000/ 0.000  | 0/ 0 | 0    | 0   | 0    |
+| ml_cbst_ccbst (H)   | 0.000/ 0.000   | 0.000/ 0.000  | 0/ 0 | 0    | 0   | 1    |
+| wcl_cwst_ccwst (H)  | \-0.010/-0.010 | 0.023/ 0.023  | 5/ 5 | 0    | 0   | 0    |
+| wcl_rcwst_ccwst (H) | \-0.009/-0.009 | 0.011/ 0.011  | 2/ 2 | 0    | 0   | 0    |
+| wc_cwst_ccwst (H)   | 0.000/ 0.000   | 0.000/ 0.000  | 0/ 0 | 66   | 0   | 0    |
+| wc_rcwst_ccwst (H)  | 0.000/ 0.000   | 0.000/ 0.000  | 0/ 0 | 0    | 0   | 0    |
+| lt_rcwst_ccwst (H)  | \-0.002/-0.002 | 0.002/ 0.002  | 1/ 1 | 0    | 0   | 1    |
+| lt_rcbst_ccbst (H)  | 0.000/ 0.000   | 0.000/ 0.000  | 1/ 1 | 0    | 0   | 0    |
+| ml_rcwst_ccwst (H)  | \-0.005/-0.005 | 0.005/ 0.005  | 2/ 2 | 0    | 0   | 1    |
+| ml_cwst_ccwst (H)   | \-0.004/-0.004 | 0.004/ 0.004  | 1/ 1 | 0    | 0   | 0    |
+| ml_rcbst_ccbst (H)  | 0.000/ 0.000   | 0.000/ 0.000  | 2/ 2 | 0    | 0   | 0    |
+
+## ECO6
+
+| corner                       | WNS (wo/w IO)  | TNS (wo/w IO) | NVP    | Tran | Cap | Nois |
+| ---------------------------- | -------------- | ------------- | ------ | ---- | --- | ---- |
+| wcl_cwst_ccwstt (S) | \-0.003/-0.003 | 0.003/ 0.004  | 1/ 2   | 0    | 0   | 0    |
+| wcl_rcwst_ccwstt(S) | 0.000/ 0.000   | 0.000/ 0.000  | 0/ 0   | 0    | 0   | 0    |
+| wc_cwst_ccwstt (S)  | 0.000/ 0.000   | 0.000/ 0.000  | 0/ 0   | 65   | 0   | 0    |
+| wc_rcwst_ccwstt (S) | 0.000/ 0.000   | 0.000/ 0.000  | 0/ 0   | 0    | 0   | 0    |
+| lt_cwst_ccwst (H)   | \-0.002/-0.002 | 0.002/ 0.002  | 4/ 4   | 0    | 0   | 0    |
+| lt_cbst_ccbst (H)   | 0.000/ 0.000   | 0.000/ 0.000  | 0/ 0   | 0    | 0   | 0    |
+| ml_cbst_ccbst (H)   | 0.000/ 0.000   | 0.000/ 0.000  | 0/ 0   | 0    | 0   | 1    |
+| wcl_cwst_ccwst (H)  | \-0.010/-0.010 | 0.023/ 0.023  | 5/ 5   | 0    | 0   | 0    |
+| wcl_rcwst_ccwst (H) | \-0.009/-0.009 | 0.011/ 0.011  | 2/ 2   | 0    | 0   | 0    |
+| wc_cwst_ccwst (H)   | 0.000/ 0.000   | 0.000/ 0.000  | 0/ 0   | 66   | 0   | 0    |
+| wc_rcwst_ccwst (H)  | 0.000/ 0.000   | 0.000/ 0.000  | 0/ 0   | 0    | 0   | 0    |
+| lt_rcwst_ccwst (H)  | \-0.002/-0.002 | 0.006/ 0.006  | 23/ 23 | 0    | 0   | 1    |
+| lt_rcbst_ccbst (H)  | 0.000/ 0.000   | 0.000/ 0.000  | 1/ 1   | 0    | 0   | 0    |
+| ml_rcwst_ccwst (H)  | \-0.005/-0.005 | 0.005/ 0.005  | 3/ 3   | 0    | 0   | 1    |
+| ml_cwst_ccwst (H)   | \-0.004/-0.004 | 0.004/ 0.004  | 1/ 1   | 0    | 0   | 0    |
+| ml_rcbst_ccbst (H)  | 0.000/ 0.000   | 0.000/ 0.000  | 2/ 2   | 0    | 0   | 0    |
+
+## ECO5
+
+| corner                       | WNS (wo/w IO)  | TNS (wo/w IO) | NVP    | Tran | Cap | Nois |
+| ---------------------------- | -------------- | ------------- | ------ | ---- | --- | ---- |
+| wcl_cwst_ccwstt (S) | \-0.040/-0.040 | 0.086/ 0.086  | 8/ 8   | 0    | 0   | 0    |
+| wcl_rcwst_ccwstt(S) | \-0.005/-0.005 | 0.005/ 0.005  | 1/ 1   | 0    | 0   | 0    |
+| wc_cwst_ccwstt (S)  | 0.000/ 0.000   | 0.000/ 0.000  | 0/ 0   | 65   | 0   | 0    |
+| wc_rcwst_ccwstt (S) | 0.000/ 0.000   | 0.000/ 0.000  | 0/ 0   | 0    | 0   | 0    |
+| lt_cwst_ccwst (H)   | \-0.002/-0.002 | 0.002/ 0.002  | 4/ 4   | 0    | 0   | 0    |
+| lt_cbst_ccbst (H)   | 0.000/ 0.000   | 0.000/ 0.000  | 0/ 0   | 0    | 0   | 0    |
+| ml_cbst_ccbst (H)   | 0.000/ 0.000   | 0.000/ 0.000  | 0/ 0   | 0    | 0   | 1    |
+| wcl_cwst_ccwst (H)  | \-0.010/-0.010 | 0.023/ 0.023  | 5/ 5   | 0    | 1   | 0    |
+| wcl_rcwst_ccwst (H) | \-0.009/-0.009 | 0.011/ 0.011  | 2/ 2   | 0    | 0   | 0    |
+| wc_cwst_ccwst (H)   | 0.000/ 0.000   | 0.000/ 0.000  | 0/ 0   | 66   | 1   | 0    |
+| wc_rcwst_ccwst (H)  | 0.000/ 0.000   | 0.000/ 0.000  | 0/ 0   | 0    | 0   | 0    |
+| lt_rcwst_ccwst (H)  | \-0.002/-0.002 | 0.008/ 0.008  | 25/ 25 | 0    | 0   | 1    |
+| lt_rcbst_ccbst (H)  | 0.000/ 0.000   | 0.000/ 0.000  | 4/ 4   | 0    | 0   | 0    |
+| ml_rcwst_ccwst (H)  | \-0.005/-0.005 | 0.006/ 0.006  | 6/ 6   | 0    | 0   | 1    |
+| ml_cwst_ccwst (H)   | \-0.004/-0.004 | 0.004/ 0.004  | 1/ 1   | 0    | 0   | 0    |
+| ml_rcbst_ccbst (H)  | 0.000/ 0.000   | 0.000/ 0.000  | 3/ 3   | 0    | 0   | 0    |
+
+## ECO4
+
+| corner                       | WNS (wo/w IO)  | TNS (wo/w IO) | NVP      | Tran | Cap | Nois |
+| ---------------------------- | -------------- | ------------- | -------- | ---- | --- | ---- |
+| wcl_cwst_ccwstt (S) | \-0.032/-0.032 | 0.071/ 0.071  | 4/ 4     | 0    | 0   | 0    |
+| wcl_rcwst_ccwstt(S) | \-0.006/-0.006 | 0.006/ 0.006  | 2/ 2     | 0    | 0   | 0    |
+| wc_cwst_ccwstt (S)  | 0.000/ 0.000   | 0.000/ 0.000  | 0/ 0     | 65   | 1   | 0    |
+| wc_rcwst_ccwstt (S) | 0.000/ 0.000   | 0.000/ 0.000  | 0/ 0     | 0    | 0   | 0    |
+| lt_cwst_ccwst (H)   | \-0.008/-0.008 | 0.010/ 0.010  | 6/ 6     | 0    | 0   | 0    |
+| lt_cbst_ccbst (H)   | \-0.002/-0.002 | 0.034/ 0.034  | 51/ 51   | 0    | 0   | 0    |
+| ml_cbst_ccbst (H)   | \-0.006/-0.006 | 0.006/ 0.006  | 1/ 1     | 0    | 0   | 1    |
+| wcl_cwst_ccwst (H)  | \-0.010/-0.010 | 0.023/ 0.023  | 5/ 5     | 0    | 1   | 0    |
+| wcl_rcwst_ccwst (H) | \-0.009/-0.009 | 0.011/ 0.011  | 2/ 2     | 0    | 0   | 0    |
+| wc_cwst_ccwst (H)   | 0.000/ 0.000   | 0.000/ 0.000  | 0/ 0     | 66   | 1   | 0    |
+| wc_rcwst_ccwst (H)  | 0.000/ 0.000   | 0.000/ 0.000  | 0/ 0     | 0    | 0   | 0    |
+| lt_rcwst_ccwst (H)  | \-0.008/-0.008 | 0.127/ 0.127  | 90/ 90   | 0    | 0   | 1    |
+| lt_rcbst_ccbst (H)  | \-0.004/-0.004 | 0.122/ 0.122  | 113/ 113 | 0    | 0   | 0    |
+| ml_rcwst_ccwst (H)  | \-0.011/-0.011 | 0.287/ 0.287  | 106/ 106 | 0    | 0   | 1    |
+| ml_cwst_ccwst (H)   | \-0.009/-0.009 | 0.032/ 0.032  | 24/ 24   | 0    | 0   | 0    |
+| ml_rcbst_ccbst (H)  | \-0.002/-0.002 | 0.023/ 0.023  | 36/ 36   | 0    | 0   | 0    |
+
+![](img/Hold_Buffer/2022-09-28_11-58-54_Screenshot%202022-09-28%20115840.png)
+
+## ECO3
+
+| corner                       | WNS (wo/w IO)  | TNS (wo/w IO) | NVP    | Tran | Cap | Nois |
+| ---------------------------- | -------------- | ------------- | ------ | ---- | --- | ---- |
+| wcl_cwst_ccwstt (S) | \-0.020/-0.020 | 0.076/ 0.076  | 10/ 10 | 0    | 0   | 0    |
+| lt_cwst_ccwst (H)   | \-0.008/-0.008 | 0.012/ 0.012  | 10/ 10 | 0    | 0   | 0    |
+| lt_cbst_ccbst (H)   | \-0.004/-0.004 | 0.085/ 0.085  | 74/ 74 | 0    | 0   | 0    |
+| ml_cbst_ccbst (H)   | \-0.009/-0.009 | 0.053/ 0.053  | 27/ 27 | 0    | 0   | 1    |
+
+## ECO2
+
+| corner                       | WNS (wo/w IO)  | TNS (wo/w IO) | NVP    | Tran | Cap | Nois |
+| ---------------------------- | -------------- | ------------- | ------ | ---- | --- | ---- |
+| wcl_cwst_ccwstt (S) | \-0.022/-0.022 | 0.342/ 0.342  | 55/ 56 | 0    | 0   | 0    |
+| lt_cwst_ccwst (H)   | \-0.008/-0.008 | 0.011/ 0.011  | 46/ 46 | 0    | 0   | 0    |
+| lt_cbst_ccbst (H)   | \-0.004/-0.004 | 0.089/ 0.089  | 77/ 77 | 0    | 0   | 0    |
+| ml_cbst_ccbst (H)   | \-0.009/-0.009 | 0.050/ 0.050  | 27/ 27 | 0    | 0   | 1    |
+
+## Re ECO1
+
+| corner                       | WNS (wo/w IO)  | TNS (wo/w IO) | NVP        | Tran | Cap | Nois |
+| ---------------------------- | -------------- | ------------- | ---------- | ---- | --- | ---- |
+| wcl_cwst_ccwstt (S) | \-0.063/-0.063 | 1.484/ 1.485  | 108/ 110   | 0    | 61  | 0    |
+| lt_cwst_ccwst (H)   | \-0.013/-0.013 | 6.325/ 6.325  | 1967/ 1967 | 0    | 88  | 0    |
+| lt_cbst_ccbst (H)   | \-0.009/-0.009 | 2.389/ 2.389  | 1040/ 1040 | 0    | 48  | 0    |
+| ml_cbst_ccbst (H)   | \-0.009/-0.009 | 1.189/ 1.189  | 619/ 619   | 0    | 42  | 1    |
+
+## Re ECO0
+
+| corner                       | WNS (wo/w IO)  | TNS (wo/w IO)  | NVP        | Tran | Cap | Nois |
+| ---------------------------- | -------------- | -------------- | ---------- | ---- | --- | ---- |
+| wcl_cwst_ccwstt (S) | \-0.076/-0.076 | 24.856/ 31.156 | 1375/ 1614 | 0    | 60  | 0    |
+| lt_cwst_ccwst (H)   | \-0.013/-0.013 | 6.334/ 6.334   | 1970/ 1970 | 0    | 88  | 0    |
+| lt_cbst_ccbst (H)   | \-0.009/-0.009 | 2.386/ 2.386   | 1043/ 1043 | 0    | 48  | 0    |
+| ml_cbst_ccbst (H)   | \-0.009/-0.009 | 1.189/ 1.189   | 620/ 620   | 0    | 42  | 1    |
+
+# Path Margin Analysis
+
+## ECO1
+
+| corner                       | WNS (wo/w IO)  | TNS (wo/w IO)  | NVP      | Tran | Cap | Nois |
+| ---------------------------- | -------------- | -------------- | -------- | ---- | --- | ---- |
+| wcl_cwst_ccwstt (S) | \-0.441/-0.441 | 17.993/ 18.214 | 806/ 821 | 47   | 106 | 1    |
+| lt_cwst_ccwst (H)   | \-0.012/-0.012 | 0.758/ 0.758   | 325/ 325 | 4    | 130 | 0    |
+| lt_cbst_ccbst (H)   | \-0.007/-0.007 | 0.395/ 0.395   | 184/ 184 | 0    | 98  | 0    |
+| ml_cbst_ccbst (H)   | \-0.006/-0.006 | 0.236/ 0.236   | 105/ 105 | 0    | 91  | 0    |
+
+``` text
+Point                                                                                       Fanout   Cap   DTrans  Trans   Derate  Delta    Incr      Path
+------------------------------------------------------------------------------------------------------------------------------------------------------------
+clock clock (rise edge)                                                                                                                   0.000     0.000
+clock network delay (propagated)                                                                                                          0.403     0.403
+loadFdma/fmemWriter/U_T_84_reg_29_/CP (SDFQD1BWP6T16P96CPD)                                                       0.089                   0.000     0.403 r
+loadFdma/fmemWriter/U_T_84_reg_29_/Q (SDFQD1BWP6T16P96CPD)                                                        0.031   1.073           0.167 &   0.570 f
+loadFdma/fmemWriter/io_fmemWrite_0_data[797] (net)                                            1   0.002 
+place_opt_HFSBUF_389_55951/I (BUFFD8BWP6T16P96CPD)                                                        0.000   0.031   1.070   0.000   0.000 &   0.571 f
+place_opt_HFSBUF_389_55951/Z (BUFFD8BWP6T16P96CPD)                                                                0.009   1.024           0.036 &   0.607 f
+place_opt_HFSNET_4359 (net)                                                                   1   0.001 
+U_PTECO_HOLD_BUF2627/I (BUFFD1BWP6T16P96CPD)                                                              0.000   0.009   1.070   0.000   0.000 &   0.607 f
+U_PTECO_HOLD_BUF2627/Z (BUFFD1BWP6T16P96CPD)                                                                      0.925   1.073           0.556 &   1.164 f
+net_PTECO_HOLD_NET2627 (net)                                                                  3   0.064 
+fmem/arbiterImpl/alchip458_dc/B2 (AO22D1BWP6T16P96CPD)                                                    0.778   0.929   1.070   0.245   0.278 &   1.441 f
+fmem/arbiterImpl/alchip458_dc/Z (AO22D1BWP6T16P96CPD)                                                             0.026   1.073           0.235 &   1.676 f
+fmem/arbiterImpl/place_opt_HFSNET_520 (net)                                                   1   0.001 
+fmem/arbiterImpl/mem/mem_1/mem_0/bram_inst/clock_opt_ZBUF_inst_93319/I (BUFFD2BWP6T16P96CPD)              0.000   0.026   1.070   0.000   0.000 &   1.676 f
+fmem/arbiterImpl/mem/mem_1/mem_0/bram_inst/clock_opt_ZBUF_inst_93319/Z (BUFFD2BWP6T16P96CPD)                      0.091   1.048           0.082 &   1.758 f
+fmem/arbiterImpl/mem/mem_1/mem_0/bram_inst/clock_opt_ZBUF_674 (net)                           1   0.013 
+fmem/arbiterImpl/mem/mem_1/mem_0/bram_inst/U_PTECO_HOLD_BUF452/I (BUFFD3BWP6T16P96CPD)                    0.000   0.092   1.070   0.000   0.005 &   1.763 f
+fmem/arbiterImpl/mem/mem_1/mem_0/bram_inst/U_PTECO_HOLD_BUF452/Z (BUFFD3BWP6T16P96CPD)                            0.016   1.045           0.068 &   1.831 f
+fmem/arbiterImpl/mem/mem_1/mem_0/bram_inst/net_PTECO_HOLD_NET452 (net)                        1   0.002 
+fmem/arbiterImpl/mem/mem_1/mem_0/bram_inst/inst6/D[29] (TS1N12FFCLLSBSVTD1024X128M4S)                     0.000   0.017   1.070   0.000   0.000 &   1.831 f
+data arrival time                                                                                                                                   1.831
+
+clock clock (rise edge)                                                                                                                   1.250     1.250
+clock network delay (propagated)                                                                                                          0.224     1.474
+clock reconvergence pessimism                                                                                                             0.003     1.477
+clock uncertainty                                                                                                                        -0.055     1.422
+fmem/arbiterImpl/mem/mem_1/mem_0/bram_inst/inst6/CLK (TS1N12FFCLLSBSVTD1024X128M4S)                                                                 1.422 r
+library setup time                                                                                                        1.000          -0.031     1.390
+data required time                                                                                                                                  1.390
+------------------------------------------------------------------------------------------------------------------------------------------------------------
+data required time                                                                                                                                  1.390
+data arrival time                                                                                                                                  -1.831
+------------------------------------------------------------------------------------------------------------------------------------------------------------
+slack (VIOLATED)                                                                                                                                   -0.441
+```
+
+## DE meeting
+
+  - Insert hold buffer **Around fmem & before launch clock** before P\&R
+  - wcl + wc should be seen in Setup timing
+
+## ECO0
+
+| corner                       | WNS (wo/w IO)  | TNS (wo/w IO)  | NVP        | Tran | Cap | Nois |
+| ---------------------------- | -------------- | -------------- | ---------- | ---- | --- | ---- |
+| wcl_cwst_ccwstt (S) | \-0.210/-0.210 | 35.292/ 42.021 | 1245/ 1476 | 2    | 103 | 0    |
+| lt_cwst_ccwst (H)   | \-0.049/-0.049 | 19.818/ 19.818 | 3122/ 3122 | 0    | 126 | 0    |
+| lt_cbst_ccbst (H)   | \-0.057/-0.057 | 22.241/ 22.241 | 2491/ 2491 | 0    | 94  | 0    |
+| ml_cbst_ccbst (H)   | \-0.061/-0.061 | 24.341/ 24.341 | 2033/ 2033 | 0    | 86  | 0    |
+
+``` text
+Point                                                                                Fanout   Cap   DTrans  Trans   Derate  Delta    Incr      Path
+-----------------------------------------------------------------------------------------------------------------------------------------------------
+clock clock (rise edge)                                                                                                            0.000     0.000
+clock network delay (propagated)                                                                                                   0.232     0.232
+loadFdma/fmemWriter/U_T_84_reg_29_/CP (SDFQD1BWP6T16P96CPD)                                                0.073                   0.000     0.232 r
+loadFdma/fmemWriter/U_T_84_reg_29_/Q (SDFQD1BWP6T16P96CPD)                                                 0.006   0.969           0.050     0.282 r
+loadFdma/fmemWriter/io_fmemWrite_0_data[797] (net)                                     1   0.001 
+route_opt_ropt_h_inst_115755/I (BUFFD1BWP6T16P96CPD)                                               0.000   0.006   0.900   0.000   0.000     0.282 r
+route_opt_ropt_h_inst_115755/Z (BUFFD1BWP6T16P96CPD)                                                       0.005   0.969           0.010     0.292 r
+ropt_net_54376 (net)                                                                   1   0.001 
+clock_opt_copt_h_inst_106268/I (BUFFD1BWP6T16P96CPD)                                               0.000   0.005   0.900   0.000   0.000     0.292 r
+clock_opt_copt_h_inst_106268/Z (BUFFD1BWP6T16P96CPD)                                                       0.005   0.969           0.009     0.301 r
+copt_net_45791 (net)                                                                   1   0.001 
+place_opt_HFSBUF_389_55951/I (BUFFD4BWP6T16P96CPDLVT)                                              0.000   0.005   0.900   0.000   0.000     0.301 r
+place_opt_HFSBUF_389_55951/Z (BUFFD4BWP6T16P96CPDLVT)                                                      0.004   0.974           0.010     0.311 r
+place_opt_HFSNET_4359 (net)                                                            3   0.001 
+fmem/arbiterImpl/alchip458_dc/B2 (AO22D1BWP6T16P96CPD)                                             0.000   0.004   0.900   0.000   0.000     0.311 r
+fmem/arbiterImpl/alchip458_dc/Z (AO22D1BWP6T16P96CPD)                                                      0.008   0.969           0.016     0.327 r
+fmem/arbiterImpl/place_opt_HFSNET_520 (net)                                            1   0.001 
+fmem/arbiterImpl/mem/mem_1/mem_0/bram_inst/inst6/D[29] (TS1N12FFCLLSBSVTD1024X128M4S)              0.000   0.008   0.900   0.000   0.000     0.327 r
+data arrival time                                                                                                                            0.327
+
+clock clock (rise edge)                                                                                                            0.000     0.000
+clock network delay (propagated)                                                                                                   0.167     0.167
+clock reconvergence pessimism                                                                                                     -0.001     0.166
+clock uncertainty                                                                                                                  0.013     0.179
+fmem/arbiterImpl/mem/mem_1/mem_0/bram_inst/inst6/CLK (TS1N12FFCLLSBSVTD1024X128M4S)                                                          0.179 r
+library hold time                                                                                                  1.000           0.162     0.341
+data required time                                                                                                                           0.341
+-----------------------------------------------------------------------------------------------------------------------------------------------------
+data required time                                                                                                                           0.341
+data arrival time                                                                                                                           -0.327
+-----------------------------------------------------------------------------------------------------------------------------------------------------
+slack (VIOLATED)                                                                                                                            -0.014
+```
+
+## Analysis
+
+  - Unexpectedly, NVP of both Setup and Hold is not dramatically
+    refined.
+  - Capacitance errors increase. Maybe because nets tend to be more
+    congested as timing gets tighter.
+  - path_margin = 20 seems the best?
+
+## ICC2
+
+place_opt clock_optcts clock_optopto
+route_auto route_opt write_dataeco0
+/proj/ATEPairChip/WORK/kazuki_furukawa/220916b_PATHMARGIN/ICC2/rpts_icc2/place_opt/09232323
+
+| \# 1: place_opt           | WNS      | TNS        | NVP  |
+| ----------------------------------- | -------- | ---------- | ---- |
+| ss72_cworstCCworstTm40c S | \-0.0021 | \-0.0024   | 3    |
+| Design S                            | \-0.0021 | \-0.0024   | 3    |
+| ff88_cbestCCbestm40c H    | \-0.1409 | \-245.2008 | 2716 |
+| ss72_cworstCCworst125c H  | \-0.1542 | \-173.6521 | 1835 |
+| ss72_cworstCCworstm40c H  | \-0.1623 | \-163.8068 | 1779 |
+| ss72_rcworstCCworst125c H | \-0.1566 | \-186.6150 | 1918 |
+| Design H                            | \-0.1623 | \-246.4034 | 2716 |
+
+| Misc.     | Areas       |
+| --------- | ----------- |
+| Buff/Inv  | 2675.0362   |
+| LVT       | 5392.7608   |
+| Std. cell | 106798.3626 |
+| Core      | 443748.2250 |
+| Chip      | 451787.7450 |
+
+/proj/ATEPairChip/WORK/kazuki_furukawa/220916b_PATHMARGIN/ICC2/rpts_icc2/clock_optcts/09240127
+
+| \# 1: clock_optcts        | WNS      | TNS        | NVP  |
+| ----------------------------------- | -------- | ---------- | ---- |
+| ss72_cworstCCworstTm40c S | \-0.2069 | \-76.2311  | 1944 |
+| Design S                            | \-0.2069 | \-76.2311  | 1944 |
+| ff88_cbestCCbestm40c H    | \-0.1018 | \-130.9923 | 3108 |
+| ss72_cworstCCworst125c H  | \-0.0624 | \-17.0288  | 922  |
+| ss72_cworstCCworstm40c H  | \-0.0638 | \-12.4831  | 662  |
+| ss72_rcworstCCworst125c H | \-0.0763 | \-31.6854  | 1301 |
+| Design H                            | \-0.1018 | \-130.9923 | 3108 |
+
+| Misc.     | Areas       |
+| --------- | ----------- |
+| Buff/Inv  | 3057.0209   |
+| LVT       | 5999.5791   |
+| Std. cell | 107405.1809 |
+| Core      | 443748.2250 |
+| Chip      | 451787.7450 |
+| Wire len  | 273504.0250 |
+
+/proj/ATEPairChip/WORK/kazuki_furukawa/220916b_PATHMARGIN/ICC2/rpts_icc2/clock_optopto/09240231
+
+| \# 1: clock_optopto       | WNS      | TNS      | NVP |
+| ----------------------------------- | -------- | -------- | --- |
+| ss72_cworstCCworstTm40c S | \-0.0292 | \-0.2641 | 61  |
+| Design S                            | \-0.0292 | \-0.2641 | 61  |
+| ff88_cbestCCbestm40c H    | \-0.0059 | \-0.0463 | 122 |
+| ss72_cworstCCworst125c H  | 0.0145   | 0.0000   | 0   |
+| ss72_cworstCCworstm40c H  | 0.0048   | 0.0000   | 0   |
+| ss72_rcworstCCworst125c H | 0.0172   | 0.0000   | 0   |
+| Design H                            | \-0.0059 | \-0.0463 | 122 |
+
+| Misc.     | Areas       |
+| --------- | ----------- |
+| Buff/Inv  | 6005.8092   |
+| LVT       | 4052.9756   |
+| Std. cell | 110783.2504 |
+| Core      | 443748.2250 |
+| Chip      | 451787.7450 |
+| Wire len  | 273353.4910 |
+
+/proj/ATEPairChip/WORK/kazuki_furukawa/220916b_PATHMARGIN/ICC2/rpts_icc2/route_auto/09240401
+
+| \# 1: route_auto          | WNS      | TNS       | NVP  |
+| ----------------------------------- | -------- | --------- | ---- |
+| ss72_cworstCCworstTm40c S | \-0.2340 | \-10.1385 | 350  |
+| Design S                            | \-0.2340 | \-10.1385 | 350  |
+| ff88_cbestCCbestm40c H    | \-0.0501 | \-15.7087 | 1923 |
+| ss72_cworstCCworst125c H  | 0.0156   | 0.0000    | 0    |
+| ss72_cworstCCworstm40c H  | 0.0071   | 0.0000    | 0    |
+| ss72_rcworstCCworst125c H | 0.0145   | 0.0000    | 0    |
+| Design H                            | \-0.0501 | \-15.7087 | 1923 |
+
+| Misc.     | Areas        |
+| --------- | ------------ |
+| Buff/Inv  | 6005.8092    |
+| LVT       | 4052.9756    |
+| Std. cell | 110783.2504  |
+| Core      | 443748.2250  |
+| Chip      | 451787.7450  |
+| Wire len  | 3286410.5860 |
+
+/proj/ATEPairChip/WORK/kazuki_furukawa/220916b_PATHMARGIN/ICC2/rpts_icc2/route_opt/09240551
+
+| \# 1: route_opt           | WNS      | TNS      | NVP |
+| ----------------------------------- | -------- | -------- | --- |
+| ss72_cworstCCworstTm40c S | \-0.0117 | \-0.0769 | 33  |
+| Design S                            | \-0.0117 | \-0.0769 | 33  |
+| ff88_cbestCCbestm40c H    | \-0.0397 | \-1.2845 | 610 |
+| ss72_cworstCCworst125c H  | 0.0193   | 0.0000   | 0   |
+| ss72_cworstCCworstm40c H  | 0.0123   | 0.0000   | 0   |
+| ss72_rcworstCCworst125c H | 0.0223   | 0.0000   | 0   |
+| Design H                            | \-0.0397 | \-1.2845 | 610 |
+
+| Misc.     | Areas        |
+| --------- | ------------ |
+| Buff/Inv  | 5444.8865    |
+| LVT       | 3917.9059    |
+| Std. cell | 110129.5780  |
+| Core      | 443748.2250  |
+| Chip      | 451787.7450  |
+| Wire len  | 3283974.6470 |
+
+/proj/ATEPairChip/WORK/kazuki_furukawa/220916b_PATHMARGIN/ICC2/rpts_icc2/chip_finish/09240840
+
+| \# 1: write_dataeco0(chip_fin) | WNS      | TNS      | NVP |
+| -------------------------------------------------- | -------- | -------- | --- |
+| ss72_cworstCCworstTm40c S                | \-0.0117 | \-0.0769 | 33  |
+| Design S                                           | \-0.0117 | \-0.0769 | 33  |
+| ff88_cbestCCbestm40c H                   | \-0.0397 | \-1.2845 | 610 |
+| ss72_cworstCCworst125c H                 | 0.0193   | 0.0000   | 0   |
+| ss72_cworstCCworstm40c H                 | 0.0123   | 0.0000   | 0   |
+| ss72_rcworstCCworst125c H                | 0.0223   | 0.0000   | 0   |
+| Design H                                           | \-0.0397 | \-1.2845 | 610 |
+
+| Misc.     | Areas        |
+| --------- | ------------ |
+| Buff/Inv  | 5444.8865    |
+| LVT       | 3917.9059    |
+| Std. cell | 110129.5780  |
+| Core      | 443748.2250  |
+| Chip      | 451787.7450  |
+| Wire len  | 3283974.6470 |
+
+## Sum up : wcl_cwst_ccwstt (S)
+
+| path_margin | WNS (wo/w IO)  | TNS (wo/w IO)    | NVP        | Tran | Cap  | Nois |
+| --------------------- | -------------- | ---------------- | ---------- | ---- | ---- | ---- |
+| 0                     | \-0.109/-0.109 | 30.095/ 34.847   | 1568/ 1748 | 0    | 10   | 2    |
+| 10                    | \-0.076/-0.076 | 26.018/ 31.055   | 1435/ 1629 | 0    | 104  | 1    |
+| 20                    | \-0.076/-0.076 | 24.849/ 31.150   | 1374/ 1613 | 0    | 60   | 0    |
+| 40                    | \-0.107/-0.107 | 25.110/ 26.665   | 1417/ 1501 | 0    | 299  | 0    |
+| 60                    | \-0.090/-0.090 | 24.836/ 30.163   | 1251/ 1456 | 0    | 434  | 1    |
+| 80                    | \-0.703/-0.703 | 55.541/ 59.591   | 1542/ 1716 | 16   | 716  | 1    |
+| 100                   | \-1.282/-1.282 | 107.776/ 115.223 | 1577/ 1836 | 53   | 1059 | 0    |
+
+## Sum up : lt_cwst_ccwst (H)
+
+| path_margin | WNS (wo/w IO)  | TNS (wo/w IO) | NVP        | Tran | Cap  | Nois |
+| --------------------- | -------------- | ------------- | ---------- | ---- | ---- | ---- |
+| 0                     | \-0.015/-0.015 | 6.350/ 6.350  | 2081/ 2081 | 0    | 15   | 0    |
+| 10                    | \-0.013/-0.013 | 6.111/ 6.111  | 1910/ 1910 | 0    | 126  | 0    |
+| 20                    | \-0.013/-0.013 | 6.335/ 6.335  | 1970/ 1970 | 0    | 88   | 0    |
+| 40                    | \-0.015/-0.015 | 5.243/ 5.243  | 1887/ 1887 | 0    | 325  | 0    |
+| 60                    | \-0.015/-0.015 | 5.610/ 5.610  | 1873/ 1873 | 0    | 457  | 1    |
+| 80                    | \-0.014/-0.014 | 5.661/ 5.661  | 2021/ 2021 | 0    | 776  | 0    |
+| 100                   | \-0.016/-0.016 | 5.664/ 5.664  | 1870/ 1870 | 4    | 1182 | 0    |
+
+## path_margin 0.100
+
+| corner                       | WNS (wo/w IO)  | TNS (wo/w IO)    | NVP        | Tran | Cap  | Nois |
+| ---------------------------- | -------------- | ---------------- | ---------- | ---- | ---- | ---- |
+| wcl_cwst_ccwstt (S) | \-1.282/-1.282 | 107.776/ 115.223 | 1577/ 1836 | 53   | 1059 | 0    |
+| wcl_rcwst_ccwstt(S) | \-1.186/-1.186 | 71.676/ 78.077   | 660/ 904   | 26   | 965  | 0    |
+| wc_cwst_ccwstt (S)  | \-1.242/-1.242 | 65.469/ 65.592   | 245/ 259   | 505  | 1123 | 0    |
+| wc_rcwst_ccwstt (S) | \-1.158/-1.158 | 55.913/ 56.048   | 220/ 240   | 159  | 1013 | 0    |
+| wcl_cwst_ccwst (H)  | \-0.017/-0.017 | 0.414/ 0.414     | 108/ 108   | 69   | 1117 | 0    |
+| wcl_rcwst_ccwst (H) | \-0.016/-0.016 | 0.176/ 0.176     | 47/ 47     | 28   | 940  | 0    |
+| wc_cwst_ccwst (H)   | \-0.006/-0.006 | 0.035/ 0.035     | 14/ 14     | 792  | 1182 | 0    |
+| wc_rcwst_ccwst (H)  | \-0.004/-0.004 | 0.010/ 0.010     | 6/ 6       | 131  | 988  | 0    |
+| lt_cwst_ccwst (H)   | \-0.016/-0.016 | 5.664/ 5.664     | 1870/ 1870 | 4    | 1182 | 0    |
+| lt_rcwst_ccwst (H)  | \-0.015/-0.015 | 4.089/ 4.089     | 1527/ 1527 | 2    | 991  | 0    |
+| lt_cbst_ccbst (H)   | \-0.008/-0.008 | 2.066/ 2.066     | 941/ 941   | 0    | 959  | 0    |
+| lt_rcbst_ccbst (H)  | \-0.009/-0.009 | 3.339/ 3.339     | 1333/ 1333 | 0    | 1148 | 0    |
+| ml_rcwst_ccwst (H)  | \-0.019/-0.019 | 2.776/ 2.776     | 1027/ 1027 | 4    | 960  | 0    |
+| ml_cwst_ccwst (H)   | \-0.015/-0.015 | 3.579/ 3.579     | 1234/ 1234 | 4    | 1143 | 0    |
+| ml_cbst_ccbst (H)   | \-0.006/-0.006 | 1.083/ 1.083     | 552/ 552   | 0    | 933  | 0    |
+| ml_rcbst_ccbst (H)  | \-0.008/-0.008 | 1.678/ 1.678     | 745/ 745   | 0    | 1097 | 0    |
+
+## path_margin 0.080
+
+| corner                       | WNS (wo/w IO)  | TNS (wo/w IO)  | NVP        | Tran | Cap | Nois |
+| ---------------------------- | -------------- | -------------- | ---------- | ---- | --- | ---- |
+| wcl_cwst_ccwstt (S) | \-0.703/-0.703 | 55.541/ 59.591 | 1542/ 1716 | 16   | 716 | 1    |
+| wcl_rcwst_ccwstt(S) | \-0.607/-0.607 | 25.635/ 29.051 | 574/ 735   | 8    | 672 | 1    |
+| wc_cwst_ccwstt (S)  | \-0.573/-0.573 | 18.775/ 18.795 | 131/ 134   | 307  | 745 | 2    |
+| wc_rcwst_ccwstt (S) | \-0.494/-0.494 | 15.067/ 15.082 | 107/ 110   | 93   | 698 | 0    |
+| wcl_cwst_ccwst (H)  | \-0.029/-0.029 | 0.507/ 0.507   | 120/ 120   | 44   | 747 | 1    |
+| wcl_rcwst_ccwst (H) | \-0.027/-0.027 | 0.267/ 0.267   | 64/ 64     | 6    | 652 | 1    |
+| wc_cwst_ccwst (H)   | \-0.014/-0.014 | 0.064/ 0.064   | 20/ 20     | 726  | 773 | 0    |
+| wc_rcwst_ccwst (H)  | \-0.012/-0.012 | 0.032/ 0.032   | 13/ 13     | 85   | 677 | 0    |
+| lt_cwst_ccwst (H)   | \-0.014/-0.014 | 5.661/ 5.661   | 2021/ 2021 | 0    | 776 | 0    |
+| lt_rcwst_ccwst (H)  | \-0.013/-0.013 | 3.946/ 3.946   | 1633/ 1633 | 0    | 679 | 0    |
+| lt_cbst_ccbst (H)   | \-0.008/-0.008 | 2.144/ 2.144   | 1041/ 1041 | 0    | 657 | 0    |
+| lt_rcbst_ccbst (H)  | \-0.010/-0.010 | 3.636/ 3.636   | 1464/ 1464 | 0    | 753 | 2    |
+| ml_rcwst_ccwst (H)  | \-0.012/-0.012 | 2.395/ 2.395   | 1035/ 1035 | 0    | 659 | 3    |
+| ml_cwst_ccwst (H)   | \-0.013/-0.013 | 3.174/ 3.174   | 1273/ 1273 | 0    | 751 | 3    |
+| ml_cbst_ccbst (H)   | \-0.007/-0.007 | 0.973/ 0.973   | 554/ 554   | 0    | 645 | 3    |
+| ml_rcbst_ccbst (H)  | \-0.008/-0.008 | 1.769/ 1.769   | 794/ 794   | 0    | 731 | 3    |
+
+## path_margin 0.060
+
+| corner                       | WNS (wo/w IO)  | TNS (wo/w IO)  | NVP        | Tran | Cap | Nois |
+| ---------------------------- | -------------- | -------------- | ---------- | ---- | --- | ---- |
+| wcl_cwst_ccwstt (S) | \-0.090/-0.090 | 24.836/ 30.163 | 1251/ 1456 | 0    | 434 | 1    |
+| wcl_rcwst_ccwstt(S) | \-0.068/-0.068 | 4.674/ 9.102   | 325/ 507   | 0    | 409 | 2    |
+| wc_cwst_ccwstt (S)  | 0.000/-0.025   | 0.000/ 0.358   | 0/ 41      | 20   | 448 | 1    |
+| wc_rcwst_ccwstt (S) | 0.000/-0.030   | 0.000/ 0.562   | 0/ 48      | 0    | 421 | 0    |
+| wcl_cwst_ccwst (H)  | \-0.022/-0.022 | 0.725/ 0.725   | 177/ 177   | 0    | 449 | 1    |
+| wcl_rcwst_ccwst (H) | \-0.014/-0.014 | 0.270/ 0.270   | 74/ 74     | 0    | 402 | 1    |
+| wc_cwst_ccwst (H)   | \-0.011/-0.011 | 0.092/ 0.092   | 29/ 29     | 231  | 456 | 1    |
+| wc_rcwst_ccwst (H)  | \-0.007/-0.007 | 0.032/ 0.032   | 10/ 10     | 0    | 413 | 0    |
+| lt_cwst_ccwst (H)   | \-0.015/-0.015 | 5.610/ 5.610   | 1873/ 1873 | 0    | 457 | 1    |
+| lt_rcwst_ccwst (H)  | \-0.013/-0.013 | 4.013/ 4.013   | 1585/ 1585 | 0    | 415 | 0    |
+| lt_cbst_ccbst (H)   | \-0.008/-0.008 | 2.386/ 2.386   | 1052/ 1052 | 0    | 406 | 0    |
+| lt_rcbst_ccbst (H)  | \-0.011/-0.011 | 3.767/ 3.767   | 1432/ 1432 | 0    | 453 | 2    |
+| ml_rcwst_ccwst (H)  | \-0.016/-0.016 | 3.094/ 3.094   | 1165/ 1165 | 0    | 400 | 1    |
+| ml_cwst_ccwst (H)   | \-0.015/-0.015 | 3.421/ 3.421   | 1205/ 1205 | 0    | 449 | 1    |
+| ml_cbst_ccbst (H)   | \-0.007/-0.007 | 1.185/ 1.185   | 600/ 600   | 0    | 395 | 1    |
+| ml_rcbst_ccbst (H)  | \-0.010/-0.010 | 2.009/ 2.009   | 809/ 809   | 0    | 440 | 1    |
+
+## path_margin 0.040
+
+| corner                       | WNS (wo/w IO)  | TNS (wo/w IO)  | NVP        | Tran | Cap | Nois |
+| ---------------------------- | -------------- | -------------- | ---------- | ---- | --- | ---- |
+| wcl_cwst_ccwstt (S) | \-0.107/-0.107 | 25.110/ 26.665 | 1417/ 1501 | 0    | 299 | 0    |
+| wcl_rcwst_ccwstt(S) | \-0.086/-0.086 | 4.271/ 5.481   | 327/ 401   | 0    | 276 | 0    |
+| wc_cwst_ccwstt (S)  | 0.000/-0.008   | 0.000/ 0.008   | 0/ 1       | 0    | 305 | 0    |
+| wc_rcwst_ccwstt (S) | 0.000/ 0.000   | 0.000/ 0.000   | 0/ 1       | 0    | 291 | 0    |
+| wcl_cwst_ccwst (H)  | \-0.012/-0.012 | 0.293/ 0.293   | 92/ 92     | 0    | 313 | 0    |
+| wcl_rcwst_ccwst (H) | \-0.009/-0.009 | 0.075/ 0.075   | 31/ 31     | 0    | 264 | 0    |
+| wc_cwst_ccwst (H)   | \-0.004/-0.004 | 0.018/ 0.018   | 8/ 8       | 170  | 325 | 0    |
+| wc_rcwst_ccwst (H)  | \-0.003/-0.003 | 0.004/ 0.004   | 3/ 3       | 0    | 278 | 0    |
+| lt_cwst_ccwst (H)   | \-0.015/-0.015 | 5.243/ 5.243   | 1887/ 1887 | 0    | 325 | 0    |
+| lt_rcwst_ccwst (H)  | \-0.014/-0.014 | 4.068/ 4.068   | 1625/ 1625 | 0    | 278 | 0    |
+| lt_cbst_ccbst (H)   | \-0.015/-0.015 | 2.134/ 2.134   | 1023/ 1023 | 0    | 270 | 0    |
+| lt_rcbst_ccbst (H)  | \-0.013/-0.013 | 3.252/ 3.252   | 1297/ 1297 | 0    | 315 | 0    |
+| ml_rcwst_ccwst (H)  | \-0.018/-0.018 | 2.723/ 2.723   | 1109/ 1109 | 0    | 268 | 0    |
+| ml_cwst_ccwst (H)   | \-0.016/-0.016 | 3.253/ 3.253   | 1240/ 1240 | 0    | 310 | 0    |
+| ml_cbst_ccbst (H)   | \-0.016/-0.016 | 1.171/ 1.171   | 599/ 599   | 0    | 257 | 0    |
+| ml_rcbst_ccbst (H)  | \-0.011/-0.011 | 1.770/ 1.770   | 755/ 755   | 0    | 303 | 0    |
+
+## path_margin 0.020
+
+| corner                       | WNS (wo/w IO)  | TNS (wo/w IO)  | NVP        | Tran | Cap | Nois |
+| ---------------------------- | -------------- | -------------- | ---------- | ---- | --- | ---- |
+| wcl_cwst_ccwstt (S) | \-0.076/-0.076 | 24.849/ 31.150 | 1374/ 1613 | 0    | 60  | 0    |
+| wcl_rcwst_ccwstt(S) | \-0.039/-0.061 | 3.851/ 8.979   | 347/ 565   | 0    | 47  | 0    |
+| wc_cwst_ccwstt (S)  | 0.000/-0.026   | 0.000/ 0.183   | 0/ 18      | 65   | 74  | 0    |
+| wc_rcwst_ccwstt (S) | 0.000/-0.019   | 0.000/ 0.125   | 0/ 16      | 0    | 57  | 0    |
+| wcl_cwst_ccwst (H)  | \-0.016/-0.016 | 0.599/ 0.599   | 170/ 170   | 0    | 74  | 0    |
+| wcl_rcwst_ccwst (H) | \-0.013/-0.013 | 0.160/ 0.160   | 64/ 64     | 0    | 40  | 0    |
+| wc_cwst_ccwst (H)   | \-0.009/-0.009 | 0.030/ 0.030   | 11/ 11     | 66   | 88  | 0    |
+| wc_rcwst_ccwst (H)  | \-0.008/-0.008 | 0.011/ 0.011   | 2/ 2       | 0    | 51  | 0    |
+| lt_cwst_ccwst (H)   | \-0.013/-0.013 | 6.335/ 6.335   | 1970/ 1970 | 0    | 88  | 0    |
+| lt_rcwst_ccwst (H)  | \-0.013/-0.013 | 5.000/ 5.000   | 1719/ 1719 | 0    | 54  | 1    |
+| lt_cbst_ccbst (H)   | \-0.009/-0.009 | 2.387/ 2.387   | 1043/ 1043 | 0    | 48  | 0    |
+| lt_rcbst_ccbst (H)  | \-0.010/-0.010 | 3.704/ 3.704   | 1311/ 1311 | 0    | 82  | 0    |
+| ml_rcwst_ccwst (H)  | \-0.014/-0.014 | 3.768/ 3.768   | 1247/ 1247 | 0    | 48  | 1    |
+| ml_cwst_ccwst (H)   | \-0.012/-0.012 | 4.304/ 4.304   | 1388/ 1388 | 0    | 82  | 0    |
+| ml_cbst_ccbst (H)   | \-0.009/-0.009 | 1.190/ 1.190   | 620/ 620   | 0    | 42  | 1    |
+| ml_rcbst_ccbst (H)  | \-0.009/-0.009 | 1.995/ 1.995   | 845/ 845   | 0    | 72  | 0    |
+
+## path_margin 0.010
+
+| corner                       | WNS (wo/w IO)  | TNS (wo/w IO)  | NVP        | Tran | Cap | Nois |
+| ---------------------------- | -------------- | -------------- | ---------- | ---- | --- | ---- |
+| wcl_cwst_ccwstt (S) | \-0.076/-0.076 | 26.018/ 31.055 | 1435/ 1629 | 0    | 104 | 1    |
+| wcl_rcwst_ccwstt(S) | \-0.049/-0.061 | 4.139/ 8.292   | 395/ 568   | 0    | 96  | 0    |
+| wc_cwst_ccwstt (S)  | \-0.002/-0.010 | 0.002/ 0.035   | 1/ 9       | 33   | 113 | 0    |
+| wc_rcwst_ccwstt (S) | 0.000/-0.011   | 0.000/ 0.050   | 0/ 11      | 0    | 99  | 0    |
+| wcl_cwst_ccwst (H)  | \-0.015/-0.015 | 0.405/ 0.405   | 124/ 124   | 0    | 112 | 1    |
+| wcl_rcwst_ccwst (H) | \-0.009/-0.009 | 0.126/ 0.126   | 41/ 41     | 0    | 88  | 0    |
+| wc_cwst_ccwst (H)   | \-0.006/-0.006 | 0.024/ 0.024   | 17/ 17     | 97   | 123 | 0    |
+| wc_rcwst_ccwst (H)  | \-0.002/-0.002 | 0.005/ 0.005   | 6/ 6       | 0    | 97  | 0    |
+| lt_cwst_ccwst (H)   | \-0.013/-0.013 | 6.111/ 6.111   | 1910/ 1910 | 0    | 126 | 0    |
+| lt_rcwst_ccwst (H)  | \-0.013/-0.013 | 4.548/ 4.548   | 1618/ 1618 | 0    | 99  | 0    |
+| lt_cbst_ccbst (H)   | \-0.009/-0.009 | 2.268/ 2.268   | 1053/ 1053 | 0    | 96  | 0    |
+| lt_rcbst_ccbst (H)  | \-0.010/-0.010 | 3.614/ 3.614   | 1344/ 1344 | 0    | 115 | 0    |
+| ml_rcwst_ccwst (H)  | \-0.016/-0.016 | 3.183/ 3.183   | 1164/ 1164 | 0    | 95  | 0    |
+| ml_cwst_ccwst (H)   | \-0.013/-0.013 | 3.992/ 3.992   | 1317/ 1317 | 0    | 114 | 0    |
+| ml_cbst_ccbst (H)   | \-0.012/-0.012 | 1.143/ 1.143   | 618/ 618   | 0    | 88  | 0    |
+| ml_rcbst_ccbst (H)  | \-0.009/-0.009 | 1.891/ 1.891   | 807/ 807   | 0    | 109 | 0    |
+
+## No path_margin
+
+| corner                       | WNS (wo/w IO)  | TNS (wo/w IO)  | NVP        | Tran | Cap | Nois |
+| ---------------------------- | -------------- | -------------- | ---------- | ---- | --- | ---- |
+| wcl_cwst_ccwstt (S) | \-0.109/-0.109 | 30.095/ 34.847 | 1568/ 1748 | 0    | 10  | 2    |
+| wcl_rcwst_ccwstt(S) | \-0.122/-0.122 | 5.967/ 9.892   | 485/ 645   | 0    | 5   | 1    |
+| wc_cwst_ccwstt (S)  | 0.000/-0.023   | 0.000/ 0.047   | 0/ 4       | 0    | 12  | 0    |
+| wc_rcwst_ccwstt (S) | 0.000/-0.022   | 0.000/ 0.046   | 0/ 5       | 0    | 7   | 0    |
+| wcl_cwst_ccwst (H)  | \-0.024/-0.024 | 0.330/ 0.330   | 105/ 105   | 0    | 12  | 1    |
+| wcl_rcwst_ccwst (H) | \-0.021/-0.021 | 0.123/ 0.123   | 40/ 40     | 0    | 5   | 0    |
+| wc_cwst_ccwst (H)   | \-0.011/-0.011 | 0.027/ 0.027   | 9/ 9       | 0    | 16  | 0    |
+| wc_rcwst_ccwst (H)  | \-0.009/-0.009 | 0.016/ 0.016   | 3/ 3       | 0    | 7   | 0    |
+| lt_cwst_ccwst (H)   | \-0.015/-0.015 | 6.350/ 6.350   | 2081/ 2081 | 0    | 15  | 0    |
+| lt_rcwst_ccwst (H)  | \-0.014/-0.014 | 5.278/ 5.278   | 1891/ 1891 | 0    | 6   | 1    |
+| lt_cbst_ccbst (H)   | \-0.010/-0.010 | 2.723/ 2.723   | 1190/ 1190 | 0    | 5   | 1    |
+| lt_rcbst_ccbst (H)  | \-0.012/-0.012 | 3.971/ 3.971   | 1474/ 1474 | 0    | 12  | 1    |
+| ml_rcwst_ccwst (H)  | \-0.015/-0.015 | 4.295/ 4.295   | 1413/ 1413 | 0    | 5   | 1    |
+| ml_cwst_ccwst (H)   | \-0.015/-0.015 | 4.090/ 4.090   | 1446/ 1446 | 0    | 12  | 1    |
+| ml_cbst_ccbst (H)   | \-0.009/-0.009 | 1.513/ 1.513   | 727/ 727   | 0    | 5   | 1    |
+| ml_rcbst_ccbst (H)  | \-0.011/-0.011 | 2.210/ 2.210   | 908/ 908   | 0    | 11  | 1    |
+
+# Week 4 Todo
+
+## Around-Fmem Hold Fixing with small number of buffers
+
+  - clock?
+      - set_clockbalancepoints
+      - create_clockskewgroup
+      - Unit 8. Student Guide
+  - Large Buffers?
+  - Path Margin?
+
+# FP12
+
+## Area
+
+  - core area  
+    700x634
+
+## FP 12
+
+![](img/def_12/2022-09-16_16-39-39_Screenshot%202022-09-16%20163921.png)
+
+# def_11
+
+## Analysis
+
+![](img/def_11/2022-09-16_11-03-11_Screenshot%202022-09-16%20110240.png)
+
+![](img/2022-09-16_10-20-50_write_def_11_cell_density.png)
+
+![](img/2022-09-16_09-53-49_write_def_11_ports.png)
+
+## STA 1
+
+| corner                       | WNS (wo/w IO)  | TNS (wo/w IO)    | NVP        | Tran | Cap | Nois |
+| ---------------------------- | -------------- | ---------------- | ---------- | ---- | --- | ---- |
+| wcl_cwst_ccwstt (S) | \-0.132/-0.132 | 38.310/ 46.838   | 1785/ 2031 | 0    | 5   | 1    |
+| lt_cwst_ccwst (H)   | \-0.014/-0.014 | 6.167/ 6.167     | 1902/ 1902 | 0    | 10  | 1    |
+| lt_cbst_ccbst (H)   | \-0.010/-0.010 | 2.419/ 2.419     | 1064/ 1064 | 0    | 2   | 0    |
+| ml_cbst_ccbst (H)   | \-0.108/-0.108 | 184.964/ 184.964 | 6427/ 6427 | 0    | 0   | 0    |
+
+  - core area  
+    Phase1 451746.202 \> 446174.7978
+  - wire length  
+    Last Week 3228602.4090 \> 3226562.7170
+
+Flip AMEMs
+
+  - WC  
+    Worst Case → SS/Vmin/125C (例:SS/0.72V/125C)
+  - WCL  
+    WC Low temperature → SS/Vmin/-40C (例:SS/0.72V/-40C)
+  - ML  
+    Max Leakage → FF/Vmax/125C (例:FF/0.88V/125C)
+  - LT  
+    Low Temperature → FF/Vmax/-40C (例:FF/0.88V/-40C)
+  - TC  
+    Typical Condition → TT/Vtyp/25C (例:TT/0.80V/25C)
+
+# Meeting
+
+  - Important  
+    Wire Length
+  - Clock Tree View  
+    Highlight-\>Color By-\>Clock Tree
+  - Memory Around Hold Buffer  
+    It cannot be helped

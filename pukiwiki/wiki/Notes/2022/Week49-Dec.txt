@@ -1,0 +1,70 @@
+#author("2022-12-18T07:35:14+00:00","","")
+#notemd
+
+# WRAP
+
+## Purpose
+
+- Looking for major issues on the design.
+- Use sta results etc.
+
+# SKIP_0
+
+
+```text
++---------------------------------------------+---------+---------+---------+--------+--------+--------+---------+-----------+---------+-------------+-----------+--------------+------------+-----------+---------+
+|                                             | WNS w/o | TNS w/o | NVE w/o | WNS in | TNS in | NVE in | WNS out |  TNS out  | NVE out | max cap WNS | max cap # | max tran WNS | max tran # | noise WNS | noise # |
++=============================================+=========+=========+=========+========+========+========+=========+===========+=========+=============+===========+==============+============+===========+=========+
+|    func.tt0p8v.lt.cbest_ccbest_m40c.hold    |  -0.014 |  -0.315 |      39 |  0.000 |  0.000 |      0 |   0.000 |     0.000 |       0 |      -0.002 |        95 |        0.000 |          0 |     0.000 |       0 |
++---------------------------------------------+---------+---------+---------+--------+--------+--------+---------+-----------+---------+-------------+-----------+--------------+------------+-----------+---------+
+|  func.tt0p8v.ml.rcworst_ccworst_125c.hold   |  -0.015 |  -0.979 |     183 |  0.000 |  0.000 |      0 |   0.000 |     0.000 |       0 |      -0.002 |       104 |        0.000 |          0 |     0.000 |       0 |
++---------------------------------------------+---------+---------+---------+--------+--------+--------+---------+-----------+---------+-------------+-----------+--------------+------------+-----------+---------+
+| func.tt0p8v.wc.rcworst_ccworst_t_125c.setup |   0.000 |   0.000 |       0 |  0.000 |  0.000 |      0 |  -0.538 | -1465.134 |    3077 |      -0.002 |        98 |        0.000 |          0 |     0.000 |       0 |
++---------------------------------------------+---------+---------+---------+--------+--------+--------+---------+-----------+---------+-------------+-----------+--------------+------------+-----------+---------+
+| func.tt0p8v.wcl.cworst_ccworst_t_m40c.setup |  -0.053 |  -0.151 |       6 |  0.000 |  0.000 |      0 |  -0.491 | -1339.766 |    3077 |      -0.001 |        60 |        0.000 |          0 |     0.000 |       0 |
++---------------------------------------------+---------+---------+---------+--------+--------+--------+---------+-----------+---------+-------------+-----------+--------------+------------+-----------+---------+
+|  func.tt0p8v.wcz.cworst_ccworst_t_0c.setup  |  -0.018 |  -0.034 |       2 |  0.000 |  0.000 |      0 |  -0.486 | -1340.631 |    3077 |      -0.002 |        80 |        0.000 |          0 |     0.000 |       0 |
++---------------------------------------------+---------+---------+---------+--------+--------+--------+---------+-----------+---------+-------------+-----------+--------------+------------+-----------+---------+
+```
+
+
+&ref(Screenshot 2022-12-08 134455.png);
+
+> 0:  Type: M2.G0.1__M2.G0.2__M2.G0.3
+> Type Summary   : M2.G0.1__M2.G0.2__M2.G0.3 {  G0-SPACE definition: 1. G0 run-run space (G0RS) < 0.063 um (a) [PRL > -0.015 um] 2. G0 end-end/end-run space (G0ES) < 0.081 um (b) [PRL > -0.015 um] 3. G0 corner-corner space (G0CS) < 0.058 um (c) [PRL <= -0.015 um] Mxa line-end (end) definition: Mxa width < 0.052 um [Mxa edge formed by 2 consecutive 90-90 degrees corners] Mxa run definition: Mxa edge except Mxa line-end edge G0-AREA definition: 1. G0 run-run area (G0RA): The projection area between 2 edges with G0RS/G0ES. 2. G0 corner-corner area (G0CA): The area between 2 corners with G0CS. 3. G0-AREA is independent to all other ones, even if they are overlapped or crossed. Loop: 1. A loop is formed when Mxa polygons are connected in a cyclic sequence with G0-AREA in between. 2. A loop can't contain any sub-loops which share one or more polygons with it. Path: A path is the outline edge of {Mxa OR G0-AREA} from one marker to another marker MERGE M2_nmdpc_ring_1 // FOR SELF CONFLICT EXT M2_END M2_LOP < M2_G_1_S1 OPPOSITE NOTCH REGION EXT M2_RUN M2_LOP < M2_G_1_S3 OPPOSITE NOTCH REGION (DFM COPY M2_MIN_C2C REGION) INTERACT M2_LOP == 1 }
+> 
+```shell
+evince /proj_lib/tsmc/12FFC/TECHFILE/FOUNDRY/designrule/design/tn12cldr001/1_5/TN12CLDR001_1_5.pdf -p 369
+```
+
+# margin around core area
+
+- To alleviate congestion of routing port
+- routing blockage
+- Terminal M10 / M11
+- check_lvs -open_reporting detailed
+
+# Lecture in Last Week
+
+- ECO with Chiptopia
+- PV
+- Floorplan Generation
+
+# TPM by Yamamoto-san
+
+## Presales, Technical Proposal, 
+
+IPS
+: IP Survey
+
+- IPS > DE - (Die size / Power) -> APE? > SA
+
+## WW TPM
+
+## Record
+
+- FCCSP vs FCBGA
+
+## AdoreSys
+
+- Singapore

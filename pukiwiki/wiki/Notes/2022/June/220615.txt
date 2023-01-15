@@ -1,0 +1,93 @@
+#notemd
+# Status Meeting
+
+  - FFの立ち上がり/立下り時間について。
+      - 立下りの方が速い理由について(P405, 457)
+      - PMOSの性能が悪い(移動度が低い)
+      - ゲート幅で調節してると思っていたが、普通のセルはあまり調節してない。 (1.5\~2倍程度)
+
+# Tech Sharing
+
+## InnovusによるDOMの再レイアウトの状況報告
+
+### 坂田さん
+
+  - Hold fixing
+  - 設定の間違い？
+
+### 大辻さん
+
+  - reg2reg section ?
+  - Adding virtual clock constraints does not function
+  - 直すのが難しいパスがある
+  - max transition
+
+### 薮内さん
+
+  - Source clock latency setting
+  - 色分け
+
+## USB Block Layout (林さん)
+
+  - GDS checklist
+  - Check:
+      - Do you use newer deck than IP vendor's
+      - pipe clock cycle ?
+  - PCS :: physical coding sublayer
+
+## Clock Power Estimation Flow, 佐々さん
+
+  - DCNXT \<=\> ICC II
+  - Test 1
+      - `compile_ultra -spg`
+      - `create_placement -floorplan`
+  - Test 2
+      - `compile_ultra`
+      - `create_placement -floorplan`
+      - `compile_ultra -spg -incr`
+  - Halo
+
+## Innovus Mixed-Placer, 竹本さん
+
+  - Used halo
+  - Not so efficient
+
+## Genus Physical Mixed-Placer, 竹本さん
+
+  - `predict_floorplan`
+  - amem ?
+  - Segfault
+
+## マルチビットFF及びユースフルスキュー, 櫻田さん
+
+  - worse TLS
+      - CLK_H
+  - Useful skewの結果はわからない
+
+## ERA Early Rail Analysis, 柯さん
+
+  - Power rail analysis
+
+# Self Study
+
+## DC
+
+### Milkeyway (Physical cell libraries)
+
+  - Abstract View (Milkyway FRAM view)
+
+## CMOS VLSI Design
+
+### Basic I/O pads
+
+  - include VDD and GND, digital input, output, and bidirectional pads,
+    and analog pads
+  - Latchup is a particular problem near output pads, especially when
+    the pads experience voltage transients above VDD or below GND.
+
+### Electrostatic Discharge Protection (ESD)
+
+  - a typical ESD input protection circuit consisting of diode clamps
+    and a current-limiting resistor
+
+SPEF

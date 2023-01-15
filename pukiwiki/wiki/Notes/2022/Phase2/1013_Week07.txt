@@ -1,0 +1,732 @@
+#notemd
+# COMPARE_CCD
+
+## STA
+
+| corner                       | WNS (wo/w IO)  | TNS (wo/w IO)  | NVP        | Tran | Cap | Nois | MinLt | MaxLt | Skew  | AveLt |
+| ---------------------------- | -------------- | -------------- | ---------- | ---- | --- | ---- | ----- | ----- | ----- | ----- |
+| wcl_cwst_ccwstt (S) | \-0.076/-0.076 | 1.829/ 43.140  | 220/ 2350  | 10   | 31  | 0    | 0.257 | 0.510 | 0.253 | 0.369 |
+| wc_rcwst_ccwstt (S) | 0.000/-0.022   | 0.000/ 1.099   | 0/ 181     | 10   | 136 | 0    | 0.262 | 0.512 | 0.250 | 0.369 |
+| wc_cwst_ccwst (H)   | \-0.047/-0.047 | 13.865/ 13.865 | 1218/ 1218 | 12   | 239 | 0    | 0.263 | 0.520 | 0.257 | 0.376 |
+| lt_cwst_ccwst (H)   | \-0.038/-0.038 | 34.914/ 34.914 | 3612/ 3612 | 0    | 156 | 0    | 0.166 | 0.326 | 0.160 | 0.237 |
+| ml_cbst_ccbst (H)   | \-0.042/-0.042 | 54.816/ 54.816 | 5081/ 5081 | 0    | 20  | 4    | 0.167 | 0.331 | 0.164 | 0.232 |
+
+| Misc.      | Area/Length  |
+| ---------- | ------------ |
+| Buff/Inv   | 3360.5960    |
+| ICG cells  | 840.6098     |
+| FFs        | 348125.2032  |
+| LVT        | 3676.1149    |
+| Std. cells | 103995.9982  |
+| Core       | 419088.9370  |
+| Chip       | 426953.3530  |
+| Wire len   | 3464366.8200 |
+
+``` text
+TOTAL LEAF CELLS           172695  100  385664.2568   100 unit:10467696  
+  Standard cells           172671   99  103995.9982    26 unit:2821072  
+LVT                          7285    4    2905.7679     0 unit:78824  
+Normal VT                  165386   95  101090.2303    26 unit:2742248  
+Others                         24    0  281668.2586    73 unit:7646624  
+Buffer/inverter             23148   13    3360.5960     0 unit:91162  
+ICG cells                    1197    0     840.6098     0 unit:22803  
+Flip-flop cells             15625    9  348125.2032    90 unit:9449384
+
+Total wire length = 3464366.8200 micron
+```
+
+``` text
+                        Internal  Switching  Leakage    Total
+Power Group             Power     Power      Power      Power   (     %)  Attrs
+--------------------------------------------------------------------------------
+clock_network           4.959e-03    0.0166 4.501e-04    0.0220 ( 7.11%)  
+register                   0.1086    0.0122 1.803e-03    0.1227 (39.71%)  i
+combinational              0.0133    0.0334 1.595e-03    0.0482 (15.61%)  
+sequential                 0.0000    0.0000    0.0000    0.0000 ( 0.00%)  
+memory                     0.1071 1.746e-03 7.209e-03    0.1161 (37.57%)  
+io_pad                     0.0000    0.0000    0.0000    0.0000 ( 0.00%)  
+black_box                  0.0000    0.0000    0.0000    0.0000 ( 0.00%)  
+
+  Net Switching Power  =    0.0639   (20.68%)
+  Cell Internal Power  =    0.2340   (75.74%)
+  Cell Leakage Power   =    0.0111   ( 3.58%)
+                         ---------
+Total Power            =    0.3089  (100.00%)
+```
+
+![](../../../img/COMPARE_CCD/2022-10-20_16-40-51_screenshot.png)
+
+## Suzuki
+
+``` text
+                        Internal  Switching  Leakage    Total
+Power Group             Power     Power      Power      Power   (     %)  Attrs
+--------------------------------------------------------------------------------
+clock_network           4.056e-03    0.0187 3.990e-04    0.0232 ( 7.41%)  
+register                   0.1083    0.0132 1.799e-03    0.1234 (39.49%)  i
+combinational              0.0136    0.0352 1.225e-03    0.0500 (16.00%)  
+sequential                 0.0000    0.0000    0.0000    0.0000 ( 0.00%)  
+memory                     0.1071 1.604e-03 7.209e-03    0.1159 (37.11%)  
+io_pad                     0.0000    0.0000    0.0000    0.0000 ( 0.00%)  
+black_box                  0.0000    0.0000    0.0000    0.0000 ( 0.00%)
+
+  Net Switching Power  =    0.0687   (21.99%)
+  Cell Internal Power  =    0.2331   (74.61%)
+  Cell Leakage Power   =    0.0106   ( 3.40%)
+                         ---------
+Total Power            =    0.3124  (100.00%)
+```
+
+## Place Opt
+
+![](../../../img/COMPARE_CCD/2022-10-20_10-46-07_screenshot.png)
+
+# FP26
+
+## Settings
+
+  - 730.4x576=420,710.4
+
+# FP25
+
+## Settings
+
+  - 730.4x574=419,249.6
+
+# FP24
+
+## Place Opt
+
+![](img/FP24_\(Prio.1\)/2022-10-18_17-56-33_screenshot.png)
+
+## Settings
+
+  - 730.4x572=417,788.8
+
+<!-- end list -->
+
+``` tcl
+set_clock_uncertainty -setup  -0.010 [all_clocks]
+set_clock_uncertainty -hold   -0.020 [all_clocks]
+set_max_transition             0.350 [current_design]
+set_max_transition -clock_path 0.150 [all_clocks]
+set mem_list [concat [get_attribute fmem/arbiterImpl/mem/mem_*/mem_*/bram_inst/inst* full_name] \
+                  [get_attribute fmem/arbiterImpl/mem/mem_*/mem_*/bram_inst/inst* full_name] ]    
+set mem_input_pins [get_pins -of $mem_list -filter {direction==in}];
+set mem_input_regs [all_fanin -to $mem_input_pins -only_cells -startpoints_only -flat]
+set mem_input_regs_cp_pins [get_pins -of $mem_input_regs -filter {name=="CP"}]
+set mem_output_pins [get_pins -of $mem_list -filter {direction==out}]
+set mem_output_regs [all_fanout -from $mem_output_pins -only_cells -endpoints_only -flat]
+set mem_output_regs_cp_pins [get_pins -of $mem_output_regs -filter {name=="CP"}]
+
+set_clock_balance_points -clock [all_clocks] -balance_points $mem_input_regs_cp_pins -consider_for_balancing true -rise -delay -0.080 -corners [all_corners]
+set_clock_balance_points -clock [all_clocks] -balance_points $mem_output_regs_cp_pins -consider_for_balancing true -rise -delay -0.080 -corners [all_corners]
+```
+
+![](img/FP24/2022-10-18_11-58-03_screenshot.png)
+
+# FP22 733x572_2 (Prio.2)
+
+## Aim at Violation 0
+
+## Re-ECO6
+
+| corner                       | WNS (wo/w IO)  | TNS (wo/w IO) | NVP    | Tran | Cap | Nois | MinLt | MaxLt | Skew  | AveLt |
+| ---------------------------- | -------------- | ------------- | ------ | ---- | --- | ---- | ----- | ----- | ----- | ----- |
+| wcl_cwst_ccwstt (S) | \-0.234/-0.234 | 1.911/ 2.101  | 43/ 64 | 0    | 3   | 0    | 0.291 | 0.494 | 0.203 | 0.369 |
+| wc_rcwst_ccwstt (S) | \-0.049/-0.049 | 0.079/ 0.079  | 2/ 2   | 0    | 1   | 0    | 0.292 | 0.482 | 0.190 | 0.366 |
+| wc_cwst_ccwst (H)   | 0.000/ 0.000   | 0.000/ 0.000  | 0/ 0   | 0    | 7   | 0    | 0.298 | 0.503 | 0.205 | 0.375 |
+| lt_cwst_ccwst (H)   | \-0.008/-0.008 | 0.020/ 0.020  | 4/ 4   | 0    | 8   | 0    | 0.187 | 0.312 | 0.125 | 0.234 |
+| ml_cbst_ccbst (H)   | \-0.001/-0.001 | 0.001/ 0.001  | 5/ 5   | 0    | 1   | 0    | 0.174 | 0.306 | 0.132 | 0.226 |
+
+## Re-ECO5
+
+| corner                       | WNS (wo/w IO)  | TNS (wo/w IO) | NVP    | Tran | Cap | Nois | MinLt | MaxLt | Skew  | AveLt |
+| ---------------------------- | -------------- | ------------- | ------ | ---- | --- | ---- | ----- | ----- | ----- | ----- |
+| wcl_cwst_ccwstt (S) | \-0.062/-0.062 | 0.766/ 0.967  | 37/ 66 | 0    | 1   | 0    | 0.291 | 0.493 | 0.202 | 0.369 |
+| wc_rcwst_ccwstt (S) | 0.000/ 0.000   | 0.000/ 0.000  | 0/ 0   | 0    | 1   | 0    | 0.292 | 0.482 | 0.190 | 0.366 |
+| wc_cwst_ccwst (H)   | 0.000/ 0.000   | 0.000/ 0.000  | 0/ 0   | 0    | 4   | 0    | 0.298 | 0.502 | 0.204 | 0.375 |
+| lt_cwst_ccwst (H)   | \-0.007/-0.007 | 0.018/ 0.018  | 3/ 3   | 0    | 4   | 0    | 0.187 | 0.311 | 0.124 | 0.234 |
+| ml_cbst_ccbst (H)   | \-0.001/-0.001 | 0.001/ 0.001  | 8/ 8   | 0    | 0   | 0    | 0.174 | 0.306 | 0.132 | 0.226 |
+
+| Misc.      | Area/Length  |
+| ---------- | ------------ |
+| Buff/Inv   | 4031.2259    |
+| ICG cells  | 807.3216     |
+| FF-Macro   | 66452.2629   |
+| **DF**     | 66451.8686   |
+| LVT        | 3727.7983    |
+| Std. cells | 104893.9315  |
+| Core       | 419088.9370  |
+| Chip       | 426953.3530  |
+| Wire len   | 3480869.0650 |
+
+![](../../../img/FP22_733x572_2_\(Prio.2\)/2022-10-20_12-02-12_screenshot.png)
+
+## ECO8
+
+| corner                       | WNS (wo/w IO)  | TNS (wo/w IO) | NVP    | Tran | Cap | Nois | MinLt | MaxLt | Skew  | AveLt |
+| ---------------------------- | -------------- | ------------- | ------ | ---- | --- | ---- | ----- | ----- | ----- | ----- |
+| wcl_cwst_ccwstt (S) | \-0.161/-0.161 | 0.546/ 0.596  | 20/ 28 | 0    | 3   | 0    | 0.291 | 0.491 | 0.200 | 0.369 |
+| wc_rcwst_ccwstt (S) | 0.000/ 0.000   | 0.000/ 0.000  | 0/ 0   | 0    | 0   | 0    | 0.292 | 0.480 | 0.188 | 0.366 |
+| wc_cwst_ccwst (H)   | 0.000/ 0.000   | 0.000/ 0.000  | 0/ 0   | 0    | 5   | 0    | 0.298 | 0.499 | 0.201 | 0.376 |
+| lt_cwst_ccwst (H)   | \-0.007/-0.007 | 0.018/ 0.018  | 5/ 5   | 0    | 4   | 0    | 0.187 | 0.311 | 0.124 | 0.234 |
+| ml_cbst_ccbst (H)   | \-0.001/-0.001 | 0.004/ 0.004  | 8/ 8   | 0    | 0   | 0    | 0.175 | 0.305 | 0.130 | 0.226 |
+
+## ECO3
+
+| Misc.      | Area/Length  |
+| ---------- | ------------ |
+| Buff/Inv   | 3833.1924    |
+| ICG cells  | 807.3216     |
+| FFs        | 348120.5215  |
+| LVT        | 3676.1149    |
+| Std. cells | 104670.4620  |
+| Core       | 419088.9370  |
+| Chip       | 426953.3530  |
+| Wire len   | 3462059.4900 |
+
+| corner                       | WNS (wo/w IO)  | TNS (wo/w IO) | NVP        | Tran | Cap | Nois | MinLt | MaxLt | Skew  | AveLt |
+| ---------------------------- | -------------- | ------------- | ---------- | ---- | --- | ---- | ----- | ----- | ----- | ----- |
+| wcl_cwst_ccwstt (S) | \-0.099/-0.099 | 1.882/ 2.282  | 83/ 118    | 0    | 2   | 0    | 0.291 | 0.491 | 0.200 | 0.369 |
+| wc_rcwst_ccwstt (S) | 0.000/ 0.000   | 0.000/ 0.000  | 0/ 0       | 0    | 2   | 0    | 0.292 | 0.480 | 0.188 | 0.366 |
+| wc_cwst_ccwst (H)   | \-0.007/-0.007 | 0.008/ 0.008  | 3/ 3       | 0    | 10  | 0    | 0.298 | 0.499 | 0.201 | 0.375 |
+| lt_cwst_ccwst (H)   | \-0.012/-0.012 | 0.042/ 0.042  | 29/ 29     | 0    | 7   | 0    | 0.187 | 0.311 | 0.124 | 0.234 |
+| ml_cbst_ccbst (H)   | \-0.021/-0.021 | 5.066/ 5.066  | 1077/ 1077 | 0    | 0   | 0    | 0.174 | 0.305 | 0.131 | 0.226 |
+
+``` text
+                        Internal  Switching  Leakage    Total
+Power Group             Power     Power      Power      Power   (     %)  Attrs
+--------------------------------------------------------------------------------
+clock_network           5.516e-03    0.0187 5.167e-04    0.0247 ( 7.90%)  
+register                   0.1090    0.0122 1.803e-03    0.1230 (39.26%)  i
+combinational              0.0138    0.0334 1.909e-03    0.0492 (15.70%)  
+sequential                 0.0000    0.0000    0.0000    0.0000 ( 0.00%)  
+memory                     0.1071 1.995e-03 7.209e-03    0.1163 (37.14%)  
+io_pad                     0.0000    0.0000    0.0000    0.0000 ( 0.00%)  
+black_box                  0.0000    0.0000    0.0000    0.0000 ( 0.00%)  
+
+  Net Switching Power  =    0.0663   (21.17%)
+  Cell Internal Power  =    0.2355   (75.18%)
+  Cell Leakage Power   =    0.0114   ( 3.65%)
+                         ---------
+Total Power            =    0.3132  (100.00%)
+```
+
+## Place_opt
+
+![](img/733x572_2_\(Prio._1\)/2022-10-18_10-37-32_screenshot.png)
+
+# 733x572
+
+## ECO3
+
+| corner                       | WNS (wo/w IO)  | TNS (wo/w IO) | NVP        | Tran | Cap | Nois | MinLt | MaxLt | Skew  | AveLt |
+| ---------------------------- | -------------- | ------------- | ---------- | ---- | --- | ---- | ----- | ----- | ----- | ----- |
+| wcl_cwst_ccwstt (S) | \-0.436/-0.436 | 6.549/ 6.564  | 115/ 116   | 7    | 21  | 0    | 0.271 | 0.527 | 0.256 | 0.365 |
+| wc_rcwst_ccwstt (S) | \-0.160/-0.160 | 0.301/ 0.301  | 2/ 2       | 0    | 16  | 0    | 0.270 | 0.516 | 0.246 | 0.362 |
+| wc_cwst_ccwst (H)   | \-0.005/-0.005 | 0.017/ 0.017  | 6/ 6       | 13   | 32  | 0    | 0.278 | 0.536 | 0.258 | 0.373 |
+| lt_cwst_ccwst (H)   | \-0.011/-0.011 | 0.127/ 0.127  | 43/ 43     | 0    | 28  | 0    | 0.174 | 0.336 | 0.162 | 0.233 |
+| ml_cbst_ccbst (H)   | \-0.026/-0.026 | 6.761/ 6.761  | 1148/ 1148 | 0    | 11  | 0    | 0.163 | 0.326 | 0.163 | 0.223 |
+
+| Misc.      | Area/Length  |
+| ---------- | ------------ |
+| Buff/Inv   | 3743.7972    |
+| ICG cells  | 818.7863     |
+| FFs        | 348126.6409  |
+| LVT        | 3528.1428    |
+| Std. cells | 104672.2683  |
+| Core       | 419088.9370  |
+| Chip       | 426953.3530  |
+| Wire len   | 3564870.3420 |
+
+  - 733x572 = 419,276
+
+## Place_opt
+
+![](img/733x574_733x572_area_opt/2022-10-17_18-03-42_screenshot.png)
+
+## Settings
+
+  - place_opt
+    
+    ``` tcl
+    set_clock_uncertainty -setup   0.000 [all_clocks]
+    set_clock_uncertainty -hold   -0.020 [all_clocks]
+    set_max_transition             0.280 [current_design]
+    set_max_transition -clock_path 0.100 [all_clocks]
+    ```
+
+  - clock_optcts
+    
+    ``` tcl
+    set_clock_uncertainty -setup   0.010 [all_clocks]
+    set_clock_uncertainty -hold   -0.010 [all_clocks]
+    set_max_transition             0.280 [current_design]
+    set_max_transition -clock_path 0.100 [all_clocks]
+    ```
+    
+    ``` tcl
+    set PLACE_OPT_REFINE_OPT         "area" 
+    ```
+
+# FP23_2737x570
+
+  - 737x570 = 420,090
+
+  - place_opt
+    
+    ``` tcl
+    set_clock_uncertainty -setup   0.000 [all_clocks]
+    set_clock_uncertainty -hold   -0.020 [all_clocks]
+    set_max_transition             0.280 [current_design]
+    set_max_transition -clock_path 0.100 [all_clocks]
+    ```
+
+  - clock_optcts
+    
+    ``` tcl
+    set_clock_uncertainty -setup   0.010 [all_clocks]
+    set_clock_uncertainty -hold   -0.010 [all_clocks]
+    set_max_transition             0.280 [current_design]
+    set_max_transition -clock_path 0.100 [all_clocks]
+    ```
+
+# FP23_737x570
+
+## Place_opt
+
+![](img/FP23_737x570/2022-10-17_17-28-15_screenshot.png)
+
+![](img/FP23/2022-10-17_10-30-00_screenshot.png)
+
+# H120S120
+
+## ECO3
+
+| Misc.      | Area/Length  |
+| ---------- | ------------ |
+| Buff/Inv   | 3164.1846    |
+| ICG cells  | 825.1269     |
+| FFs        | 348050.2218  |
+| LVT        | 2964.0868    |
+| Std. cells | 103626.5841  |
+| Core       | 421675.2046  |
+| Chip       | 429570.1486  |
+| Wire len   | 3373450.2400 |
+
+| Misc.      | Area/Length  |
+| ---------- | ------------ |
+| Buff/Inv   | 3874.8856    |
+| ICG cells  | 825.1269     |
+| FF-Macro   | 66381.9632   |
+| **DF**     | 66381.5818   |
+| LVT        | 3559.6616    |
+| Std. cells | 104544.7926  |
+| Core       | 421675.2046  |
+| Chip       | 429570.1486  |
+| Wire len   | 3398426.4190 |
+
+``` text
+                        Internal  Switching  Leakage    Total
+Power Group             Power     Power      Power      Power   (     %)  Attrs
+--------------------------------------------------------------------------------
+clock_network           5.082e-03    0.0170 4.924e-04    0.0226 ( 7.31%)  
+register                   0.1078    0.0112 1.797e-03    0.1208 (39.08%)  i
+combinational              0.0137    0.0342 1.852e-03    0.0497 (16.09%)  
+sequential                 0.0000    0.0000    0.0000    0.0000 ( 0.00%)  
+memory                     0.1071 1.681e-03 7.209e-03    0.1160 (37.53%)  
+io_pad                     0.0000    0.0000    0.0000    0.0000 ( 0.00%)  
+black_box                  0.0000    0.0000    0.0000    0.0000 ( 0.00%)  
+
+  Net Switching Power  =    0.0641   (20.72%)
+  Cell Internal Power  =    0.2338   (75.61%)
+  Cell Leakage Power   =    0.0113   ( 3.67%)
+                         ---------
+Total Power            =    0.3092  (100.00%)
+```
+
+# H100S100
+
+## ECO3
+
+| Misc.      | Area/Length  |
+| ---------- | ------------ |
+| Buff/Inv   | 3904.7086    |
+| ICG cells  | 830.5828     |
+| FFs        | 348050.8485  |
+| LVT        | 3471.1880    |
+| Std. cells | 104594.1166  |
+| Core       | 421675.2046  |
+| Chip       | 429570.1486  |
+| Wire len   | 3412736.6830 |
+
+| corner                  | WNS (wo/w IO)  | TNS (wo/w IO) | NVP    | Tran | Cap | Nois | MinLt | MaxLt | Skew  | AveLt |
+| ----------------------- | -------------- | ------------- | ------ | ---- | --- | ---- | ----- | ----- | ----- | ----- |
+| wcl\_cwst\__ccwst\_t (S) | \-0.031/-0.031 | 0.279/ 0.279  | 27/ 27 | 0    | 0   | 0    | 0.282 | 0.604 | 0.322 | 0.371 |
+| wc\_rcwst\__ccwst\_t (S) | 0.000/ 0.000   | 0.000/ 0.000  | 0/ 0   | 0    | 3   | 0    | 0.291 | 0.593 | 0.302 | 0.374 |
+| wc\_cwst\__ccwst (H)     | \-0.004/-0.004 | 0.008/ 0.008  | 2/ 2   | 0    | 3   | 0    | 0.294 | 0.613 | 0.319 | 0.380 |
+| lt\_cwst\__ccwst (H)     | \-0.013/-0.013 | 0.026/ 0.026  | 5/ 5   | 0    | 3   | 0    | 0.185 | 0.384 | 0.199 | 0.240 |
+| ml\_cbst\__ccbst (H)     | \-0.008/-0.008 | 0.015/ 0.015  | 7/ 7   | 0    | 0   | 0    | 0.181 | 0.375 | 0.194 | 0.235 |
+
+``` text
+                        Internal  Switching  Leakage    Total
+Power Group             Power     Power      Power      Power   (     %)  Attrs
+--------------------------------------------------------------------------------
+clock_network           5.011e-03    0.0166 4.839e-04    0.0221 ( 7.17%)  
+register                   0.1078    0.0113 1.796e-03    0.1208 (39.13%)  i
+combinational              0.0137    0.0343 1.823e-03    0.0499 (16.14%)  
+sequential                 0.0000    0.0000    0.0000    0.0000 ( 0.00%)  
+memory                     0.1071 1.688e-03 7.209e-03    0.1160 (37.56%)  
+io_pad                     0.0000    0.0000    0.0000    0.0000 ( 0.00%)  
+black_box                  0.0000    0.0000    0.0000    0.0000 ( 0.00%)  
+
+  Net Switching Power  =    0.0639   (20.68%)
+  Cell Internal Power  =    0.2337   (75.65%)
+  Cell Leakage Power   =    0.0113   ( 3.66%)
+                         ---------
+Total Power            =    0.3089  (100.00%)
+```
+
+# ALL\_MEM\_H80S80
+
+## ECO3
+
+| Misc.      | Area/Length  |
+| ---------- | ------------ |
+| Buff/Inv   | 3793.8954    |
+| ICG cells  | 832.1311     |
+| FFs        | 348051.3646  |
+| LVT        | 3549.4871    |
+| Std. cells | 104493.6622  |
+| Core       | 421675.2046  |
+| Chip       | 429570.1486  |
+| Wire len   | 3405431.3750 |
+
+| corner                  | WNS (wo/w IO)  | TNS (wo/w IO) | NVP      | Tran | Cap | Nois | MinLt | MaxLt | Skew  | AveLt |
+| ----------------------- | -------------- | ------------- | -------- | ---- | --- | ---- | ----- | ----- | ----- | ----- |
+| wcl\_cwst\__ccwst\_t (S) | \-0.041/-0.041 | 0.322/ 0.349  | 27/ 29   | 2    | 1   | 0    | 0.279 | 0.598 | 0.319 | 0.376 |
+| wc\_rcwst\__ccwst\_t (S) | 0.000/ 0.000   | 0.000/ 0.000  | 0/ 0     | 2    | 0   | 0    | 0.281 | 0.591 | 0.310 | 0.375 |
+| wc\_cwst\__ccwst (H)     | \-0.027/-0.027 | 0.049/ 0.049  | 4/ 4     | 2    | 1   | 0    | 0.285 | 0.609 | 0.324 | 0.384 |
+| lt\_cwst\__ccwst (H)     | \-0.027/-0.027 | 0.090/ 0.090  | 24/ 24   | 0    | 1   | 0    | 0.184 | 0.385 | 0.201 | 0.243 |
+| ml\_cbst\__ccbst (H)     | \-0.024/-0.024 | 2.879/ 2.879  | 771/ 771 | 0    | 0   | 0    | 0.173 | 0.371 | 0.198 | 0.232 |
+
+``` text
+                        Internal  Switching  Leakage    Total
+Power Group             Power     Power      Power      Power   (     %)  Attrs
+--------------------------------------------------------------------------------
+clock_network           4.916e-03    0.0161 4.640e-04    0.0214 ( 6.96%)  
+register                   0.1078    0.0113 1.797e-03    0.1209 (39.22%)  i
+combinational              0.0137    0.0343 1.846e-03    0.0498 (16.16%)  
+sequential                 0.0000    0.0000    0.0000    0.0000 ( 0.00%)  
+memory                     0.1071 1.682e-03 7.209e-03    0.1160 (37.65%)  
+io_pad                     0.0000    0.0000    0.0000    0.0000 ( 0.00%)  
+black_box                  0.0000    0.0000    0.0000    0.0000 ( 0.00%)  
+
+  Net Switching Power  =    0.0633   (20.53%)
+  Cell Internal Power  =    0.2335   (75.80%)
+  Cell Leakage Power   =    0.0113   ( 3.67%)
+                         ---------
+Total Power            =    0.3081  (100.00%)
+```
+
+# ALL\_MEM\_H50S50
+
+## ECO3
+
+| Misc.      | Area/Length  |
+| ---------- | ------------ |
+| Buff/Inv   | 3895.5295    |
+| ICG cells  | 831.0620     |
+| FFs        | 348051.4015  |
+| LVT        | 3356.8358    |
+| Std. cells | 104568.3855  |
+| Core       | 421675.2046  |
+| Chip       | 429570.1486  |
+| Wire len   | 3395372.5680 |
+
+| corner                  | WNS (wo/w IO)  | TNS (wo/w IO)  | NVP        | Tran | Cap | Nois | MinLt | MaxLt | Skew  | AveLt |
+| ----------------------- | -------------- | -------------- | ---------- | ---- | --- | ---- | ----- | ----- | ----- | ----- |
+| wcl\_cwst\__ccwst\_t (S) | \-0.064/-0.064 | 0.428/ 0.836   | 36/ 87     | 0    | 0   | 0    | 0.265 | 0.554 | 0.289 | 0.340 |
+| wc\_rcwst\__ccwst\_t (S) | 0.000/ 0.000   | 0.000/ 0.000   | 0/ 0       | 0    | 2   | 0    | 0.264 | 0.540 | 0.276 | 0.337 |
+| wc\_cwst\__ccwst (H)     | \-0.002/-0.002 | 0.002/ 0.002   | 1/ 1       | 0    | 6   | 0    | 0.272 | 0.559 | 0.287 | 0.347 |
+| lt\_cwst\__ccwst (H)     | \-0.010/-0.010 | 0.026/ 0.026   | 20/ 20     | 0    | 1   | 0    | 0.171 | 0.348 | 0.177 | 0.217 |
+| ml\_cbst\__ccbst (H)     | \-0.024/-0.024 | 16.397/ 16.397 | 2091/ 2091 | 0    | 0   | 2    | 0.155 | 0.336 | 0.181 | 0.206 |
+
+``` text
+                        Internal  Switching  Leakage    Total
+Power Group             Power     Power      Power      Power   (     %)  Attrs
+--------------------------------------------------------------------------------
+clock_network           5.309e-03    0.0166 4.735e-04    0.0223 ( 7.23%)  
+register                   0.1079    0.0112 1.797e-03    0.1208 (39.13%)  i
+combinational              0.0137    0.0342 1.772e-03    0.0496 (16.07%)  
+sequential                 0.0000    0.0000    0.0000    0.0000 ( 0.00%)  
+memory                     0.1071 1.683e-03 7.209e-03    0.1160 (37.57%)  
+io_pad                     0.0000    0.0000    0.0000    0.0000 ( 0.00%)  
+black_box                  0.0000    0.0000    0.0000    0.0000 ( 0.00%)  
+
+  Net Switching Power  =    0.0636   (20.59%)
+  Cell Internal Power  =    0.2340   (75.76%)
+  Cell Leakage Power   =    0.0113   ( 3.64%)
+                         ---------
+Total Power            =    0.3088  (100.00%)
+```
+
+# CORNER
+
+## ECO3
+
+| Misc.      | Area/Length  |
+| ---------- | ------------ |
+| Buff/Inv   | 3971.9485    |
+| ICG cells  | 834.8221     |
+| FFs        | 348050.7748  |
+| LVT        | 3355.6931    |
+| Std. cells | 104625.8196  |
+| Core       | 421675.2046  |
+| Chip       | 429570.1486  |
+| Wire len   | 3383591.2370 |
+
+| corner                  | WNS (wo/w IO)  | TNS (wo/w IO)  | NVP        | Tran | Cap | Nois | MinLt | MaxLt | Skew  | AveLt |
+| ----------------------- | -------------- | -------------- | ---------- | ---- | --- | ---- | ----- | ----- | ----- | ----- |
+| wcl\_cwst\__ccwst\_t (S) | \-0.066/-0.066 | 0.353/ 0.353   | 32/ 32     | 2    | 2   | 0    | 0.276 | 0.501 | 0.225 | 0.350 |
+| wc\_rcwst\__ccwst\_t (S) | 0.000/ 0.000   | 0.000/ 0.000   | 0/ 0       | 2    | 2   | 0    | 0.274 | 0.494 | 0.220 | 0.346 |
+| wc\_cwst\__ccwst (H)     | 0.000/ 0.000   | 0.000/ 0.000   | 0/ 0       | 2    | 5   | 0    | 0.281 | 0.510 | 0.229 | 0.355 |
+| lt\_cwst\__ccwst (H)     | \-0.006/-0.006 | 0.017/ 0.017   | 14/ 14     | 0    | 2   | 0    | 0.177 | 0.322 | 0.145 | 0.224 |
+| ml\_cbst\__ccbst (H)     | \-0.023/-0.023 | 17.553/ 17.553 | 2165/ 2165 | 0    | 2   | 0    | 0.159 | 0.304 | 0.145 | 0.212 |
+
+``` text
+                        Internal  Switching  Leakage    Total
+Power Group             Power     Power      Power      Power   (     %)  Attrs
+--------------------------------------------------------------------------------
+clock_network           5.330e-03    0.0164 4.880e-04    0.0222 ( 7.20%)  
+register                   0.1078    0.0111 1.796e-03    0.1208 (39.14%)  i
+combinational              0.0137    0.0341 1.769e-03    0.0496 (16.07%)  
+sequential                 0.0000    0.0000    0.0000    0.0000 ( 0.00%)  
+memory                     0.1071 1.680e-03 7.209e-03    0.1160 (37.59%)  
+io_pad                     0.0000    0.0000    0.0000    0.0000 ( 0.00%)  
+black_box                  0.0000    0.0000    0.0000    0.0000 ( 0.00%)  
+
+  Net Switching Power  =    0.0634   (20.53%)
+  Cell Internal Power  =    0.2340   (75.82%)
+  Cell Leakage Power   =    0.0113   ( 3.65%)
+                         ---------
+Total Power            =    0.3086  (100.00%)
+```
+
+## Settings
+
+``` tcl
+set_clock_balance_points -clock [all_clocks] -balance_points $mem_input_regs_cp_pins -consider_for_balancing true -rise -delay -0.050 -corners ff88_cbest_CCbest_125c
+set_clock_balance_points -clock [all_clocks] -balance_points $mem_input_regs_cp_pins -consider_for_balancing true -rise -delay -0.030 -corners ff88_cbest_CCbest_m40c
+set_clock_balance_points -clock [all_clocks] -balance_points $mem_output_regs_cp_pins -consider_for_balancing true -rise -delay -0.020 -corners ss72_cworst_CCworst_T_m40c
+```
+
+# H30S10
+
+## ECO3
+
+| Misc.      | Area/Length  |
+| ---------- | ------------ |
+| Buff/Inv   | 4087.2591    |
+| ICG cells  | 830.5091     |
+| FFs        | 348061.1704  |
+| LVT        | 3360.1905    |
+| Std. cells | 104754.4013  |
+| Core       | 421675.2046  |
+| Chip       | 429570.1486  |
+| Wire len   | 3404741.5070 |
+
+| corner                  | WNS (wo/w IO)  | TNS (wo/w IO)  | NVP        | Tran | Cap | Nois | MinLt | MaxLt | Skew  | AveLt |
+| ----------------------- | -------------- | -------------- | ---------- | ---- | --- | ---- | ----- | ----- | ----- | ----- |
+| wcl\_cwst\__ccwst\_t (S) | \-0.072/-0.072 | 0.411/ 0.411   | 24/ 24     | 0    | 0   | 0    | 0.261 | 0.470 | 0.209 | 0.362 |
+| wc\_rcwst\__ccwst\_t (S) | 0.000/ 0.000   | 0.000/ 0.000   | 0/ 0       | 0    | 0   | 0    | 0.260 | 0.464 | 0.204 | 0.359 |
+| wc\_cwst\__ccwst (H)     | 0.000/ 0.000   | 0.000/ 0.000   | 0/ 0       | 0    | 0   | 0    | 0.267 | 0.478 | 0.211 | 0.369 |
+| lt\_cwst\__ccwst (H)     | \-0.007/-0.007 | 0.012/ 0.012   | 16/ 16     | 0    | 0   | 0    | 0.170 | 0.300 | 0.130 | 0.234 |
+| ml\_cbst\__ccbst (H)     | \-0.024/-0.024 | 16.140/ 16.140 | 2181/ 2181 | 0    | 0   | 0    | 0.153 | 0.287 | 0.134 | 0.219 |
+
+``` text
+                        Internal  Switching  Leakage    Total
+Power Group             Power     Power      Power      Power   (     %)  Attrs
+--------------------------------------------------------------------------------
+clock_network           5.197e-03    0.0164 4.918e-04    0.0221 ( 7.17%)  
+register                   0.1077    0.0112 1.796e-03    0.1207 (39.10%)  i
+combinational              0.0138    0.0343 1.781e-03    0.0499 (16.15%)  
+sequential                 0.0000    0.0000    0.0000    0.0000 ( 0.00%)  
+memory                     0.1071 1.691e-03 7.209e-03    0.1160 (37.58%)  
+io_pad                     0.0000    0.0000    0.0000    0.0000 ( 0.00%)  
+black_box                  0.0000    0.0000    0.0000    0.0000 ( 0.00%)  
+
+  Net Switching Power  =    0.0636   (20.62%)
+  Cell Internal Power  =    0.2338   (75.73%)
+  Cell Leakage Power   =    0.0113   ( 3.65%)
+                         ---------
+Total Power            =    0.3087  (100.00%)
+```
+
+# H50S20
+
+## ECO3
+
+/proj/ATEPairChip/WORK/kazuki\_furukawa/221014b\_MB\_BP\_H50S20/ICC2/rpts\_icc2/pt\_eco3/10150123
+
+| Misc.      | Area/Length  |
+| ---------- | ------------ |
+| Buff/Inv   | 3851.8456    |
+| ICG cells  | 831.4675     |
+| FFs        | 348061.3179  |
+| LVT        | 3293.7984    |
+| Std. cells | 104506.1591  |
+| Core       | 421675.2046  |
+| Chip       | 429570.1486  |
+| Wire len   | 3412147.9320 |
+
+| corner                  | WNS (wo/w IO)  | TNS (wo/w IO)  | NVP        | Tran | Cap | Nois | MinLt | MaxLt | Skew  | AveLt |
+| ----------------------- | -------------- | -------------- | ---------- | ---- | --- | ---- | ----- | ----- | ----- | ----- |
+| wcl\_cwst\__ccwst\_t (S) | \-0.074/-0.074 | 0.625/ 0.625   | 29/ 29     | 0    | 1   | 0    | 0.271 | 0.549 | 0.278 | 0.355 |
+| wc\_rcwst\__ccwst\_t (S) | 0.000/ 0.000   | 0.000/ 0.000   | 0/ 0       | 0    | 2   | 0    | 0.271 | 0.536 | 0.265 | 0.354 |
+| wc\_cwst\__ccwst (H)     | 0.000/ 0.000   | 0.000/ 0.000   | 0/ 0       | 0    | 2   | 0    | 0.277 | 0.557 | 0.280 | 0.361 |
+| lt\_cwst\__ccwst (H)     | \-0.002/-0.002 | 0.004/ 0.004   | 10/ 10     | 0    | 1   | 0    | 0.176 | 0.346 | 0.170 | 0.226 |
+| ml\_cbst\__ccbst (H)     | \-0.021/-0.021 | 12.664/ 12.664 | 1962/ 1962 | 0    | 0   | 0    | 0.167 | 0.335 | 0.168 | 0.219 |
+
+``` text
+                        Internal  Switching  Leakage    Total
+Power Group             Power     Power      Power      Power   (     %)  Attrs
+--------------------------------------------------------------------------------
+clock_network           5.056e-03    0.0168 4.943e-04    0.0223 ( 7.23%)  
+register                   0.1078    0.0112 1.797e-03    0.1208 (39.12%)  i
+combinational              0.0136    0.0343 1.757e-03    0.0496 (16.07%)  
+sequential                 0.0000    0.0000    0.0000    0.0000 ( 0.00%)  
+memory                     0.1071 1.695e-03 7.209e-03    0.1160 (37.57%)  
+io_pad                     0.0000    0.0000    0.0000    0.0000 ( 0.00%)  
+black_box                  0.0000    0.0000    0.0000    0.0000 ( 0.00%)  
+
+  Net Switching Power  =    0.0640   (20.72%)
+  Cell Internal Power  =    0.2336   (75.64%)
+  Cell Leakage Power   =    0.0113   ( 3.65%)
+                         ---------
+Total Power            =    0.3088  (100.00%)
+```
+
+# Retry Script BP
+
+## ECO3
+
+| corner                  | WNS (wo/w IO)  | TNS (wo/w IO)  | NVP        | Tran | Cap | Nois | MinLt | MaxLt | Skew  | AveLt |
+| ----------------------- | -------------- | -------------- | ---------- | ---- | --- | ---- | ----- | ----- | ----- | ----- |
+| wcl\_cwst\__ccwst\_t (S) | \-0.040/-0.040 | 0.174/ 0.174   | 15/ 15     | 0    | 0   | 0    | 0.282 | 0.515 | 0.233 | 0.348 |
+| wc\_rcwst\__ccwst\_t (S) | 0.000/ 0.000   | 0.000/ 0.000   | 0/ 0       | 0    | 1   | 0    | 0.286 | 0.507 | 0.221 | 0.348 |
+| wc\_cwst\__ccwst (H)     | 0.000/ 0.000   | 0.000/ 0.000   | 0/ 0       | 0    | 3   | 0    | 0.289 | 0.525 | 0.236 | 0.356 |
+| lt\_cwst\__ccwst (H)     | \-0.005/-0.005 | 0.017/ 0.017   | 17/ 17     | 0    | 2   | 0    | 0.182 | 0.327 | 0.145 | 0.223 |
+| ml\_cbst\__ccbst (H)     | \-0.024/-0.024 | 20.648/ 20.648 | 2152/ 2152 | 0    | 0   | 0    | 0.175 | 0.324 | 0.149 | 0.216 |
+
+/proj/ATEPairChip/WORK/kazuki\_furukawa/221014a\_MB\_BP\_SCRIPT/ICC2/rpts\_icc2/pt\_eco3/10150133
+
+| Misc.      | Area/Length  | 50 BP S\&H w/ MBFF |
+| ---------- | ------------ | ------------------ |
+| Buff/Inv   | 4100.1247    | 3830.5382          |
+| ICG cells  | 819.1918     | 831.7256           |
+| FFs        | 348050.0375  | 348052.9866        |
+| LVT        | 3247.1286    | 3325.8332          |
+| Std. cells | 104671.6047  | 104481.4602        |
+| Core       | 421675.2046  |                    |
+| Chip       | 429570.1486  |                    |
+| Wire len   | 3378148.5930 | 3361477.5630       |
+
+``` text
+                        Internal  Switching  Leakage    Total
+Power Group             Power     Power      Power      Power   (     %)  Attrs
+--------------------------------------------------------------------------------
+clock_network           4.942e-03    0.0165 4.741e-04    0.0219 ( 7.12%)  
+register                   0.1080    0.0111 1.800e-03    0.1208 (39.18%)  i
+combinational              0.0137    0.0341 1.750e-03    0.0496 (16.08%)  
+sequential                 0.0000    0.0000    0.0000    0.0000 ( 0.00%)  
+memory                     0.1071 1.686e-03 7.209e-03    0.1160 (37.62%)  
+io_pad                     0.0000    0.0000    0.0000    0.0000 ( 0.00%)  
+black_box                  0.0000    0.0000    0.0000    0.0000 ( 0.00%)  
+
+  Net Switching Power  =    0.0634   (20.57%)
+  Cell Internal Power  =    0.2337   (75.79%)
+  Cell Leakage Power   =    0.0112   ( 3.64%)
+                         ---------
+Total Power            =    0.3084  (100.00%)
+```
+
+## Settings
+
+  - generate script for each fmem instance
+    
+    loadFdma/fmemWriter/U\_T\_84\_reg\_\*\_ -\> U\_T\_86\_reg\_\*\_
+    macArray/adders\_37/m\_27\_1\_reg -\>
+
+func::ss72\_cworst\_CCworst\_125c
+
+``` tcl
+set_clock_balance_points -clock [all_clocks] -balance_points $mem_input_regs_cp_pins -consider_for_balancing true -rise -delay -0.030 -corners ff88_cbest_CCbest_125c
+set_clock_balance_points -clock [all_clocks] -balance_points $mem_input_regs_cp_pins -consider_for_balancing true -rise -delay -0.015 -corners ff88_cbest_CCbest_m40c
+set_clock_balance_points -clock [all_clocks] -balance_points $mem_output_regs_cp_pins -consider_for_balancing true -rise -delay -0.010 -corners ss72_cworst_CCworst_T_m40c
+```
+
+``` tcl
+set macro [get_flat_cells -f "design_type == macro"]
+
+foreach sce [get_object_name [all_scenarios]] {
+    puts "#scenario: $sce"
+    current_scenario $sce
+    report_timing -path_type full -input_pins -nets -transition_time -capacitance -crosstalk_delta -derate -pba_mode path -nosplit -delay_type min -significant_digits 3 -slack_lesser_than 2.0 -max_path 2000000 -scenarios $sce -through [get_cells *_h_* -hierarchical] >> mem_input_report_all_scenarios
+}
+```
+
+# FP21
+
+``` tcl
+set PLACE_OPT_OPTIMIZE_ICGS             true 
+set PLACE_OPT_ICG_AUTO_BOUND            true
+set PLACE_OPT_TRIAL_CTS                 true
+set PLACE_OPT_CLOCK_AWARE_PLACEMENT       false
+set PLACE_OPT_BUFFERING_AWARE_PLACEMENT false
+set CTS_LEAF_NDR_MIN_ROUTING_LAYER    "M2"
+set CTS_LEAF_NDR_MAX_ROUTING_LAYER    "M6"
+
+# max_density 0.60, congestion_driven_max_util 0.87
+```
+
+![](../../../img/FP21/2022-10-19_17-49-19_screenshot.png)
+
+# Meeting
+
+## Watanabe-kun
+
+``` tcl
+route_eco -utilize_dangling_wires true
+```
+
+  - MBFF Formality
+
+## Furukawa
+
+  - Need to find the difference of the number of hold buffers.
+
+## TODO
+
+  - Area Shrink
+  - clock balance point
+  - Loose Uncertainty??
+
+# TEST
+
+<div class="columns">
+
+<div class="column">
+
+  - My notes based on my partial understanding
+
+</div>
+
+<div class="column">
+
+  - Joined late in the project
+
+</div>
+
+</div>

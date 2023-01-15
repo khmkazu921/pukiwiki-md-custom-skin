@@ -1,0 +1,261 @@
+#author("2022-12-18T07:34:48+00:00","","")
+#notemd
+
+[[Notes/2022/Week49-Dec]]
+
+# WRAP
+
+## Short fix
+
+- Delete short nets > eco
+- Generate thin via > expect to fix lvs, but may remain IR drop issue
+
+## Saga_plus Floorplan
+- pdf is in openproject https://openproject.alchip.com/projects/saga-plus-jp21c02/documents
+
+## ECO1
+
+```text
++---------------------------------------------+-----------------------+---------------------+---------------------------+-----------------+----------------+-----------------+
+| corner name                                 | Internal timing       | Input timing        | Output Timing             | Max capacitance | Max transition | Crosstalk noise |
+|                                             | (WNS:TNS:#)           | (WNS:TNS:#)         | (WNS:TNS:#)               | (WNS:#)         | (WNS:#)        | (WNS:#)         |
++=============================================+=======================+=====================+===========================+=================+================+=================+
+| func.tt0p8v.wc.rcworst_ccworst_t_125c.setup |  0.000 :  0.000 :   0 |  0.000 :  0.000 : 0 | -0.498 : -1216.358 : 3077 |     -0.002 : 94 |      0.000 : 0 |       0.000 : 0 |
++---------------------------------------------+-----------------------+---------------------+---------------------------+-----------------+----------------+-----------------+
+| func.tt0p8v.wcl.cworst_ccworst_t_m40c.setup |  0.000 :  0.000 :   0 |  0.000 :  0.000 : 0 | -0.445 : -1127.831 : 3077 |     -0.001 : 52 |      0.000 : 0 |       0.000 : 0 |
++---------------------------------------------+-----------------------+---------------------+---------------------------+-----------------+----------------+-----------------+
+| func.tt0p8v.wcz.cworst_ccworst_t_0c.setup   |  0.000 :  0.000 :   0 |  0.000 :  0.000 : 0 | -0.447 : -1124.166 : 3077 |     -0.002 : 70 |      0.000 : 0 |       0.000 : 0 |
++---------------------------------------------+-----------------------+---------------------+---------------------------+-----------------+----------------+-----------------+
+| func.tt0p8v.lt.cbest_ccbest_m40c.hold       | -0.012 : -0.355 : 118 |  0.000 :  0.000 : 0 |  0.000 :     0.000 :    0 |     -0.002 : 89 |      0.000 : 0 |      -0.002 : 1 |
++---------------------------------------------+-----------------------+---------------------+---------------------------+-----------------+----------------+-----------------+
+| func.tt0p8v.ml.rcworst_ccworst_125c.hold    | -0.028 : -0.505 : 149 |  0.000 :  0.000 : 0 |  0.000 :     0.000 :    0 |     -0.002 : 94 |      0.000 : 0 |      -0.013 : 1 |
++---------------------------------------------+-----------------------+---------------------+---------------------------+-----------------+----------------+-----------------+
+```
+## ECO0
+
+```text
++---------------------------------------------+-----------------------+---------------------+---------------------------+-----------------+----------------+-----------------+
+| corner name                                 | Internal timing       | Input timing        | Output Timing             | Max capacitance | Max transition | Crosstalk noise |
+|                                             | (WNS:TNS:#)           | (WNS:TNS:#)         | (WNS:TNS:#)               | (WNS:#)         | (WNS:#)        | (WNS:#)         |
++=============================================+=======================+=====================+===========================+=================+================+=================+
+| func.tt0p8v.wc.rcworst_ccworst_t_125c.setup |  0.000 :  0.000 :   0 |  0.000 :  0.000 : 0 | -0.498 : -1216.358 : 3077 |     -0.002 : 94 |      0.000 : 0 |       0.000 : 0 |
++---------------------------------------------+-----------------------+---------------------+---------------------------+-----------------+----------------+-----------------+
+| func.tt0p8v.wcl.cworst_ccworst_t_m40c.setup |  0.000 :  0.000 :   0 |  0.000 :  0.000 : 0 | -0.445 : -1127.831 : 3077 |     -0.001 : 52 |      0.000 : 0 |       0.000 : 0 |
++---------------------------------------------+-----------------------+---------------------+---------------------------+-----------------+----------------+-----------------+
+| func.tt0p8v.wcz.cworst_ccworst_t_0c.setup   |  0.000 :  0.000 :   0 |  0.000 :  0.000 : 0 | -0.447 : -1124.166 : 3077 |     -0.002 : 70 |      0.000 : 0 |       0.000 : 0 |
++---------------------------------------------+-----------------------+---------------------+---------------------------+-----------------+----------------+-----------------+
+| func.tt0p8v.lt.cbest_ccbest_m40c.hold       | -0.012 : -0.355 : 118 |  0.000 :  0.000 : 0 |  0.000 :     0.000 :    0 |     -0.002 : 89 |      0.000 : 0 |      -0.002 : 1 |
++---------------------------------------------+-----------------------+---------------------+---------------------------+-----------------+----------------+-----------------+
+| func.tt0p8v.ml.rcworst_ccworst_125c.hold    | -0.028 : -0.505 : 149 |  0.000 :  0.000 : 0 |  0.000 :     0.000 :    0 |     -0.002 : 94 |      0.000 : 0 |      -0.013 : 1 |
++---------------------------------------------+-----------------------+---------------------+---------------------------+-----------------+----------------+-----------------+
+```
+
+## M0
+
+```text
+egrep " Layer  *M0 :  *" run/r_n20221207a/20221214a/log/route/route.log
+        Layer                        M0 :        234 micron
+        Layer                        M0 :        234 micron
+        Layer                        M0 :        229 micron
+        Layer                        M0 :        232 micron
+        Layer                        M0 :        231 micron
+        Layer                        M0 :        231 micron
+        Layer                        M0 :        231 micron
+```
+
+&ref(./Screenshot 2022-12-14 145100.png,50%);
+
+# SKIP_0
+
+## FV
+### Config
+
+```json
+"fv": {
+    "fv_implementation_vnet_list": "/proj/SAGA_plus_JP21C02/WORK/kouhei_watanabe/FMAPWR_SKIP_0/run/r_n1201b_wDFT/20221201a_wDFT/data/chip_finish/FMAPWR_SKIP_0.v.gz",
+    "fv_reference_vnet_list": "/proj/SAGA_plus_JP21C02/RELEASE/from_dft/FMAPWR_SKIP_0/n20221129a/FMAPWR_SKIP_0.v.gz",
+    "fv_svf_file": "/proj/SAGA_plus_JP21C02/WORK/kouhei_watanabe/FMAPWR_SKIP_0/run/r_n1201b_wDFT/20221201a_wDFT/data/place/place.FMAPWR_SKIP_0.svf"
+}
+```
+
+### plugin (formality/pre_match.tcl)
+```tcl
+# Ignore scan chain paths
+set_constant r:/WORK/${fv_reference_block_name}/AlcpScanEn      0
+set_constant i:/WORK/${fv_implementation_block_name}/AlcpScanEn 0
+# Ignore EDT compactor flops
+set_dont_verify i:/WORK/${fv_implementation_block_name}/*_edt_i/*_edt_compactor_i/compactor*/single_bit_output_reg
+set_dont_verify r:/WORK/${fv_reference_block_name}/*_edt_i/*_edt_compactor_i/compactor*/single_bit_output_reg
+```
+
+# WRAP
+
+```text
+defIn /proj/SAGA_plus_JP21C02/WORK/kazuki_furukawa/FMAPWR_WRAP/fp/20221213a/FMAPWR_WRAP.def.gz
+Reading DEF file '/proj/SAGA_plus_JP21C02/WORK/kazuki_furukawa/FMAPWR_WRAP/fp/20221213a/FMAPWR_WRAP.def.gz', current time is Tue Dec 13 17:18:16 2022 ...
+--- DIVIDERCHAR '/'
+**WARN: (IMPDF-64):	UnitsPerDBU is not unity (you may have rounding problems).
+--- UnitsPerDBU = 0.5000
+**WARN: (IMPFP-3961):	The techSite 'tphn12ffcllgv18e_pad' has no related standard cells in the LEF/OA library. The calculations for this site type cannot be made unless standard cell models of this type exist in the LEF/OA library. Ignore this warning if the SITE is not used by the library. Alternatively, remove the SITE definition for the LEF/OA library to avoid this message.
+Type 'man IMPFP-3961' for more detail.
+**WARN: (IMPFP-3961):	The techSite 'tphn12ffcllgv18e_corner' has no related standard cells in the LEF/OA library. The calculations for this site type cannot be made unless standard cell models of this type exist in the LEF/OA library. Ignore this warning if the SITE is not used by the library. Alternatively, remove the SITE definition for the LEF/OA library to avoid this message.
+Type 'man IMPFP-3961' for more detail.
+**WARN: (IMPFP-3961):	The techSite 'coreExt' has no related standard cells in the LEF/OA library. The calculations for this site type cannot be made unless standard cell models of this type exist in the LEF/OA library. Ignore this warning if the SITE is not used by the library. Alternatively, remove the SITE definition for the LEF/OA library to avoid this message.
+Type 'man IMPFP-3961' for more detail.
+
+```
+
+## FP generation with innovus
+
+- 1.44xXX
+- init::invs
+- fusion compiler: `ROW CORE_ROW_0 unit 1440 ........`
+- innovus: `ROW CORE_ROW_0 core 1440 ........`
+- `evince /apps/cadence/INNOVUS21.15.000-ISR5_lnx86/doc/innovusTCR/*.pdf`
+- `post_init.tcl`
+
+## Legality Error
+
+&ref(Screenshot 2022-12-13 114938.png);
+
+> ベースレイヤ：  M１よりした
+> メタルレイヤー：M１以上
+> M０は、素材がちがうので、ベースレイヤー、メタルレイヤーのどちらというのもいいがたいのですが、
+> 基本は、ベースレイヤーと考えたほうがいいです。
+>  
+> Calibreの違反は、基本的には、M[0-15].で始まっている違反は、メタル系の違反といえます。
+>  
+> それ以外の違反は、基本は、ベースレイヤーの違反になります。
+>  
+> メタルの違反すべてが、配線だけで修正できる可能性がありますが、それ以外の違反は、
+> フロアプランであったり、配置の問題であることがあるため、早めに修正する必要があります。
+>  
+> 今回特にそのような問題が、右端のFILLCELLだけであれば、特によいです。
+
+## FP check
+
+- `place_pins`: ports cannot legalize before floating from block edges.
+- `1.440x833=1199.520`
+- `1.440x620=_892.800`
+
+## `H - Logical and physical hierarchies are inconsistent`
+
+- input: load pin
+- output: driver pin
+- port punching: duplicate ports
+
+### [Explanation of Logical and Physical Hierarchy Consistency for PrimeTime Physically Aware ECO](https://solvnetplus.synopsys.com/s/article/Explanation-of-Logical-and-Physical-Hierarchy-Consistency-for-PrimeTime-Physically-Aware-ECO-1576005668636)
+
+> This happens when a net is connected to one or more cells of different logical hierarchies. **Buffering can happen within only the hierarchies, at the driver or load.** In physically aware ECO, the net consists of wires connecting cells. During an ECO run, how and where we split the net is important because we need to honor the logical hierarchy.
+> 
+> In IC Compiler and IC Compiler II or other tools, port punching allows new ports to be created to satisfy logical and physical connectivity. PrimeTime physically aware ECO does not have the ability to create new ports to satisfy this requirement of logical and physical inconsistency. To understand how they can be corrected in IC Compiler or IC Compiler II, refer to the Design Compiler, IC Compiler, or IC Compiler II port punching capabilities.
+> 
+> Resolving type H and E unfixable violations usually requires investigating the layout. To review the layout, bring up the design in IC Compiler or IC Compiler II.
+> 
+> Type H violations can be resolved with port punching. As this changes the netlist, it needs to be done in IC Compiler. The following example shows a simple physical and logical mismatch:
+
+
+
+## ECO2
+
+```text
++---------------------------------------------+--------+--------+--------+-------+-------+-------+--------+-----------+--------+---------+---------+----------+----------+-------+-------+
+| corner name                                 | w/o IO | w/o IO | w/o IO | Input | Input | Input | Output | Output    | Output | max cap | max cap | max tran | max tran | noise | noise |
+|                                             | WNS    | TNS    | #      | WNS   | TNS   | #     | WNS    | TNS       | #      | WNS     | #       | WNS      | #        | WNS   | #     |
++=============================================+========+========+========+=======+=======+=======+========+===========+========+=========+=========+==========+==========+=======+=======+
+| func.tt0p8v.wc.rcworst_ccworst_t_125c.setup |  0.000 |  0.000 |      0 | 0.000 | 0.000 |     0 | -0.504 | -1365.766 |   3077 |   0.000 |       0 |    0.000 |        0 | 0.000 |     0 |
++---------------------------------------------+--------+--------+--------+-------+-------+-------+--------+-----------+--------+---------+---------+----------+----------+-------+-------+
+| func.tt0p8v.wcl.cworst_ccworst_t_m40c.setup |  0.000 |  0.000 |      0 | 0.000 | 0.000 |     0 | -0.468 | -1253.098 |   3077 |   0.000 |       0 |    0.000 |        0 | 0.000 |     0 |
++---------------------------------------------+--------+--------+--------+-------+-------+-------+--------+-----------+--------+---------+---------+----------+----------+-------+-------+
+| func.tt0p8v.wcz.cworst_ccworst_t_0c.setup   |  0.000 |  0.000 |      0 | 0.000 | 0.000 |     0 | -0.463 | -1252.751 |   3077 |   0.000 |       0 |    0.000 |        0 | 0.000 |     0 |
++---------------------------------------------+--------+--------+--------+-------+-------+-------+--------+-----------+--------+---------+---------+----------+----------+-------+-------+
+| func.tt0p8v.lt.cbest_ccbest_m40c.hold       | -0.001 | -0.002 |      4 | 0.000 | 0.000 |     0 |  0.000 |     0.000 |      0 |   0.000 |       0 |    0.000 |        0 | 0.000 |     0 |
++---------------------------------------------+--------+--------+--------+-------+-------+-------+--------+-----------+--------+---------+---------+----------+----------+-------+-------+
+| func.tt0p8v.ml.rcworst_ccworst_125c.hold    | -0.001 | -0.001 |      6 | 0.000 | 0.000 |     0 |  0.000 |     0.000 |      0 |   0.000 |       0 |    0.000 |        0 | 0.000 |     0 |
++---------------------------------------------+--------+--------+--------+-------+-------+-------+--------+-----------+--------+---------+---------+----------+----------+-------+-------+
+```
+
+
+## ECO1
+```text
++---------------------------------------------+---------+---------+---------+--------+--------+--------+---------+-----------+---------+-------------+-----------+--------------+------------+-----------+---------+
+|                                             | WNS w/o | TNS w/o | NVE w/o | WNS in | TNS in | NVE in | WNS out |  TNS out  | NVE out | max cap WNS | max cap # | max tran WNS | max tran # | noise WNS | noise # |
++=============================================+=========+=========+=========+========+========+========+=========+===========+=========+=============+===========+==============+============+===========+=========+
+| func.tt0p8v.wc.rcworst_ccworst_t_125c.setup |   0.000 |   0.000 |       0 |  0.000 |  0.000 |      0 |  -0.504 | -1365.708 |    3077 |       0.000 |         0 |        0.000 |          0 |     0.000 |       0 |
++---------------------------------------------+---------+---------+---------+--------+--------+--------+---------+-----------+---------+-------------+-----------+--------------+------------+-----------+---------+
+| func.tt0p8v.wcl.cworst_ccworst_t_m40c.setup |   0.000 |   0.000 |       0 |  0.000 |  0.000 |      0 |  -0.468 | -1253.039 |    3077 |       0.000 |         0 |        0.000 |          0 |     0.000 |       0 |
++---------------------------------------------+---------+---------+---------+--------+--------+--------+---------+-----------+---------+-------------+-----------+--------------+------------+-----------+---------+
+| func.tt0p8v.wcz.cworst_ccworst_t_0c.setup   |   0.000 |   0.000 |       0 |  0.000 |  0.000 |      0 |  -0.463 | -1252.658 |    3077 |       0.000 |         0 |        0.000 |          0 |     0.000 |       0 |
++---------------------------------------------+---------+---------+---------+--------+--------+--------+---------+-----------+---------+-------------+-----------+--------------+------------+-----------+---------+
+| func.tt0p8v.lt.cbest_ccbest_m40c.hold       |  -0.017 |  -0.686 |     150 |  0.000 |  0.000 |      0 |   0.000 |     0.000 |       0 |       0.000 |         0 |        0.000 |          0 |     0.000 |       0 |
++---------------------------------------------+---------+---------+---------+--------+--------+--------+---------+-----------+---------+-------------+-----------+--------------+------------+-----------+---------+
+| func.tt0p8v.ml.rcworst_ccworst_125c.hold    |  -0.016 |  -0.398 |      76 |  0.000 |  0.000 |      0 |   0.000 |     0.000 |       0 |       0.000 |         0 |        0.000 |          0 |     0.000 |       0 |
++---------------------------------------------+---------+---------+---------+--------+--------+--------+---------+-----------+---------+-------------+-----------+--------------+------------+-----------+---------+
+```
+
+# CPT Error
+
+```text
+Warning: Power table extrapolation (extrapolation mode) for port TE on cell u_FMAPWR_TOP/u_FMAPWR_CPUIF/pckg_i_CLK_midfix_3_suffix/latch for parameter Tinp. Lowest table value = 0.001100, highest table value = 0.400000, value = 0.000000 (POW-046)
+Warning: Power table extrapolation (extrapolation mode) for port CP on cell u_FMAPWR_TOP/u_FMAPWR_CPUIF/pckg_i_CLK_midfix_4_suffix/latch for parameter Tinp. Lowest table value = inf, highest table value = inf, value = 0.014381 (POW-046)
+Warning: Power table extrapolation (extrapolation mode) for port TE on cell u_FMAPWR_TOP/u_FMAPWR_CPUIF/pckg_i_CLK_midfix_4_suffix/latch for parameter Tinp. Lowest table value = 0.001100, highest table value = 0.400000, value = 0.000000 (POW-046)
+Note - message 'POW-046' limit (10) exceeded. Remainder will be suppressed.
+Error: Command raised a C++ exception:
+      vector::_M_default_append (CMD-114)
+Error: A Severe error has occurred. 
+        To ensure that the script does not continue, the value of sh_continue_on_error
+        has been overridden to be false. Your script is being interrupted.
+        To see the Tcl call stack for the part of your script which generated
+        the Severe error use the error_info command. (CMD-103)
+Error: Severe error encountered
+        Use error_info for more info. (CMD-013)
+Error: Severe error encountered
+        Use error_info for more info. (CMD-013)
+Information: script '/proj/onepiece4/cpt_2022.09/platform/src/utils/fc/default/report_qor.tcl'
+                stopped at line 217 due to error. (CMD-081)
+Extended error info:
+Severe error encountered
+    while executing
+"report_power -significant_digits 3 -nosplit"
+    invoked from within
+"snps_CCI_builtin_redirect  -file  -tee  {/proj/SAGA_plus_JP21C02/WORK/kazuki_furukawa/FMAPWR_WRAP/run/r_n20221207a/20221212a/rpt/chip_finish/chip_fini..."
+    invoked from within
+"redirect  -tee -file $blk_rpt_dir/$cur_stage.report_power.rpt {report_power -significant_digits 3 -nosplit}"
+    (file "/proj/onepiece4/cpt_2022.09/platform/src/utils/fc/default/report_qor.tcl" line 217)
+ -- End Extended Error Info
+Information: 13995 out of 14005 POW-046 messages were not printed due to limit 10 (after 'source' at chip_finish.tcl:142) (MSG-3913)
+Error: Severe error encountered
+        Use error_info for more info. (CMD-013)
+Information: script '/proj/SAGA_plus_JP21C02/WORK/kazuki_furukawa/FMAPWR_WRAP/run/r_n20221207a/20221212a/scripts/chip_finish/chip_finish.tcl'
+                stopped at line 142 due to error. (CMD-081)
+Extended error info:
+Severe error encountered
+    while executing
+"report_power -significant_digits 3 -nosplit"
+    invoked from within
+"snps_CCI_builtin_redirect  -file  -tee  {/proj/SAGA_plus_JP21C02/WORK/kazuki_furukawa/FMAPWR_WRAP/run/r_n20221207a/20221212a/rpt/chip_finish/chip_fini..."
+    invoked from within
+"redirect  -tee -file $blk_rpt_dir/$cur_stage.report_power.rpt {report_power -significant_digits 3 -nosplit}"
+    (file "/proj/onepiece4/cpt_2022.09/platform/src/utils/fc/default/report_qor.tcl" line 217)
+    invoked from within
+"source -v -e $report_qor_script"
+    (procedure "cpt_report" line 5)
+    invoked from within
+"cpt_report"
+    (file "/proj/SAGA_plus_JP21C02/WORK/kazuki_furukawa/FMAPWR_WRAP/run/r_n20221207a/20221212a/scripts/chip_finish/chip_finish.tcl" line 142)
+ -- End Extended Error Info
+Information: 133 out of 138 LGL-127 messages were not printed due to limit 5  (MSG-3913)
+Information: 689 out of 694 LGL-336 messages were not printed due to limit 5  (MSG-3913)
+fc_shell> exit
+Maximum memory usage for this session: 26955.29 MB
+Maximum memory usage for this session including child processes: 26955.29 MB
+CPU usage for this session:  37387 seconds ( 10.39 hours)
+Elapsed time for this session:   7596 seconds (  2.11 hours)
+Thank you for using Fusion Compiler.
+```
+
+# CoWoS
+
+- FEOL (Devices), BEOL (Interconnects)
+- 22nm : Plannar FET
+- 3-16nm : FinFET

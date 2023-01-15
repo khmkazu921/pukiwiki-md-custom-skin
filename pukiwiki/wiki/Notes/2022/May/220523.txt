@@ -1,0 +1,173 @@
+#notemd
+# Status Meeting
+
+  - Thermal Analysis is not so umfamiliar
+  - Non-default routing rules for strict clock tree balancing
+
+# Tech Forum - PC Miura-san
+
+  - PC  
+    Product Conformance
+  - SOP  
+    Standard Operating Procedures
+
+## Members
+
+  - Head  
+    Klinsman Zhu
+
+  - PC-coorinator group
+
+  - PC-auditor group
+    
+      - auditor  
+        to carry out an official examination and to produce a report
+
+  - PC-platform group  
+    modify platform
+
+## PC sign-off
+
+  - sign-off  
+    a procedure in which the customer and Alchip mutually confirm the
+    correctness of their respective design s in terms of feasibility as
+    an LSI when under taking design work.
+  - Postmortem  
+    反省会
+
+<!-- end list -->
+
+  - <https://openproject.alchip.com/projects/openproject-wiki/wiki/pj-signoff-guide-form>
+
+## Signoff meeting
+
+  - FL  
+    Function Leading
+  - TRF  
+    Technical Request Form **Important**
+
+<!-- end list -->
+
+  - Managed in OpenProject
+
+## Q\&A
+
+  - ELE team
+  - PCチームは場をアレンジするだけで、DRでPM等がApproval
+  - 量産？
+
+**実務的なことが多かった**
+
+# DE Meeting
+
+  - FFBI HEDWIG
+      - easy
+  - SAGA+
+      - Aragio (R)GMII IO vs TSMC standard IO
+      - MII :: Media Independent Interface (Ethernet)
+      - <https://www.macnica.co.jp/business/semiconductor/articles/microchip/134946/>
+  - Advantest Monza
+  - LVS :: Layout vs Schematic,
+      - While DRC only checks for certain layout rules to ensure the
+        design will be manufactured reliably, functional correctness of
+        the design is ensured by LVS.
+  - VCD file :: Value Changed Dumps
+  - Ai-Two :: Dry-run
+  - ICC II vs Innovus
+
+# Self Study
+
+## ICC II Lab8
+
+  - `set_clock_balance_points -balance_points ...`
+  - CTS-specific cells :: `set_libcell_purpose` power hold optimization
+      - **CTSの間はrize/fall transition timeのbalancingが必要であるため、 CTS-only
+        bufferが必要になる**
+        
+        <div class="quate">
+        
+        When performing CTS, it is generally desirable to use specific
+        cells for synthesis, instead ofletting ICC II choose any cell
+        from the library, for example: Cells which help to reduce skew
+        (identical rise/fall ramp times); Cells which help to better
+        balance between power consumption and speed/drive-strength,
+        size, etc.
+        
+        </div>
+  - `root, internal` ??
+  - default input delay is 0ns
+
+## ICC II Student Guide 9 routing
+
+### Route Operation
+
+  - CTS should have been already done
+  - VR :: Virtual Route (CTS phase)
+  - GR :: Grobal Route
+      - Assigning nets to specific metal layers
+      - GRC or Gcells :: global routing cells
+      - Avoid congested Gcells / PG / routing blockage
+      - Not create metal shapes
+  - TA :: Track Assignment
+      - attempts to
+          - make long, straight traces
+          - reduce the number of vias
+      - remove global routes or GR vias \> roughly **routed**
+  - Detail Routing
+      - performs multiple iterations with varying repair box sizes
+
+### Pre-Routing Checks and Setup
+
+  - Check for Routing "Readiness"
+      - Routability Check  
+        `check_routability`
+          - blocked ports, out-of-boundary pins
+          - pin access edge rules honored
+          - minimum-grid violations
+  - Secondary PG Pin :: e.g. backup P/G for always-on cells
+      - vs Primary Power/Ground Rail
+  - Maximum number of PG pin connections from strap
+  - NDRs for Secondary PG Routing
+      - specify certain layers/vias and width.
+      - tie-off connections :: the router can connect tie-off nets to
+        straps, rails, or pins.
+  - RVI :: Redundant Vias Insertion
+      - DFM  
+        Design For Manufacturability
+    <!-- end list -->
+      - more difficult to converge on the routing design rules and you
+        might see a reduction in signal integrity
+  - Concurrent Antenna Fixing
+      - Layer Jumping/Hopping
+      - Antenna role :: specified from fab
+  - Routing Guides
+      - change default routing behavior
+      - `river_routing` ??
+  - Routing Blockage
+      - Preventing Routing
+  - Scope :: By default, the router is allowed to reroute any pre-routed
+    nets (e.g. custom-routed bus, unless shape is marked as “user”)
+  - To prioritozed Timing-critical nets
+      - enabling timing-driven routing
+  - Crosstalk Analysis
+      - Delta delay  
+        <https://www.design-reuse.com/articles/48514/optimization-of-crosstalk-delta-delay-on-clock-nets.html>
+      - Timing Window  
+        margin
+    <!-- end list -->
+      - Current recommendation: Enable crosstalk only during track
+        assignment
+  - Static Noise
+      - Noise analysis is enabled with SI
+          - Uses CCSN libraries
+      - Noise Immunity :: tolerance of a certain amount of noise without
+        causing failure at the cells
+  - Align between ICC II and PT Settings
+      - CCS  
+        Composite Current-Source Noise
+      - CCSN  
+        CCS Noise
+      - AWP  
+        Advanced Waveform Propagation
+  - Timing window calculation is generally turned off by default because
+    it incurs a runtime cost.

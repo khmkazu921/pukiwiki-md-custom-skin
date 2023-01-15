@@ -1,0 +1,150 @@
+#+title: 220614 Tue
+
+* Status Meeting
+- Poly registance :: hold 
+- ZSR1 :: save company resources
+
+** PrimeTime HyperSacale
+- ETM 
+- flat analysis runs 1 large design
+- HyperScale analysis runs some small designs
+- benefit 
+  - Many corners need more database.
+- bottom-up flow
+  - runtime & database file size is not large
+  - README is important
+- *Traditionally, Hold is fixed when Top design. But Hyperscale
+  enables hold fixing at Block design*
+- MIM :: Multiple Instantiated Modules
+
+- top-down flow
+  - set_input_delay = ignored
+  - context model :: GBA
+- SPEF :: Standard Parasitic Exchange Format, RC delay
+- back-annotation :: The process of updating the logical design of a
+  circuit with physically measured values, to allow for more accurate
+  simulation. 回路の論理設計を物理的に測定された値で更新し、より正確な
+  シミュレーションを可能にするプロセス。
+
+** Question
+- Disadvantage
+  - No use in signoff, currently.
+- top down flow (top-down)
+  - After finishing design, to more accurate design
+- Block からの解析はGBA ?
+- Top からの解析はPBA
+
+
+* Self Study
+
+** I/O
+- clamp cells :: also refers as isolation cells
+
+- Clamp (supply) cell is ESD protection cell also, but typically it is
+  used at supply rails. It should clamp ESD spikes only (!) to safety
+  levels. ESD protection cell should be included in every IO, and in
+  general it clamps ESD spikes in some manner.
+
+- Diode clamps 
+  - Diodes turn on if pad voltage: 
+    - Exceeds VDD +0.7V
+    - Drops below VDD -0.7V 
+  - P+ diffusion in n-well
+  - N+ diffusion in p-substrate
+
+- I/Os 
+Power supply noise
+- Power Supply has 4 kinds
+  - VDD / VSS / VDDIO / VSSIO
+
+- SSO :: Simultaneously Switching Outputs
+  - A metric describing the period of time during which the switching
+    starts and finishes.
+
+- Design Guideline
+  - Put as many mutual capacitances as possible between IC supply
+    voltages
+    - Maybe it is to avoid capacitance coupling and noise generation.
+  - Put as many supply voltage pins as possible.
+  - Put supply and ground supply voltages as close to each other as
+    possible.
+  - Provide separate supply voltages for the core and I/Os.
+  - Reduce inductances as much as possible by using as short
+    transmission lines as possible.
+  - Reduce signal rate as much as possible. But be careful as the
+    reduction of signal rate leads to signal weakening, and
+    experiments show that those noises can have definite affect on the
+    given I/O cells.
+
+- [[https://techweb.rohm.com/knowledge/emc/s-emc/01-s-emc/6943][What is Crosstalk?]]
+  - Coupling between lines can be:
+    - electrostatic :: capacitive coupling due to the stray
+      (parasitic) capacitance
+    - electromagnetic :: inductive coupling resulting from the mutual
+      inductance
+- [[https://www.renesas.com/us/ja/application/key-technology/hmi/2nd-generation-capacitive-touch-sensor-system][Renesas]]
+  - Mutual Capacitance : 「相互容量方式」は、送信電極と受信電極を用いて
+    電界を発生させ、送受信電極間の電界変化を検出します。
+  - Self Capacitance : 「自己容量方式」は、単一の電極と人体（指先）との
+    間の静電容量を検知して、タッチ状態かそうでないかを判断します。
+
+
+Pad Configurations
+
+** Placement & Optimization
+*** Power Optimization
+*** QoR Setup
+- Congestion Aware Placement
+  - keepout margins and/or placement blockages
+  - cell and pin density
+  - Layer aware
+  - CDR :: Congestion Driven Restructuring
+- Timing-aware Setup
+  - Restructuring :: Restructuring of logic for power reduction
+  
+- BAP :: Buffering Aware Placement
+
+- ICG optimization
+  - Trial-CTS
+- Clock-Aware Placement
+- Power and Area Focused Setup
+  - Route-Driven Extraction (RDE)
+    - RDE use s global routing
+- Preroute Optimization
+- Dynamic power-driven placement
+
+
+*** NDM (New Data Model / Milkeyway Library)
+- NDM cell library contains
+  - Timing and Frame views
+  - Design and Layout views optionally
+
+*** technology library vs file
+- If using a technology library, you should ensurethat it contains all
+  information that was discussed in the NDM unit
+- If using a technologyfile, you need to apply TLU+, site and routing
+  track information in ICC If:
+
+- Scan Chain
+- Connect PG pins / Tie-high/low cells
+
+*** MCMM
+
+
+*** Timing Sanity Check
+*** ZIC (zero-interconnect) timing analysis
+- Do placement after timing sanity check or ZIC timing analysis
+- is to ensure thatthenetlist has a chance at meeting timing after the
+  design is placed and routed.
+- set RC parasitics of long path to zero
+- Large violations will most likely NOT be fixed by ICC II, so the
+  problem must be addressed before beginning placement.
+- Large ZIC timing violations can probably be ignored if they occur on
+  non-ideal HFN, or in scenarios that were not used during synthesis.
+
+** Ratioed Logic
+- Ratioed Logic is an attempt to reduce the number of transistors
+  required to implement a given logic function, waiving the assurance
+  of functionality.
+- レシオド・ロジックは、ある論理機能を実現するために必要なトランジスタ
+  の数を、機能の保証を放棄して減らそうとするものである。

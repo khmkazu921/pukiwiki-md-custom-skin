@@ -1,0 +1,159 @@
+#notemd
+# Daily
+
+  - M1 reduce IR drop
+  - shutdown makes IR drop
+
+# Special Lecture - Reliability Test (渡辺さん)
+
+## Process Review
+
+  - Characterization
+
+<!-- end list -->
+
+  - Reliability Test
+
+  - 1 fit :: Failure In Time, 10<sup>-9</sup> h, 1 fault per 1,000
+    products x 1,000,000 hours
+
+  - 1 PPM :: Parts Per Million, Failure per 1,000,000
+
+## Problems
+
+### cost vs request trade-off
+
+  - A request is when someone asks you to do something. A request can be
+    denied by a person or accepted. A requirement is something that
+    needs to be done.
+
+### Compliment
+
+  - wire short, etc.
+
+### Bathtub curve (故障率曲線)
+
+  - ELFR  
+    Early Life Failure Rate, 初期故障率
+
+<!-- end list -->
+
+  - Random Failure
+
+  - Wear-out failure :: 摩耗故障
+
+  - Required failure rate :: 要求故障率
+
+  - OLT :: Operation Life Test, 動作寿命試験
+
+  - 加速試験 :: Temperature, Voltage & Temperature Variations アレニウスモデル
+    アイリングモデル
+
+  - TDDB :: Time Dependent Dielectric Breakdown
+
+  - HCI :: hot carrier injection
+
+  - NBTI :: Negative Bias Temperature Instability
+
+  - Electromigration Cu
+
+  - increased leakage
+
+  - Vt drift :: SILC : stress induced leakage current
+
+  - HTOL test ::
+
+## Classification of Reliability test
+
+  - Latch-up
+
+  - Process Test 拡散プロセスでの基本試験, for fab
+
+  - Package Test
+    
+      - TC  
+        Temperature Test
+
+  - Product Test
+
+  - AEC :: Automotive
+
+  - JEDEC :: Semiconductor Standard
+
+  - HTSL :: High Temperature Storage Life
+
+  - HAST :: highly accelerated Stress Test
+
+  - MP/FA test Program
+
+  - LIT :: Lock-in Thermal Emission Ignition Temperature, Thermal test,
+    look for short point
+
+  - 非破壊/半破壊/破壊 解析
+
+  - EMMI :: Emission Microscopy, reconbination photon
+
+  - OBIRCH \[obark\] :: Optical Beam Induced Resistance Change, cureent
+    variation
+
+  - 3D-Xray
+
+  - SAT
+
+  - 破壊解析
+
+  - PL :: Parallel Lapping, 削っていく, CMP
+
+  - SEM Voltage Contrast,
+    
+      - FIB  
+        Focused Ion Beam, TEM sample, drilled
+    
+    <!-- end list -->
+    
+      - STEM
+      - TEM :: Transmission electron microscopy (TEM) is a microscopy
+        technique in which a beam of electrons is transmitted through a
+        specimen to form an image.
+      - TE image :: Transmission electron image
+      - ZC image :: Z Contrast image, 重たい元素・物質ほど明るく観察され、
+        そのコントラストは原子番号の２乗に 比例すると言われている。
+      - Energy-dispersive X-ray spectroscopy sometimes called energy
+        dispersive X-ray analysis (EDXA or EDAX) or energy dispersive
+        X-ray microanalysis (EDXMA) EDX image :: Energy Dispersive X-ray
+        Spectrometry
+
+  - partial decap :: open cover
+
+## SARADEC2 - Hitachi 90nm
+
+  - [AC
+    scan](https://www.electronicdesign.com/technologies/test-measurement/article/21200893/exploring-the-basics-of-ac-scan)
+    
+      - AC  
+        alternating current, 交流
+      - DC  
+        direct current, 直流
+      - FT  
+        final test
+      - DC scan  
+        Vcc scan, stuck-at testing. Here we target if any node is
+        permanently struck either at Logic '1' or Logic '0'.These kind
+        of faults are targetted in DC-SCAN.
+      - AC scan  
+        at-speed scanm, The transition or the at-speed faults are those
+        faults that we check if the transition at the input side is
+        really getting reflected at the output side with-in a clock
+        cycle. These kind of faults will be targetted in AC-SCAN.
+
+  - Physical Failure Analysis - Optical Microscope (OM) inspection
+
+  - Visual Inspection :: 外観検査
+
+  - WAT incestication :: Wafer Acceptance Test
+
+  - CIP ::
+
+# Self Study
+
+  - User guide \~0.5

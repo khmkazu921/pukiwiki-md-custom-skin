@@ -1,0 +1,341 @@
+#author("2022-12-18T07:46:04+00:00","","")
+#notemd
+
+[[Tools]]
+
+[[Tools/PG Planning Original]]
+
+# Notes
+
+- `gui_show_task -task "Design Planning:PG Planning->Examples->Overview"`
+- Pitch vs Spacing vs Offset : https://ivlsi.com/pitch-spacing-offset-vlsi-physical-design/
+- [[FP Generation (Teams)>https://teams.microsoft.com/l/message/19:A348YVTXdEIY2pmOr8AHy2hWNR6RGAmkBzBZdPhH8ds1@thread.tacv2/1669816637285?tenantId=a1e4b33d-f103-4623-9640-0a4c38ee1426&groupId=5b501de6-aec7-41dc-a1b3-dedf36852dc2&parentMessageId=1669816637285&teamName=NEL%3A%3ASAGA_plus(ENG)&channelName=General&createdTime=1669816637285&allowXTenantAccess=false]]
+- /proj/SAGA_plus_JP21C02/WORK/tsuji/release/20221128a_FP/ark_new_create_FPlan_update.tcl
+
+# Power and Pins
+
+```tcl
+initialize_floorplan -core_offset {3}
+create_net -power VDD
+create_net -power VSS
+connect_pg_net -net VDD [get_flat_pins -all */VDD]
+connect_pg_net -net VSS [get_flat_pins -all */VSS]
+place_pins -ports *
+```
+
+# Remove
+
+```tcl
+remove_vias [get_vias -filter "net_type == ground"]
+remove_vias [get_vias -filter "net_type == power"]
+remove_shapes [get_shapes -of [get_nets -hier -physical_context VDD]]
+remove_shapes [get_shapes -of [get_nets -hier -physical_context VSS]]
+```
+
+# Blockage on Macros
+```
+set bbox [get_attribute [resize_polygon -size {0.5} -object  $cell ] bbox]
+create_placement_blockage -type hard -boundary $bbox
+```
+
+# PG MACROS
+
+```tcl
+
+remove_vias [get_vias -filter "net_type == ground"]
+remove_vias [get_vias -filter "net_type == power"]
+remove_shapes [get_shapes -of [get_nets -hier -physical_context VDD]]
+remove_shapes [get_shapes -of [get_nets -hier -physical_context VSS]]
+remove_shape_patterns [get_shape_patterns]
+
+set mems [get_cells -hierarchical -filter "design_type == macro"]
+foreach_in_collection mem $mems {
+    set mem_bbox [get_attribute $mem boundary_bbox]
+    set mem_xmin [lindex $mem_bbox 0 0]
+    set mem_ymin [lindex $mem_bbox 0 1]
+    set mem_xmax [lindex $mem_bbox 1 0]
+    set mem_ymax [lindex $mem_bbox 1 1]
+
+    set pg_density 0.500
+    set pg_width 0.500
+    set x_length [expr $mem_xmax - $mem_xmin]
+    set pg_total_width [ expr $x_length * $pg_density]
+    set pg_pair_num [expr ceil([expr $pg_total_width / ($pg_width * 2.0) ])]
+    set pg_pair_num [expr int($pg_pair_num)]
+    set pg_total_width [expr ($pg_width * 2.0 * $pg_pair_num )]
+    set no_pg_total_width [expr $x_length - $pg_total_width ]
+    set spacing [expr ($no_pg_total_width - $pg_width ) / ($pg_pair_num * 2.0 - 1.0)]
+    set spacing [expr  [expr int ([expr $spacing * 1000.0])] * 0.001 ]
+    set Dpitch  [expr ($spacing * 2.0 + $pg_width * 2.0) ]
+    set pitch   [expr ($spacing + $pg_width)]
+
+    #set p_offset [ expr ($x_length - $pg_width * 2.0 * $pg_pair_num - ($pg_pair_num * 2.0 - 1.0 ) * $spacing) / 2.0 + $pg_width / 2.0]
+    set p_offset [expr 0.517 - $pg_width]
+    set p_offset [expr  [expr int ([expr $p_offset * 1000.0])] * 0.001 ]
+
+    #set g_offset [ expr ($x_length - $pg_width * 2.0 * $pg_pair_num - ($pg_pair_num * 2.0 - 1.0 ) * $spacing) / 2.0 + $pg_width / 2.0 + $pitch  ]
+    set g_offset [expr 0.517 - $pg_width + $pitch]
+    set g_offset [expr  [expr int ([expr $g_offset * 1000.0])] * 0.001 ]
+    
+    create_pg_pattern_shapes -width $pg_width -net VDD -low_end $mem_ymin -high_end $mem_ymax -start $p_offset -xPitch $Dpitch -within_bbox $mem_bbox -direction vertical -layer M5 -mark_as stripe -mask_pattern alternate_column -mask {mask_one}
+    create_pg_pattern_shapes -width $pg_width -net VSS -low_end $mem_ymin -high_end $mem_ymax -start $g_offset -xPitch $Dpitch -within_bbox $mem_bbox -direction vertical -layer M5 -mark_as stripe -mask_pattern alternate_column -mask {mask_one}
+
+    # create_pg_composite_pattern comp_mem_m5 -nets {VDD VSS} -add_patterns \
+    # 	{ \
+    # 	      {{pattern: wire_base} {nets: {VDD}} {parameters: vertical M5 $pg_width $spacing $pitch track} offset: $pg_offset} \
+    # 	      {{pattern: wire_base} {nets: {VSS}} {parameters: vertical M5 $pg_width $spacing $pitch track} offset: $pg_offset} \
+    # 	  }    
+    # set_pg_strategy stra_mem_m5 -pattern {{name: comp_mem_m5} {nets: {VDD VSS}} {offset: {0 0}}} -polygon $mem_bbox
+    # set_pg_strategy_via_rule VIA_macro -via_rule {{{intersection: undefined} {via_master:NIL}}}
+    # compile_pg -strategies stra_mem_m5 -via_rule VIA_macro -ignore_drc -tag macro_pg
+    
+    create_pg_vias -within_bbox $mem_bbox -nets {VDD VSS} -from_layers M4 -to_layers M5 -tag macro_pg -drc no_check
+    
+}
+```
+
+# M1 to M11
+
+```tcl
+## FAILED
+kz_gen_power_m5
+create_pg_composite_pattern comp_M6_M9 -nets {VDD VSS} \
+    -add_patterns \
+    { \
+          {{pattern: wire_base} {nets: {VDD}}  {parameters: horizontal M6   1.160 0.102 10.400 track} {offset:  2.180}} \
+          {{pattern: wire_base} {nets: {VSS}}  {parameters: horizontal M6   1.160 0.102 10.400 track} {offset:  4.820}} \
+          {{pattern: wire_base} {nets: {VDD}}  {parameters: vertical   M7   0.600 0.102  5.120 track} {offset:  1.820}} \
+          {{pattern: wire_base} {nets: {VSS}}  {parameters: vertical   M7   0.600 0.102  5.120 track} {offset:  3.100}} \
+          {{pattern: wire_base} {nets: {VDD}}  {parameters: horizontal M8   1.280 0.102 10.458 track} {offset:  2.162}} \
+          {{pattern: wire_base} {nets: {VSS}}  {parameters: horizontal M8   1.280 0.102 10.458 track} {offset:  4.808}} \
+          {{pattern: wire_base} {nets: {VDD}}  {parameters: vertical   M9   1.638 0.102 10.080 track} {offset:  2.477}} \
+          {{pattern: wire_base} {nets: {VSS}}  {parameters: vertical   M9   1.638 0.102 10.080 track} {offset:  7.517}} \
+      } \
+    -via_rule \
+    { \
+          {{layers: M5} {layers: M6} {via_master: VIAGEN56_RECT_1}} \
+          {{layers: M6} {layers: M7} {via_master: VIAGEN67_RECT_1}} \
+          {{layers: M7} {layers: M8} {via_master: VIAGEN78_1}} \
+          {{layers: M8} {layers: M9} {via_master: VIAGEN89_1}} \
+          {{intersection: {undefined}} {via_master: NIL}} \
+      }
+
+set_pg_strategy stra_M6_M9 -pattern {{name: comp_M6_M9} {nets: {VDD VSS}} {offset: {0 0}}} -core
+report_pg_strategies stra_M6_M9
+compile_pg -strategies stra_M6_M9 -ignore_drc
+
+create_pg_composite_pattern comp_above_M10 -nets {VDD VSS} \
+    -add_patterns \
+    { \
+          {{pattern: wire_base} {nets: {VDD}}  {parameters: horizontal M10 10.800 0.102 28.800 track} {offset:  7.760}} \
+          {{pattern: wire_base} {nets: {VSS}}  {parameters: horizontal M10 10.800 0.102 28.800 track} {offset: 22.160}} \
+          {{pattern: wire_base} {nets: {VDD}}  {parameters: vertical   M11 10.800 0.102 28.800 track} {offset:  7.760}} \
+          {{pattern: wire_base} {nets: {VSS}}  {parameters: vertical   M11 10.800 0.102 28.800 track} {offset: 22.160}} \
+      } \
+    -via_rule \
+      { \
+            {{layers: M9}  {layers: M10} {via_master: VIAGEN910_1}} \
+            {{layers: M10} {layers: M11} {via_master: VIAGEN1011_1}} \
+            {{intersection: undefined} {via_master: NIL}} \
+            }
+set_pg_strategy stra_above_M10 -pattern {{name: comp_above_M10} {nets: {VDD VSS}} {offset: {0 0}}} -design_boundary
+compile_pg -strategies stra_above_M10 -ignore_drc
+
+create_pg_vias -nets {VDD VSS} -from_layers M9 -to_layers M11 \
+    -via_masters {VIAGEN910_1 VIAGEN1011_1} -drc no_check
+
+## Success
+
+proc kz_gen_power_settings {} {
+    remove_vias [get_vias -filter "net_type == ground"]
+    remove_vias [get_vias -filter "net_type == power"]
+    remove_shapes [get_shapes -of [get_nets -hier -physical_context VDD]]
+    remove_shapes [get_shapes -of [get_nets -hier -physical_context VSS]]
+    remove_pg_strategies -all
+    remove_pg_strategy_via_rules -all
+    remove_pg_patterns -all
+
+    ##
+    ## Settings
+    ##
+
+    # read_def ./innov_viadef.def
+    set_pg_strategy_via_rule VIA_NIL -via_rule {{{intersection: undefined} {via_master:NIL}}}
+
+    create_pg_wire_pattern wire_base -direction @d -layer @l -width @w -spacing @s -pitch @p -track_alignment @t -parameters {d l w s p t}
+    create_pg_wire_pattern seg_base  -direction @d -layer @l -width @w -spacing @s -pitch @p -track_alignment @t -low_end_reference_point @low -high_end_reference_point @high -parameters {d l w s p t low high}
+}
+
+proc kz_gen_power_m5 {} {
+    ##
+    ## M1 - M2
+    ##
+
+    create_pg_std_cell_conn_pattern m1_rail_color -layers {M1} -rail_width {@wtop @wbottom} -parameters {wtop wbottom} 
+    set_pg_strategy m1_rail_strategy -pattern {{name: m1_rail_color} {nets: VDD VSS} {parameters: {0.090 0.090}}} -core -blockage {{layers: M1} {placement_blockages:all}}
+    compile_pg -strategies {m1_rail_strategy} -via_rule VIA_NIL
+
+    create_pg_std_cell_conn_pattern m2_rail_color -layers {M2} -rail_width {@wtop @wbottom} -parameters {wtop wbottom}
+    set_pg_strategy m2_rail_strategy -pattern {{name: m2_rail_color} {nets: VDD VSS} {parameters: {0.064 0.064}}} -core -blockage {{layers: M2} {placement_blockages:all}}
+    compile_pg -strategies {m2_rail_strategy} -via_rule VIA_NIL
+    create_pg_vias -nets {VDD VSS}  -from_layers M1 -to_layers M2 -from_types lib_cell_pin_connect -to_types lib_cell_pin_connect -via_masters VIAGEN12_RECT_1 -allow_parallel_objects
+
+    ##
+    ## - M3 - M5
+    ##
+
+    create_pg_composite_pattern comp_M5 -nets {VDD VSS} \
+        -add_patterns \
+        { \
+              {{pattern: wire_base} {nets: {VDD}}  {parameters: vertical   M5   0.278 0.102  5.000 track} {offset:  1.940}} \
+              {{pattern: wire_base} {nets: {VSS}}  {parameters: vertical   M5   0.278 0.102  5.000 track} {offset:  3.060}} \
+          }
+
+    set_pg_strategy stra_M5 -pattern {{name: comp_M5} {nets: {VDD VSS}} {offset: {0 0}}} -core
+    compile_pg -strategies stra_M5 -via_rule VIA_NIL -ignore_drc
+    report_pg_strategies stra_M5
+    set core [get_attribute [get_core_area] bbox]
+    set shrunk_core [get_attribute [resize_polygons $core -size -0.1] bbox]
+    create_pg_vias -nets {VDD VSS} -from_layers M2 -to_layers M5 -within_bbox $shrunk_core\
+        -via_masters {VIAGEN23_RECT_1 VIAGEN34_RECT_1 VIAGEN45_RECT_1} -drc no_check
+}
+
+proc kz_gen_power_m6_m9 {} {
+    create_pg_composite_pattern comp_M6_M9 -nets {VDD VSS} \
+        -add_patterns \
+        { \
+              {{pattern: wire_base} {nets: {VDD}}  {parameters: horizontal M6   1.160 0.102 10.400 track} {offset:  2.180}} \
+              {{pattern: wire_base} {nets: {VSS}}  {parameters: horizontal M6   1.160 0.102 10.400 track} {offset:  4.820}} \
+              {{pattern: wire_base} {nets: {VDD}}  {parameters: vertical   M7   0.600 0.102  5.120 track} {offset:  1.820}} \
+              {{pattern: wire_base} {nets: {VSS}}  {parameters: vertical   M7   0.600 0.102  5.120 track} {offset:  3.100}} \
+              {{pattern: wire_base} {nets: {VDD}}  {parameters: horizontal M8   1.280 0.102 10.458 track} {offset:  2.162}} \
+              {{pattern: wire_base} {nets: {VSS}}  {parameters: horizontal M8   1.280 0.102 10.458 track} {offset:  4.808}} \
+              {{pattern: wire_base} {nets: {VDD}}  {parameters: vertical   M9   1.638 0.102 10.080 track} {offset:  2.477}} \
+              {{pattern: wire_base} {nets: {VSS}}  {parameters: vertical   M9   1.638 0.102 10.080 track} {offset:  7.517}} \
+          } -via_rule { {intersection: all} {via_master: NIL} }
+
+    set_pg_strategy stra_M6_M9 -pattern {{name: comp_M6_M9} {nets: {VDD VSS}} {offset: {0 0}}} -core
+    # set_pg_strategy_via_rule VIA_ADJ -via_rule {{intersection: adjacent} {via_master: {VIAGEN56_RECT_1 VIAGEN67_RECT_1 VIAGEN78_1 VIAGEN89_1}}}
+
+    report_pg_strategies stra_M6_M9
+    compile_pg -strategies stra_M6_M9 -via_rule VIA_NIL -ignore_drc
+
+    create_pg_vias -nets {VDD VSS} -from_layers M5 -to_layers M6 -via_masters {VIAGEN56_RECT_1} -drc no_check
+    create_pg_vias -nets {VDD VSS} -from_layers M6 -to_layers M7 -via_masters {VIAGEN67_RECT_1} -drc no_check
+    create_pg_vias -nets {VDD VSS} -from_layers M7 -to_layers M8 -via_masters {VIAGEN78_1} -drc no_check
+    create_pg_vias -nets {VDD VSS} -from_layers M8 -to_layers M9 -via_masters {VIAGEN89_1} -drc no_check
+}
+
+proc kz_gen_power_m10_m11 {} {
+    create_pg_composite_pattern comp_above_M10 -nets {VDD VSS} \
+        -add_patterns \
+        { \
+              {{pattern: wire_base} {nets: {VDD}}  {parameters: horizontal M10 10.800 0.102 28.800 track} {offset:  7.760}} \
+              {{pattern: wire_base} {nets: {VSS}}  {parameters: horizontal M10 10.800 0.102 28.800 track} {offset: 22.160}} \
+              {{pattern: wire_base} {nets: {VDD}}  {parameters: vertical   M11 10.800 0.102 28.800 track} {offset:  7.760}} \
+              {{pattern: wire_base} {nets: {VSS}}  {parameters: vertical   M11 10.800 0.102 28.800 track} {offset: 22.160}} \
+          } -via_rule { {intersection: all} {via_master: NIL} }
+
+    set_pg_strategy stra_above_M10 -pattern {{name: comp_above_M10} {nets: {VDD VSS}} {offset: {0 0}}} -design_boundary
+    compile_pg -strategies stra_above_M10 -via_rule VIA_NIL -ignore_drc
+
+    create_pg_vias -nets {VDD VSS} -from_layers M9 -to_layers M10 -via_masters {VIAGEN910_1} -drc no_check
+    create_pg_vias -nets {VDD VSS} -from_layers M10 -to_layers M11 -via_masters {VIAGEN1011_1} -drc no_check
+}
+```
+
+
+# Manual Nets
+
+```tcl
+set core [get_attribute [get_core_area] bbox]
+set core_xmin [lindex $core 0 0]
+set core_ymin [lindex $core 0 1]
+set core_xmax [lindex $core 1 0]
+set core_ymax [lindex $core 1 1]
+set shrunk_core [get_attribute [resize_polygons $core -size -10] bbox]
+create_pg_pattern_shapes     -width 1.160 -net VDD -low_end $core_xmin -high_end $core_xmax -start 2.180 -yPitch 10.400     -direction horizontal -layer M6 -mark_as stripe -mask_pattern alternate_column -mask {mask_one}
+create_pg_pattern_shapes     -width 0.600 -net VDD -low_end $core_xmin -high_end $core_xmax -start 1.820 -xPitch 5.120     -direction vertical   -layer M7 -mark_as stripe -mask_pattern alternate_column -mask {mask_one}
+```
+
+# Via Defs
+
+```text
+VERSION 5.8 ;
+UNITS DISTANCE MICRONS 1000 ;
+
+VIAS 10 ;
+- VIAGEN12_RECT_1
+ + VIARULE VIAGEN12_RECT
+ + CUTSIZE 80 32
+ + LAYERS M1 VIA1 M2
+ + CUTSPACING 109 83
+ + ENCLOSURE 25 0 25 0
+ ;
+- VIAGEN23_RECT_1
+ + VIARULE VIAGEN23_RECT
+ + CUTSIZE 80 32
+ + LAYERS M2 VIA2 M3
+ + CUTSPACING 110 83
+ + ENCLOSURE 25 0 25 3
+ ;
+- VIAGEN34_RECT_1
+ + VIARULE VIAGEN34_RECT
+ + CUTSIZE 80 32
+ + LAYERS M3 VIA3 M4
+ + CUTSPACING 110 84
+ + ENCLOSURE 25 13 40 4
+ ;
+- VIAGEN45_RECT_1
+ + VIARULE VIAGEN45_RECT
+ + CUTSIZE 100 40
+ + LAYERS M4 VIA4 M5
+ + CUTSPACING 90 80
+ + ENCLOSURE 138 0 20 30
+ ;
+- VIAGEN56_RECT_1
+ + VIARULE VIAGEN56_RECT
+ + CUTSIZE 40 100
+ + LAYERS M5 VIA5 M6
+ + CUTSPACING 80 90
+ + ENCLOSURE 20 10 20 10
+ ;
+- VIAGEN67_RECT_1
+ + VIARULE VIAGEN67_RECT
+ + CUTSIZE 100 40
+ + LAYERS M6 VIA6 M7
+ + CUTSPACING 90 80
+ + ENCLOSURE 10 20 10 20
+ ;
+- VIAGEN78_1
+ + VIARULE VIAGEN78
+ + CUTSIZE 62 62
+ + LAYERS M7 VIA7 M8
+ + CUTSPACING 89 64
+ + ENCLOSURE 20 9 0 27
+ ;
+- VIAGEN89_1
+ + VIARULE VIAGEN89
+ + CUTSIZE 62 62
+ + LAYERS M8 VIA8 M9
+ + CUTSPACING 64 89
+ + ENCLOSURE 27 0 27 0
+ ;
+- VIAGEN910_1
+ + VIARULE VIAGEN910
+ + CUTSIZE 414 414
+ + LAYERS M9 VIA9 M10
+ + CUTSPACING 595 396
+ + ENCLOSURE 18 72 18 72
+ ;
+- VIAGEN1011_1
+ + VIARULE VIAGEN1011
+ + CUTSIZE 414 414
+ + LAYERS M10 VIA10 M11
+ + CUTSPACING 595 396
+ + ENCLOSURE 72 18 72 18
+ ;
+END VIAS
+
+END DESIGN
+```

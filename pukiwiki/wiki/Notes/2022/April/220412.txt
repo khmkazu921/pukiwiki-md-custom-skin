@@ -1,0 +1,167 @@
+#notemd
+# Special Lecture: Manufacturing Engineering (堀池さん)
+
+## Service Scope
+
+  - Package
+      - Substrate  
+        a substance or surface that an organism grows and lives on and
+        is supported by, package base plate
+      - SI/PI simulation  
+        Signal \[Silicon\] Integrity / Power Integrity
+    <!-- end list -->
+      - Thermal simulation
+      - Warpage :: an unconventional bending or twisting out of the
+        shape of a plastic part that is easily recognizable. 反り
+
+## PdM :: Production Management
+
+  - revenue
+      - Mass Production + Design
+  - kyary
+      - トヨタから不良ゼロを要求される
+      - PPM :: Parts Per Million, bad products per 1,000,000
+      - 50PPM以下
+  - ZKD3
+  - IoT Edge, 1 year drive with coin battery
+      - MRAM
+  - Digi Camera
+      - SLVSEC
+  - AWS Data Server :: US Project
+      - So many mass production
+  - Oppo
+      - NAND Flash
+  - Devise to reduce Error Circuits
+
+### IC Supply Chain
+
+  - TSMC, ASE, Sigurd
+
+### Package
+
+  - Interposer  
+    65nm in alchip
+
+  - GDDR
+
+# Daily Meeting
+
+# Self Study
+
+  - Data Skew  
+    the timing variations between data signals from a device.
+
+  - Trace Skew  
+    the timing difference caused by the different trace lengths of all
+    the data and clock signals on a pc board.
+
+  - Prop Variations  
+    timing variations between the input clock and the output data
+    signals from a device.
+
+  - Clock Jitter  
+    including jitter caused by data intersymbol interference.
+
+  - Pad  
+    Chip IOs
+
+  - Pad ring  
+    a ring around the chip that contains all the pads and ESD protection
+    structures
+
+  - CoWoS  
+    has \*a silocon-based interposer& between a Substrate and Chips like
+    below
+
+## DFT metric
+
+  - ATPG  
+    Automatic Test Pattern Generation/Generator enables automatic test
+    equipment to distinguish between the correct circuit behavior and
+    the faulty circuit behavior caused by defects.
+
+## Operating/Process Corner
+
+[links](https://www.edaboard.com/threads/lets-disscuss-the-sign-off-sta-corner-problems.187107/)
+
+  - BC  
+    Best Case
+  - ML  
+    Max Leakage
+  - LT  
+    low temp
+  - WC  
+    Worst Case, low voltage & low performance
+  - WCL  
+    WC Low temp
+  - TC  
+    Typical condition
+
+## Structural Testing
+
+  - performed using the static stuck-at fault model
+      - forcing a 1 on a stuck-at 0 node (logic which is stuck at 0) and
+        then applying values at the supporting gate inputs that should
+        allow the good value to propagate to an observation point. If
+        the value at the observation point differs from the expected
+        value, then a fault has been detected.
+
+## AC scan
+
+  - conducts an at-speed sample cycle to verify timing compliance.
+
+① 導通テスト ISVM
+
+② DCテスト IIH/IIL ( Input Leakage Test) , VSIM
+
+VOH/VOL ( Output Level Test) ISVM
+
+③ ファンクショナル・テスト
+
+VIL/VIH テスト VOH/VOL テスト IOL/IOH テスト HiZ テスト 各種機能テスト・パターンによる機能テス ト 最大動作速度
+電源電流 動作電源電流
+
+④ ACテスト
+
+[ac scan](https://siliconaid.com/images/ACScanTestAustin.pdf)
+
+タイミングコンプライアンスを検証するために高速サンプルサイクルを実行し ます。
+
+エンジニアは、設計の重要なタイミングパスが製造後にシリコンの仕様を満た していることを確認することにより、周波数コンプライアンスを検証します。
+この分析は、各レジスタまたは出力ピンのいわゆるエンドポイントで実行され ます。
+
+input-setup、input-hold、output-validなどのピンタイミング仕様は、ピン
+ごとに1つのワーストケースの最長パスと1つのベストケースの最短パスが指定
+されたセットアップ内にあることを確認することによって検証されます。 -タ
+イミングゾーンを保持します。遅延障害を特定するために、ACスキャンはエン
+ドポイントごとに多数のパスを実行し、遅延が発生する可能性のあるクリティ カルパスを特定しようとします。これにより、クリティカルパスになる可能性
+があります。
+
+ACスキャンという用語は、部品を高速でテストすることを意味するものではあ りません。実際、スキャンを高速で実行するには、非常に高いレベルの電力消
+費が必要になり、パワーレール、クロックツリー、およびスキャンアーキテク
+チャの過剰設計が必要になります。DCスタックアットスキャンとACスキャンの
+主な違いは、サンプルサイクル中のクロッキングです。ACスキャンの場合、信 号の起動とキャプチャのみが高速である必要があります。
+
+ACスキャンは多くの高性能IC設計に役立つ可能性がありますが、組み込みの複
+雑なIPブロックには必要です。また、今日のナノメートルスケールのプロセス
+では、遅延が主な故障モードです。機能ベクトルは、構造遅延障害の検出と分 離において包括的ではありません。ほとんどの場合、これらの微妙な障害を検
+出するための最も効率的で包括的な方法は、静的タイミング分析から特定され たクリティカルパスを使用したACスキャンを使用することです。
+
+ACスキャンはいくつかの機能テストを置き換えることができます。これにより、
+非常に正確な信号タイミングとエッジ配置、複雑なシーケンス機能、および高
+周波データレートの必要性を減らすことができます。また、ATPGによって自動 的に生成される非常にポータブルなベクトルも提供します。⑤
+SCANテスト（ス トラクチャル・テスト）⑥ 電源関連のテスト• 電圧裕度• 電源電流• 故障の発 見(IDDQ、等)
+
+ACスキャンの基本ACスキャン の障害モデルは次の2つのカテゴリに分類されます。
+
+•STRおよびSTF信号を検出し、ゲートまたはルートに適用されて総遅延を決定 する遷移遅延モデル。
+
+•ネット、ノード、およびゲートで構成される完全に記述されたパスウェイ上
+でSTRおよびSTF信号を検出し、ほとんどの場合、クリティカルパスの微妙な遅
+延を検出するために使用されるパス遅延モデル。
+
+障害遷移遅延テストは、1つの状態要素または一次入力から開始され、ゲート またはノードで障害を実行し、別の状態要素でキャプチャされるか、一次出力
+ピンで直接観察されます。ACスキャンとスタックアットスキャンテストの主な 違いは、分析にタイミングを追加することです。
+
+ゲートの出力は、最初に失敗値に設定する必要があります。失敗値を通過値に 遷移させ、その値を観測点に伝播するには、ベクトルペアを適用する必要があ
+ります。伝播が遅い場合は、失敗値がキャプチャされます。

@@ -1,0 +1,91 @@
+#notemd
+# All-hands Forum
+
+## Furuzono-san
+
+  - つくば市
+  - 採用
+  - TSMC Blockchain
+  - PEZY
+  - Advantest, Monza + Artemis
+  - Nintendo, Phoenix
+
+# Training
+
+## init_design.tcl.12nm.boundary_cells \> unsource file
+
+``` tcl
+#Error: unknown command '-voltage_area' (CMD-005)
+if {$TAP_LIB_CELL != "" && $TAP_DISTANCE != ""} {
+    create_placement_blockage -type hard -boundary {{3065.3200 863.1430} {3086.6400 4324.6940}} -name temp_1
+    create_tap_cells -lib_cell $TAP_LIB_CELL -distance $TAP_DISTANCE -pattern stagger -skip_fixed_cells -enable_prerouted_net_check -voltage_area DEFAULT_VA 
+    remove_placement_blockages temp_1
+    create_placement_blockage -type hard -boundary {{767.0800 2722.6080} {767.0800 2792.8800} {3065.3200 2792.8800} {3065.3200 2529.3600} {767.0750 2529.3600} {767.0750 2599.6320} {250.6080 2599.6320} {250.6080 2722.6080}} -name temp_2
+    create_placement_blockage -type hard -boundary {{3067.2400 863.2320} {3144.9600 1034.5700}} -name temp_22
+    create_tap_cells -lib_cell $TAP_LIB_CELL -distance 10 -pattern stagger -skip_fixed_cells -enable_prerouted_net_check -voltage_area DEFAULT_VA 
+    remove_placement_blockages temp_2
+    remove_placement_blockages temp_22
+    create_placement_blockage -type hard -boundary {{3087.7920 1035.6480} {3093.4560 4324.6940}} -name temp_3
+
+    # MODIFIED @220624
+    #    create_tap_cells -lib_cell $TAP_LIB_CELL -distance 34 -pattern stagger -skip_fixed_cells -enable_prerouted_net_check -voltage_area {PD_VDD_IO} -prefix io_
+    create_tap_cells -lib_cell $TAP_LIB_CELL -distance 34 -pattern stagger -skip_fixed_cells -enable_prerouted_net_check -voltage_area DEFAULT_VA -prefix io_
+    remove_placement_blockages temp_3
+    create_placement_blockage -type hard -boundary {{2762.9280 2559.8920} {3087.7920 2564.7350}} -name temp_4
+
+    # MODIFIED @220624
+    create_tap_cells -lib_cell $TAP_LIB_CELL -distance 4 -pattern stagger -skip_fixed_cells -enable_prerouted_net_check -voltage_area DEFAULT_VA -prefix io_ -offset 0.4    
+    #create_tap_cells -lib_cell $TAP_LIB_CELL -distance 4 -pattern stagger -skip_fixed_cells -enable_prerouted_net_check -voltage_area {PD_VDD_IO} -prefix io_ -offset 0.4
+    remove_placement_blockages temp_4 
+} else {
+    puts "RM-error: TAP_LIB_CELL or TAP_DISTANCE is not specified, which is required. Please correct it."
+}
+#Warning: Routing direction of metal layer PO is neither "horizontal" nor "vertical".  PDC checks will not be performed on this layer. (PDC-003)
+#Warning: Grid  is not found. Via0 alignment is disabled. (PDC-013)
+#PDC app_options settings =========
+# place.legalize.enable_prerouted_net_check: 1
+# place.legalize.num_tracks_for_access_check: 1
+# place.legalize.use_eol_spacing_for_access_check: 0
+# place.legalize.allow_touch_track_for_access_check: 1
+# place.legalize.reduce_conservatism_in_eol_check: 0
+# place.legalize.preroute_shape_merge_distance: 0.0
+ #    place.legalize.enable_non_preferred_direction_span_check: 0
+
+```
+
+### CHF-136
+
+> CHF-136 NAME CHF-136 (warning) Row (%.4f, %.4f, %.4f, %.4f) is not
+> wide enough to accommodate %s.
+> 
+> DESCRIPTION This message indicates that the tool has detected a row
+> that is not wide enough to accommodate a tap cell insertion feature
+> that requires shifting the location of the tap cells.
+> 
+> WHAT NEXT Before inserting tap cells, insert placement blockages in
+> the rows that are not wide enough to accommodate shifting tap cells or
+> turn-off the feature listed in the warning message.
+
+## SEC-51
+
+> SEC-51 NAME SEC-51 (error) This site is not licensed for '%s'.
+> 
+> DESCRIPTION A possible cause is that no such feature exists. The
+> feature could not be found in the license file.
+> 
+> A possible problem is that the version is not supported at the server
+> end. The version specified in the checkout request is greater than the
+> highest version number the daemon supports.
+> 
+> A possible problem is that the server does not support this feature or
+> the feature has expired or has not yet started (on the server node).
+> 
+> WHAT NEXT Check to make sure that the license file supports this
+> version
+
+> SEL-005 NAME SEL-005 (error) Nothing matched for %s
+> 
+> DESCRIPTION The pattern(s) which you specified did not match any
+> objects.
+> 
+> WHAT NEXT Check the values which you entered.

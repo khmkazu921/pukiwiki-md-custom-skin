@@ -1,0 +1,87 @@
+#notemd
+
+[[Notes]]
+
+### Arrange output with `pr`
+
+```bash
+for i in $(seq 10); do 
+  echo $i
+done | pr -T3
+```
+
+### Python in bash file
+
+```bash
+runjson="./run.json"
+python3 <<EOF
+import json   
+with open('$runjson', 'r') as cfg:
+	data = json.load(cfg)
+print(json.dumps(data,indent=4))
+EOF
+```
+
+### Watchdog for `ls`
+
+```bash
+watch ls
+```
+
+### `read` with readline-like behaviour
+
+```bash
+items=(a b c d e f g)
+for item in ${items[@]}; do 
+  history -s "$item";
+done # readline-like behav
+read -r -e -d $'\n' -p "Please input: " -i ${item[0]} res;
+```
+
+### `sed`
+
+```bash
+echo abc | sed 's/a/b/g'
+echo abc | sed 's%a%b%g'
+echo abc | sed 's|a|b|g'
+```
+
+### Set variable from command
+
+```bash
+TODAY=$(date '+%Y%m%d')
+```
+
+### See gz files
+
+```bash
+zcat
+zless
+```
+
+### Calculation in shell
+
+```text
+echo 1+1 | bc
+echo $((1+1))
+expr 1 + 1
+```
+
+### Change prompt style
+
+```sh
+#!/bin/tcsh
+# Colors!
+set     red="%{\033[1;31m%}"
+set   green="%{\033[0;32m%}"
+set  yellow="%{\033[1;33m%}"
+set    blue="%{\033[1;34m%}"
+set magenta="%{\033[1;35m%}"
+set    cyan="%{\033[1;36m%}"
+set   white="%{\033[0;37m%}"
+set     end="%{\033[0m%}"
+
+set prompt="${green}[%m${white}@${blue}%c2]${end}$ "
+
+unset red green yellow blue magenta cyan yellow white end
+```

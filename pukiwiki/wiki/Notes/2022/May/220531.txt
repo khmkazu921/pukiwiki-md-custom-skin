@@ -1,0 +1,449 @@
+#notemd
+# Special Lecture FE design
+
+  - FE & BE cooperation
+    
+      - DFT design
+
+  - FE \> BE
+    
+      - CF RTL  
+        Clean File
+
+  - 仕様
+    
+      - 価値、コスト
+
+  - Validation vs Verification
+    
+      - Validation  
+        解決するか
+      - Verification  
+        仕様に従っているか
+
+  - 実装仕様書が重要
+
+  - Formal検証
+    
+      - Formality  
+        等価性検証
+      - VC-Formal  
+        仕様に合っているか
+
+  - 検証項目抽出
+
+PD0 PD1? Logic Synthesis 触ってはいけないところ？ 連絡が結構あるのか 実装仕様書 :
+実際は、多くは共通だったりして、困らないのでは？
+
+# Self Study
+
+## Lab 4
+
+  - check if there is a ideal_clocks?
+
+<!-- end list -->
+
+``` tcl
+lappend timing_check_defaults ideal_clocks
+check_timing -verbose
+
+# To identify if source latency is calculated
+report_timing -group SD_DDR_CLK -to [get_ports sd_DQ[3]]
+```
+
+## Unit 5
+
+### Objectives
+
+Timing checks during STA
+
+1.  Recovery, Removal
+2.  Clock Gating Checks
+3.  Data to Data Checks
+4.  Minimum Pulse Width Checks
+
+Analyze timing that involves
+
+1.  Latches with Time borrowing
+2.  Multi cycle paths
+3.  Combinational feedback loops
+4.  Non unate cells along clock paths
+
+### Timing ??
+
+  - nochange
+
+  - min_pulsewidth ::
+
+  - max_skew :: The maximum time allowed between two clock
+    signals for the rising or falling edges.
+
+  - min period :: This is a design rule, which can specify a minimum
+    clock period requirement.
+
+  - clock separation :: This is a constraint for master/slave latches
+    for a minimum required clock separation between twoclocks to avoid
+    the latch from becoming transparent.
+
+  - nosequential :: This is similar to a data to data setup and hold
+    check between twodata pins.
+
+  - data2data_setup / data2data_hold
+
+  - clk_gatingsetup / clock_gatinghold
+
+### Asynchronous Clear/Reset
+
+  - recovery  
+    The minimum amount of time required for an asynchronous control
+    signal to become inactive and a subsequent active edge of the clock,
+    (this is similar to a setup check).
+  - removal  
+    The minimum amount of time required between a clock edge that occurs
+    while an asynchronous control signal is active and the subsequent
+    removal of the asynchronous control signal, (this is similar to a
+    hold check).
+
+<!-- end list -->
+
+  - `library recovery time` in report_timing has negative
+    recovery time:
+      - clear signal arrives after capture edge (like setup violation)
+  - report_pathgroup
+      - `<none>`  
+        This path group contains timing paths which are unconstrained.
+    <!-- end list -->
+      - `**clock_gating_default**` `**async_default**`
+    
+      - `**default**` :: This path group contains timing paths not
+        constrained by a clock but constrained with
+        `set_max_delay/set_min_delay`.
+    
+      - check for under stand
+        
+        ``` tcl
+        report_timing -group **async_default** -delay min
+        ```
+
+### Clock Gating Check
+
+``` tcl
+set_clock_gating_check -setup 0.20 [get_clocks SYS_CLK] 
+report_timing -to [getpins U10/A]
+```
+
+### Data to Data Check
+
+  - **Even if FFs exist outside, internal d2d checks are required**
+
+<!-- end list -->
+
+``` tcl
+# Numbers determined by chip specification
+create_clock -period 10 [get_ports Clk1] [
+set_data_check -setup -from [get_ports DataRdy] \
+    -to [get_ports Data] 0.5
+set_data_check -hold -from [get_ports DataRdy] \
+    -to [get_ports Data] 0.2
+report_timing -to [get_ports Data]
+```
+
+### Clock Min Pulse Width
+
+``` tcl
+set_min_pulse_width
+report_min_pulse_width -path_type ___
+```
+
+  - open/close edge clock latency
+
+### report_analysiscoverage
+
+  - Use to check analysis just learned
+
+### Latch based analysis
+
+  - **Latches are either end points or through points**
+      - Latch has D-\>Q & G-\>Q timing arc
+      - Zero Time Borrow :: data arrives before the latch opens
+      - Time Borrow :: data arrives after the latch opens for setup
+  - Positive slack :: **transparency open**
+  - Negative slack :: **transparency close**
+  - Early path :: data arrives before the transparency period of latch
+
+<!-- end list -->
+
+``` tcl
+report_timing -trace_latch_borrow -to U1/A
+
+# Latch D pin can be a through or an end point, but, NOTa start point
+set_app_var timing_enable_through_paths true
+
+report_timing -inp -from FF1/CP -to FF2/D
+
+# to understand latency calculation at each edge
+report_clock_timing -clock $clk -skew -verb
+
+# To skip the early paths from reporting
+set timing_report_skip_early_paths_at_intermediate_latches true
+```
+
+  - 5-34 ??
+
+### Multicycle Paths
+
+``` tcl
+set_multicycle_path 6 -from reg[26]/CP -to reg/D
+report_exceptions
+
+set_multicycle_path -setup 6 -to [get_pins "*reg[*]/D"]
+set_multicycle_path -hold  5 -to [get_pins "*reg[*]/D"]
+
+# To report a multi cycle path 
+report_timing -exceptions all -from *reg[26]/CP -to *reg/D
+```
+
+### Combinational Feedback Loops
+
+``` tcl
+check_timing -verbose
+
+# To disable verifications of combinational loops
+set_disable_timing ___
+```
+
+  - Combinational loops are NOT verifiable using STA
+
+### Non-Unate Cells
+
+``` tcl
+set_sense -positive/-negative MUX/Z
+```
+
+## Lab 5
+
+  - Latch related constraintDifficult
+  - How should I calculate Q10????
+
+## Unit 6
+
+### Objectives
+
+  - Identify key pieces ofa timing report showing constraint issues
+  - Debug Timing Reports when the findings are incorrect/questionable
+
+### Identify key
+
+``` tcl
+# Easier to analyze
+set_app_var timing_input_port_default_clock true
+check_timing -verbose
+
+# To separate net and cell delays use:
+report_timing -input_pins
+
+# for more details on "time given to startpoint" with latches and time
+# borrowing
+report_timing -trace_latch_borrow
+
+report_clock -skew
+
+write_sdc
+```
+
+  - SDF  
+    Simulation Delay File
+
+<!-- end list -->
+
+1.  Incorrect source latency in timing report
+    
+      - Debug with `report_clock -skew`
+
+2.  generated clock
+    
+      - Zero source latency
+    
+      - rise-rise and rise-fall edge relationship cannot exist
+    
+      - solution :: add source pin
+        
+        ``` tcl
+        create_generated_clock -name CLKdiv2 -divide_by 2 \
+            -source [get_pins Udiv/CP] [get_pins Udiv/Q]
+        ```
+
+3.  Sequential Loop in source latency network
+    
+    ``` tcl
+    # Debug with
+    check_timing -override_defaults generated_clocks -verbose
+    
+    # To break the loop
+    set_sense -stop_propagation -clocks <master_clock_name> [get_pins U4/Z]
+    set_disable_timing -from A -to Z [get_cells v4]
+    ```
+
+4.  Source Latency included with input delay
+    
+      - source latency is applied but remains zero?
+        
+        ``` tcl
+        set_clock_latency -source -early 1.1 CLK0
+        ```
+    
+      - Start point is an input port with input delay
+
+5.  Zero CRPR
+    
+      - clock was ideal
+
+6.  Zero CRPR with propagated clock
+    
+    ``` tcl
+    # have CRPR
+    report_crpr 
+    # not have CRPR = omit CRP with threshold distance
+    report_timing
+    ```
+
+7.  Incorrect CRPR common point
+    
+      - Visual common point vs Topological common point
+
+8.  Zero CRP in timing report
+    
+      - When a start point is listed as a clock source instead of a
+        register, this is an indication that the clock is being directly
+        captured as a data signal
+
+9.  Unexpected Report with report_timing
+    -slack_greater
+    
+      - reports that there are no paths.
+      - The `-slack_greater_than` option is a post-processing filter.
+          - without it \> with it
+
+10. PBA WNS report_qor vs report_timing
+    
+      - report_timing  
+        consider worst GBA endpoints
+      - report_qor  
+        consider all endpoints
+
+11. Negative cell delay in timing report
+    
+      - CCS delay calculation derived from table results in negative
+        delay
+      - The Library Compiler `check_library` tests revealed several
+        mismatches and all with large falling transitions and small load
+
+12. No path in timing report
+    
+    ``` tcl
+    # To find out cause
+    find_blocking_arcs
+    ```
+    
+      - EN1 port is set to zero\! (stack-at??)
+
+## Unit 7
+
+Slew Calculation
+
+### Objective
+
+  - Achieve timing accuracy by reducing pessimism using Path Based
+    Analysis (PBA)
+  - Differentiate path vs. exhaustive PBA modes
+  - Identify situations in which PBA is not suitable / suitable / a must
+  - Discuss the purpose behind using Derate only exhaustive PBA and how
+    to use it
+
+### GBA vs PBA
+
+  - GBA  
+    Graph Based Analysis
+    
+      - faster analysis
+      - uses the worst input slew of a cell to calculate that cell’s
+        output transition
+
+  - PBA  
+    Path Based Analysis
+    
+      - path-specific slew propagation
+      - In an AOCV(advanced on-chip variation) flow, path-based analysis
+        recalculates both slew AND path depth
+      - **PBA slack can never be worse than GBA’s**
+      - Computationally Prohibitive
+          - too large if apply PBA to entire design
+
+### PBA
+
+``` tcl
+report_timing -pba_mode path|exhaustive
+get_timing_paths -pba_mode path|exhaustive
+```
+
+  - path  
+    only nworst and max_paths
+    
+      - **to get a quick idea of what can be recovered**
+
+  - exhaustive  
+    all (up to 25K per each endpoint)
+    
+      - **recover that last bit of pessimism**
+      - algo :: worst \> second worst \> 25000
+      - exhaustive PBA for signoff stages
+      - Recommendations
+          - default `-nworst`
+          - default (or lower) setting for `-slack_lesser_than`
+          - `pba_exhaustive_endpoint_path_limit` to 1000 for limiting
+            runtime
+
+<!-- end list -->
+
+  - Parasitic back annotation files are required
+      - back-annotation  
+        The process of updating the logical design of a circuit with
+        physically measured values, to allow for more accurate
+        simulation.
+  - with CRPR enabled
+
+### report_delaycalculation vs report_timing -pba
+
+  - report_delaycalculation  
+    not supported in PBA
+    
+    ``` tcl
+    set_annotated_transition 0.2835 -fall I_ORCA_TOP/I_BLENDER/U3610/CI
+    ```
+
+### Ready for PBA?
+
+1.  No, Unrealistic delay or slack includeing I/O delay
+2.  No, Large GBA delay (a few large violating paths)
+      - large fanout in p\&r
+3.  OK, Reasonable GBA slacks
+4.  Exhaustive, positive path
+
+### Derate Only PB
+
+  - Only path deratings are re-evaluated during PBA
+  - Slew recalculation is not performed
+  - Useslew recalculation only if an endpoint shows negative slack in
+    derate-only PBA run
+
+<!-- end list -->
+
+``` tcl
+set_appvar pba_derate_only_mode true
+```
+
+### Summary
+
+  - use -pba_mode path
+  - derate only exhaustive PBA only when path mode PBA shows positive
+    slack

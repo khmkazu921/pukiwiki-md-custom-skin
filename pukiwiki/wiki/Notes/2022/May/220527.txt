@@ -1,0 +1,243 @@
+#notemd
+# Status Meeting
+
+  - Tie-low/high
+
+## Tcl Basics Minato-san
+
+### Basics
+
+  - All variables are strings.
+  - list :: one element {e as}
+  - \[\] :: evaluate first
+  - if {$a\<0} :: expr $a\<0
+  - "" :: No use
+
+<!-- end list -->
+
+``` tcl
+if {$a<0} {set a 0}
+if {$a<0} {
+    set a 0
+}
+puts [expr 1+2+3]
+# 6
+set a -1
+# -1
+if {$a<0} [list set a 0]
+```
+
+### Collection
+
+  - set of object
+
+  - **cannot modify a collection in loop**
+    
+    ``` tcl
+    foreach_in_collection inst [get_cells ...] {
+        if {[get_attribute $inst ...] == ...} {
+            append_to_collection cells2remove $inst
+            ...
+        }
+    }
+    remove_cells cells2remove;
+    ```
+
+### Newline
+
+``` tcl
+proc putl {l} {foreach e $l {puts $e}}
+```
+
+# Self Study
+
+## PT Lab2
+
+  - If you cannot see 'no_clock’, all registers in the design
+    are clocked.
+  - tcl command to answer the questions
+
+<!-- end list -->
+
+``` tcl
+report_analysis_coverage -status untested -check "setup hold"
+report_analysis_coverage -status untested -check min_pulse_width
+report_timing -delay max -from pad[0] -path full_clock
+report_port -output_delay|-verbose pad[0]
+report_timing -delay min -to   pad[0]
+```
+
+``` tcl
+  Point                                                   Incr       Path
+  ------------------------------------------------------------------------------
+  clock PCI_CLK (rise edge)                              0.000      0.000
+  clock network delay (propagated)                       0.000      0.000
+  input external delay                                   2.000      2.000 r
+  pad[0] (inout)                                         0.000      2.000 r
+  pad_iopad_0/PAD (pc3b03)                               0.044      2.044 r
+  pad_iopad_0/CIN (pc3b03)                               0.662 &    2.706 r
+  I_ORCA_TOP/I_PCI_CORE/U24783/Z (aor211d1)              0.205 &    2.910 r
+  I_ORCA_TOP/I_PCI_CORE/d_out_i_bus_reg[0]/D (sdcrq1)    0.004 &    2.914 r
+  data arrival time                                                 2.914
+
+  clock PCI_CLK (rise edge)                              0.000      0.000
+  clock network delay (propagated)                       1.105      1.105
+  clock reconvergence pessimism                          0.000      1.105
+  I_ORCA_TOP/I_PCI_CORE/d_out_i_bus_reg[0]/CP (sdcrq1)              1.105 r
+  library hold time                                     -0.154      0.951
+  data required time                                                0.951
+  ------------------------------------------------------------------------------
+  data required time                                                0.951
+  data arrival time                                                -2.914
+  ------------------------------------------------------------------------------
+  slack (MET)                                                       1.964
+
+pt_shell> set_output_delay -min 1.0 -clock PCI_CLK pad[0]
+1
+pt_shell> update_timing
+...
+1
+pt_shell> report_timing -from pad[0] -delay min
+...
+  Point                                                   Incr       Path
+  ------------------------------------------------------------------------------
+  clock PCI_CLK (rise edge)                              0.000      0.000
+  clock network delay (propagated)                       0.000      0.000
+  input external delay                                   2.000      2.000 f
+  pad[0] (inout)                                         0.000      2.000 f
+  pad_iopad_0/PAD (pc3b03)                               0.044      2.044 f
+  pad_iopad_0/CIN (pc3b03)                               0.451 &    2.495 f
+  I_ORCA_TOP/I_PCI_CORE/U24783/Z (aor211d1)              0.268 &    2.763 f
+  I_ORCA_TOP/I_PCI_CORE/d_out_i_bus_reg[0]/D (sdcrq1)    0.004 &    2.767 f
+  data arrival time                                                 2.767
+
+  clock PCI_CLK (rise edge)                              0.000      0.000
+  clock network delay (propagated)                       2.652      2.652
+  clock reconvergence pessimism                          0.000      2.652
+  I_ORCA_TOP/I_PCI_CORE/d_out_i_bus_reg[0]/CP (sdcrq1)              2.652 r
+  library hold time                                     -0.060      2.592
+  data required time                                                2.592
+  ------------------------------------------------------------------------------
+  data required time                                                2.592
+  data arrival time                                                -2.767
+  ------------------------------------------------------------------------------
+  slack (MET)                                                       0.175
+```
+
+## Student Guide Unit 3
+
+  - 変なおじさんが多い
+
+  - summary report
+
+  - quality of design
+    
+      - displays design details and DRC violations
+      - `report_qor -only violated -max|-min`
+
+  - Are violations internal or in the I/O?
+    
+      - `report_global_timing`
+
+  - Violations sorted by clock
+    
+      - `report_constraint -all_violators -max_delay`
+      - `report_constraint -all`
+
+  - Listing all pins having setup violations
+    
+      - `report_analysis_coverage -status violated -check setup -sort
+        check_type`
+
+  - Listing output port names having untested out_setup checks
+    excluding untested no_paths
+    
+      - `report_analysis_coverage -status untested —check “out_setup”
+                -exclude_untested no_paths`
+
+### `report_timing`
+
+  - Generating Timing Reports Specifying endpoint transition
+      - `report_timing -to FF2/D -delay max_fall`
+  - Edge sensitivity :: negative unate vs non unate
+      - `report_lib -timing_arcs <lib_name> <lib_cell_name>`
+  - **The delay on the hierarchical pins in a timing report is 0.00**
+      - `report_timing -include_hierarchical_pins` shows zero delay on
+        the hierarchical pins.
+  - for each path group
+      - `report_timing -group [get_path_group *]`
+      - `report_timing -sort_by group`
+  - nworst vs max_path
+      - nworst  
+        worst paths per endpoint
+      - max_paths  
+        the single worst path to each endpoint
+    <!-- end list -->
+      - `report_timing -cover_design`
+  - You want the top 10 timing paths for hold captured by the falling
+    edge of SDRAM_CLK and reported as a summary.
+      - `report_timing -delay min —fall_to [get_clocks SDRAM_CLK]
+        -max 10
+                -path end`
+  - Example Reporting.a summary of-top 10 violating end points for setup
+    for the clock: SYS_2xCLK.
+      - `report_timing -path summary -group SYS_2x_CLK -max_paths 10`
+  - Filtering
+      - `report_timing -slack_greater_than -13 -slack_lesser_than -12
+                -max_paths 10 -path_type summary`
+  - Specifying path
+      - \-from -rise_from -fall_from
+      - \-to -rise_to -fall_to
+      - \-through -rise_through -fall_through
+      - \-exclude -rise_exclude -fall_exclude
+      - `report_timing -from A -through {B C} -to D`
+      - `report_timing -exclude [get_ports *]`
+      - **Use the specific pin names** by `get_pins`
+          - `report_cell -connections -verbose U7` to find the pins
+  - Clock ports vs objects
+      - `report_timing -from [get_clocks clk]`
+      - `report_clock_timing` for more information on the clock network
+  - Specify Capturing Clock Edge
+      - `report_timing -fall_to [get_clocks CLK1]`
+  - Specify Net Name
+      - `report_timing -through [get_nets sd_DQ*]`
+  - Half Cycle Path
+      - `report_timing -fall_from [get_clocks clk] -rise_to [get_clocks
+                clk]`
+      - `report_timing _-delay min_ -fall_from [get_clocks clk] -rise_to
+                [get_clocks clk]`
+  - include input pins
+      - ``report_timing _-input_pins+`_ ;``
+      - distinguish *cell delay* and *net delay*
+
+### `report_delay_calculation`
+
+  - NLDM  
+    Non Linear Delay Model
+    
+      - cell delay calculation reporting with NLDM library
+          - `report_delay_calculation -from <pin_name> -to <pin_name>`
+
+  - CCS  
+    composite Current Source (Library Model)
+    
+      - cell delay calculation reporting with CCS model is same as above
+      - Advanced driver modelling = CCS
+      - **Pre-requisites**
+          - detailed parasitics (SPEF)
+          - The library has
+            1.  Current based driver models
+            2.  Advanced receiver capacitance models
+
+<!-- end list -->
+
+  - `report_timing` \!= `report_delay_calculation`
+  - for min delay
+      - `report_delay_calculation -from U1/I -to U1/Z -min`
+
+## Lab3
+
+1.  report_timing -path summary -max_paths 5
+2.  
+3.  report_globaltiming -delay min
+4.  ???

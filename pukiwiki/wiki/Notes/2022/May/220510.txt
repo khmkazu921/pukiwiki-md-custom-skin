@@ -1,0 +1,172 @@
+#notemd
+# Special Lecture 伊藤さん IM sensors
+
+## MIPI (DPHY) SLVS-EC
+
+  - MIPI  
+    Mobile Industry Processor Interface?
+
+  - D-PHY  
+    DDR drive
+
+  - SLVS-EC  
+    Scalable Low Voltage Signaling with Embedded Clock, difficult to
+    obtain data with internal clock
+
+  - AC coupling  
+    AC+DCを含む信号からコンデンサを用いてDCを除去する回路 構成
+
+  - PCB wiring  
+    insertion loss 減衰, retern loss 反射, EMI
+
+  - 誘電損
+
+  - S-parameter  
+    matrix
+
+  - emphasis  
+    送信側
+
+  - equalizer  
+    CTLE, 受信端イコライザ DFE
+
+## MP of fast ATE test borad (PCB design)
+
+### Policy
+
+  - 対抗デバイス方式  
+    system board
+  - loopback test  
+    BIST, DFT test pattern, no need support from customer
+
+### Layout design
+
+  - impedance, same length
+
+  - ground via
+
+  - impedance mismatch??
+
+  - 誘電体, 誘電損？
+
+  - stub, via stub 作らないように, インピーダンスが低下
+
+  - scratch
+
+  - 伊藤さんは、テスト場合はチップを甘やかす
+
+### SIPI simulation
+
+  - inductor  
+    coil, choke, or reactor
+
+### Probe
+
+  - oscilloscope  
+    eye diagram
+
+  - D2C skew  
+    timimng diff of Data to Clock
+
+  - Shmoo check
+
+# 渡辺くんの授業
+
+  - RC high pass filter
+  - Double patterning
+
+# Self Study
+
+## Lab 2
+
+  - There are four macros inside that voltage area are placed on top of
+    one another.
+
+  - on top of one another :: 3つ以上重ねて
+
+  - congestion map with line
+
+  - flyline very fast
+
+  - end point ??
+
+## ICC2 Unit 3
+
+### Place opt Exploration Flow (QoR iterations)
+
+1.  place_opt
+2.  Analyze congestion
+3.  congetsion-focused setup
+4.  rerun place_opt
+
+(if accepted)
+
+1.  Analyze timingm power and area
+2.  timing-, power- and/or area-focused setup
+3.  rerun place_opt
+
+### Pre-placement check
+
+  - Second-Pass synthesis ??
+
+  - Second-Pass Design Setup ??
+
+  - SPG Synthesis :: Synopsys Physical Guidance
+
+  - EMS database :: Enhanced Messaging System, to store checking results
+
+### Design/flow requirement
+
+  - AL  
+    Advanced Legalizer
+  - MCMM  
+    Multi-Corner Multi-Mode, a technique intended to provide high
+    confidence results for timing and other metrics without performing
+    exhaustive simulation of all possible IC conditions.
+  - DEF  
+    created using write_icc2files in DC-G,
+    write_icc2files command writes the design files and Tcl
+    scripts for the current design
+  - HF  
+    High fanout, HF synthesis / buffering occurs during the
+    initial_dre stage
+  - Spare cells  
+    extra gates which are included in a netlist but are not functionally
+    connected and used during the initial design phase.
+  - physical-only cell  
+    **contain only PG pins or no pins, for example: tap, end-cap, filler
+    cells**
+
+<!-- end list -->
+
+  - tap cell??
+
+  - end-cap cell (boundary cell) :: placed at both the ends of each
+    placement row to terminate the row
+
+  - set/reset, enable, select signals :: ideal network constraints on
+    HFN. They need buffering.
+
+  - Library cell purpose :: such as power, hold, cts, optimization.
+    dont_use=true: no purposes
+
+  - Preroute Power Optimization :: leakage, dynamic, total (leakage +
+    dynamic)
+
+  - Vt Swapping :: to possibly reduce leakage power further. Algorithm
+    exchanges LVT cells with identical RVT or HVT cells,
+
+  - SAIF :: Switching Activity Interchange Format
+
+  - TC :: Toggle Count
+
+  - Tr :: Toggle Rate, tr = default_tr\*fclk,
+    
+      - default_togglerate (0.1), frequency is 0.25
+      - tr = 0.1\*0.25=0.025
+
+  - infer_switchingactivity
+
+  - EPs :: esssential points
+
+  - SCIs :: Special Control Inputs such as resets and enables

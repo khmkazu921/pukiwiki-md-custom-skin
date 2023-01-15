@@ -1,0 +1,23 @@
+#notemd
+# DC Compiler NXT
+
+## Runtime Improvements
+
+## Transparent huge page
+
+## BDD-based Register merging
+
+  - BDD  
+    binary decision diagram 二分決定図
+
+## Self-Gating ?
+
+## write_ddc
+
+  - save session
+
+## Fusion Library
+
+  - .db
+
+## TMR

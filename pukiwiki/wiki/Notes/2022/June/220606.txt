@@ -1,0 +1,430 @@
+#notemd
+# Status Meeting
+
+  - tree structure
+      - correct ignore points?
+      - correct sink points?
+      - too many buffer?
+
+<!-- end list -->
+
+``` tcl-synp
+report_clock_qor -type structure
+```
+
+# All-hands Forun
+
+## Furuzono-san
+
+  - TSMC tech information by Nakai-san
+  - SH lockdown is done
+  - E-signature
+  - PEZY
+  - Advantest Monza :: RFQ phase
+  - Nintendo, Canon, Fujitsu…
+
+## IT literacy Yamauchi-san
+
+  - dont send mail to incorrect receiver
+
+# Weekly Meeting
+
+## Takashima-san
+
+  - internship for 2024 new-comers
+  - ZSR1 :: 4GHz
+  - Ansys
+  - Chiptopia
+
+## Others
+
+  - Sakata-san
+      - feedthrough buffer
+
+# Self Study
+
+## Lab9
+
+  - The noise bump area is 1/2 \* height \* width.
+
+  - The slack area is height \* width.
+
+  - **To get pins from nets**
+    
+    ``` tcl
+    get_pins -of_objects n25449
+    ```
+
+<!-- end list -->
+
+``` tcl
+pt_shell> report_noise -verbose -slack_type area
+****************************************
+Report : noise
+        -slack_type area
+        -verbose
+Design : SE_PE
+Version: O-2018.06
+Date   : Mon Jun  6 12:45:41 2022
+****************************************
+
+ analysis mode: report_at_source
+ slack type: area
+
+ noise_region: above_low
+ pin name (net name)       width    height     slack
+ -----------------------------------------------------
+ U11405/A1 (n25449)
+ Aggressors:
+ n25422                 504.7354    0.2962
+ Propagated:
+ T3_reg_190/QN                 -         -
+ Total:                 504.7354    0.2962  153.8006
+
+
+ noise_region: below_high
+ pin name (net name)       width    height     slack
+ -----------------------------------------------------
+ U10296/I (n18535)
+ Aggressors:
+ n19450                 2345.4868   0.2966
+ n3777                  2261.5947   0.2003
+ Propagated:
+ U1615_reg/Q                   -         -
+ Total:                 2311.6680   0.4969  247.7307
+
+
+1
+pt_shell> get_pins -of_objects n25449
+{"T3_reg_190/QN", "U11405/A1"}
+pt_shell> report_noise_calculation -above -low -to U11405/A1 -from T3_reg_190/Q
+****************************************
+Report : noise_calculation
+        -from T3_reg_190/QN
+        -to U11405/A1
+        -low
+        -above
+Design : SE_PE
+Version: O-2018.06
+Date   : Mon Jun  6 12:50:59 2022
+****************************************
+
+Units:  0.001ns  1pF  0.001kOhm
+
+Analysis mode                        : report_at_source
+Region                               : above_low
+Victim driver pin                    : T3_reg_190/QN
+Victim driver library cell           : cb13os120_generic_typ/sdnrb1
+Victim net                           : n25449
+Victim driver effective capacitance  : 0.0058  
+
+Steady state resistance source       : library set iv curve
+Driver voltage swing                 : 1.2000  
+Noise derate height offset           : 0.0000  
+Noise derate height scale factor     : 1.5000  
+Noise derate width scale factor      : 1.5000  
+Noise effort threshold               : 0.2000  
+Noise composite aggressor mode       : disabled
+
+Noise calculations:
+
+Attributes:
+A - aggressor is active
+C - aggressor is a composite aggressor
+D - aggressor is analyzed with detailed engine
+E - aggressor is screened due to user exclusion
+G - aggressor is analyzed with gate level simulator
+I - aggressor has infinite window
+L - aggressor is screened due to logical correlation
+S - aggressor is screened due to small bump height
+X - aggressor is screened due to aggressor exclusion
+
+Height    Width     Area      Aggressor Attributes
+---------------------------------------------------------------------------
+Aggressors:
+n25422                 0.2962    504.7354  74.7470   A
+Total:                 0.2962    504.7354  74.7470 
+
+Noise slack calculation:
+
+Constraint type: library immunity table
+
+Height              Area
+---------------------------------------------------------------------
+Required               0.6009              (0.6009   * 504.7354)  -
+Actual                 0.2962              (0.2962   * 504.7354)
+---------------------------------------------------------------------
+Slack                  0.3047              153.8006
+1
+
+# To exclude nets from analysis or define infinite timing windows for
+# aggressor nets
+set_si_noise_analysis 
+```
+
+## Unit 10 OCV analysis
+
+  - OCV analysis with late/early derating is pessimistic, butit is
+    “safe”
+
+  - Advanced On-Chip Variation provides more realistic variable derating
+    by taking path depth and distance into account
+    
+    ``` tcl
+    report_timing -derate
+    report_timing -path_type full_clock | full_clock_expanded
+    set timing_acocvm_enable_analysis true
+    ```
+
+  - POCV does notrely on path depths to model random variation — instead
+    uses a Gaussian Distribution model for individual cell delays
+    
+      - LVF  
+        Liverty Variation Format for cell delay variation of sigma
+    
+    <!-- end list -->
+    
+      - Sensit = Sigma
+    
+      - Timing analysis uses 3 sigmas :: Slack = m_slack -
+        3\*sigma_slack
+    
+      - settings:
+        
+        ``` tcl
+        # To report POCV coefficient
+        report_ocvm -type pocvm [get_cell U1]
+        # Using input transitions of constraint pin andrelated pin, constraint
+        # sigmawill be calculated using LVF data the library
+        report_ocvm -type pocvm \
+            [get_lib_timing_arcs -from lib/FF/CLK -to lib/FF/D]
+        # Transition variation is off by default. To enable it:
+        set_app_var timing_enable_slew_variation true
+        # Constraint variation is off by default. To enable it
+        set_app_var timing_enable_constraint_variation true
+        ```
+
+  - POCV flow with side file
+    
+    ``` tcl
+    set link_path { * timing.db }
+    read_verilog ...
+    link_design 
+    set read_parasitics_load_location true
+    read_parasitics ...
+    read_sdc ... create_clock ...
+    set_timing_derate -early 0.80
+    set_timing_derate -late 1.20
+    read_ocvm pocv.table
+    read_ocvm distance.table
+    report_ocvm -type pocvm
+    set timing_pocvm_nable_analysis true
+    update_timing
+    report_constraint 
+    report_analysis_coverage
+    report_clock_timing
+    report_timing -variation
+    ```
+
+  - POCV flow with LVF
+    
+    ``` tcl
+    set link_path { * pocv_lvf.db }
+    read_verilog ...
+    link_design 
+    set read_parasitics_load_location true
+    read_parasitics ...
+    read_sdc ... create_clock ...
+    set_timing_derate -early 0.80
+    set_timing_derate -late 1.20
+    read_ocvm pocv.table
+    read_ocvm distance.table
+    report_ocvm -type pocvm
+    set timing_pocvm_nable_analysis true
+    update_timing
+    report_constraint 
+    report_analysis_coverage
+    report_clock_timing
+    report_timing -variation
+    ```
+
+  - POCV debugging
+    
+    ``` tcl
+    pt_shell> report_timing -variation
+    # POCV coefficient
+    pt_shell> report_delay_calculation -derate
+    pt_shell> report_ocvm -type pocvm
+    ```
+
+### Below 16nm
+
+  - AWP  
+    Advanced Waveform Propagation
+
+<!-- end list -->
+
+  - Waveform distortions
+      - Long Tail Effect
+          - Increased metal resistance
+      - Strong Backward Miller Effect
+          - The Miller capacitance from receiver output to input
+            distorts the waveform at the receiver input
+  - Usage
+      - CCS timing and CCS noise data is required
+        
+        ``` tcl
+        set lib ./my_lib.lib
+        read_lib $lib
+        set_check_library_options -reset
+        set_check_library_options -validate {timing noise}
+        set delay_calc_waveform_analysis_mode full_design
+        ```
+
+### set_timingderate
+
+``` tcl
+set_timing_derate -cell_delay -late -clock 1.02 -pocvm_guardband
+set_timing_derate -cell_delay -early -clock 0.98 -pocvm_guardband
+set_timing_derate -cell_delay -late -data 1.05 -pocvm_coefficient_scale_factor
+set_timing_derate -cell_delay -early -data 1.03 -pocvm_coefficient_scale_factor
+```
+
+## Unit 11 ECO
+
+### Power Recovery
+
+``` tcl
+# cell area/internal power recovery driven by downsizing or swapping
+# cells
+fix_eco_power [ -cell_type cell_types]
+              [ -setup_margin margin]
+              [ -attribute attribute_name]
+              [ -verbose]
+```
+
+### DRC + Setup/Hold Fixing
+
+  - Cells with `dont_touch` will not be resized
+  - `write_changes` command generates ASCII list for buffer insertion
+    (`insert_buffer`) and cell upsizing/downsizing (`size_cell`)
+
+<!-- end list -->
+
+``` tcl
+# fixes DRC and Noiseviolations using sizing and buffer insertion
+fix_eco_drc -type <max_transition|max_capacitance|max_fanout|noise>
+          [ -method fixing_method_type]
+          [ -buffer_list list]
+          [ -physical_mode
+             none|open_site|occupied_site|freeze_silicon]
+          [ -hold_margin margin] [ -setup_margin margin]
+          [ -verbose]
+# Verbose mode
+set eco_report_unfixed_reason_max_endpoints 50
+# fix setup/hold timing violations
+fix_eco_timing -type setup
+fix_eco_timing -type hold -buffer_list <buffer_list> \
+    -methods {size_cell insert_buffer}
+# To remove pessimism in s/h fixing with *PBA*
+fix_eco_timing -pba_mode <path_exhaustive>
+```
+
+  - To address any remaining DRC violations
+    1.  Re-execute ECO DRC fixing process
+    
+    2.  Analyze the unfixable reasons and re-execute the fixing process
+        
+        ``` tcl
+        fix_eco_drc -type max_transition -method size_cell -verbose
+        fix_eco_drc -type max_transition \
+            -method {size_cell insert_buffer} \
+            -buffer_list {buf4 buf6 buf8} 
+        ```
+
+### Leakage Recovery
+
+``` tcl
+fix_eco_power -pattern_priority {HVT NVT LVT}
+# prefix, suffix or mid : <= preferred  not preferred =>
+
+# To report Vt Cell Usage
+report_cell_usage -pattern_priority {HVT LVT}
+```
+
+  - the logic may be unconstrained for timing because:
+    1.  Not all scenarios are used in the leakage recovery run
+    
+    2.  False paths are present
+        
+        ``` tcl
+        # To prevent unconstrained cells from swapping
+        set eco_power_exclude_unconstrained_cells true
+        ```
+
+### Recommended ECO Guidance Command Flow
+
+``` tcl
+# Power Revocery
+report_power
+fix_eco_power
+report_power
+
+# DRC fixing
+alias report_drc_violations "report_constraint -all-violators \
+      -max_transition -max_capacitance -max_fanout"
+report_drc_violations
+set buflist "bufbdl buffdl bufbd2"
+fix_eco_drc -type max_transition -buffer_list $buflist -verbose
+fix_eco_drc -type max_cap -buffer_list $buflist -verbose
+fix_eco_drc -type max_fanout -bufferlist $buflist -verbose
+report_drc_violations
+
+# Noise Fixing
+report_noise
+fix_eco_drc -type noise -verbose
+report_noise
+
+# Timing Fixing
+report_analysis_coverage
+fix_eco_timing -type setup
+report_analysis_coverage
+fix_eco_timing -type hold -buffer_list $buflist
+report_analysis_coverage
+
+# Final Leakage recovery
+report_power
+fix_eco_power -pattern_priority {HVT NVT LVT}
+report_power
+```
+
+### Creating the Change List
+
+  - change list file containing `insert_buffer` `size_cell` used by
+    `fix_eco_timing`
+    
+    ``` tcl
+    write_changes -format icc2tcl \
+        -output mychange.tcl
+    write_changes -format text \
+        -output mychangehistory.txt
+    ```
+
+### Physically Aware ECO
+
+  - Improve Fix Rates
+  - Physically Aware ??
+  - Physical Inputs Needed:
+      - DEF  
+        (Design Exchange Format) for physical layout
+    
+      - LEF  
+        (Library Exchange Format) for basic library information
+        
+        ``` tcl
+        fix_eco_drc -physical_mode
+        fix_eco_timing -physical_mode
+        
+        # To read in the required physical information
+        set_eco_options
+        ```

@@ -1,0 +1,313 @@
+#notemd
+# Flow
+
+1.  DC: RTL Synthesis
+    1.  Load design and technology data
+    2.  Apply timing constraints
+    3.  Synthesize the design
+    4.  Analyze results
+    5.  Write out design data
+2.  ICC II
+    1.  Design & Timing Setup
+    2.  Floorplan Definition
+    3.  Placement & Optimization
+    4.  *CTS & Optimization*
+        1.  CTS Setup: Clock tree structure
+        2.  Configure CTS: Optimization algorithms (Classic CTS vs CCD)
+        3.  clock_opt
+    5.  *Routing & Optimization*
+    6.  Signoff
+3.  PrimeTime
+4.  Caribre: Signoff
+
+### By Top Level Implementation
+
+  - means performing:
+      - placement
+      - CTS
+      - routing
+
+### timing-driven routing
+
+  - timing-critical nets are prioritized
+
+### LVS Check
+
+  - `check_lvs` in icc2
+  - LVS check :: Layout vs Schematic check
+      - compares the extracted netlist from the layout to the original
+        schematic netlist to determine if they match.
+
+# Floorplanning
+
+## Multi-Voltage design
+
+  - Voltage area
+
+# Placement
+
+  - Initial Coarse Placement
+  - HFN buffering
+  - Initial Optimization
+  - Final Placement
+  - Final Optimization
+
+## Pre-placement check
+
+  - Second-Pass Synthesis / Design Setup
+
+## Design and flow requirement setup
+
+  - Apply advanced technology setup
+  - Configure scenarios for MCMM optimization
+      - Hold analysis is ignored during place_opt
+  - Enable SPG Flow
+      - if use DCG
+  - Disable port-punching on Sub-designs
+      - duplicate ports
+  - Control spare cell placement and identification
+      - automatically spread out evenly
+  - Remove unwanted ideal networks
+  - Restrict usage of specific library cells
+      - settiming **lib cell purpose**
+  - Enable leakage, dynamic or total power optimization
+      - Multi-Vt cells
+
+## QoR setup
+
+  - Congestion Aware Placement
+      - keepout margins and/or placement blockages
+      - cell and pin density
+      - Layer aware
+      - CDR :: Congestion Driven Restructuring
+  - Timing-aware Setup
+      - Restructuring  
+        Restructuring of logic for power reduction
+  - BAP :: Buffering Aware Placement
+
+## Placement & Optimization
+
+  - Legalized Placement
+
+## Coarse Placement
+
+# CTS & Optimization
+
+## NDRs
+
+  - clock nets are important in terms of SI
+  - **NDRs makes clock nets lower registance and less capacitance**
+  - shielding
+
+## Ideal Clock Latencies vs Propagated Clock Sources/Objects
+
+  - ICC II automatically applies the `set_propagated_clock`
+  - `set_propagated_clock [al1_clocks]` is dangerouse
+
+## clock net logical DRC fixing on scenarios
+
+## scan path
+
+## CRPR
+
+## Local skew vs Global skew
+
+## Multi-Voltage
+
+## Path group
+
+  - associated with that path’s capturing clock
+  - User-defined path group
+
+## CCD power / area / clock power recovery
+
+  - necessary to choose between <span class="underline">power</span> or
+    <span class="underline">area</span> recovery
+  - SAIF :: Switching Activity Interchange Format, power recovery use
+    SAIF files
+
+## Global Route Optimization
+
+## Report
+
+  - `report_clock_qor -type structure`
+
+# Routing & Optimization
+
+  - Unit 9
+
+## Pre-routing checks and setup
+
+1.  Check for routing readiness (ready-ness)
+2.  Control secondary PG pin routing
+3.  Enable redundant via insertion
+4.  Increase wire/via optimization level
+5.  Enable antenna fixing
+6.  Apply route guide/blockage
+7.  Control the scope for rerouting
+8.  Enable crosstalk analysis and prevention
+
+### NDRs for Secondary PG Routing
+
+  - Secondary PG pins  
+    e.g. backup power/ground for always-on cells
+
+  - NDRs  
+    Non-Default Routing rules
+    
+      - e.g. double-spacing, double-width, shielding
+      - **to make the clock routes less sensitive to cross-talk and
+        electro-migration (EM) effects**
+
+<!-- end list -->
+
+  - By default, tie-off connections and secondary PG power connections
+    are considered the same nets
+      - NDRs (minimum and maximum layer constraints etc.) apply to both
+
+## Routing
+
+### Route signal nets
+
+1.  Global routing (GR)
+      - GRS  
+        Global Routing Cells, zero-width lines
+    <!-- end list -->
+      - avoid
+          - congested Gcells
+          - P/G (rings/straps/rails)
+          - Routing blockages
+2.  Track Assignment (TA)
+      - Assigns each net to a specific track
+      - Routed not very carefully
+      - remove GR + GR vias
+      - Via Optimization
+        1.  Minimization of Vias
+        2.  Multi-Cut Vias
+3.  Detailed Routing
+      - Detail route fixes physical design rule violations
+      - Performs multiple iterations with varying repair box sizes
+
+### Check DRCs
+
+  - Zroute DRC Violations check
+      - physical DRCs, NDRs, shorts, opens, antenna and voltage area
+        violations
+  - LVS check
+
+### Incremental Routing, Optimization Phase
+
+  - Timing and max-tran/max-cap
+  - Crosstalk
+  - Clock tree, power (optionally)
+  - Incremental Routing
+  - (ECO Fusion with PrimeTime/StarRC)
+
+## Synthesize Flow
+
+### Logic Optimization
+
+  - DesignWare components are a group of IPs
+  - Arithmetic expression optimization + CSA Transformation :: makes
+    logics smaller and faster arithmetic circuit
+  - Three levels of optimization in compile_ultra:
+      - RTL Description or unmapped ddc
+    <!-- end list -->
+    1.  Architectural level of high level synthesis
+    2.  Logic level or GTECH optimization
+          - GTECH  
+            Generic TECHnology, a technology-independent design
+    3.  Gate-level or mapping optimization
+    <!-- end list -->
+      - Optimized Netlist
+
+### Critical Path Re-Synthesis
+
+### Load Splitting and Logic Duplication
+
+  - reduces critcal path delay
+
+### Regiter repositioning and Auto ungrouping
+
+  - improves combo and sequential logic optimization
+      - Logic optimization
+  - but effect to Formality
+
+### Preservation of Sub-Block pins
+
+### Boundary Optimization
+
+### Design Partitioning
+
+  - defined in `module`
+  - "hierarchical floorplanning"
+      - Logic hierarchy vs Physical hierarchy
+  - (hard) macro :: physical hierarchy
+
+### Adaptive Retiming
+
+  - moving, splitting, or merging registers through the cones of logic
+  - perform s only on potential timing-critical paths
+
+### High effort timing optimization
+
+  - Prioritizing setup timing over DRCs
+
+  - Test-ready synthesis
+
+  - Disabling DRC fixing on clock net directly connected to register
+    clock pins
+
+### User-defined path groups
+
+  - Optimization may stop because of:
+      - difficult improvement path
+  - User-defined path groups can prevent it.
+
+### Topological mode
+
+  - performs under-the-hood (i.e. in its internal workings) P\&R
+    estimation to calculate net RCs
+
+  - [edaboard](https://www.edaboard.com/threads/whats-the-difference-between-running-the-dc-in-normal-vs-the-topographical-mode.228595/)
+    
+    > Simple DC uses WireLoadModel from the .db file. DC Topo takes as
+    > an input floorplan (from DEF file or from Milkyway) and TLU files
+    > (that keeps info for accurate RC calculation). Than it performs
+    > synthesis (as DC does), but also it performs coarse placement, in
+    > order to estimate distance between cells, and calculate real RC
+    > from this distance and TLU files. So, DC performs only synthesis
+    > based on WLM, DC topo performs synthesis+placement based on TLU
+    > files.
+
+### IR Drop
+
+  - IRが大きくなると，回路ブロックの電源電圧が動作電圧以下になり，誤動作 を生じる．
+  - Cause :: the <span class="underline">resistivity of metal
+    wire</span> is high or the <span class="underline">amount of
+    current</span> following through the power net is high.
+      - Poor design of power delivery network (lesser metal width and
+        more separation in the power stripes)
+      - Inadequate via in power delivery network
+      - Inadequate number of decap cells availability
+      - **High cell density and high switching in a particular region**
+      - High impedance of the power delivery network
+      - Rush current
+      - Insufficient number of voltage sources
+      - High RC value of the metal layer used to create the power
+        delivery network
+  - 対策としては，配線幅を太くする方法などがある．最近では金属配線をアル
+    ミから銅に変更することによって，配線材料の抵抗を減少させる方法も採用
+    されている．
+
+### Inrush current ?
+
+  - input surge current or switch-on surge
+  - is the maximum, instantaneous input current drawn by an electrical
+    device when first turned on.
+
+## 
+
+### Bird View of Design Flow
+
+![](../img/design-flow-bird-view.png)

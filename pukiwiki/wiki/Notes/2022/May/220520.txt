@@ -1,0 +1,184 @@
+#notemd
+# Status Meeting
+
+  - Soft Blockage  
+    for margin
+  - 6-26 pane  
+    ??
+
+## Power Mesh Lin-san
+
+### Orientation of standard cells
+
+  - F  
+    R0
+  - Site row  
+    (N) North : (FS) Flip South, (S) : (FN)
+
+<!-- end list -->
+
+  - **S:FN pair is for Vertical M1 Power Rail**
+  - Power Rail :: M1 layer, defined **Electrical Team in Alchip**
+  - Via Master
+  - Power on SRAM :: require thinner power rail pitch
+  - M9, M10 :: Only for Power
+
+# Webinar 3D-IC
+
+## Integrity 3D-IC Platform
+
+Thermal \> Power \> Timing \> DRC/LVS
+
+## Extraction and STA
+
+  - CHIP copper to copper  
+    3D-IC needs wafer to wafer contact
+
+  - RAID  
+    Rapid Automatic Inter-Die
+
+  - Concurrent MMMC  
+    C-MMMC
+
+  - CMP  
+    Chemical Mechanical Polishing, **flatten silicon to chip2chip
+    connection**
+
+  - CCP  
+    contact poly pitch
+
+  - CCPO
+
+  - CIS
+
+## Challenges
+
+  - thermal, bump planning, power
+  - Chip vs System Chip Signoff :: ??
+  - COWOS penetrate through a substrate
+
+## Power Planning
+
+  - Pads. uBumps(micro-), TSVs, MiMs, DTC, Clamps …
+  - MiM :: metal-insulator-metal, 絶縁層を金属で挟み込んだ構造 (rev.)
+  - Innovus synthesis with
+      - PSDL  
+        PG structure description language
+
+## Power Analysis
+
+  - SPICE and PI simulation
+  - MCP :: model connection protocol
+
+## Thermal Analysis : Celsius + Voltus
+
+  - CFD enginie  
+    Computational Fluid Dynamics, 熱流体解析
+  - FEA engine  
+    Finite Element Analysis, 有限要素法
+  - Celsius Thermal Solver  
+    IP thermal Model
+
+## Face to Face case study
+
+  - TSV  
+    through silicon (substrate) via, \*substrate has the same material
+    as PCB, but interposer (\>2.5D) has the silicon to make thinner
+    wiring process\*
+
+## Sigrity X
+
+  - VRM ::??
+
+# Self Study
+
+## ICC II Unit 8
+
+### Clock Tree Balancing
+
+  - explicit sink pin with delay  
+    apply across corners with scaling delay
+
+<!-- end list -->
+
+  - Scaling?
+
+  - Default Clock Tree Target :: ideal network latencies is changed in
+    propagated. So, you should specify target latency to clocks prior to
+    CTS : <span class="underline">User-Defined Clock Tree Targets</span>
+
+  - CCD :: The Goal is to <span class="underline">intentionally</span>
+    introduce skew to meet timing
+
+  - **Clock Balance Points ??**
+
+  - Automatically-derived clock balance points
+    
+      - Reference Latency  
+        source + network-latency for the clock. To derive the balance
+        point delay value, the ideal mode total clock latency at a sink
+        is subtracted from the reference latency.
+    
+    <!-- end list -->
+    
+      - 8-21 ??
+
+  - Control CTS cell selection :: not only buffers and inverters,
+    **logically equivalent cells and FF are resized**
+
+<https://blog.csdn.net/weixin_41464428/article/details/111185699>
+
+### Pre-exisiting Clock Elements
+
+  - Existing cells on clock tree  
+    Ensure `cts_libcells` includes LEQs (logically equivalent cells) of
+    existing cells and ICGs.
+
+  - Inter-clock Balancing  
+    (Synchronous clocks), not performed by default
+    
+      - CCD try to skew individual sinks instead of the root.
+          - This leads to longer runtime & many buffers.
+
+<!-- end list -->
+
+  - By default, any source latency defined on the clocks is ignored,
+    when balancing the latencies of the respective clocks.
+  - `dont_touch` :: not propagate past FFs downstream,
+      - set_donttouchnetworkポイントから下流のFFを越えて伝搬されません
+  - **Pre-existing cells** :: must be kept, set `dont_touch`
+      - allow sizing vs prohibit moving
+
+### Non-default Routing Rules
+
+  - NDR  
+    non-default routing rules, e.g. double-spacing, double-width,
+    shielding **to make the clock routes less sensitive to cross-talk
+    and electro-migration (EM) effects**
+    
+      - via optimization is also required
+      - Single cut via :: a type of via where we have only one poly
+        connection between the two connecting metal layers
+      - Replaced with: **Multiple-cut via arrays** and/or **Larger
+        square or bar cuts**
+
+  - taper  
+    尻すぼみ
+    
+      - Automatically tapers NDR widths to connect to pins.
+
+<!-- end list -->
+
+  - Large spacing for crosstalk prevention can make routing difficult
+      - spacing-length thresholds  
+        spacing value is ignored if the parallel length is less than the
+        threshold
+  - NDR promotion :: Clock Crosstalk Prevention.
+    1.  Creating and preparing clone NDRs with the increased spacing.
+    2.  Iterative NDR promotion.
+  - Necessary to ensure all clock input ports have a slew constraint for
+    accurate check
+  - Remove skew from uncertainty :: to avoid pessimistic timing analysis
+      - Pre CTS uncertainty = clock skew + jitter + margin
+      - causes post-CTS skew on output paths to be zero \> Results in
+        optimistic setup timing analysis

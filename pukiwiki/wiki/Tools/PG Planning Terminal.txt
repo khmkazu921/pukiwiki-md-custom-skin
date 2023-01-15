@@ -1,0 +1,16 @@
+#author("2022-12-18T07:48:35+00:00","","")
+#notemd
+
+[[Tools/PG Planning]]
+
+```tcl
+ create_terminal -boundary [get_attribute -objects [current_block] bbox]
+```
+
+# margin around core area
+
+- For alleviate congestion of routing port
+- routing blockage
+- Terminal M10 / M11
+
+- `check_lvs -open_reporting detailed`

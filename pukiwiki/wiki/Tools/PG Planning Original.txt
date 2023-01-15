@@ -1,0 +1,297 @@
+#author("2022-12-05T00:59:35+00:00","","")
+#notemd
+
+[[Tools/PG Planning]]
+```tcl
+  ##===================================================================================##
+  ## Usage :  gen_pg_set -> gen_pg_rail ->gen_pg_region-> gen_pg_core/channel/macro    ##
+  ##===================================================================================##
+  proc clean_power {} {                                                               
+      remove_vias [get_vias -filter "net_type == ground"]
+      remove_vias [get_vias -filter "net_type == power"]
+      remove_shapes [get_shapes -of [get_nets -hier -physical_context VDD]]
+      remove_shapes [get_shapes -of [get_nets -hier -physical_context VSS]]
+  }
+  proc clean_corepg {} {
+      remove_vias [get_vias -of [get_nets "VDD VSS"] -filter "tag==core_pg"]
+      remove_shapes [get_shapes -of_objects [get_nets "VDD VSS" ] -filter "tag==core_pg"]
+  }
+  proc clean_macropg {} {
+      remove_vias [get_vias -of [get_nets "VDD VSS"] -filter "tag==macro_pg"]
+      remove_shapes [get_shapes -of_objects [get_nets "VDD VSS" ] -filter "tag==macro_pg"]
+  }
+  proc clean_channelpg {} {
+      remove_vias [get_vias -of [get_nets "VDD VSS"] -filter "tag==channel_pg"]
+      remove_shapes [get_shapes -of_objects [get_nets "VDD VSS" ] -filter "tag==channel_pg"]
+  }
+  proc clean_power_1 {} {
+      #	remove_vias [get_vias -of [get_nets "VDD VSS"] -filter "shape_use ==stripe && lower_layer_name == M1"]
+      #	remove_vias [get_vias -of [get_nets "VDD VSS"] -filter "shape_use ==stripe && lower_layer_name == M2"]
+      remove_shapes [get_shapes -of_objects [get_nets "VDD VSS" ] -filter "layer_name ==M1"]
+      remove_shapes [get_shapes -of_objects [get_nets "VDD VSS" ] -filter "layer_name ==M2"]
+      remove_shapes [get_shapes -of_objects [get_nets "VDD VSS" ] -filter "layer_name ==M3"]
+      remove_vias [get_vias -of [get_nets "VDD VSS"] -filter "lower_layer_name == M1"]
+      remove_vias [get_vias -of [get_nets "VDD VSS"] -filter " lower_layer_name == M2"]
+      remove_vias [get_vias -of [get_nets "VDD VSS"] -filter " lower_layer_name == M3"]
+      remove_vias [get_vias -of [get_nets "VDD VSS"] -filter " lower_layer_name == M4"]
+      remove_vias [get_vias -of [get_nets "VDD VSS"] -filter " lower_layer_name == M5"]
+      remove_vias [get_vias -of [get_nets "VDD VSS"] -filter " lower_layer_name == M6"]
+      remove_vias [get_vias -of [get_nets "VDD VSS"] -filter " lower_layer_name == M7"]
+      remove_vias [get_vias -of [get_nets "VDD VSS"] -filter " lower_layer_name == M8"]
+      remove_shapes [get_shapes -of_objects [get_nets "VDD VSS" ] -filter "layer_name ==M4"]
+      remove_shapes [get_shapes -of_objects [get_nets "VDD VSS" ] -filter "layer_name ==M5"]
+      remove_shapes [get_shapes -of_objects [get_nets "VDD VSS" ] -filter "layer_name ==M6"]
+      remove_shapes [get_shapes -of_objects [get_nets "VDD VSS" ] -filter "layer_name ==M7"]
+      remove_shapes [get_shapes -of_objects [get_nets "VDD VSS" ] -filter "layer_name ==M8"]
+      remove_shapes [get_shapes -of_objects [get_nets "VDD VSS" ] -filter "layer_name ==M9"]
+      remove_vias [get_vias -of [get_nets "VDD VSS"] -filter " lower_layer_name == M9"]
+      remove_vias [get_vias -of [get_nets "VDD VSS"] -filter "shape_use ==stripe && lower_layer_name == M10"]
+      remove_shapes [get_shapes -of_objects [get_nets "VDD VSS" ] -filter "layer_name ==M10"]
+      remove_shapes [get_shapes -of_objects [get_nets "VDD VSS" ] -filter "layer_name ==M11"]
+  }
+  proc create_via_custom { vv} {
+      set ff [lindex $vv 0]
+      puts "#INFO via to create $ff ..."
+      set i [get_via_defs $ff -quiet]
+      if { $i == ""} {
+          eval "create_via_def $vv"
+          return 1
+      } else {
+          puts "#INFO via $ff exists"
+          return 0
+      }
+  }
+  ##======================================================##
+  ##   Common setting for create power                    ##
+  ##======================================================##
+  proc gen_pg_set {} {
+      puts "RM-info: Running script [info script]\n"
+      set_host_options -max_cores 16
+      set_app_options -list {plan.pgroute.drc_check_fast_mode true}
+      set_app_options -list {plan.pgroute.verbose true}
+      remove_pg_regions -all
+      remove_pg_patterns -all
+      remove_pg_strategies -all
+      #	remove_via_defs [get_via_defs]
+      #	remove_pg_via_master_rules -all
+      create_pg_wire_pattern P_wire_base -direction @d -layer @l -width @w -spacing @s -pitch @p -track_alignment @t -parameters {d l w s p t}
+      create_pg_wire_pattern P_seg_base  -direction @d -layer @l -width @w -spacing @s -pitch @p -track_alignment @t -low_end_reference_point @low -high_end_reference_point @high -parameters {d l w s p t low high}
+      create_pg_wire_pattern P_wire_base_no_track -direction @d -layer @l -width @w -spacing @s -pitch @p -parameters {d l w s p}
+      create_pg_wire_pattern P_seg_base_no_track  -direction @d -layer @l -width @w -spacing @s -pitch @p -low_end_reference_point @low -high_end_reference_point @high -parameters {d l w s p low high}
+      set_pg_strategy_via_rule VIA_NIL -via_rule {{{intersection: undefined} {via_master:NIL}}}
+      #       set_app_options -list {plan.pgroute.maximize_total_cut_area Vv}
+      set_app_options -list {plan.pgroute.maximize_total_cut_area "Vs Vh Vv"}
+      set_app_options -list {plan.pgroute.ignore_same_color_via_cut_min_spacing_rule true}
+  }
+  ##======================================================##
+  ##   Create power straps                                ##
+  ##======================================================##
+  proc gen_pg_rail {} {
+      create_pg_std_cell_conn_pattern m1_rail_color -layers {M1} -rail_width {@wtop @wbottom} -parameters {wtop wbottom}
+      set_pg_strategy m1_rail_strategy -pattern {{name: m1_rail_color} {nets: VDD VSS} {parameters: {0.032 0.032}}} -core -blockage {{layers: M1} {placement_blockages:all}}
+      compile_pg -strategies {m1_rail_strategy} -via_rule VIA_NIL
+      create_pg_std_cell_conn_pattern m2_rail_color -layers {M2} -rail_width {@wtop @wbottom} -parameters {wtop wbottom}
+      set_pg_strategy m2_rail_strategy -pattern {{name: m2_rail_color} {nets: VDD VSS} {parameters: {0.072 0.072}}} -core -blockage {{layers: M2} {placement_blockages:all}}
+      compile_pg -strategies {m2_rail_strategy} -via_rule VIA_NIL
+      create_pg_vias -nets {VDD VSS}  -from_layers M1 -to_layers M2 -from_types lib_cell_pin_connect -to_types lib_cell_pin_connect -via_masters {VIA12_LONG_H } -allow_parallel_objects
+  }
+  ##======================================================##
+  ##  Add channel partial blockage for only buffer insert ##
+  ##======================================================##
+  # proc block_channel {} {
+  #     source ../../rm_user_scripts/FP/proc/create_partial_blk.tcl -e -v
+  #     create_channel_partial_blockages -buffer_only -percent_util 50
+  #     set_attribute [get_placement_blockages partial*] blockage_type hard
+  # }
+  ##======================================================##
+  ##  Channel PG connect                                  ##
+  ##======================================================##
+  proc gen_pg_channel {} {
+      set_app_options -list {plan.pgroute.maximize_total_cut_area "Vs Vh Vv"}
+      create_pg_composite_pattern P_channel -nets {VDD VSS} \
+          -add_patterns \
+          { \
+                {{pattern: P_wire_base} {nets: {VDD VDD VDD}}  {parameters: vertical   M3 0.038 0.102 6 track} {offset: 1.30}} \
+                {{pattern: P_wire_base} {nets: {VSS VSS VSS}}  {parameters: vertical   M3 0.038 0.102 6 track} {offset: 3.86}} \
+                {{pattern: P_seg_base}  {nets: {VDD VDD}}      {parameters: horizontal M4 0.04  0.12  {6 2.304} track -0.27 0.27} {offset: {1.37 0.48}}} \
+                {{pattern: P_seg_base}  {nets: {VSS VSS}}      {parameters: horizontal M4 0.04  0.12  {6 2.304} track -0.27 0.27} {offset: {3.98 0.48}}} \
+                {{pattern: P_seg_base}  {nets: {VDD VDD}}      {parameters: vertical   M5 0.04  0.12  {6 2.304} track -0.2 0.2} {offset: {1.34 0.576}}} \
+                {{pattern: P_seg_base}  {nets: {VSS VSS}}      {parameters: vertical   M5 0.04  0.12  {6 2.304} track -0.2 0.2} {offset: {3.98 0.576}}} \
+                {{pattern: P_seg_base}  {nets: {VDD VDD}}      {parameters: horizontal M6 0.04  0.12  {6 2.304} track -0.2 0.2} {offset: {1.42 0.48}}} \
+                {{pattern: P_seg_base}  {nets: {VSS VSS}}      {parameters: horizontal M6 0.04  0.12  {6 2.304} track -0.2 0.2} {offset: {4.1  0.48}}} \
+                {{pattern: P_seg_base}  {nets: {VDD}}          {parameters: vertical   M7 0.228 3.869 {6 2.304} track -0.2 0.2} {offset: {1.42 0.596}}} \
+                {{pattern: P_seg_base}  {nets: {VSS}}          {parameters: vertical   M7 0.228 3.869 {6 2.304} track -0.2 0.2} {offset: {4.16 0.596}}} \
+                {{pattern: P_seg_base}  {nets: {VDD VDD}}      {parameters: horizontal M8 0.062 0.19  {6 2.304} track -0.4 0.4} {offset: {1.37 0.48}}} \
+                {{pattern: P_seg_base}  {nets: {VSS VSS}}      {parameters: horizontal M8 0.062 0.19  {6 2.304} track -0.4 0.4} {offset: {4.13 0.48}}} \
+                {{pattern: P_wire_base_no_track} {nets: {VDD}} {parameters: vertical   M9 0.8 5 6  } offset: 1.3 } \
+                {{pattern: P_wire_base_no_track} {nets: {VSS}} {parameters: vertical   M9 0.8 5 6  } offset: 4.13} \
+            } \
+          -via_rule \
+          { \
+                {{layers: M2} {layers: M3} {via_master: VIA23_LONG_V2}} \
+                {{layers: M3} {layers: M4} {via_master: VIA34_1cut}} \
+                {{layers: M4} {layers: M5} {via_master: VIA45_1cut}} \
+                {{layers: M5} {layers: M6} {via_master: VIA56_1cut}} \
+                {{layers: M6} {layers: M7} {via_master: VIA67_LONG_H}} \
+                {{layers: M7} {layers: M8} {via_master: VIA78_PBDS29B_3}} \
+                {{layers: M8} {layers: M9} {via_master: VIA89_1cut}} \
+                {{intersection: undefined} {via_master: NIL}} \
+            }
+      # set partial_blks  [get_object_name [get_placement_blockages partial*]]
+      # foreach  blk $partial_blks {
+      #     set box [get_attribute [get_placement_blockages $blk] boundary]
+      #     set_pg_strategy S_channel  -pattern {{name: P_channel} {nets: {VDD VSS}} {offset: {0 0}}}  -polygon $box
+      #     compile_pg -strategies S_channel -via_rule VIA_NIL -tag channel_pg
+      # }
+      # set chan_box  [get_attribute [get_placement_blockages partial*] bbox ]
+      # foreach  a $chan_box {
+      #     create_pg_vias -within_bbox $a -nets {VDD VSS} -from_layers M2 -to_layers M3 -tag channel_pg -via_masters VIA23_LONG_V2
+      #     create_pg_vias -within_bbox $a -nets {VDD VSS} -from_layers M6 -to_layers M7 -tag channel_pg -via_masters VIA67_LONG_H
+      #     create_pg_vias -within_bbox $a -nets {VDD VSS} -from_layers M8 -to_layers M9 -tag channel_pg -via_masters VIA89_1cut
+      # }
+  }
+  ##======================================================##
+  ##  Create pg region                                    ##
+  ##======================================================##
+  proc gen_pg_region {} {
+      ## create all macros & macro's channel pg region ##
+      set blockage_list [get_placement_blockages *]
+      set i 1
+      foreach_in_collection blockage $blockage_list {
+          set blockage_bbox [get_attribute [get_placement_blockages $blockage] bbox]
+          create_pg_region exclude_pg_region_${i} -polygon $blockage_bbox
+          incr i
+      }
+      ## create all stand cell's pg region ##
+      create_pg_region sc_pg_region -core -exclude_regions [get_pg_regions *region_*]
+  }
+  ##======================================================##
+  ##   gen_pg_core                                     ##
+  ##======================================================##
+  proc gen_pg_core {} {
+      set_app_options -list {plan.pgroute.maximize_total_cut_area "Vs Vh Vv"}
+      #set_app_options -list {plan.pgroute.ignore_same_color_via_cut_min_spacing_rule true}
+      set_app_options -list {plan.pgroute.ignore_same_color_via_cut_min_spacing_rule false}
+      create_pg_composite_pattern P_core_PG2 -nets {VDD VSS} -add_patterns \
+          { \
+                {{pattern: P_seg_base} {nets: {VDD}} {parameters: vertical M3 0.024 0.088 {6.72 2.24} track -0.036 2.204} {offset: {5.600 0}}} \
+                {{pattern: P_seg_base} {nets: {VDD}} {parameters: vertical M3 0.024 0.088 {6.72 2.24} track -0.036 2.204} {offset: {5.712 0}}} \
+                {{pattern: P_seg_base} {nets: {VDD}} {parameters: vertical M3 0.024 0.088 {6.72 2.24} track -0.036 2.204} {offset: {5.824 0}}} \
+                {{pattern: P_seg_base} {nets: {VSS}} {parameters: vertical M3 0.024 0.088 {6.72 2.24} track -0.036 2.204} {offset: {2.240 0}}} \
+                {{pattern: P_seg_base} {nets: {VSS}} {parameters: vertical M3 0.024 0.088 {6.72 2.24} track -0.036 2.204} {offset: {2.352 0}}} \
+                {{pattern: P_seg_base} {nets: {VSS}} {parameters: vertical M3 0.024 0.088 {6.72 2.24} track -0.036 2.204} {offset: {2.454 0}}} \
+            } -via_rule \
+          { \
+                {{intersection: undefined} {via_master: NIL}} \
+            }
+      set_pg_strategy S_CORE_PG2 -pattern {{name: P_core_PG2} {nets: {VDD VSS}}} -pg_regions sc_pg_region -extension {{nets: {VDD VSS}}{stop: core_boundary}} -blockage {{layers: {M2 M3}} {placement_blockages:all}}
+      compile_pg -strategies S_CORE_PG2 -via_rule VIA_NIL -tag core_pg
+      create_pg_vias -nets {VDD VSS} -from_layer M2 -to_layer M3  -via_masters VIA23_LONG_V_BW72_UW24_P48 -tag core_pg
+      create_pg_composite_pattern P_core_PG3 -nets {VDD VSS} \
+          -add_patterns \
+          { \
+                {{pattern: P_seg_base}           {nets: {VDD VDD}} {parameters: horizontal M4 0.04 0.12  {6.72 2.24} track -0.20 0.20} {offset: {5.712 1.152}}} \
+                {{pattern: P_seg_base}           {nets: {VSS VSS}} {parameters: horizontal M4 0.04 0.12  {6.72 2.24} track -0.20 0.20} {offset: {2.352 1.152}}} \
+                {{pattern: P_seg_base}           {nets: {VDD VDD}} {parameters: vertical   M5 0.04 0.12  {6.72 2.24} track -0.20 0.20} {offset: {5.632 1.222}}} \
+                {{pattern: P_seg_base}           {nets: {VSS VSS}} {parameters: vertical   M5 0.04 0.12  {6.72 2.24} track -0.20 0.20} {offset: {2.272 1.222}}} \
+                {{pattern: P_seg_base}           {nets: {VDD VDD}} {parameters: horizontal M6 0.04 0.12  {6.72 2.24} track -0.20 0.20} {offset: {5.712 1.152}}} \
+                {{pattern: P_seg_base}           {nets: {VSS VSS}} {parameters: horizontal M6 0.04 0.12  {6.72 2.24} track -0.20 0.20} {offset: {2.352 1.152}}} \
+                {{pattern: P_wire_base_no_track} {nets: {VDD}}     {parameters: vertical   M7 0.36 6.36  6.72  } offset: 5.712} \
+                {{pattern: P_wire_base_no_track} {nets: {VSS}}     {parameters: vertical   M7 0.36 6.36  6.72  } offset: 2.352} \
+                {{pattern: P_wire_base_no_track} {nets: {VDD}}     {parameters: horizontal M8 6.87 13.07 19.94 } offset: 14.802} \
+                {{pattern: P_wire_base_no_track} {nets: {VSS}}     {parameters: horizontal M8 6.87 13.07 19.94 } offset: 4.832} \
+                {{pattern: P_wire_base_no_track} {nets: {VDD}}     {parameters: vertical   M9 9.8  14.54 24.34 } offset: 18.168} \
+                {{pattern: P_wire_base_no_track} {nets: {VSS}}     {parameters: vertical   M9 9.8  14.54 24.34 } offset: 5.998} \
+            } \
+          -via_rule \
+          { \
+                {{layers: M3} {layers: M4} {via_master: VIA34_1cut}} \
+                {{layers: M4} {layers: M5} {via_master: VIA45_1cut}} \
+                {{layers: M5} {layers: M6} {via_master: VIA56_1cut }}\
+                {{layers: M6} {layers: M7} {via_master: VIA67_LONG_H}}\
+                {{layers: M7} {layers: M8} {via_master: VIA78_1cut}} \
+                {{layers: M8} {layers: M9} {via_master: VIA89_1cut}} \
+                {{intersection: undefined} {via_master: NIL}} \
+            }
+      set_pg_strategy S_CORE_PG3 -pattern {{name: P_core_PG3} {nets: {VDD VSS}} {offset: {0 0}}} -core -blockage {{layers: { M4 M5 M6 M7 M8 M9 }} {placement_blockages:all}}
+      compile_pg -strategies S_CORE_PG3 -via_rule VIA_NIL -tag core_pg
+      #create_pg_vias -nets {VDD VSS} -from_layers M3 -to_layers M4  -via_masters VIA34_1cut_P48 -tag core_pg
+      #        ##++++++++++++++++++++   M10~M11 Strap  ++++++++++++++++++++++++++##
+      #        set_app_options -list {plan.pgroute.maximize_total_cut_area "Vs"}
+      #
+      #        create_pg_composite_pattern P_core_PG4 -nets {VDD VSS} -add_patterns { \
+      #                {{pattern: P_wire_base_no_track} {nets: {VDD}} {parameters: horizontal M10 10 15.2 25.2 } {offset: 5.4}} \
+      #                {{pattern: P_wire_base_no_track} {nets: {VSS}} {parameters: horizontal M10 10 15.2 25.2 } {offset: 18 }} \
+      #                {{pattern: P_wire_base_no_track} {nets: {VDD}} {parameters: vertical   M11 10 15.2 25.2 } {offset: 5.4}} \
+      #                {{pattern: P_wire_base_no_track} {nets: {VSS}} {parameters: vertical   M11 10 15.2 25.2 } {offset: 18 }} \
+      #        } -via_rule { \
+      #                {{layers: M9}  {layers: M10} {via_master: default}} \
+      #                {{layers: M10} {layers: M11} {via_master: default}} \
+      #                {{intersection: undefined} {via_master: NIL}} \
+      #        }
+      #
+      #    set_pg_strategy S_CORE_PG4 -pattern {{name: P_core_PG4} {nets: {VDD VSS}} {offset: {0 0}}} -core
+      #    compile_pg -strategies S_CORE_PG4 -via_rule VIA_NIL
+      #
+      #   create_pg_vias -nets {VDD VSS} -from_layers M9 -to_layers M10 -tag core_pg
+  }
+  ##======================================================##
+  ##   Macro PG connect                                   ##
+  ##======================================================##
+  proc gen_pg_macro {} {
+      set_app_options -list {plan.pgroute.maximize_total_cut_area "Vs"}
+      set macropg [get_cells -hierarchical -filter "design_type == macro"]
+      set box [get_attribute  $macropg bbox]
+      set_pg_via_master_rule M56_via_rule -via_array_dimension
+      create_pg_composite_pattern P_macro_PG2 -nets {VDD VSS} -add_patterns \
+          { \
+                {{pattern: P_wire_base} {nets: {VDD}}     {parameters: vertical   M5 0.5 1.486 1.986 track } offset: 0.2085} \
+                {{pattern: P_wire_base} {nets: {VSS}}     {parameters: vertical   M5 0.5 1.486 1.986 track } offset: 1.278} \
+                {{pattern: P_seg_base}  {nets: {VDD}}     {parameters: horizontal M6 0.04 0.12    {8.4 2.304} track -0.20 0.20}   {offset: {0.72 0.48}}} \
+                {{pattern: P_seg_base}  {nets: {VSS}}     {parameters: horizontal M6 0.04 0.12    {8.4 2.304} track -0.20 0.20}   {offset: {4.92 0.48}}} \
+                {{pattern: P_seg_base}  {nets: {VDD}}     {parameters: vertical   M7 0.2028 3.869 {8.4 2.304} track -0.20 0.20}   {offset: {0.72 0.596}}} \
+                {{pattern: P_seg_base}  {nets: {VSS}}     {parameters: vertical   M7 0.2028 3.869 {8.4 2.304} track -0.20 0.20}   {offset: {4.92 0.596}}} \
+                {{pattern: P_seg_base}  {nets: {VDD VDD}} {parameters: horizontal M8 0.062 0.19   {8.4 2.304} track -0.45 0.45} {offset: {0.72 0.48}}} \
+                {{pattern: P_seg_base}  {nets: {VSS VSS}} {parameters: horizontal M8 0.062 0.19   {8.4 2.304} track -0.45 0.45} {offset: {4.92 0.48}}} \
+            }
+      #set_pg_strategy S_macro_PG2 -pattern {{name: P_macro_PG2} {nets: {VDD VSS}} {offset: {0 0}}} -macros $macropg -pg_regions exclude_pg_region_*
+      set_pg_strategy S_macro_PG2 -pattern {{name: P_macro_PG2} {nets: {VDD VSS}} {offset: {0 0}}} -macros $macropg
+      set_pg_strategy_via_rule VIA_macro -via_rule {{{intersection: undefined} {via_master:NIL}}}
+      compile_pg -strategies S_macro_PG2 -via_rule VIA_macro -ignore_drc -tag macro_pg
+      foreach a $box {
+          create_pg_vias -within_bbox $a -nets {VDD VSS} -from_layers M4 -to_layers M5 -tag macro_pg
+      }
+  }
+  ##======================================================##
+  ##   gen_all_power                                      ##
+  ##======================================================##
+  proc gen_all_power {} {
+      clean_power
+      #clean_power_1
+      gen_pg_set
+      gen_pg_rail
+      gen_pg_region
+      gen_pg_core
+      #    gen_pg_macro
+      derive_pg_mask_constraint
+      #    remove_placement_blockages partial*
+      puts "RM-info: Completed script [info script]\n"
+  }
+  ##======================================================##
+  ##   check_libcel_legality                              ##
+  ##======================================================##
+  proc check_libcel_legality {} {
+      analyze_lib_cell_placement -lib_cell [add_to_collection -unique "" [get_attribute [get_cells -physical_context ] ref_phys_block]]
+  }
+  proc write_floorplan_def {def_name} {
+      set obj_coll [get_cells -physical_context * -filter "is_hard_macro == true"]
+      append_to_collection obj_coll [get_cells -physical_context * -filter "is_physical_only == true "]
+      write_def -units 2000 -version 5.8 -include_tech_via_definitions -include "blockages cells ports rows_tracks specialnets vias" -objects $obj_coll $def_name
+  }
+  proc write_nosig_def {def_name} {
+      write_def -compress gzip -version 5.8 -include_tech_via_definitions -include {blockages bounds cells fills nets pg_metal_fills ports routing_rules rows_tracks scanchains specialnets vias}  $def_name
+  }
+  ###
+  #
+  gen_all_power
+```

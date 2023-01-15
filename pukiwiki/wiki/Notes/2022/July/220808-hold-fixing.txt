@@ -1,0 +1,11 @@
+#notemd
+# Basics
+
+  - Usually, insert delay to **End Point**
+  - hold \* 2-3
+
+## Why?
+
+  - Clock Skew is usually not so large
+
+# Upper Common Point
