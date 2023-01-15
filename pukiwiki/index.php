@@ -18,8 +18,9 @@ error_reporting(E_ERROR | E_PARSE); // Avoid E_WARNING, E_NOTICE, etc
 // Directory definition
 // (Ended with a slash like '../path/to/pkwk/', or '')
 define('DATA_HOME',	'');
+define('CONTENTS_DIR',  '../contents/');
 define('LIB_DIR',	'lib/');
 
-require('plugin/vendor/autoload.php'); // installing Markdown parser
-require(LIB_DIR . 'pukiwiki.php');
+    require('plugin/vendor/autoload.php'); // installing Markdown parser
+    require(LIB_DIR . 'pukiwiki.php');
 ?>

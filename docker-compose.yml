@@ -7,7 +7,8 @@ services:
         ports:
             - 8080:80
         volumes:
-            - ./pukiwiki:/var/www/html
+            - ./pukiwiki:/var/www/html/pukiwiki
+            - ./contents:/var/www/html/contents
             - ./default.conf:/etc/nginx/conf.d/default.conf
 
     php:
@@ -15,4 +16,5 @@ services:
         image: php:8-fpm
         restart: always
         volumes:
-            - ./pukiwiki:/var/www/html
+            - ./pukiwiki:/var/www/html/pukiwiki
+            - ./contents:/var/www/html/contents

@@ -8,7 +8,7 @@
 //
 // Usage: http://path/to/index.php?plugin=rename[&refer=page_name]
 
-define('PLUGIN_RENAME_LOGPAGE', ':RenameLog');
+define('PLUGIN_RENAME_LOGPAGE', 'RenameLog');
 
 function plugin_rename_action()
 {
